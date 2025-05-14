@@ -10,4 +10,12 @@ public class Runde {
     private Karte[] letzterStich;
     private Karte[] aktuellerStich;
     private SpielArt höchstesSpiel;
+
+    Runde() {
+        spieler = new Mitspieler[4];
+    }
+
+    private int starteRunde() {
+        return 0;
+    }
 }
