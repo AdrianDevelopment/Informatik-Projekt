@@ -1,5 +1,5 @@
 package InformatikProjekt;
 
-public class Bot extends MitSpieler {
+public class Bot extends Mitspieler {
 
 }

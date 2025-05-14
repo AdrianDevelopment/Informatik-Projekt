@@ -1,6 +1,6 @@
 package InformatikProjekt;
 
-public abstract class MitSpieler {
+public abstract class Mitspieler {
 
     void RundeStarten(){}
     SpielKarte DuBistDran(){

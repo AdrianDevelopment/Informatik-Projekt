@@ -1,4 +1,4 @@
 package InformatikProjekt;
 
-public class Spieler extends MitSpieler {
+public class Spieler extends Mitspieler {
 }
