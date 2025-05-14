@@ -2,14 +2,14 @@ package InformatikProjekt;
 
 public abstract class Mitspieler {
 
-    abstract  void  RundeStarten(
+    abstract  void rundeStarten(
             SpielKarte[] karten, int wieVielterSpieler
     );
-    abstract SpielKarte Spielabsichtfragen( SpielArt höchsteSpiel);
+    abstract SpielKarte spielabsichtFragen( SpielArt höchsteSpiel);
     abstract void ersterSpielerSetzen(int ersterSpieler);
-    abstract SpielKarte DuBistDran();
-    abstract void RundeNeuStarten(SpielKarte[] karten);
-    abstract void KarteWurdeGelegt(SpielKarte Karte, int SpielerHatGelget);
+    abstract SpielKarte duBistDran();
+    abstract void rundeNeuStarten(SpielKarte[] karten);
+    abstract void karteWurdeGelegt(SpielKarte Karte, int SpielerHatGelget);
 
 
 }
