@@ -25,7 +25,7 @@ public class Runde {
         // TODO: rotieren der Spieler
         for (int i = 0; i < 4; i++) {
             do {
-                aktuellHöchstesSpiel = GUI.spielAbfrage(spieler[i]) // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
+                aktuellHöchstesSpiel = GUI.spielAbfrage(spieler[i]); // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
             } while (aktuellHöchstesSpiel == 0 || aktuellHöchstesSpiel > höchstesSpiel);
             if (aktuellHöchstesSpiel > höchstesSpiel) {
                 höchstesSpiel = aktuellHöchstesSpiel;
