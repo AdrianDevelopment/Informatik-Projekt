@@ -1,32 +1,121 @@
 package InformatikProjekt;
+
 import java.util.ArrayList;
 
+//Programmierer: Tim
 
 public abstract class Mitspieler {
-    
-     
-    //Fragt die Spielabsicht der Mitspieler ab. 
-    abstract SpielKarte spielabsichtFragen(SpielArt höchsteSpiel);
-    //Forder einen Mitspieler auf eine legale Karte zu legen. 
-    abstract SpielKarte duBistDran(SpielArt spielArt);
+
+
+    //Fragt die Spielabsicht der Mitspieler ab.
+    public abstract SpielArt spielabsichtFragen(SpielArt höchsteSpiel);
+
+    //Forder einen Mitspieler auf eine legale Karte zu legen.
+    public abstract Spielkarte duBistDran(SpielArt spielArt);
+
     //Legt die Startwerte für eine neue Runde fest.
-    abstract void rundeStarten(
-            SpielKarte[] karten, int wieVielterSpieler
+    public abstract void rundeStarten(
+            Spielkarte[] karten, int wieVielterSpieler
     );
-    //Nachricht an Mitspieler welche Sau gesucht wird. (Senden nach dem finden der Spielart)
-    abstract void karteGesucht(int spieler, SpielKarte Sau);
+
+    //Nachricht an Mitspieler welche Spielart gespielt wird, überreicht Farne wenn Solo und Sau wenn Sauspiel.
+    public abstract void spielArtEntschieden(int spieler, Spielkarte Sau, Farbe farbeSolo, SpielArt spielArt);
+
     //Nutzen nicht ersichtlich?
-    abstract void ersterSpielerSetzen(int ersterSpieler);
+    public abstract void setzteErsterSpieler(int ersterSpieler);
+
     //Nachricht an Mitspieler welcher spieler die Runde gewonnen hat.
-    abstract void rundeGewonnen(int spieler);
+    public abstract void rundeGewonnen(int spieler);
+
     //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
-    abstract void karteWurdeGelegt(SpielKarte karte, int spielerHatGelegt);
+    public abstract void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt);
 
-    //Methode für Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden können zurück gibt.
-    ArrayList<SpielKarte> legaleKarten(ArrayList<SpielKarte> hand, SpielArt spielArt)
-    {
+    //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
+    public abstract void spielAusgerufen(SpielArt ausgerufenesSpiel, int spieler);
 
-         ArrayList<SpielKarte> legaleKarten = new ArrayList<SpielKarte>();
-        return legaleKarten;
+    //Methode für Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden können zurückgibt.
+    public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe) {
+
+        ArrayList<Spielkarte> legaleKarten = new ArrayList<Spielkarte>();
+        switch (spielArt) {
+            case SOLO:
+
+                legaleKarten = this.soloErlaubteKarten(hand, soloFarbe, vorgegebeneKarte);
+
+                break;
+            case WENS:
+                if (vorgegebeneKarte.gebeWert() == Werte.UNTER) {
+                    for (Spielkarte karte : hand) {
+                        if (karte.gebeWert() == Werte.UNTER) {
+                            legaleKarten.add(karte);
+                        }
+                    }
+
+                } else {
+                    for (Spielkarte karte : hand) {
+                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe()) {
+                            legaleKarten.add(karte);
+                        }
+
+                    }
+                }
+
+                break;
+            case SAUSPIEL:
+                for (Spielkarte karte : hand) {
+                    if (karte == sau) {
+                        legaleKarten.add(karte);
+                        return legaleKarten;
+                    }
+                }
+                if (vorgegebeneKarte.gebeFarbe() == Farbe.HERZ || vorgegebeneKarte.gebeWert() == Werte.OBER || vorgegebeneKarte.gebeWert() == Werte.UNTER) {
+                    for (Spielkarte karte : hand) {
+                        if (karte.gebeFarbe() == Farbe.HERZ || karte.gebeWert() == Werte.OBER || karte.gebeWert() == Werte.UNTER) {
+                            legaleKarten.add(karte);
+                        }
+                    }
+
+                } else {
+                    for (Spielkarte karte : hand) {
+                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe()) {
+                            legaleKarten.add(karte);
+                        }
+
+                    }
+
+                }
+
+
+                break;
+        }
+        if (!legaleKarten.isEmpty()) {
+            return legaleKarten;
+        } else {
+            return hand;
+        }
+
+    }
+
+    private ArrayList<Spielkarte> soloErlaubteKarten(ArrayList<Spielkarte> hand, Farbe farbeSolo, Spielkarte vorgegebeneKarte) {
+        ArrayList<Spielkarte> legaleKarten = new ArrayList<Spielkarte>();
+        if (vorgegebeneKarte.gebeFarbe() == farbeSolo || vorgegebeneKarte.gebeWert() == Werte.OBER || vorgegebeneKarte.gebeWert() == Werte.UNTER) {
+            for (Spielkarte karte : hand) {
+                if (karte.gebeFarbe() == farbeSolo || karte.gebeWert() == Werte.OBER || karte.gebeWert() == Werte.UNTER) {
+                    legaleKarten.add(karte);
+                }
+            }
+            return legaleKarten;
+
+        } else {
+            for (Spielkarte karte : hand) {
+                if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe()) {
+                    legaleKarten.add(karte);
+                }
+
+            }
+            return legaleKarten;
+
+        }
+
     }
 }
