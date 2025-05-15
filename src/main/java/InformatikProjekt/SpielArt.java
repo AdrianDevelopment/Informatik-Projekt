@@ -1,13 +1,13 @@
 package InformatikProjekt;
 
 public enum SpielArt {
-    HERZSOLO(3),
-    GRASSOLO(3),
-    EICHELSOLO(3),
-    SCHELLENSOLO(3),
-    WENS(2),
+    KEINSPIEL(0),
     SAUSPIEL(1),
-    KEINSPIEL(0);
+    WENS(2),
+    SOLO(3);
+//    GRASSOLO(3),
+//    EICHELSOLO(3),
+//    SCHELLENSOLO(3),
 
     SpielArt(int i) {
 
