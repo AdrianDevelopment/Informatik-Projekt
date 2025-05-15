@@ -13,19 +13,18 @@ public class Runde {
     private SpielKarte[] aktuellerStich;
     private SpielKarte[][] gewonneneStiche;
     private SpielKarte aktuelleSpielKarte;
-    private int höchstesSpiel;
-    private int aktuellHöchstesSpiel;
 
     Runde() {
         spieler = new Mitspieler[4];
-        höchstesSpiel = 0;
     }
 
     private void starteRunde() {
+        int aktuellHöchstesSpiel;
+        int höchstesSpiel = 0;
         // TODO: rotieren der Spieler
         for (int i = 0; i < 4; i++) {
             do {
-                aktuellHöchstesSpiel = GUI.spielAbfrage(spieler[i]); // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
+                aktuellHöchstesSpiel = spieler[i].spielabsichtFragen(aktuellHöchstesSpiel); // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
             } while (aktuellHöchstesSpiel == 0 || aktuellHöchstesSpiel > höchstesSpiel);
             if (aktuellHöchstesSpiel > höchstesSpiel) {
                 höchstesSpiel = aktuellHöchstesSpiel;
@@ -36,12 +35,16 @@ public class Runde {
         switch (höchstesSpiel) {
             case 0:
                 starteRunde(); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
+                break;
             case 1:
                 spielSchleifeSau(8, 1);
+                break;
             case 2:
-//                spielSchleifeWenz();
+//              spielSchleifeWenz();
+                break;
             case 3:
-//                spielSchleifeSolo();
+//              spielSchleifeSolo();
+                break;
         }
     }
 
