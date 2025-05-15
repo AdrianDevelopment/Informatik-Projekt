@@ -11,11 +11,11 @@ public abstract class Mitspieler {
     public abstract SpielArt spielabsichtFragen(SpielArt höchsteSpiel);
 
     //Forder einen Mitspieler auf eine legale Karte zu legen.
-    public abstract Spielkarte duBistDran(SpielArt spielArt);
+    public abstract Spielkarte legeEineKarte();
 
     //Legt die Startwerte für eine neue Runde fest.
     public abstract void rundeStarten(
-            Spielkarte[] karten, int wieVielterSpieler
+            ArrayList<Spielkarte> karten, int wieVielterSpieler
     );
 
     //Nachricht an Mitspieler welche Spielart gespielt wird, überreicht Farne wenn Solo und Sau wenn Sauspiel.
@@ -32,7 +32,8 @@ public abstract class Mitspieler {
 
     //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
     public abstract void spielAusgerufen(SpielArt ausgerufenesSpiel, int spieler);
-
+    //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat.
+    public abstract void siegerVerkünden(int spieler);
     //Methode für Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden können zurückgibt.
     public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe) {
 
