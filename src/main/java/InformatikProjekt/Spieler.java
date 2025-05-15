@@ -17,11 +17,11 @@ public class Spieler extends Mitspieler {
         return null;
     }
 
-    void karteWurdeGelegt(SpielKarte Karte, int SpielerHatGelget) {
+    void karteWurdeGelegt(SpielKarte Karte, int spielerHatGelegt) {
 
     }
 
-    void rundeNeuStarten(SpielKarte[] karten) {
+    void rundeGewonnen(int spieler) {
 
     }
 }
