@@ -9,7 +9,13 @@ public enum SpielArt {
 //    EICHELSOLO(3),
 //    SCHELLENSOLO(3),
 
-    SpielArt(int i) {
+    private final int wert;
 
+    SpielArt(int wert) {
+        this.wert = wert;
+    }
+
+    public int gebeSpielArtID() {
+        return wert;
     }
 }

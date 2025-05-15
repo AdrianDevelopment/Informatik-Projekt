@@ -1,38 +1,47 @@
 package InformatikProjekt;
 
-import javax.lang.model.util.SimpleTypeVisitor6;
+import java.util.Random;
 
 public class Runde {
     private Mitspieler[] spieler;
     private int vorhand; // spielt die erste Karte
     private int ausrufer;
-    private SpielKarte ausgerufeneSau;
+    private Spielkarte ausgerufeneSau;
     private int ausruferMitspieler;
     private int[] punkte;
-    private SpielKarte[] letzterStich;
-    private SpielKarte[] aktuellerStich;
-    private SpielKarte[][] gewonneneStiche;
-    private SpielKarte aktuelleSpielKarte;
+    private Spielkarte[] letzterStich;
+    private Spielkarte[] aktuellerStich;
+    private Spielkarte[][] gewonneneStiche;
+    private Spielkarte aktuelleSpielKarte;
 
     Runde() {
         spieler = new Mitspieler[4];
+        Random random = new Random();
+        int randomNumber = random.nextInt(4);
+        spieler[randomNumber] = new Spieler();
+        for (int i = 0; i < 4; i++) {
+            if (i != randomNumber) {
+                spieler[i] = new Bot();
+            }
+        }
     }
 
     private void starteRunde() {
-        int aktuellHöchstesSpiel;
-        int höchstesSpiel = 0;
+        SpielArt aktuellHöchstesSpiel;
+        SpielArt höchstesSpiel;
+        höchstesSpiel = SpielArt.KEINSPIEL;
         // TODO: rotieren der Spieler
         for (int i = 0; i < 4; i++) {
             do {
-                aktuellHöchstesSpiel = spieler[i].spielabsichtFragen(aktuellHöchstesSpiel); // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
-            } while (aktuellHöchstesSpiel == 0 || aktuellHöchstesSpiel > höchstesSpiel);
-            if (aktuellHöchstesSpiel > höchstesSpiel) {
+                aktuellHöchstesSpiel = spieler[i].spielabsichtFragen(höchstesSpiel); // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
+            } while (aktuellHöchstesSpiel.gebeSpielArtID() == 0 || aktuellHöchstesSpiel.gebeSpielArtID() > höchstesSpiel.gebeSpielArtID());
+            if (aktuellHöchstesSpiel.gebeSpielArtID() > höchstesSpiel.gebeSpielArtID()) {
                 höchstesSpiel = aktuellHöchstesSpiel;
                 ausrufer = i;
             }
         }
 
-        switch (höchstesSpiel) {
+        switch (höchstesSpiel.gebeSpielArtID()) {
             case 0:
                 starteRunde(); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
                 break;
@@ -54,19 +63,23 @@ public class Runde {
         // einen Stich spielen
         for (int i = 0; i < 4; i++) {
             // Spieler "amZug" fragen welche Karte er legen möchte
-            do {
-                aktuelleSpielKarte = spieler[i].duBistDran();
-            } while (spielKartePrüfen(aktuelleSpielKarte) == false); // TODO: Methode spielKartePrüfen()
-            aktuellerStich[i] = aktuelleSpielKarte;
+            aktuelleSpielKarte = this.spieler[i].legeEineKarte();
         }
 
-        Mitspieler sieger = ermittleSieger(aktuellerStich); // TODO: Methode ermittleSieger()
-        GUI.siegerVerkünden(sieger); // TODO: GUI implementieren
+        int sieger = ermittleSieger(aktuellerStich);
+        for (int i = 0; i < 4; i++) {
+            spieler[i].siegerVerkünden(sieger);
+        }
         letzterStich = aktuellerStich;
         gewonneneStiche[stich] = aktuellerStich;
 
         if (anzahlKarten > 0) {
             spielSchleifeSau(anzahlKarten, stich + 1);
         }
+    }
+
+    private int ermittleSieger(Spielkarte[] aktuellerStich) {
+        // TODO: höchste Karte herausfinden
+        return 0;
     }
 }
