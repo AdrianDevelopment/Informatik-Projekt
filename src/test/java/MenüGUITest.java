@@ -1,10 +1,8 @@
-package InformatikProjekt;
-
 import javax.swing.*;
 
-public class MenüGUI {
+public class MenüGUITest {
 
-    public void guiStart(){
+    public static void main(String[] args) {
         JFrame frame = new JFrame("Startmenü");
         frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);
