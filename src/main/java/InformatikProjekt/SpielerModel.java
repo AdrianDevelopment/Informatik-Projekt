@@ -30,4 +30,7 @@ public class SpielerModel {
         welcherSpieler = nummer;
     }
 
+    public int gebeWelcherSpieler() {
+        return welcherSpieler;
+    }
 }

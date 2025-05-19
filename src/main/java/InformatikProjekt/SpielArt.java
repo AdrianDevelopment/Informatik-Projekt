@@ -3,7 +3,7 @@ package InformatikProjekt;
 public enum SpielArt {
     KEINSPIEL(0),
     SAUSPIEL(1),
-    WENS(2),
+    WENZ(2),
     SOLO(3);
 //    GRASSOLO(3),
 //    EICHELSOLO(3),

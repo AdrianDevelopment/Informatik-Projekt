@@ -8,7 +8,7 @@ public abstract class Mitspieler {
 
 
     //Fragt die Spielabsicht der Mitspieler ab.
-    public abstract SpielArt spielabsichtFragen(SpielArt höchsteSpiel);
+    public abstract SpielArt spielabsichtFragen(SpielArt höchstesSpiel);
 
     //Forder einen Mitspieler auf eine legale Karte zu legen.
     public abstract Spielkarte legeEineKarte();
@@ -19,10 +19,10 @@ public abstract class Mitspieler {
     );
 
     //Nachricht an Mitspieler welche Spielart gespielt wird, überreicht Farne wenn Solo und Sau wenn Sauspiel.
-    public abstract void spielArtEntschieden(int spieler, Spielkarte Sau, Farbe farbeSolo, SpielArt spielArt);
+    public abstract void spielArtEntschieden(int spieler, Spielkarte sau, Farbe farbeSolo, SpielArt spielArt);
 
     //Nutzen nicht ersichtlich?
-    public abstract void setzteErsterSpieler(int ersterSpieler);
+    public abstract void setzeErsterSpieler(int ersterSpieler);
 
     //Nachricht an Mitspieler welcher spieler die Runde gewonnen hat.
     public abstract void rundeGewonnen(int spieler);
@@ -44,7 +44,7 @@ public abstract class Mitspieler {
                 legaleKarten = this.soloErlaubteKarten(hand, soloFarbe, vorgegebeneKarte);
 
                 break;
-            case WENS:
+            case WENZ:
                 if (vorgegebeneKarte.gebeWert() == Werte.UNTER) {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeWert() == Werte.UNTER) {
