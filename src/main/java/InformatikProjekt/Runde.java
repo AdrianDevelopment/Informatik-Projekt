@@ -11,7 +11,6 @@ public class Runde {
     private int[] punkte;
     private Spielkarte[] letzterStich;
     private Spielkarte[] aktuellerStich;
-    private Spielkarte[][] gewonneneStiche;
     private Spielkarte aktuelleSpielKarte;
 
     Runde() {
