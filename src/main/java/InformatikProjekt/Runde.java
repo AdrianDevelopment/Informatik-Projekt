@@ -67,10 +67,10 @@ public class Runde {
 
         int sieger = ermittleSieger(aktuellerStich);
         for (int i = 0; i < 4; i++) {
-            spieler[i].siegerVerkuenden(sieger);
+            spieler[i].stichGewonnen(sieger);
         }
         letzterStich = aktuellerStich;
-        gewonneneStiche[stich] = aktuellerStich;
+        punkte[sieger] += ermittlePunkte(aktuellerStich);
 
         if (anzahlKarten > 0) {
             spielSchleifeSau(anzahlKarten, stich + 1);
@@ -79,6 +79,14 @@ public class Runde {
 
     private int ermittleSieger(Spielkarte[] aktuellerStich) {
         // TODO: höchste Karte herausfinden
+        return 0;
+    }
+
+    private int ermittlePunkte(Spielkarte[] aktuellerStich) {
+        // TODO: Punkte errrechnen aus aktuellem Stich
+        for (int i = 0; i < 4; i++) {
+
+        }
         return 0;
     }
 }
