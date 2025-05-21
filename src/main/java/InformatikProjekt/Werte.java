@@ -10,7 +10,13 @@ public enum Werte {
     ACHTER(0),
     SIEBENER(0);
 
-    Werte(int i) {
+    private final int wert;
 
+    Werte(int i) {
+        this.wert = i;
+    }
+
+    public int gebeWerteID() {
+        return wert;
     }
 }

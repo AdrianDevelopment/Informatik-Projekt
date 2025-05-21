@@ -32,8 +32,8 @@ public class Runde {
         // TODO: rotieren der Spieler
         for (int i = 0; i < 4; i++) {
             do {
-                aktuellHoechstesSpiel = spieler[i].spielabsichtFragen(hoechstesSpiel); // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
-            } while (aktuellHoechstesSpiel.gebeSpielArtID() == 0 || aktuellHoechstesSpiel.gebeSpielArtID() > hoechstesSpiel.gebeSpielArtID());
+                aktuellHoechstesSpiel = spieler[i].spielabsichtFragen(hoechstesSpiel); // return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
+            } while (aktuellHoechstesSpiel.gebeSpielArtID() != 0 || aktuellHoechstesSpiel.gebeSpielArtID() <= hoechstesSpiel.gebeSpielArtID());
             if (aktuellHoechstesSpiel.gebeSpielArtID() > hoechstesSpiel.gebeSpielArtID()) {
                 hoechstesSpiel = aktuellHoechstesSpiel;
                 ausrufer = i;
@@ -45,19 +45,19 @@ public class Runde {
                 starteRunde(); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
                 break;
             case 1:
-                spielSchleifeSau(8, 1);
+                spielSchleifeSau(8);
                 break;
             case 2:
-//              spielSchleifeWenz();
+                // spielSchleifeWenz();
                 break;
             case 3:
-//              spielSchleifeSolo();
+                // spielSchleifeSolo();
                 break;
         }
     }
 
     // TODO: spielSchleifeWenz(), spielSchleifeSolo()
-    private void spielSchleifeSau(int anzahlKarten, int stich) {
+    private void spielSchleifeSau(int anzahlKarten) {
 
         // einen Stich spielen
         for (int i = 0; i < 4; i++) {
@@ -65,15 +65,19 @@ public class Runde {
             aktuelleSpielKarte = this.spieler[i].legeEineKarte();
         }
 
+        // Auswertung des Stichs
         int sieger = ermittleSieger(aktuellerStich);
-        for (int i = 0; i < 4; i++) {
-            spieler[i].stichGewonnen(sieger);
-        }
-        letzterStich = aktuellerStich;
+        letzterStich = aktuellerStich.clone(); // nicht mit Referenz übergeben, da aktuellerStich sich ändert
         punkte[sieger] += ermittlePunkte(aktuellerStich);
 
+        // Ausgabe des Stichergebnisses
+        for (int i = 0; i < 4; i++) {
+            spieler[i].stichGewonnen(sieger, punkte);
+        }
+
+        // Rekursionsschritt
         if (anzahlKarten > 0) {
-            spielSchleifeSau(anzahlKarten, stich + 1);
+            spielSchleifeSau(anzahlKarten - 1);
         }
     }
 
@@ -84,9 +88,10 @@ public class Runde {
 
     private int ermittlePunkte(Spielkarte[] aktuellerStich) {
         // TODO: Punkte errrechnen aus aktuellem Stich
+        int aktuellePunkte = 0;
         for (int i = 0; i < 4; i++) {
-
+            aktuellePunkte += aktuellerStich[i].gebeWert().gebeWerteID();
         }
-        return 0;
+        return aktuellePunkte;
     }
 }

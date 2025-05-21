@@ -34,8 +34,10 @@ public abstract class Mitspieler {
 
     //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
     public abstract void spielAusgerufen(SpielArt ausgerufenesSpiel, int spieler);
-    //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat.
-    public abstract void stichGewonnen(int spieler);
+
+    //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat, angabe der Punkte, zusammenrechnen der Punket am besten in Mitspieler
+    public abstract void stichGewonnen(int spieler, int[] punkte);
+
     //Methode fuer Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden koennen zurueckgibt.
     public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe) {
 
