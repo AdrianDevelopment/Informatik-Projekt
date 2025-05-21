@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class MenüGUITest {
+public class MenueGUITest {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Startmenü");

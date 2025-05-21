@@ -30,7 +30,7 @@ public class Speicherung {
             array[i]=zahl;
         }
     }
-    private void zurücksetzen(){
+    private void zuruecksetzen(){
         gewonneneSpiele = 0;
         gespielteSpiele = 0;
         verloreneSpiele = 0;
@@ -73,7 +73,7 @@ public class Speicherung {
         try{
             fis = new FileInputStream("statistiken.dat");
         }catch (FileNotFoundException e){
-            zurücksetzen();
+            zuruecksetzen();
             return;
         }
         try{
@@ -89,7 +89,7 @@ public class Speicherung {
             zahlArrayLesen(fis,verloreneModi);
             zahlArrayLesen(fis,verloreneModiSchneider);
         }catch (IOException e){
-            zurücksetzen();
+            zuruecksetzen();
             try{
                 fis.close();
             }catch(IOException e2){

@@ -2,7 +2,7 @@ package InformatikProjekt;
 
 import javax.swing.*;
 
-public class MenüGUI {
+public class MenueGUI {
 
     public void guiStart(){
         JFrame frame = new JFrame("Startmenü");

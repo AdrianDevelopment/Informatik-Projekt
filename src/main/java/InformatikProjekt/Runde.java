@@ -26,21 +26,21 @@ public class Runde {
     }
 
     private void starteRunde() {
-        SpielArt aktuellHöchstesSpiel;
-        SpielArt höchstesSpiel;
-        höchstesSpiel = SpielArt.KEINSPIEL;
+        SpielArt aktuellHoechstesSpiel;
+        SpielArt hoechstesSpiel;
+        hoechstesSpiel = SpielArt.KEINSPIEL;
         // TODO: rotieren der Spieler
         for (int i = 0; i < 4; i++) {
             do {
-                aktuellHöchstesSpiel = spieler[i].spielabsichtFragen(höchstesSpiel); // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
-            } while (aktuellHöchstesSpiel.gebeSpielArtID() == 0 || aktuellHöchstesSpiel.gebeSpielArtID() > höchstesSpiel.gebeSpielArtID());
-            if (aktuellHöchstesSpiel.gebeSpielArtID() > höchstesSpiel.gebeSpielArtID()) {
-                höchstesSpiel = aktuellHöchstesSpiel;
+                aktuellHoechstesSpiel = spieler[i].spielabsichtFragen(hoechstesSpiel); // TODO: in GUI Methode implementieren, return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
+            } while (aktuellHoechstesSpiel.gebeSpielArtID() == 0 || aktuellHoechstesSpiel.gebeSpielArtID() > hoechstesSpiel.gebeSpielArtID());
+            if (aktuellHoechstesSpiel.gebeSpielArtID() > hoechstesSpiel.gebeSpielArtID()) {
+                hoechstesSpiel = aktuellHoechstesSpiel;
                 ausrufer = i;
             }
         }
 
-        switch (höchstesSpiel.gebeSpielArtID()) {
+        switch (hoechstesSpiel.gebeSpielArtID()) {
             case 0:
                 starteRunde(); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
                 break;
@@ -67,7 +67,7 @@ public class Runde {
 
         int sieger = ermittleSieger(aktuellerStich);
         for (int i = 0; i < 4; i++) {
-            spieler[i].siegerVerkünden(sieger);
+            spieler[i].siegerVerkuenden(sieger);
         }
         letzterStich = aktuellerStich;
         gewonneneStiche[stich] = aktuellerStich;

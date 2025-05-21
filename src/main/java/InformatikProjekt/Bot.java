@@ -7,7 +7,7 @@ public class Bot extends Mitspieler {
     BotModel model;
 
     @Override
-    public SpielArt spielabsichtFragen(SpielArt höchsteSpiel) {
+    public SpielArt spielabsichtFragen(SpielArt hoechsteSpiel) {
         return null;
     }
 

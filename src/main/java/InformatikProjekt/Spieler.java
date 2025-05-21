@@ -23,8 +23,8 @@ public class Spieler extends Mitspieler {
     }
 
     @Override
-    public SpielArt spielabsichtFragen(SpielArt höchstesSpiel) { //warum Spielkarte als return Wert
-        return gui.spielabsichtFragen(höchstesSpiel); //TODO: Spieler übergeben, nach Patch von Tim
+    public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) { //warum Spielkarte als return Wert
+        return gui.spielabsichtFragen(hoechstesSpiel); //TODO: Spieler übergeben, nach Patch von Tim
     }
 
     @Override
