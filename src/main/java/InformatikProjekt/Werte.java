@@ -11,5 +11,6 @@ public enum Werte {
     SIEBENER(0);
 
     Werte(int i) {
+
     }
 }

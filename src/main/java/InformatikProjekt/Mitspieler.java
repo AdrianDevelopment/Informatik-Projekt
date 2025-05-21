@@ -10,6 +10,8 @@ public abstract class Mitspieler {
     //Fragt die Spielabsicht der Mitspieler ab.
     public abstract SpielArt spielabsichtFragen(SpielArt höchstesSpiel);
 
+    //Nachricht an Mitspieler, nachdem ein Spieler eine Spielabsicht abgegeben hat.
+    public abstract void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler);
     //Forder einen Mitspieler auf eine legale Karte zu legen.
     public abstract Spielkarte legeEineKarte();
 
@@ -33,7 +35,7 @@ public abstract class Mitspieler {
     //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
     public abstract void spielAusgerufen(SpielArt ausgerufenesSpiel, int spieler);
     //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat.
-    public abstract void siegerVerkünden(int spieler);
+    public abstract void stichGewonnen(int spieler);
     //Methode für Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden können zurückgibt.
     public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe) {
 
