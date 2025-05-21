@@ -1,8 +1,9 @@
 package InformatikProjekt;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
-public class Spieler extends Mitspieler {
+public class Spieler extends Mitspieler { //TODO: alle Methoden aus Mitspieler implementieren und in die richtige Reihenfolge bringen
     private SpielerModel model; //speichert Daten des Spielers
     private SpielerGUI gui;
 
@@ -11,7 +12,9 @@ public class Spieler extends Mitspieler {
     }
 
     /**
-     * Übergibt die wichtigen Dinge dem SpielerModel
+     * Model + GUI:
+     * - Übergibt die wichtigen Dinge dem SpielerModel
+     * - gibt wieVielterSpieler an GUI weiter zur Anzeige
      *
      * @param karten
      * @param wieVielterSpieler
@@ -20,20 +23,77 @@ public class Spieler extends Mitspieler {
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
         model.setzeWelcherSpieler(wieVielterSpieler);
+
+        gui.zeigeHandkarten(karten);
+        gui.zeigeWelcherSpieler(wieVielterSpieler);
     }
 
+    /**
+     * Anfrage:
+     * Anfrage an User für Spielabsicht
+     *
+     * @param hoechstesSpiel
+     * @return
+     */
     @Override
-    public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) { //warum Spielkarte als return Wert
-        return gui.spielabsichtFragen(hoechstesSpiel); //TODO: Spieler übergeben, nach Patch von Tim
+    public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
+        String spielabsicht = gui.spielabsichtFragen(hoechstesSpiel);
+        switch (spielabsicht) {
+            case "weiter":
+                return SpielArt.KEINSPIEL;
+            case "Sau":
+                return SpielArt.SAUSPIEL;
+            case "Wenz":
+                return SpielArt.WENZ;
+            case "Solo":
+                return SpielArt.SOLO;
+            default:
+                gui.ungueltigeEingabe();
+                return spielabsichtFragen(hoechstesSpiel);
+        }
+    }
+
+    /**
+     * GUI:
+     * Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss
+     *
+     * @param spielAbsicht
+     * @param spieler
+     */
+    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
+        //TODO: GUI übergeben, wer welches Spiel ausgerufen hat
+
     }
 
     @Override
     public void spielArtEntschieden(int spieler, Spielkarte sau, Farbe farbeSolo, SpielArt spielArt) {
-        /*switch (spielArt) {
-            case SOLO: model.spielArtEntschieden(spieler, farbeSolo);
-            case WENZ: model.spielArtEntschieden(spieler, sau);
-            default: System.out.println("Spielart noch nicht implementiert.");
-        }*/ //TODO: Methode in GUI implementieren + abklären
+        model.setzeSpielArt(spieler, spielArt, sau, farbeSolo);
+
+        String ausgabe = "";
+        switch (spielArt) {
+            case KEINSPIEL:
+                ausgabe = "Niemand wollte spielen";
+            case SAUSPIEL:
+                ausgabe = "Sauspiel auf die ";
+                Farbe sauFarbe = sau.gebeFarbe();
+                switch (sauFarbe) { //TODO: Namen der Sau raussuchen
+                    case SCHELLEN:
+                        break;
+                    case HERZ:
+                        break;
+                    case GRAS:
+                        break;
+                    case EICHEL:
+                        break;
+                }
+            case WENZ:
+                ausgabe = "Wenz";
+            case SOLO:
+                ausgabe = "Solo mit der Farbe " + farbeSolo; //TODO: Farbe mit switch in ausgabe reinschreiben
+            default:
+                break;
+        }
+        gui.spielArtEntschieden(spieler, ausgabe);
     }
 
     /**
@@ -53,19 +113,10 @@ public class Spieler extends Mitspieler {
     }
 
     @Override
-    public Spielkarte duBistDran(SpielArt spielArt) {
-        return null;
-    }
-
-    @Override
     public void karteWurdeGelegt(Spielkarte Karte, int spielerHatGelegt) {
 
     }
 
-    @Override
-    public void spielAusgerufen(SpielArt ausgerufenesSpiel, int spieler) {
-
-    }
 
     @Override
     public void rundeGewonnen(int spieler) {
