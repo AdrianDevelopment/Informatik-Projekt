@@ -13,12 +13,43 @@ public class Speicherung {
     private int verloreneSpiele;
     private int verloreneSpieleSchneider;
     private int gespielteSpiele;
-    private int gespielteModi[];
-    private int gewonneneModi[];
-    private int verloreneModi[];
-    private int verloreneModiSchneider[];
+    private int[] gespielteModi;
+    private int[] gewonneneModi;
+    private int[] verloreneModi;
+    private int[] verloreneModiSchneider;
     private int gesamtePunkte;
     private int gespielteKarten;
+
+    public int modusSpielzahlGeben(SpielArt art){
+        return gespielteModi[art.gebeSpielArtID() - 1];
+    }
+    public int modusGewinneGeben(SpielArt art){
+        return gewonneneModi[art.gebeSpielArtID() - 1];
+    }
+    public int modusNiederlagenGeben(SpielArt art){
+        return verloreneModi[art.gebeSpielArtID() - 1];
+    }
+    public int modusNiederlagenSchneiderGeben(SpielArt art){
+        return verloreneModiSchneider[art.gebeSpielArtID() - 1];
+    }
+    public int gespielteKartenGeben(){
+        return gespielteKarten;
+    }
+    public int gesamtePunkteGeben(){
+        return gesamtePunkte;
+    }
+    public int gespielteSpieleGeben(){
+        return gespielteSpiele;
+    }
+    public int verloreneSpieleSchneiderGeben(){
+        return verloreneSpieleSchneider;
+    }
+    public int verloreneSpieleGeben(){
+        return verloreneSpiele;
+    }
+    public int gewonneneSpieleGeben(){
+        return gewonneneSpiele;
+    }
     private void zahlenArraysInitialisieren(){
         gespielteModi = new int[3];
         gewonneneModi = new int[3];
@@ -30,7 +61,7 @@ public class Speicherung {
             array[i]=zahl;
         }
     }
-    private void zuruecksetzen(){
+    private void zurücksetzen(){
         gewonneneSpiele = 0;
         gespielteSpiele = 0;
         verloreneSpiele = 0;
@@ -73,7 +104,7 @@ public class Speicherung {
         try{
             fis = new FileInputStream("statistiken.dat");
         }catch (FileNotFoundException e){
-            zuruecksetzen();
+            zurücksetzen();
             return;
         }
         try{
@@ -89,7 +120,7 @@ public class Speicherung {
             zahlArrayLesen(fis,verloreneModi);
             zahlArrayLesen(fis,verloreneModiSchneider);
         }catch (IOException e){
-            zuruecksetzen();
+            zurücksetzen();
             try{
                 fis.close();
             }catch(IOException e2){
@@ -115,7 +146,18 @@ public class Speicherung {
             zahlSchreiben(fos, gespielteSpiele);
             zahlSchreiben(fos, verloreneSpiele);
             zahlSchreiben(fos, verloreneSpieleSchneider);
+            zahlSchreiben(fos, gesamtePunkte);
+            zahlSchreiben(fos, gespielteKarten);
+            zahlArraySchreiben(fos, gespielteModi);
+            zahlArraySchreiben(fos, gewonneneModi);
+            zahlArraySchreiben(fos, verloreneModi);
+            zahlArraySchreiben(fos, verloreneModiSchneider);
         }catch (IOException e){
+            
+        }
+        try{
+            fos.close();
+        }catch(IOException e){
             
         }
     }
