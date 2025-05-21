@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 
 public class SpielGUI{
 
-    public void spielGuiStart(){
-        // kommt nach der MenüGUI
+    public void mainGUIStart(){
+        System.out.println("MainWindow wäre gestartet.");
     }
 }

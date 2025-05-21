@@ -20,4 +20,8 @@ public class Menue {
                 // Mehrspieler
         }
     }
+
+    public void startMainGame(){
+        int mainFrame = SpielGUI.mainGUIStart();
+    }
 }
