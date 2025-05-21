@@ -3,10 +3,8 @@ package InformatikProjekt;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class MenüGUI{
+public class MenueGUI {
 
     //globale Variablen erstellen
     JButton playButton;
@@ -42,7 +40,6 @@ public class MenüGUI{
         frame.setLayout(null);
         frame.add(label1);
         frame.add(playButton);
-
 
         return 0;
     }
