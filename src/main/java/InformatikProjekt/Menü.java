@@ -1,16 +1,16 @@
 package InformatikProjekt;
 
-public class Menü {
-    private MenüGUI menüGUI;
+public class Menue {
+    private MenueGUI menueGUI;
     private Tunier tunier;
 
-    public Menü() {
-        menüGUI = new MenüGUI();
+    public Menue() {
+        menueGUI = new MenueGUI();
     }
 
     public void starteGame() {
-        int menüAuswahl = menüGUI.guiStart();
-        switch (menüAuswahl) {
+        int menueAuswahl = menueGUI.guiStart();
+        switch (menueAuswahl) {
             case 0:
                 break;
             case 1:
