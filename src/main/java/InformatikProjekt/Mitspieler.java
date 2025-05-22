@@ -45,6 +45,7 @@ public abstract class Mitspieler {
 
                 break;
             case WENZ:
+
                 if (vorgegebeneKarte.gebeWert() == Werte.UNTER) {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeWert() == Werte.UNTER) {
@@ -54,7 +55,7 @@ public abstract class Mitspieler {
 
                 } else {
                     for (Spielkarte karte : hand) {
-                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe()) {
+                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && karte.gebeWert() != Werte.UNTER) {
                             legaleKarten.add(karte);
                         }
 
@@ -63,8 +64,10 @@ public abstract class Mitspieler {
 
                 break;
             case SAUSPIEL:
+
                 for (Spielkarte karte : hand) {
-                    if (karte.gebeFarbe() == sau.gebeFarbe() && (karte.gebeWert() != Werte.UNTER)|| karte.gebeWert() != Werte.OBER || karte.gebeFarbe() != Farbe.HERZ) {
+                    if (karte.gebeFarbe() == sau.gebeFarbe() && !((karte.gebeWert() != Werte.UNTER)|| karte.gebeWert() != Werte.OBER || karte.gebeFarbe() != Farbe.HERZ)) {
+
                         legaleKarten.add(karte);
                         return legaleKarten;
                     }
@@ -72,6 +75,7 @@ public abstract class Mitspieler {
                 if (vorgegebeneKarte.gebeFarbe() == Farbe.HERZ || vorgegebeneKarte.gebeWert() == Werte.OBER || vorgegebeneKarte.gebeWert() == Werte.UNTER) {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeFarbe() == Farbe.HERZ || karte.gebeWert() == Werte.OBER || karte.gebeWert() == Werte.UNTER) {
+
                             legaleKarten.add(karte);
                         }
                     }
@@ -79,6 +83,7 @@ public abstract class Mitspieler {
                 } else {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe()) {
+
                             legaleKarten.add(karte);
                         }
 
@@ -119,4 +124,53 @@ public abstract class Mitspieler {
         }
 
     }
+    //Gibt alle Farben zurueck fuer, die der Spieler eine Sau ausrufen kann.
+    public ArrayList<Farbe> sauZumAusrufen(ArrayList<Spielkarte> hand){
+        boolean hatEichel = false;
+        boolean hatGras = false;
+        boolean hatSchellen = false;
+
+        boolean hatEichelSau = false;
+        boolean hatGrasau = false;
+        boolean hatSchellenSau = false;
+
+        for (Spielkarte karte : hand) {
+            switch (karte.gebeFarbe()){
+                case SCHELLEN:
+                    hatSchellen = true;
+                    if (karte.gebeWert() == Werte.SAU){
+                        hatSchellenSau = true;
+                    }
+                    break;
+                case GRAS:
+                    hatGras = true;
+                    if (karte.gebeWert() == Werte.SAU){
+                        hatGrasau = true;
+                    }
+                    break;
+                case EICHEL:
+                    hatEichel = true;
+                    if (karte.gebeWert() == Werte.SAU){
+                        hatEichelSau = true;
+                    }
+                    break;
+                case HERZ:
+
+                    break;
+            }
+        }
+        ArrayList<Farbe> erlaubteFarben = new ArrayList<>();
+        if (hatGras && !hatGrasau){
+            erlaubteFarben.add(Farbe.GRAS);
+        }
+        if (hatSchellen && !hatSchellenSau){
+            erlaubteFarben.add(Farbe.SCHELLEN);
+        }
+        if (hatEichel && !hatEichelSau){
+            erlaubteFarben.add(Farbe.EICHEL);
+        }
+        return  erlaubteFarben;
+        
+    }
 }
+
