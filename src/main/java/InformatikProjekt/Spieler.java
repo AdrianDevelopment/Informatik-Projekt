@@ -137,6 +137,11 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     }
 
+    @Override
+    public void stichGewonnen(int spieler) {
+
+    }
+
 
     @Override
     public void rundeGewonnen(int spieler) {

@@ -1,5 +1,6 @@
 package InformatikProjekt;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 // Programmierer: Adrian
@@ -14,8 +15,10 @@ public class Runde {
     private Spielkarte[] letzterStich;
     private Spielkarte[] aktuellerStich;
     private Spielkarte aktuelleSpielKarte;
+    private ArrayList<Werte> reihenfolgeKarten;
+    private ArrayList<Spielkarte> truempfe;
 
-    Runde() {
+    public Runde() {
         spieler = new Mitspieler[4];
         Random random = new Random();
         int randomNumber = random.nextInt(4);
@@ -25,9 +28,34 @@ public class Runde {
                 spieler[i] = new Bot();
             }
         }
+
+        reihenfolgeKarten = new ArrayList<>(6);
+        reihenfolgeKarten.add(Werte.SIEBENER);
+        reihenfolgeKarten.add(Werte.ACHTER);
+        reihenfolgeKarten.add(Werte.NEUNER);
+        reihenfolgeKarten.add(Werte.KOENIG);
+        reihenfolgeKarten.add(Werte.ZEHNER);
+        reihenfolgeKarten.add(Werte.SAU);
+
+        truempfe = new ArrayList<>(14);
+        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.SIEBENER));
+        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.ACHTER));
+        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
+        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.KOENIG));
+        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.ZEHNER));
+        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.SAU));
+        truempfe.add(new Spielkarte(Farbe.SCHELLEN, Werte.UNTER));
+        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.UNTER));
+        truempfe.add(new Spielkarte(Farbe.GRAS, Werte.UNTER));
+        truempfe.add(new Spielkarte(Farbe.EICHEL, Werte.UNTER));
+        truempfe.add(new Spielkarte(Farbe.SCHELLEN, Werte.OBER));
+        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.OBER));
+        truempfe.add(new Spielkarte(Farbe.GRAS, Werte.OBER));
+        truempfe.add(new Spielkarte(Farbe.EICHEL, Werte.OBER));
     }
 
-    private void starteRunde() {
+    // TODO: rundeStarten() Methode in Mitspieler aufrufen und Karten zufällig verteilen, und übergeben, wer der Spieler ist
+    public void starteRunde() {
         SpielArt aktuellHoechstesSpiel;
         SpielArt hoechstesSpiel;
         hoechstesSpiel = SpielArt.KEINSPIEL;
@@ -74,7 +102,7 @@ public class Runde {
 
         // Ausgabe des Stichergebnisses
         for (int i = 0; i < 4; i++) {
-            spieler[i].stichGewonnen(sieger, punkte);
+            spieler[i].stichGewonnen(sieger);
         }
 
         // Rekursionsschritt
@@ -83,17 +111,40 @@ public class Runde {
         }
     }
 
-    private int ermittleSieger(Spielkarte[] aktuellerStich) {
+    public int ermittleSieger(Spielkarte[] aktuellerStich) {
         // TODO: höchste Karte herausfinden
-        return 0;
+        Spielkarte hoechsteKarte = aktuellerStich[0];
+        int sieger = 0;
+
+        for (int i = 1; i < 4; i++) {
+            // equals() Methode wurde in Spielkarte überschrieben, damit nicht das Objekt selber, sondern die Farbe bzw. Wert verglichen wird
+            // wenn Karte Trumpf ist, wird gecheckt, ob der Trumpf höher ist
+            if (truempfe.contains(aktuellerStich[i])) {
+                if (truempfe.indexOf(aktuellerStich[i]) > truempfe.indexOf(hoechsteKarte)) {
+                    hoechsteKarte = aktuellerStich[i];
+                    sieger = i;
+                }
+            }
+            // wenn Karte selbe Farbe ist, wird gecheckt, ob die Karte höher ist
+            if (aktuellerStich[i].gebeFarbe().gebeFarbeID() == hoechsteKarte.gebeFarbe().gebeFarbeID()) {
+                if (reihenfolgeKarten.indexOf(aktuellerStich[i]) > reihenfolgeKarten.indexOf(hoechsteKarte)) {
+                    hoechsteKarte = aktuellerStich[i];
+                    sieger = i;
+                }
+            }
+        }
+
+        return sieger;
     }
 
     private int ermittlePunkte(Spielkarte[] aktuellerStich) {
         // TODO: Punkte errrechnen aus aktuellem Stich
         int aktuellePunkte = 0;
+
         for (int i = 0; i < 4; i++) {
             aktuellePunkte += aktuellerStich[i].gebeWert().gebeWerteID();
         }
+
         return aktuellePunkte;
     }
 }

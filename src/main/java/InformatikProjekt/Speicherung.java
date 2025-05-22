@@ -1,4 +1,5 @@
 package InformatikProjekt;
+// Speicherlogik von Robin
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -20,6 +21,24 @@ public class Speicherung {
     private int gesamtePunkte;
     private int gespielteKarten;
 
+    public void KarteGespielt(){gespielteKarten++;}
+    public void gesamtePunkteErhöhen(int punkte){gesamtePunkte += punkte;}
+    public void SpielGewonnen(SpielArt art){
+        gespielteSpiele++;
+        gewonneneSpiele++;
+        gespielteModi[art.gebeSpielArtID() - 1]++;
+        gewonneneModi[art.gebeSpielArtID() - 1]++;
+    }
+    public void SpielVerloren(SpielArt art){
+        verloreneSpiele++;
+        gespielteSpiele++;
+        gespielteModi[art.gebeSpielArtID() - 1]++;
+        verloreneModi[art.gebeSpielArtID() - 1]++;
+    }
+    public void SpielVerlorenSchneider(SpielArt art){
+        verloreneSpieleSchneider++;
+        verloreneModiSchneider[art.gebeSpielArtID() - 1]++;
+    }
     public int modusSpielzahlGeben(SpielArt art){
         return gespielteModi[art.gebeSpielArtID() - 1];
     }
@@ -160,9 +179,6 @@ public class Speicherung {
         }catch(IOException e){
             
         }
-    }
-    public int gebeGewonneneSpiele() {
-        return 0;
     }
 
 }
