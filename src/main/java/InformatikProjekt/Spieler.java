@@ -1,7 +1,8 @@
 package InformatikProjekt;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
+
+//Programmierer: Tom
 
 public class Spieler extends Mitspieler { //TODO: alle Methoden aus Mitspieler implementieren und in die richtige Reihenfolge bringen
     private SpielerModel model; //speichert Daten des Spielers
@@ -113,13 +114,43 @@ public class Spieler extends Mitspieler { //TODO: alle Methoden aus Mitspieler i
     }
 
     @Override
-    public void karteWurdeGelegt(Spielkarte Karte, int spielerHatGelegt) {
+    public Spielkarte legeEineKarte() {
 
+
+        return null;
+    }
+
+    @Override
+    public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
+        WelcherSpieler spielerUhrzeigersinn = wieVielterSpieler(spielerHatGelegt);
+        gui.zeigeGelegteKarte(karte, spielerUhrzeigersinn);
     }
 
 
     @Override
     public void rundeGewonnen(int spieler) {
 
+    }
+
+    /**
+     * Gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
+     * @param spieler: von Runde übergeben
+     * @return
+     */
+    public WelcherSpieler wieVielterSpieler(int spieler) {
+        WelcherSpieler spielerImUhrzeigersinn = null;
+        int rechnung = spieler - model.gebeWelcherSpieler(); //positive Zahlen im Uhrzeigersinn; negative gegen den Uhrzeigersinn
+        if(rechnung == 0) {
+            spielerImUhrzeigersinn = WelcherSpieler.NUTZER; //Nutzer
+        } else if (rechnung == 1 || rechnung == -3) {
+            spielerImUhrzeigersinn = WelcherSpieler.LINKER; //linker Spieler
+        } else if (rechnung == 2 || rechnung == -2) {
+            spielerImUhrzeigersinn = WelcherSpieler.OBERER; //oberer Spieler
+        } else if (rechnung == 3 || rechnung == -1) {
+            spielerImUhrzeigersinn = WelcherSpieler.RECHTER; //rechter Spieler
+        } else {
+            System.out.println("Fehler in Methode wieVielterSpieler"); //Test
+        }
+        return spielerImUhrzeigersinn;
     }
 }
