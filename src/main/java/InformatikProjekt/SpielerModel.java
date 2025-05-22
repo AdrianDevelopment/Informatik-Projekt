@@ -2,6 +2,8 @@ package InformatikProjekt;
 
 import java.util.ArrayList;
 
+//Programmierer: Tom
+
 public class SpielerModel {
     private ArrayList<Spielkarte> handkarten; //speichert eigene Handkarten
     private int[] andereSpielerKarten; //speichert Anzahl der Spielerkarten von den anderen Spielern

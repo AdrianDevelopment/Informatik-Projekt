@@ -1,8 +1,9 @@
 package InformatikProjekt;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+//Programmierer: Tom
 
 public class SpielerGUI {
     private Scanner benutzerEingabe;
@@ -35,5 +36,9 @@ public class SpielerGUI {
 
     public void spielArtEntschieden(int spieler, String ausgabe) {
         System.out.println(ausgabe);
+    }
+
+    public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {
+        System.out.println();
     }
 }
