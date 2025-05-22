@@ -20,7 +20,7 @@ public abstract class Mitspieler {
             ArrayList<Spielkarte> karten, int wieVielterSpieler
     );
 
-    //Nachricht an Mitspieler welche Spielart gespielt wird, ueberreicht Farne wenn Solo und Sau wenn Sauspiel.
+    //Nachricht an Mitspieler welche Spielart gespielt wird, ueberreicht Farbe wenn Solo und Sau wenn Sauspiel.
     public abstract void spielArtEntschieden(int spieler, Spielkarte sau, Farbe farbeSolo, SpielArt spielArt);
 
     //Nutzen nicht ersichtlich?
@@ -32,12 +32,8 @@ public abstract class Mitspieler {
     //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
     public abstract void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt);
 
-    //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
-    public abstract void spielAusgerufen(SpielArt ausgerufenesSpiel, int spieler);
-
-    //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat, angabe der Punkte, zusammenrechnen der Punket am besten in Mitspieler
-    public abstract void stichGewonnen(int spieler, int[] punkte);
-
+    //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat.
+    public abstract void stichGewonnen(int spieler);
     //Methode fuer Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden koennen zurueckgibt.
     public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe) {
 
@@ -68,7 +64,7 @@ public abstract class Mitspieler {
                 break;
             case SAUSPIEL:
                 for (Spielkarte karte : hand) {
-                    if (karte == sau) {
+                    if (karte.gebeFarbe() == sau.gebeFarbe() && (karte.gebeWert() != Werte.UNTER)|| karte.gebeWert() != Werte.OBER || karte.gebeFarbe() != Farbe.HERZ) {
                         legaleKarten.add(karte);
                         return legaleKarten;
                     }

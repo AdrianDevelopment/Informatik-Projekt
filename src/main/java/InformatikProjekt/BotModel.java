@@ -7,18 +7,28 @@ public class BotModel {
     Spielkarte sau;
     SpielArt spielArt;
     Farbe soloFarbe;
+    ArrayList<Spielkarte> gelegteKarten;
+
 
 
     ArrayList<Spielkarte> gibHand(){
-        return this.hand;
+        return hand;
     }
     Spielkarte gibSau(){
-        return this.sau;
+        return sau;
     }
     SpielArt gibSpielArt(){
-        return this.spielArt;
+        return spielArt;
     }
     Farbe gibsoloFarbe(){
-        return this.soloFarbe;
+        return soloFarbe;
     }
+    Spielkarte gibLetzteGelegteKarte(){return  gelegteKarten.get(this.gelegteKarten.size()-1);}
+
+    void setzteSau(Spielkarte nSau){sau = nSau;}
+    void setzteSpielArt(SpielArt nSpielArt){spielArt = nSpielArt;}
+    void setzteSoloFarbe(Farbe nSoloFarbe){soloFarbe = nSoloFarbe;}
+    void fuegeGelegteKarteHinzu(Spielkarte nKarte){gelegteKarten.add(nKarte);}
+    void setzteHand(ArrayList<Spielkarte> nHand){hand = nHand;}
+    void entferneKarteAusHand(int index){hand.remove(index);}
 }
