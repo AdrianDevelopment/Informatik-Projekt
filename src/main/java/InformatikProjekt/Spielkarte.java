@@ -12,6 +12,7 @@ public class Spielkarte {
     public Farbe gebeFarbe(){
         return this.farbe;
     }
+
     public Werte gebeWert(){
         return this.wert;
     }
@@ -24,15 +25,17 @@ public class Spielkarte {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj.getClass() != Spielkarte.class)return  false;
+        if (obj.getClass() != Spielkarte.class) return  false;
         Spielkarte karte = (Spielkarte) obj;
         return (karte.gebeFarbe() == this.gebeFarbe()) &&
                 (karte.gebeWert() == this.gebeWert());
     }
+
     @Override
     public int hashCode(){
         return (this.gebeFarbe().gebeFarbeID() << 16) | (this.gebeWert().gebeWerteID());
     }
+
     public int gibKartenID(){
         return hashCode();
     }
