@@ -28,8 +28,10 @@ public class Spielkarte {
         if (obj == null)return false;
         if (obj.getClass() != Spielkarte.class) return  false;
         Spielkarte karte = (Spielkarte) obj;
-        return (karte.gebeFarbe() == this.gebeFarbe()) &&
-                (karte.gebeWert() == this.gebeWert());
+        System.out.println(((karte.gebeFarbe().gebeFarbeID()) == (this.gebeFarbe().gebeFarbeID())) &&
+                ((karte.gebeWert().gebeWerteID()) == (this.gebeWert().gebeWerteID())));
+        return (((karte.gebeFarbe()) == (this.gebeFarbe())) &&
+                ((karte.gebeWert()) == (this.gebeWert())));
     }
 
     @Override

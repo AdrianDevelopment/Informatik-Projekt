@@ -126,6 +126,11 @@ public class Spieler extends Mitspieler { //TODO: alle Methoden aus Mitspieler i
         gui.zeigeGelegteKarte(karte, spielerUhrzeigersinn);
     }
 
+    @Override
+    public void stichGewonnen(int spieler) {
+
+    }
+
 
     @Override
     public void rundeGewonnen(int spieler) {
