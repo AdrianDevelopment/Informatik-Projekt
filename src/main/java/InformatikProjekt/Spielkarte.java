@@ -25,6 +25,7 @@ public class Spielkarte {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null)return false;
         if (obj.getClass() != Spielkarte.class) return  false;
         Spielkarte karte = (Spielkarte) obj;
         return (karte.gebeFarbe() == this.gebeFarbe()) &&
@@ -40,5 +41,3 @@ public class Spielkarte {
         return hashCode();
     }
 }
-
-
