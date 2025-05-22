@@ -1,5 +1,7 @@
 package InformatikProjekt;
 
+// Programmierer: Adrian
+
 public class Menue {
     private MenueGUI menueGUI;
     private Tunier tunier;

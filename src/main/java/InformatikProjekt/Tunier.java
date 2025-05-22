@@ -1,5 +1,7 @@
 package InformatikProjekt;
 
+// Programmierer: Adrian
+
 public class Tunier {
     // aktuell nur 1 Runde
     private Runde runde;
@@ -10,6 +12,6 @@ public class Tunier {
     }
 
     public void bekommeAnzahlRunden() {
-        
+
     }
 }

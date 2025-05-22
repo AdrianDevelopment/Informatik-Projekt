@@ -2,6 +2,8 @@ package InformatikProjekt;
 
 import java.util.Random;
 
+// Programmierer: Adrian
+
 public class Runde {
     private Mitspieler[] spieler;
     private int vorhand; // spielt die erste Karte
