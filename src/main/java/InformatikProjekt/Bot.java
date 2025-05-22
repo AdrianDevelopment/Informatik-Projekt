@@ -12,22 +12,23 @@ public class Bot extends Mitspieler {
     }
 
     @Override
-    public Spielkarte legeEineKarte(SpielArt spielArt) {
-        ArrayList<Spielkarte> erlaubteKarten= this.gibErlaubteKarten(model.gibHand());
-    }
+    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {}
 
     @Override
-    public void rundeStarten(Spielkarte[] karten, int wieVielterSpieler) {
-
-    }
+    public Spielkarte legeEineKarte() { return null; }
 
     @Override
-    public void spielArtEntschieden(int spieler, Spielkarte Sau, Farbe farbeSolo, SpielArt spielArt) {
-
-    }
+    public void rundeStarten(
+            ArrayList<Spielkarte> karten, int wieVielterSpieler
+    ) {}
 
     @Override
-    public void setzteErsterSpieler(int ersterSpieler) {
+    public void spielArtEntschieden(
+            int spieler, Spielkarte sau, Farbe farbeSolo, SpielArt spielArt
+    ) {}
+
+    @Override
+    public void setzeErsterSpieler(int ersterSpieler) {
 
     }
 
@@ -45,4 +46,25 @@ public class Bot extends Mitspieler {
     public void spielAusgerufen(SpielArt ausgerufenesSpiel, int spieler) {
 
     }
+
+    @Override
+    public void stichGewonnen(int spieler, int[] punkte) {
+
+    }
+
+    @Override
+    public ArrayList<Spielkarte> gibErlaubteKarten(
+            ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe
+    ) { return null; }
+
+    // @Override
+    public Spielkarte legeEineKarte(SpielArt spielArt) {
+        // ArrayList<Spielkarte> erlaubteKarten= this.gibErlaubteKarten(model.gibHand());
+        return null;
+    }
+
+    // @Override
+    private ArrayList<Spielkarte> soloErlaubteKarten(
+            ArrayList<Spielkarte> hand, Farbe farbeSolo, Spielkarte vorgegebeneKarte
+    ) { return null; }
 }
