@@ -1,12 +1,9 @@
 package InformatikProjekt;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 // Programmierer: Adrian
 
 public class Runde {
-    private Mitspieler[] spieler;
+    private final Mitspieler[] spieler;
     private int vorhand; // spielt die erste Karte
     private int ausrufer;
     private Spielkarte ausgerufeneSau;
@@ -15,43 +12,11 @@ public class Runde {
     private Spielkarte[] letzterStich;
     private Spielkarte[] aktuellerStich;
     private Spielkarte aktuelleSpielKarte;
-    private ArrayList<Werte> reihenfolgeKarten;
-    private ArrayList<Spielkarte> truempfe;
 
-    public Runde() {
-        spieler = new Mitspieler[4];
-        Random random = new Random();
-        int randomNumber = random.nextInt(4);
-        spieler[randomNumber] = new Spieler();
-        for (int i = 0; i < 4; i++) {
-            if (i != randomNumber) {
-                spieler[i] = new Bot();
-            }
-        }
-
-        reihenfolgeKarten = new ArrayList<>(6);
-        reihenfolgeKarten.add(Werte.SIEBENER);
-        reihenfolgeKarten.add(Werte.ACHTER);
-        reihenfolgeKarten.add(Werte.NEUNER);
-        reihenfolgeKarten.add(Werte.KOENIG);
-        reihenfolgeKarten.add(Werte.ZEHNER);
-        reihenfolgeKarten.add(Werte.SAU);
-
-        truempfe = new ArrayList<>(14);
-        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.SIEBENER));
-        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.ACHTER));
-        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
-        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.KOENIG));
-        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.ZEHNER));
-        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.SAU));
-        truempfe.add(new Spielkarte(Farbe.SCHELLEN, Werte.UNTER));
-        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.UNTER));
-        truempfe.add(new Spielkarte(Farbe.GRAS, Werte.UNTER));
-        truempfe.add(new Spielkarte(Farbe.EICHEL, Werte.UNTER));
-        truempfe.add(new Spielkarte(Farbe.SCHELLEN, Werte.OBER));
-        truempfe.add(new Spielkarte(Farbe.HERZ, Werte.OBER));
-        truempfe.add(new Spielkarte(Farbe.GRAS, Werte.OBER));
-        truempfe.add(new Spielkarte(Farbe.EICHEL, Werte.OBER));
+    // @params Array mit Mitspielern, int welcher Index der Spieler ist, int wer die Runde startet (Vorhand)
+    public Runde(Mitspieler[] spieler, int vorhand) {
+        this.spieler = spieler;
+        this.vorhand = vorhand;
     }
 
     // TODO: rundeStarten() Methode in Mitspieler aufrufen und Karten zufällig verteilen, und übergeben, wer der Spieler ist
@@ -112,22 +77,28 @@ public class Runde {
     }
 
     public int ermittleSieger(Spielkarte[] aktuellerStich) {
-        // TODO: höchste Karte herausfinden
         Spielkarte hoechsteKarte = aktuellerStich[0];
+        boolean trumpfImStich = istTrumpf(hoechsteKarte);
+        Farbe farbe = hoechsteKarte.gebeFarbe();
         int sieger = 0;
 
         for (int i = 1; i < 4; i++) {
-            // equals() Methode wurde in Spielkarte überschrieben, damit nicht das Objekt selber, sondern die Farbe bzw. Wert verglichen wird
-            // wenn Karte Trumpf ist, wird gecheckt, ob der Trumpf höher ist
-            if (truempfe.contains(aktuellerStich[i])) {
-                if (truempfe.indexOf(aktuellerStich[i]) > truempfe.indexOf(hoechsteKarte)) {
+            // wenn im Stich bisher min. ein Trumpf ist, wird gecheckt, ob der aktuelle Trumpf höher ist
+            if (trumpfImStich && istTrumpf(aktuellerStich[i])) {
+                if (gebeTrumpfRang(aktuellerStich[i]) < gebeTrumpfRang(hoechsteKarte)) {
                     hoechsteKarte = aktuellerStich[i];
                     sieger = i;
                 }
             }
-            // wenn Karte selbe Farbe ist, wird gecheckt, ob die Karte höher ist
-            if (aktuellerStich[i].gebeFarbe().gebeFarbeID() == hoechsteKarte.gebeFarbe().gebeFarbeID()) {
-                if (reihenfolgeKarten.indexOf(aktuellerStich[i]) > reihenfolgeKarten.indexOf(hoechsteKarte)) {
+            // wenn im Stich bisher kein Trumpf ist und die aktuelle Karte ein Trumpf ist, gewinnt diese sofort
+            else if (!trumpfImStich && istTrumpf(aktuellerStich[i])) {
+                hoechsteKarte = aktuellerStich[i];
+                trumpfImStich = true;
+                sieger = i;
+            }
+            // wenn im Stich bisher kein Trumpf ist und die aktuelle Karte dieselbe Farbe hat, wie die erste Karte, gewinnt diese, wenn sie höher ist
+            else if (!trumpfImStich && !istTrumpf(aktuellerStich[i]) && aktuellerStich[i].gebeFarbe() == farbe) {
+                if (gebeFarbeRang(aktuellerStich[i]) < gebeFarbeRang(hoechsteKarte)) {
                     hoechsteKarte = aktuellerStich[i];
                     sieger = i;
                 }
@@ -137,8 +108,64 @@ public class Runde {
         return sieger;
     }
 
-    private int ermittlePunkte(Spielkarte[] aktuellerStich) {
-        // TODO: Punkte errrechnen aus aktuellem Stich
+    public boolean istTrumpf(Spielkarte karte) {
+        return karte.gebeFarbe() == Farbe.HERZ || karte.gebeWert() == Werte.UNTER || karte.gebeWert() == Werte.OBER;
+    }
+
+    public int gebeTrumpfRang(Spielkarte karte) {
+        Farbe farbe = karte.gebeFarbe();
+        Werte wert = karte.gebeWert();
+
+        if (wert == Werte.OBER){
+            switch (farbe) {
+                case EICHEL: return 0;
+                case GRAS: return 1;
+                case HERZ: return 2;
+                case SCHELLEN: return 3;
+            }
+        }
+
+        else if (wert == Werte.UNTER){
+            switch (farbe) {
+                case EICHEL: return 4;
+                case GRAS: return 5;
+                case HERZ: return 6;
+                case SCHELLEN: return 7;
+            }
+        }
+
+        else {
+            switch (wert) {
+                case SAU: return 8;
+                case ZEHNER: return 9;
+                case KOENIG: return 10;
+                case NEUNER: return 11;
+                case ACHTER: return 12;
+                case SIEBENER: return 13;
+            }
+        }
+
+        System.out.println("DEBUG: Fehler bei der Berechnung des Trumpf-Rangs");
+        return -1;
+    }
+
+    public int gebeFarbeRang(Spielkarte karte) {
+        Werte wert = karte.gebeWert();
+
+        switch (wert) {
+            case SAU: return 0;
+            case ZEHNER: return 1;
+            case KOENIG: return 2;
+            case NEUNER: return 3;
+            case ACHTER: return 4;
+            case SIEBENER: return 5;
+        }
+
+        System.out.println("DEBUG: Fehler bei der Berechnung des Rangs einer Farbe");
+        return -1;
+    }
+
+    public int ermittlePunkte(Spielkarte[] aktuellerStich) {
         int aktuellePunkte = 0;
 
         for (int i = 0; i < 4; i++) {

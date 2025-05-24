@@ -16,7 +16,7 @@ public class Menue {
             case 0:
                 break;
             case 1:
-                tunier = new Tunier();
+                tunier = new Tunier(4); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
                 break;
             case 2:
                 // Mehrspieler

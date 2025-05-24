@@ -8,9 +8,9 @@ public class LeckMich {
         mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(null);
 
-        //Bilder Als Variablen festlegen
+        //Bilder als Variablen festlegen
         ImageIcon playerIcon = new ImageIcon("src\\test\\java\\bilder\\spieler.png");
-        ImageIcon botIcon = new ImageIcon("src\\test\\java\\bilder\bot.png");
+        ImageIcon botIcon = new ImageIcon("src\\test\\java\\bilder\\bot.png");
 
 
         //Spieler1
