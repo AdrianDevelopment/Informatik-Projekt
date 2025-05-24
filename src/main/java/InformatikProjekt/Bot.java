@@ -1,8 +1,9 @@
+//Programmierer: Tim
 package InformatikProjekt;
 
 import java.util.ArrayList;
 import java.util.Random;
-//Programmierer: Tim
+
 public class Bot extends Mitspieler {
     BotModel model;
 
@@ -10,8 +11,25 @@ public class Bot extends Mitspieler {
 
     @Override
     public SpielArt spielabsichtFragen(SpielArt höchsteSpiel) {
+        int[] besondereKarten = model.wieVieleBesondereKarten();
+        int anzahlOU = besondereKarten[0] + besondereKarten[1];
+
+        int indexFarbeMitMeistenKarten = besondereKarten[3];
+        for(int i = 3; i <= 6; i++){
+            if (besondereKarten[indexFarbeMitMeistenKarten] <besondereKarten[i]){
+                indexFarbeMitMeistenKarten = i;
+            }
+        }
+        if (anzahlOU + besondereKarten[indexFarbeMitMeistenKarten] >= 6){
+            return SpielArt.SOLO;
+        }
+
+
+        
+
         return SpielArt.KEINSPIEL;
     }
+
 
     @Override
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {

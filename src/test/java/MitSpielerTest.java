@@ -1,3 +1,4 @@
+//Programmierer: Tim
 import InformatikProjekt.*;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,9 @@
+//Programmierer: Tim
 package InformatikProjekt;
 
 import java.util.ArrayList;
 
-//Programmierer: Tim
+
 
 public abstract class Mitspieler {
 
