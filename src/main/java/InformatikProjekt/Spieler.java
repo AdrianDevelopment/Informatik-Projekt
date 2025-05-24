@@ -4,12 +4,13 @@ import java.util.ArrayList;
 
 //Programmierer: Tom
 
-public class Spieler extends Mitspieler { //TODO: alle Methoden aus Mitspieler implementieren und in die richtige Reihenfolge bringen
+public class Spieler extends Mitspieler { //TODO: Methoden sortieren
     private SpielerModel model; //speichert Daten des Spielers
     private SpielerGUI gui;
 
     public Spieler() {
         model = new SpielerModel();
+        gui = new SpielerGUI();
     }
 
     /**
@@ -62,13 +63,15 @@ public class Spieler extends Mitspieler { //TODO: alle Methoden aus Mitspieler i
      * @param spieler
      */
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
+
         //TODO: GUI übergeben, wer welches Spiel ausgerufen hat
 
     }
 
     @Override
     public void spielArtEntschieden(int spieler, Spielkarte sau, Farbe farbeSolo, SpielArt spielArt) {
-        model.setzeSpielArt(spieler, spielArt, sau, farbeSolo);
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
+        model.setzeSpielArt(welcherSpieler, spielArt, sau, farbeSolo);
 
         String ausgabe = "";
         switch (spielArt) {
@@ -99,31 +102,44 @@ public class Spieler extends Mitspieler { //TODO: alle Methoden aus Mitspieler i
 
     /**
      * gibt den erstenSpieler, der nach einem Stich wieder anfängt
-     *
      * @param ersterSpieler
      */
     @Override
     public void setzeErsterSpieler(int ersterSpieler) {
-        int leger = ersterSpieler - model.gebeWelcherSpieler();
-        //TODO: nochmal durchdenken, ob es wirklich passt
-        /*
-        positive Zahl: gehe x Spieler im Uhrzeigersinn, der fängt mit Karten legen an
-        negative Zahl: gehe |x| Spieler gegen den Uhrzeigersinn, der fängt mit Karten legen an
-        */
-        //gui.setzeLeger(leger); //TODO: gui-Methode
+        WelcherSpieler leger = wieVielterSpieler(ersterSpieler);
+        model.setzeErsterSpieler(leger);
     }
 
     @Override
     public Spielkarte legeEineKarte() {
-
-
+        /* TODO:
+            - schauen, ob ich der erste in der Lege-/Stichrunde bin
+                -> Aufruf an GUI, eine Karte zu legen
+                -> überprüfen, ob Karte gelegt werden darf
+            - wenn ich nicht der erste in der Lege-/Stichrunde bin
+                -> model abfragen, welche Karte ich legen muss
+                -> überprüfen, ob ich Karte legen darf
+                -> überprüfen, ob ich andere Karte hätte legen müssen
+            -> model und GUI meine gelegte Karte geben und @return
+         */
         return null;
     }
 
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
-        WelcherSpieler spielerUhrzeigersinn = wieVielterSpieler(spielerHatGelegt);
-        gui.zeigeGelegteKarte(karte, spielerUhrzeigersinn);
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
+        gui.zeigeGelegteKarte(karte, welcherSpieler);
+        model.setzeGelegteKarte(karte); //TODO: in Model einfügen
+    }
+
+    @Override
+    public void stichGewonnen(int spieler) {
+
+    }
+
+    @Override
+    public void stichGewonnen(int spieler) {
+
     }
 
 
@@ -153,4 +169,6 @@ public class Spieler extends Mitspieler { //TODO: alle Methoden aus Mitspieler i
         }
         return spielerImUhrzeigersinn;
     }
+
+
 }

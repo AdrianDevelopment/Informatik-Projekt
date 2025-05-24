@@ -1,24 +1,23 @@
-import InformatikProjekt.Mitspieler;
-import InformatikProjekt.Spieler;
-import InformatikProjekt.Bot;
+import InformatikProjekt.*;
 
-import java.util.Random;
+
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RundeTest {
 
-    private Mitspieler[] spieler;
-
     @Test
-    public void testRunde() {
-        spieler = new Mitspieler[4];
-        Random random = new Random();
-        int randomNumber = random.nextInt(4);
-        spieler[randomNumber] = new Spieler();
-        for (int i = 0; i < 4; i++) {
-            if (i != randomNumber) {
-                spieler[i] = new Bot();
-            }
-        }
+    public void ermittleSiegerTesten() {
+        Runde runde = new Runde();
+
+        Spielkarte[] aktuellerStich = new Spielkarte[4];
+        aktuellerStich[0] = new Spielkarte(Farbe.GRAS, Werte.SIEBENER);
+        aktuellerStich[1] = new Spielkarte(Farbe.GRAS, Werte.KOENIG);
+        aktuellerStich[2] = new Spielkarte(Farbe.SCHELLEN, Werte.SAU);
+        aktuellerStich[3] = new Spielkarte(Farbe.GRAS, Werte.ZEHNER);
+
+        int sieger = runde.ermittleSieger(aktuellerStich);
+
+        assertEquals(3,sieger, "Fehler in ermittleSieger!");
     }
 }

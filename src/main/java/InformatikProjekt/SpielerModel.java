@@ -10,16 +10,22 @@ public class SpielerModel {
     private int welcherSpieler;
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
-    private int ausrufenderSpieler;
+    private WelcherSpieler ausrufenderSpieler;
     private Spielkarte sau;
     private Farbe soloFarbe;
+    //Attribute für Lege-/Stichrunden
+    private WelcherSpieler rundeErsterSpieler;
+    private ArrayList<Spielkarte> stich; //speichert Karten eines Stichs
 
     public SpielerModel() {
         handkarten = new ArrayList<Spielkarte>();
+
         spielArt = null;
-        ausrufenderSpieler = -1;
+        ausrufenderSpieler = null;
         sau = null;
         soloFarbe = null;
+
+        stich = new ArrayList<Spielkarte>();
     }
 
     //handkarten
@@ -52,7 +58,7 @@ public class SpielerModel {
      * @param ausgerufeneFarbe
      * @param ausgerufeneSpielArt
      */
-    public void setzeSpielArt(int spieler, SpielArt ausgerufeneSpielArt, Spielkarte ausgerufeneSau, Farbe ausgerufeneFarbe) {
+    public void setzeSpielArt(WelcherSpieler spieler, SpielArt ausgerufeneSpielArt, Spielkarte ausgerufeneSau, Farbe ausgerufeneFarbe) {
         spielArt = ausgerufeneSpielArt;
         ausrufenderSpieler = spieler;
         if(ausgerufeneSau != null) {
@@ -60,5 +66,17 @@ public class SpielerModel {
         } else if(ausgerufeneFarbe != null) {
             soloFarbe = ausgerufeneFarbe;
         }
+    }
+
+    public void setzeErsterSpieler(WelcherSpieler leger) {
+        rundeErsterSpieler = leger;
+    }
+
+    public void setzeGelegteKarte(Spielkarte karte) {
+        stich.add(karte);
+    }
+
+    public int leangeStich() {
+        return stich.size();
     }
 }

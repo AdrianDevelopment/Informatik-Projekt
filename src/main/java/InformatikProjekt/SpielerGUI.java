@@ -39,6 +39,6 @@ public class SpielerGUI {
     }
 
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {
-        System.out.println();
+        System.out.println(spielerHatGelegt.gebeName() + " hat die Karte " + karte + " gelegt."); //TODO: kann man Karte so einfach anzeigen? -> @Thiemo zusammen setzen
     }
 }
