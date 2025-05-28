@@ -4,37 +4,48 @@ package InformatikProjekt;
 import java.util.ArrayList;
 
 public class BotModel {
-    ArrayList<Spielkarte> hand;
-    Spielkarte sau;
-    SpielArt spielArt;
-    Farbe soloFarbe;
-    ArrayList<Spielkarte> gelegteKarten;
+    private ArrayList<Spielkarte> hand;
+    private Spielkarte sau;
+    private SpielArt spielArt;
+    private Farbe soloFarbe;
+    private ArrayList<Spielkarte> gelegteKarten;
+    private  int wievielterSpieler;
+    //von 0 bis 4 speichert wie viele Karten in dem Spiel gelegt wurden.
+    private int kartenZaehler;
 
 
+    BotModel(){
+        kartenZaehler =0;
+    }
 
-    ArrayList<Spielkarte> gibHand(){
+    public int gibKartenZaehler(){return kartenZaehler;}
+    public ArrayList<Spielkarte> gibHand(){
         return hand;
     }
-    Spielkarte gibSau(){
+    public Spielkarte gibSau(){
         return sau;
     }
-    SpielArt gibSpielArt(){
+    public SpielArt gibSpielArt(){
         return spielArt;
     }
-    Farbe gibsoloFarbe(){
+    public Farbe gibsoloFarbe(){
         return soloFarbe;
     }
-    Spielkarte gibLetzteGelegteKarte(){return  gelegteKarten.get(this.gelegteKarten.size()-1);}
+    public Spielkarte gibLetzteGelegteKarte(){return  gelegteKarten.get(gelegteKarten.size()-1);}
+    public Spielkarte gibErsteKarteAufTisch(){return  gelegteKarten.get(gelegteKarten.size()-1-kartenZaehler);}
+    public int getWievielterSpieler(){return  wievielterSpieler;}
 
-    void setzteSau(Spielkarte nSau){sau = nSau;}
-    void setzteSpielArt(SpielArt nSpielArt){spielArt = nSpielArt;}
-    void setzteSoloFarbe(Farbe nSoloFarbe){soloFarbe = nSoloFarbe;}
-    void fuegeGelegteKarteHinzu(Spielkarte nKarte){gelegteKarten.add(nKarte);}
-    void setzteHand(ArrayList<Spielkarte> nHand){hand = nHand;}
-    void entferneKarteAusHand(int index){hand.remove(index);}
+    public void setzteSau(Spielkarte nSau){sau = nSau;}
+    public void setzteSpielArt(SpielArt nSpielArt){spielArt = nSpielArt;}
+    public void setzteSoloFarbe(Farbe nSoloFarbe){soloFarbe = nSoloFarbe;}
+    public void fuegeGelegteKarteHinzu(Spielkarte nKarte){gelegteKarten.add(nKarte);}
+    public void setzteHand(ArrayList<Spielkarte> nHand){hand = nHand;}
+    public void entferneKarteAusHand(Spielkarte karte){hand.remove(karte);}
+    public void setWievielterSpieler(int nSpielerNummer){wievielterSpieler = nSpielerNummer;}
+    public void kartenZaehlerHochZaehlen(){kartenZaehler ++;}
+    public void kartenZaehlerZuruecksetzten(){kartenZaehler = 0;}
 
-
-    int[] wieVieleBesondereKarten(){
+    public int[] wieVieleBesondereKarten(){
         int anzahlOber = 0;
         int anzahlUnter = 0;
         int anzahlSau = 0;

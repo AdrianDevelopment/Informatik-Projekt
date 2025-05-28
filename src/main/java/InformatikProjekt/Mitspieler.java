@@ -10,6 +10,8 @@ public abstract class Mitspieler {
 
     //Fragt die Spielabsicht der Mitspieler ab.
     public abstract SpielArt spielabsichtFragen(SpielArt hoechstesSpiel);
+    //Fragt die Farbe für das Spiel von dem Spieler, der das hoechste Spiel angeboten hat ab. (Farbe bei Sau fürs Ausrufen, bei Solo für Trumpf)
+    public abstract Farbe farbeFuerSpielAbsicht(SpielArt spielArt);
 
     //Nachricht an Mitspieler, nachdem ein Spieler eine Spielabsicht abgegeben hat.
     public abstract void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler);
@@ -35,7 +37,10 @@ public abstract class Mitspieler {
 
     //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat.
     public abstract void stichGewonnen(int spieler);
+
+
     //Methode fuer Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden koennen zurueckgibt.
+    //Diese Methode nicht Aufrufen, wenn die erste Karte gelegt wird!!!
     public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe) {
 
         ArrayList<Spielkarte> legaleKarten = new ArrayList<Spielkarte>();
@@ -65,13 +70,22 @@ public abstract class Mitspieler {
 
                 break;
             case SAUSPIEL:
-
+                int anzahlSauFarbeKarten = 0;
+                boolean hatSau = false;
                 for (Spielkarte karte : hand) {
-                    if (karte.gebeFarbe() == sau.gebeFarbe() && !((karte.gebeWert() != Werte.UNTER)|| karte.gebeWert() != Werte.OBER || karte.gebeFarbe() != Farbe.HERZ)) {
+                    if (karte.gebeFarbe() == sau.gebeFarbe() && !((karte.gebeWert() != Werte.UNTER)|| karte.gebeWert() != Werte.OBER )) {
+                        anzahlSauFarbeKarten ++;
+                        if(karte.gebeWert() == Werte.SAU){
+                            hatSau = true;
+                        }
 
-                        legaleKarten.add(karte);
-                        return legaleKarten;
                     }
+
+                }
+                if(hatSau && anzahlSauFarbeKarten <4){
+                    legaleKarten.add(sau);
+                    return  legaleKarten;
+
                 }
                 if (vorgegebeneKarte.gebeFarbe() == Farbe.HERZ || vorgegebeneKarte.gebeWert() == Werte.OBER || vorgegebeneKarte.gebeWert() == Werte.UNTER) {
                     for (Spielkarte karte : hand) {
@@ -125,11 +139,11 @@ public abstract class Mitspieler {
         }
 
     }
-    //Gibt alle Farben zurueck fuer, die der Spieler eine Sau ausrufen kann.
+    //Gibt alle Farben zurueck fuer, die der Spieler eine Sau ausrufen kann. Die Farbe mit der niedrigsten Anzahl an Karten hat Index 0.
     public ArrayList<Farbe> sauZumAusrufen(ArrayList<Spielkarte> hand){
-        boolean hatEichel = false;
-        boolean hatGras = false;
-        boolean hatSchellen = false;
+        int anzahlEichel = 0;
+        int anzahlGras = 0;
+        int anzahlSchellen = 0;
 
         boolean hatEichelSau = false;
         boolean hatGrasau = false;
@@ -138,19 +152,19 @@ public abstract class Mitspieler {
         for (Spielkarte karte : hand) {
             switch (karte.gebeFarbe()){
                 case SCHELLEN:
-                    hatSchellen = true;
+                    anzahlSchellen ++;
                     if (karte.gebeWert() == Werte.SAU){
                         hatSchellenSau = true;
                     }
                     break;
                 case GRAS:
-                    hatGras = true;
+                    anzahlGras ++;
                     if (karte.gebeWert() == Werte.SAU){
                         hatGrasau = true;
                     }
                     break;
                 case EICHEL:
-                    hatEichel = true;
+                    anzahlEichel ++;
                     if (karte.gebeWert() == Werte.SAU){
                         hatEichelSau = true;
                     }
@@ -161,14 +175,29 @@ public abstract class Mitspieler {
             }
         }
         ArrayList<Farbe> erlaubteFarben = new ArrayList<>();
-        if (hatGras && !hatGrasau){
+        if (anzahlGras!=0 && !hatGrasau){
             erlaubteFarben.add(Farbe.GRAS);
         }
-        if (hatSchellen && !hatSchellenSau){
-            erlaubteFarben.add(Farbe.SCHELLEN);
+        if (anzahlSchellen!=0  && !hatSchellenSau){
+            if (anzahlSchellen < anzahlGras){
+                erlaubteFarben.add( 0,Farbe.SCHELLEN);
+            }else{
+                erlaubteFarben.add(Farbe.SCHELLEN);
+            }
+
         }
-        if (hatEichel && !hatEichelSau){
-            erlaubteFarben.add(Farbe.EICHEL);
+        if (anzahlEichel!=0  && !hatEichelSau){
+          int positionInListe = 0;
+          for (Farbe farbe : erlaubteFarben){
+              if (farbe == Farbe.GRAS && anzahlEichel > anzahlGras){
+                      positionInListe++;
+              }
+              if (farbe == Farbe.SCHELLEN && anzahlEichel > anzahlSchellen){
+                  positionInListe++;
+              }
+
+          }
+            erlaubteFarben.add(positionInListe,Farbe.EICHEL);
         }
         return  erlaubteFarben;
         
