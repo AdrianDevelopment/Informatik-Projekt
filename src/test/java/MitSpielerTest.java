@@ -11,6 +11,7 @@ public class MitSpielerTest {
 
     @Test
     public void testErlaubteKarten() {
+        //todo test fürs davon laufen schreiben
 
         Mitspieler bot = new Bot();
 
@@ -44,6 +45,10 @@ public class MitSpielerTest {
 
         assertEquals(4, erlaubteKartenSoloGrasTrumpf.size(), "Testet erlaubteKartenSoloGrasTrumpf");
         assertEquals(3, erlaubteKartenSoloGrasFarbe.size(), "Testet erlaubteKartenSoloGrasFarbe");
+
+        bot.rundeStarten(hand,0);
+        bot.spielArtEntschieden(0, new Spielkarte(Farbe.GRAS, Werte.SAU), null, SpielArt.SAUSPIEL);
+        bot.legeEineKarte();
     }
 
 
