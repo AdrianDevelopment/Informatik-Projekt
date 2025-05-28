@@ -55,6 +55,11 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         }
     }
 
+    @Override
+    public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
+        return null;
+    }
+
     /**
      * GUI:
      * Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss
@@ -130,11 +135,6 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         gui.zeigeGelegteKarte(karte, welcherSpieler);
         model.setzeGelegteKarte(karte); //TODO: in Model einfügen
-    }
-
-    @Override
-    public void stichGewonnen(int spieler) {
-
     }
 
     @Override
