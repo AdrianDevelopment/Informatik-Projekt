@@ -70,6 +70,7 @@ public abstract class Mitspieler {
 
                 break;
             case SAUSPIEL:
+                //todo sau darf nur gelegt werden wenn die Farbe ausgerufen wird.
                 int anzahlSauFarbeKarten = 0;
                 boolean hatSau = false;
                 for (Spielkarte karte : hand) {
@@ -105,6 +106,7 @@ public abstract class Mitspieler {
                     }
 
                 }
+                //gesuchte Sau entfernen, wenn sie auf der Hand ist
 
 
                 break;
