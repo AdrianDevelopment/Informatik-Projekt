@@ -45,7 +45,8 @@ public class LeckMich {
         Spieler4.setHorizontalTextPosition(JLabel.CENTER);
         Spieler4.setBounds(1050,350,60,80);
 
-
+        // Hier wird das Spielfeld in der Mitte erzeugt:
+        JLayeredPane mittelSpielfeld = new JLayeredPane();
 
         //Sachen zum Frame hinzufügen
         mainFrame.add(Spieler1);
