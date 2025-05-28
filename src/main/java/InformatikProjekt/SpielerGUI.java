@@ -7,8 +7,10 @@ import java.util.Scanner;
 
 public class SpielerGUI {
     private Scanner benutzerEingabe;
+    private Spieler spieler;
 
-    public SpielerGUI() {
+    public SpielerGUI(Spieler spieler) {
+        this.spieler = spieler;
         benutzerEingabe = new Scanner(System.in);
     }
 
@@ -38,7 +40,22 @@ public class SpielerGUI {
         System.out.println(ausgabe);
     }
 
+
+    public Spielkarte legeKarte() {
+        return null;
+    }
+
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {
         System.out.println(spielerHatGelegt.gebeName() + " hat die Karte " + karte + " gelegt."); //TODO: kann man Karte so einfach anzeigen? -> @Thiemo zusammen setzen
+    }
+
+    public void stichGewonnen(WelcherSpieler spieler) {
+        System.out.println(spieler.gebeName() + " hat den Stich gewonnen.");
+    }
+
+
+    //Methode wird aufgerufen, wenn Spieler auf irgendeinen Button klickt
+    public void zeigeLetztenStich() {
+        System.out.println(spieler.letztenStichAnsehen());
     }
 }
