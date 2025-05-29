@@ -6,71 +6,58 @@ import java.util.Queue;
 // Programmierer: Adrian
 
 public class Runde {
-    private final Queue<Mitspieler> spieler; // Queue, da erster Mitspieler in Queue Vorhand ist, gecycelt wird in Tunier
+    private final ArrayList<Mitspieler> spieler; // Queue, da erster Mitspieler in Queue Vorhand ist, gecycelt wird in Tunier
     private int[] punkte;
     private int ausrufer;
     private Mitspieler ausruferObjekt;
-    private Farbe farbe;
     private Spielkarte[] aktuellerStich;
     private Spielkarte aktuelleSpielKarte;
 
     // @params Array mit Mitspielern, int welcher Index der Spieler ist, int wer die Runde startet (Vorhand)
-    public Runde(Queue<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler) {
+    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler) {
         this.spieler = spieler;
 
         for (int i = 0; i < 4; i++) {
-            Mitspieler aktuellerSpieler = spieler.poll();
-            assert aktuellerSpieler != null;
-            aktuellerSpieler.rundeStarten(spielKarten, positionSpieler);
-            spieler.offer(aktuellerSpieler);
+            spieler.get(i).rundeStarten(spielKarten, positionSpieler);
         }
     }
 
-    public int[] starteRunde() {
+    public int[] starteRunde(int vorhand) {
         SpielArt aktuellHoechstesSpiel;
-        SpielArt hoechstesSpiel;
-        hoechstesSpiel = SpielArt.KEINSPIEL;
+        SpielArt hoechstesSpiel = SpielArt.KEINSPIEL;
+
         for (int i = 0; i < 4; i++) {
-            do {
-                assert spieler.peek() != null;
-                aktuellHoechstesSpiel = spieler.peek().spielabsichtFragen(hoechstesSpiel); // return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
-            } while (aktuellHoechstesSpiel.gebeSpielArtID() != 0 || aktuellHoechstesSpiel.gebeSpielArtID() <= hoechstesSpiel.gebeSpielArtID());
-            if (aktuellHoechstesSpiel.gebeSpielArtID() > hoechstesSpiel.gebeSpielArtID()) {
+            // do {
+            aktuellHoechstesSpiel = spieler.get(i).spielabsichtFragen(hoechstesSpiel);
+            // } while (aktuellHoechstesSpiel != SpielArt.KEINSPIEL || aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0); // zur Sicherheit wird hier nochmal geschaut, ob das gegebene höchste Spiel auch legal ist, sollte aber schon in Mitspieler geregelt werden
+            if (aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0) {
                 hoechstesSpiel = aktuellHoechstesSpiel;
                 ausrufer = i;
-                ausruferObjekt = spieler.peek();
+                ausruferObjekt = spieler.get(i);
             }
-            spieler.offer(spieler.poll());
         }
 
-        for (int i = 0; i < 4; i++) {
-            Mitspieler aktuellerSpieler = spieler.poll();
-            assert aktuellerSpieler != null;
+        for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.spielerHatSpielabsichtGesagt(hoechstesSpiel, ausrufer);
-            spieler.offer(aktuellerSpieler);
         }
 
-        farbe = ausruferObjekt.farbeFuerSpielAbsicht(hoechstesSpiel);
+        Farbe farbe = ausruferObjekt.farbeFuerSpielAbsicht(hoechstesSpiel);
 
-        for (int i = 0; i < 4; i++) {
-            Mitspieler aktuellerSpieler = spieler.poll();
-            assert aktuellerSpieler != null;
-            // die spezifische Spielkarte zu erfragen ist nicht implementiert, deshalb wird hier eine dummy-Spielkarte übergeben, dasselbe bei Farbe
-            aktuellerSpieler.spielArtEntschieden(ausrufer, new Spielkarte(Farbe.EICHEL, Werte.SAU), Farbe.HERZ, hoechstesSpiel);
-            spieler.offer(aktuellerSpieler);
+        for (Mitspieler aktuellerSpieler : spieler) {
+            aktuellerSpieler.spielArtEntschieden(ausrufer, farbe, hoechstesSpiel);
         }
 
-        switch (hoechstesSpiel.gebeSpielArtID()) {
-            case 0:
-                starteRunde(); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
+        switch (hoechstesSpiel) {
+            case KEINSPIEL:
+                starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
                 return punkte;
-            case 1:
-                spielSchleifeSau(8);
+            case SAUSPIEL:
+                spielSchleifeSau(8, vorhand);
                 return punkte;
-            case 2:
+            case WENZ:
                 // spielSchleifeWenz();
                 return punkte;
-            case 3:
+            case SOLO:
                 // spielSchleifeSolo();
                 return punkte;
         }
@@ -80,24 +67,20 @@ public class Runde {
     }
 
     // TODO: spielSchleifeWenz(), spielSchleifeSolo()
-    private void spielSchleifeSau(int anzahlKarten) {
+    private void spielSchleifeSau(int anzahlKarten, int vorhand) {
 
         // einen Stich spielen
+        int amZug = vorhand;
         for (int i = 0; i < 4; i++) {
             // Spieler "amZug" fragen welche Karte er legen möchte
-            Mitspieler aktuellerSpieler = spieler.poll();
-            assert aktuellerSpieler != null;
-            Spielkarte spielkarte = aktuellerSpieler.legeEineKarte();
-            aktuellerStich = new Spielkarte[i];
+            Spielkarte aktuelleSpielkarte = spieler.get(amZug).legeEineKarte();
+            aktuellerStich[amZug] = aktuelleSpielkarte;
 
-            for (int j = 0; j < 4; j++) {
-                Mitspieler aktuellerSpielerJ = spieler.poll();
-                assert aktuellerSpielerJ != null;
-                aktuellerSpielerJ.karteWurdeGelegt(spielkarte, i);
-                spieler.offer(aktuellerSpielerJ);
+            for (Mitspieler aktuellerSpieler : spieler) {
+                aktuellerSpieler.karteWurdeGelegt(aktuelleSpielkarte, amZug);
             }
 
-            spieler.offer(aktuellerSpieler);
+            amZug = (amZug == 3) ? 0 : amZug + 1;
         }
 
         // Auswertung des Stichs
@@ -106,16 +89,13 @@ public class Runde {
         punkte[sieger] += ermittlePunkte(aktuellerStich);
 
         // Ausgabe des Stichergebnisses
-        for (int i = 0; i < 4; i++) {
-            Mitspieler aktuellerSpieler = spieler.poll();
-            assert aktuellerSpieler != null;
+        for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.stichGewonnen(sieger);
-            spieler.offer(aktuellerSpieler);
         }
 
         // Rekursionsschritt
         if (anzahlKarten > 0) {
-            spielSchleifeSau(anzahlKarten - 1);
+            spielSchleifeSau(anzahlKarten - 1, sieger); // Sieger wird neue Vorhand
         }
     }
 
@@ -212,7 +192,7 @@ public class Runde {
         int aktuellePunkte = 0;
 
         for (int i = 0; i < 4; i++) {
-            // aktuellePunkte += aktuellerStich[i].gebeWert().gebePunktzahl();
+            aktuellePunkte += aktuellerStich[i].gebeWert().gebePunktzahl();
         }
 
         return aktuellePunkte;
