@@ -105,14 +105,6 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         gui.spielArtEntschieden(spieler, ausgabe);
     }
 
-    /**
-     * erster Spieler, der nach einem Stich wieder anfängt, wird dem Model übergeben
-     */
-    @Override
-    public void setzeErsterSpieler(int ersterSpieler) {
-        WelcherSpieler leger = wieVielterSpieler(ersterSpieler);
-        model.setzeErsterSpieler(leger);
-    }
 
     /**
      → Aufruf an GUI, eine Karte zu legen

@@ -83,11 +83,6 @@ public class SpielerModel {
         return soloFarbe;
     }
 
-    public void setzeErsterSpieler(WelcherSpieler leger) {
-        rundeErsterSpieler = leger;
-        anzahlSpielerSchonGelegt = 0;
-    }
-
     public void setzeGelegteKarte(Spielkarte karte) {
         stich.add(karte);
         anzahlSpielerSchonGelegt++;
