@@ -169,7 +169,7 @@ public class Runde {
         int aktuellePunkte = 0;
 
         for (int i = 0; i < 4; i++) {
-            aktuellePunkte += aktuellerStich[i].gebeWert().gebeWerteID();
+            aktuellePunkte += aktuellerStich[i].gebeWert().gebePunktzahl();
         }
 
         return aktuellePunkte;
