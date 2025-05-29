@@ -2,22 +2,25 @@ import InformatikProjekt.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RundeTest {
 
-    private Queue<Mitspieler> spieler;
+    private ArrayList<Mitspieler> spieler;
     private ArrayList<Spielkarte> spielKarten;
     private int positionSpieler;
-    private int vorhand = 0;
 
     @Test
     public void ermittleSiegerTesten() {
-        spieler = new LinkedList<>();
+        spieler = new ArrayList<>(4);
         spielKarten = new ArrayList<>();
+
+        spieler.add(new Spieler());
+        spieler.add(new Bot());
+        spieler.add(new Bot());
+        spieler.add(new Bot());
+
         Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];

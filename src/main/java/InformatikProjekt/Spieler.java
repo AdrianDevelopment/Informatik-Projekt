@@ -30,6 +30,11 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         gui.zeigeWelcherSpieler(wieVielterSpieler);
     }
 
+    @Override
+    public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
+
+    }
+
     /**
      * Anfrage:
      * Anfrage an User für Spielabsicht
@@ -73,7 +78,6 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     }
 
-    @Override
     public void spielArtEntschieden(int spieler, Spielkarte sau, Farbe farbeSolo, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         model.setzeSpielArt(welcherSpieler, spielArt, sau, farbeSolo);

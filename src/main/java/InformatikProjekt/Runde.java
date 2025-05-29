@@ -1,7 +1,6 @@
 package InformatikProjekt;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 // Programmierer: Adrian
 
@@ -17,9 +16,9 @@ public class Runde {
     public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler) {
         this.spieler = spieler;
 
-        for (int i = 0; i < 4; i++) {
-            spieler.get(i).rundeStarten(spielKarten, positionSpieler);
-        }
+//        for (int i = 0; i < 4; i++) {
+//            spieler.get(i).rundeStarten(spielKarten, positionSpieler);
+//        }
     }
 
     public int[] starteRunde(int vorhand) {
