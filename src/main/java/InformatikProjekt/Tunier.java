@@ -45,11 +45,12 @@ public class Tunier {
         // Runden spielen
         for (int i = 0; i < anzahlRunden; i++) {
             Runde runde = new Runde(spieler, spielKarten, positionSpieler); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
-            int[] punkte = runde.starteRunde(vorhand);
+            int[] sieger = runde.starteRunde(vorhand);
 
             vorhand = (vorhand == 3) ? 0 : vorhand + 1;
 
-            rundenSiegerErmitteln(punkte);
+            punkteTunier[sieger[0]]++;
+            punkteTunier[sieger[1]]++;
         }
     }
 }
