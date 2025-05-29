@@ -99,19 +99,11 @@ public  class Bot extends Mitspieler {
 
 
     @Override
-    public void spielArtEntschieden(int spieler, Spielkarte Sau, Farbe farbeSolo, SpielArt spielArt) {
-        model.setzteSau(Sau);
+    public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
+        model.setzteSau(new Spielkarte(farbe, Werte.SAU));
         model.setzteSpielArt(spielArt);
-        model.setzteSoloFarbe(farbeSolo);
+        model.setzteSoloFarbe(farbe);
     }
-
-    @Override
-    public void setzeErsterSpieler(int ersterSpieler) {
-
-    }
-
-
-
 
 
     @Override

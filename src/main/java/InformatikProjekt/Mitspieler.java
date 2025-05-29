@@ -24,7 +24,7 @@ public abstract class Mitspieler {
     );
 
     //Nachricht an Mitspieler welche Spielart gespielt wird, ueberreicht Farbe wenn Solo und Sau wenn Sauspiel.
-    public abstract void spielArtEntschieden(int spieler, Spielkarte sau, Farbe farbeSolo, SpielArt spielArt);
+    public abstract void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt);
 
     //Nachricht an Mitspieler welcher spieler die Runde gewonnen hat.
     public abstract void rundeGewonnen(int spieler);
