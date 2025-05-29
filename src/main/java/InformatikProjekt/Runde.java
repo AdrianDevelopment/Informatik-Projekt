@@ -8,12 +8,16 @@ import java.util.Queue;
 public class Runde {
     private final Queue<Mitspieler> spieler; // Queue, da erster Mitspieler in Queue Vorhand ist, gecycelt wird in Tunier
     private int[] punkte;
+    private int ausrufer;
+    private Mitspieler ausruferObjekt;
+    private Farbe farbe;
     private Spielkarte[] aktuellerStich;
     private Spielkarte aktuelleSpielKarte;
 
     // @params Array mit Mitspielern, int welcher Index der Spieler ist, int wer die Runde startet (Vorhand)
     public Runde(Queue<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler) {
         this.spieler = spieler;
+
         for (int i = 0; i < 4; i++) {
             Mitspieler aktuellerSpieler = spieler.poll();
             assert aktuellerSpieler != null;
@@ -22,12 +26,10 @@ public class Runde {
         }
     }
 
-    // TODO: rundeStarten() Methode in Mitspieler aufrufen und Karten zufällig verteilen, und übergeben, wer der Spieler ist
     public int[] starteRunde() {
         SpielArt aktuellHoechstesSpiel;
         SpielArt hoechstesSpiel;
         hoechstesSpiel = SpielArt.KEINSPIEL;
-        // TODO: rotieren der Spieler
         for (int i = 0; i < 4; i++) {
             do {
                 assert spieler.peek() != null;
@@ -35,9 +37,27 @@ public class Runde {
             } while (aktuellHoechstesSpiel.gebeSpielArtID() != 0 || aktuellHoechstesSpiel.gebeSpielArtID() <= hoechstesSpiel.gebeSpielArtID());
             if (aktuellHoechstesSpiel.gebeSpielArtID() > hoechstesSpiel.gebeSpielArtID()) {
                 hoechstesSpiel = aktuellHoechstesSpiel;
-                // ausrufer = i;
+                ausrufer = i;
+                ausruferObjekt = spieler.peek();
             }
             spieler.offer(spieler.poll());
+        }
+
+        for (int i = 0; i < 4; i++) {
+            Mitspieler aktuellerSpieler = spieler.poll();
+            assert aktuellerSpieler != null;
+            aktuellerSpieler.spielerHatSpielabsichtGesagt(hoechstesSpiel, ausrufer);
+            spieler.offer(aktuellerSpieler);
+        }
+
+        farbe = ausruferObjekt.farbeFuerSpielAbsicht(hoechstesSpiel);
+
+        for (int i = 0; i < 4; i++) {
+            Mitspieler aktuellerSpieler = spieler.poll();
+            assert aktuellerSpieler != null;
+            // die spezifische Spielkarte zu erfragen ist nicht implementiert, deshalb wird hier eine dummy-Spielkarte übergeben, dasselbe bei Farbe
+            aktuellerSpieler.spielArtEntschieden(ausrufer, new Spielkarte(Farbe.EICHEL, Werte.SAU), Farbe.HERZ, hoechstesSpiel);
+            spieler.offer(aktuellerSpieler);
         }
 
         switch (hoechstesSpiel.gebeSpielArtID()) {
@@ -67,7 +87,16 @@ public class Runde {
             // Spieler "amZug" fragen welche Karte er legen möchte
             Mitspieler aktuellerSpieler = spieler.poll();
             assert aktuellerSpieler != null;
-            aktuellerSpieler.legeEineKarte();
+            Spielkarte spielkarte = aktuellerSpieler.legeEineKarte();
+            aktuellerStich = new Spielkarte[i];
+
+            for (int j = 0; j < 4; j++) {
+                Mitspieler aktuellerSpielerJ = spieler.poll();
+                assert aktuellerSpielerJ != null;
+                aktuellerSpielerJ.karteWurdeGelegt(spielkarte, i);
+                spieler.offer(aktuellerSpielerJ);
+            }
+
             spieler.offer(aktuellerSpieler);
         }
 
