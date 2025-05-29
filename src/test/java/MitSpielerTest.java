@@ -46,11 +46,33 @@ public class MitSpielerTest {
         assertEquals(4, erlaubteKartenSoloGrasTrumpf.size(), "Testet erlaubteKartenSoloGrasTrumpf");
         assertEquals(3, erlaubteKartenSoloGrasFarbe.size(), "Testet erlaubteKartenSoloGrasFarbe");
 
-        bot.rundeStarten(hand,0);
-        bot.spielArtEntschieden(0, new Spielkarte(Farbe.GRAS, Werte.SAU), null, SpielArt.SAUSPIEL);
-        bot.legeEineKarte();
+
     }
 
+    @Test
+    public void testWegLaufen() {
+
+        Mitspieler bot = new Bot();
+
+        //Hand
+        ArrayList<Spielkarte>  hand = new ArrayList<>();
+        hand.add(new Spielkarte(Farbe.GRAS, Werte.SIEBENER));
+        hand.add(new Spielkarte(Farbe.GRAS, Werte.KOENIG));
+        hand.add(new Spielkarte(Farbe.GRAS, Werte.NEUNER));
+        hand.add(new Spielkarte(Farbe.HERZ, Werte.SAU));
+        hand.add(new Spielkarte(Farbe.GRAS, Werte.SAU));
+        hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.KOENIG));
+        hand.add(new Spielkarte(Farbe.EICHEL, Werte.SIEBENER));
+        hand.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
+
+        //Verschiedene Spielsituationen
+        ArrayList<Spielkarte>  erlaubteKartenSauDavonlaufen = bot.gibErlaubteKarten(hand,SpielArt.SAUSPIEL,new Spielkarte(Farbe.GRAS, Werte.SAU),new Spielkarte(Farbe.GRAS, Werte.ACHTER),Farbe.GRAS);
+
+        assertEquals(4, erlaubteKartenSauDavonlaufen.size(), "Test Davonlaufen");
+
+        //Weiteren Test schreiben
+
+    }
 
     @Test
     public void testsauZumAusrufen(){

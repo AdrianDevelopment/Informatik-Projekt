@@ -24,7 +24,7 @@ public  class Bot extends Mitspieler {
             }
 
         }
-        //Außerhalb des Zieles des Prototypen
+        //Außerhalb des Zieles des Prototypes
         /*
         //Solospiel wenn mindestens mehr als 4 Truempfe und mindestendes 2 Karten einer Farbe(keine Truempfe).
         if (anzahlOU >= 4 &&besondereKarten[indexFarbeMitMeistenKarten] >= 2 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SOLO.gebeSpielArtID()){
@@ -132,5 +132,10 @@ public  class Bot extends Mitspieler {
     @Override
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
 
+    }
+
+    //Für den Test
+    public int gibAnzahlKartenInHand(){
+        return model.gibHand().size();
     }
 }

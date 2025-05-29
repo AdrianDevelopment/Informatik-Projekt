@@ -10,7 +10,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     public Spieler() {
         model = new SpielerModel();
-        gui = new SpielerGUI();
+        gui = new SpielerGUI(this);
     }
 
     /**
@@ -106,8 +106,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
     }
 
     /**
-     * gibt den erstenSpieler, der nach einem Stich wieder anfängt
-     * @param ersterSpieler
+     * erster Spieler, der nach einem Stich wieder anfängt, wird dem Model übergeben
      */
     @Override
     public void setzeErsterSpieler(int ersterSpieler) {
@@ -115,33 +114,63 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         model.setzeErsterSpieler(leger);
     }
 
+    /**
+     → Aufruf an GUI, eine Karte zu legen
+        - schauen, ob ich der erste in der Lege-/Stichrunde bin
+        → keine Überprüfung, weil jede Karte gelegt werden kann
+     - wenn ich nicht der erste in der Lege-/Stichrunde bin
+        → model abfragen, welche Karte ich legen muss
+        → überprüfen, ob ich Karte legen darf
+        → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
+     */
     @Override
     public Spielkarte legeEineKarte() {
-        /* TODO:
-            - schauen, ob ich der erste in der Lege-/Stichrunde bin
-                -> Aufruf an GUI, eine Karte zu legen
-                -> überprüfen, ob Karte gelegt werden darf
-            - wenn ich nicht der erste in der Lege-/Stichrunde bin
-                -> model abfragen, welche Karte ich legen muss
-                -> überprüfen, ob ich Karte legen darf
-                -> überprüfen, ob ich andere Karte hätte legen müssen
-            -> model und GUI meine gelegte Karte geben und @return
-         */
-        return null;
+        int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
+        ArrayList<Spielkarte> erlaubteKarten;
+        boolean karteIstErlaubt;
+
+        Spielkarte zuLegendeKarte = gui.legeKarte(); //TODO: mit Thiemo überprüfen, ob Rückgabewert so Sinn macht
+
+        //Überprüfung, ob Karte erlaubt ist
+        if (anzahlSpielerSchonGelegt != 0) {
+            karteIstErlaubt = false;
+            erlaubteKarten = gibErlaubteKarten(model.gebeHandkarten(), model.gebeSpielArt(), model.gebeSau(),model.gebeVorgegebeneKarte(), model.gebeSoloFarbe());
+            for (int i = 0; i < erlaubteKarten.size(); i++) {
+                if (zuLegendeKarte.equals(erlaubteKarten.get(i))) {
+                    karteIstErlaubt = true;
+                    break;
+                }
+            }
+        } else {
+            karteIstErlaubt = true;
+        }
+        //Karte zurückgeben, wenn erlaubt
+        //sonst nochmal
+        if (karteIstErlaubt) {
+            return zuLegendeKarte;
+        } else {
+            gui.ungueltigeEingabe();
+            return legeEineKarte();
+        }
     }
 
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         gui.zeigeGelegteKarte(karte, welcherSpieler);
-        model.setzeGelegteKarte(karte); //TODO: in Model einfügen
+        model.setzeGelegteKarte(karte);
     }
 
-
-
+    /**
+     * wenn Stich fertig ist
+     * - an GUI weitergeben, wer gewonnen hat
+     * - in Model letzterStich Karten überschreiben + Stichkarten löschen
+     */
     @Override
     public void stichGewonnen(int spieler) {
-
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
+        gui.stichGewonnen(welcherSpieler);
+        model.stichBeendet();
     }
 
 
@@ -170,6 +199,13 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
             System.out.println("Fehler in Methode wieVielterSpieler"); //Test
         }
         return spielerImUhrzeigersinn;
+    }
+
+    /**
+     * Methode, die GUI aufruft, wenn Spieler den letzten Stich sehen will
+     */
+    public ArrayList<Spielkarte> letztenStichAnsehen() {
+        return model.gebeLetzterStich(); //TODO: @Thiemo Rückgabewert abklären
     }
 
 

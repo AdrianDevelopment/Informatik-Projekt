@@ -16,6 +16,7 @@ public class BotModel {
 
     BotModel(){
         kartenZaehler =0;
+        gelegteKarten = new ArrayList<Spielkarte>();
     }
 
     public int gibKartenZaehler(){return kartenZaehler;}
@@ -32,7 +33,7 @@ public class BotModel {
         return soloFarbe;
     }
     public Spielkarte gibLetzteGelegteKarte(){return  gelegteKarten.get(gelegteKarten.size()-1);}
-    public Spielkarte gibErsteKarteAufTisch(){return  gelegteKarten.get(gelegteKarten.size()-1-kartenZaehler);}
+    public Spielkarte gibErsteKarteAufTisch(){return  gelegteKarten.get(gelegteKarten.size()-kartenZaehler);}
     public int getWievielterSpieler(){return  wievielterSpieler;}
 
     public void setzteSau(Spielkarte nSau){sau = nSau;}

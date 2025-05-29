@@ -1,8 +1,8 @@
 package InformatikProjekt;
 
 public class Spielkarte {
-    private Farbe farbe;
-    private Werte wert;
+    private final Farbe farbe;
+    private final Werte wert;
 
     public Spielkarte(Farbe neueFarbe, Werte neuerWert ) {
         farbe = neueFarbe;
@@ -27,19 +27,16 @@ public class Spielkarte {
     public boolean equals(Object obj) {
         if (obj == null)return false;
         if (obj.getClass() != Spielkarte.class) return  false;
-        Spielkarte karte = (Spielkarte) obj;
-        System.out.println(((karte.gebeFarbe().gebeFarbeID()) == (this.gebeFarbe().gebeFarbeID())) &&
-                ((karte.gebeWert().gebeWerteID()) == (this.gebeWert().gebeWerteID())));
-        return (((karte.gebeFarbe()) == (this.gebeFarbe())) &&
-                ((karte.gebeWert()) == (this.gebeWert())));
+        return obj.hashCode()==this.hashCode();
     }
 
     @Override
     public int hashCode(){
-        return (this.gebeFarbe().gebeFarbeID() << 16) | (this.gebeWert().gebeWerteID());
+        return (this.gebeFarbe().gebeFarbeID() << 16) | (this.gebeWert().gebeIndex());
     }
 
     public int gibKartenID(){
         return hashCode();
     }
 }
+
