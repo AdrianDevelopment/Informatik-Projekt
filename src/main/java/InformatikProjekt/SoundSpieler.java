@@ -18,7 +18,7 @@ public class SoundSpieler {
         }
         audioBereit = true;
     }
-    public void kartensoundAbspielen(){
+    public void kartensoundAbspielen() throws LineUnavailableException {
         if (!audioBereit)return;
         Clip clip;
         try {

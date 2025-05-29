@@ -1,6 +1,8 @@
+package InformatikProjekt;
+
 import javax.swing.*;
 
-public class LeckMich {
+class LeckMich {
     public void main(String[] args) {
         JFrame mainFrame = new JFrame();
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!

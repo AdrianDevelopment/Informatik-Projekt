@@ -1,17 +1,24 @@
 import InformatikProjekt.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RundeTest {
 
-    private Mitspieler[] spieler;
+    private Queue<Mitspieler> spieler;
+    private ArrayList<Spielkarte> spielKarten;
+    private int positionSpieler;
     private int vorhand = 0;
 
     @Test
     public void ermittleSiegerTesten() {
-        spieler = new Mitspieler[4];
-        Runde runde = new Runde(spieler, vorhand);
+        spieler = new LinkedList<>();
+        spielKarten = new ArrayList<>();
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.GRAS, Werte.SIEBENER);
@@ -27,7 +34,7 @@ public class RundeTest {
 
     @Test
     public void alleKartenGleicheFarbeTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.ACHTER);
@@ -43,7 +50,7 @@ public class RundeTest {
 
     @Test
     public void trumpfKarteSchlaegtAndereTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.NEUNER);
@@ -59,7 +66,7 @@ public class RundeTest {
 
     @Test
     public void hoechsteTrumpfKarteGewinntTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.UNTER);
@@ -75,7 +82,7 @@ public class RundeTest {
 
     @Test
     public void farbMischungTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.EICHEL, Werte.SAU);
@@ -91,7 +98,7 @@ public class RundeTest {
 
     @Test
     public void mehrereHerzTruempfeTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.OBER);
@@ -107,7 +114,7 @@ public class RundeTest {
 
     @Test
     public void alleTruempfeTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.SIEBENER);
@@ -123,7 +130,7 @@ public class RundeTest {
 
     @Test
     public void keinTrumpfTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.GRAS, Werte.ZEHNER);
@@ -139,7 +146,7 @@ public class RundeTest {
 
     @Test
     public void ersteFarbeGewinntTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.EICHEL, Werte.ZEHNER);
@@ -155,7 +162,7 @@ public class RundeTest {
 
     @Test
     public void hoechteFarbeGewinntTest() {
-        Runde runde = new Runde(spieler, vorhand);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.ACHTER);

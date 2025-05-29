@@ -1,54 +1,62 @@
 package InformatikProjekt;
 
+import java.util.ArrayList;
+import java.util.Queue;
+
 // Programmierer: Adrian
 
 public class Runde {
-    private final Mitspieler[] spieler;
-    private int vorhand; // spielt die erste Karte
-    private int ausrufer;
-    private Spielkarte ausgerufeneSau;
-    private int ausruferMitspieler;
+    private final Queue<Mitspieler> spieler; // Queue, da erster Mitspieler in Queue Vorhand ist, gecycelt wird in Tunier
     private int[] punkte;
-    private Spielkarte[] letzterStich;
     private Spielkarte[] aktuellerStich;
     private Spielkarte aktuelleSpielKarte;
 
     // @params Array mit Mitspielern, int welcher Index der Spieler ist, int wer die Runde startet (Vorhand)
-    public Runde(Mitspieler[] spieler, int vorhand) {
+    public Runde(Queue<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler) {
         this.spieler = spieler;
-        this.vorhand = vorhand;
+        for (int i = 0; i < 4; i++) {
+            Mitspieler aktuellerSpieler = spieler.poll();
+            assert aktuellerSpieler != null;
+            aktuellerSpieler.rundeStarten(spielKarten, positionSpieler);
+            spieler.offer(aktuellerSpieler);
+        }
     }
 
     // TODO: rundeStarten() Methode in Mitspieler aufrufen und Karten zufällig verteilen, und übergeben, wer der Spieler ist
-    public void starteRunde() {
+    public int[] starteRunde() {
         SpielArt aktuellHoechstesSpiel;
         SpielArt hoechstesSpiel;
         hoechstesSpiel = SpielArt.KEINSPIEL;
         // TODO: rotieren der Spieler
         for (int i = 0; i < 4; i++) {
             do {
-                aktuellHoechstesSpiel = spieler[i].spielabsichtFragen(hoechstesSpiel); // return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
+                assert spieler.peek() != null;
+                aktuellHoechstesSpiel = spieler.peek().spielabsichtFragen(hoechstesSpiel); // return 0, für weiter; 1 für Sau; 2 für Wenz; 3 für Solo
             } while (aktuellHoechstesSpiel.gebeSpielArtID() != 0 || aktuellHoechstesSpiel.gebeSpielArtID() <= hoechstesSpiel.gebeSpielArtID());
             if (aktuellHoechstesSpiel.gebeSpielArtID() > hoechstesSpiel.gebeSpielArtID()) {
                 hoechstesSpiel = aktuellHoechstesSpiel;
-                ausrufer = i;
+                // ausrufer = i;
             }
+            spieler.offer(spieler.poll());
         }
 
         switch (hoechstesSpiel.gebeSpielArtID()) {
             case 0:
                 starteRunde(); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
-                break;
+                return punkte;
             case 1:
                 spielSchleifeSau(8);
-                break;
+                return punkte;
             case 2:
                 // spielSchleifeWenz();
-                break;
+                return punkte;
             case 3:
                 // spielSchleifeSolo();
-                break;
+                return punkte;
         }
+
+        System.out.println("ERROR: Fehler in starteRunde()");
+        return punkte;
     }
 
     // TODO: spielSchleifeWenz(), spielSchleifeSolo()
@@ -57,17 +65,23 @@ public class Runde {
         // einen Stich spielen
         for (int i = 0; i < 4; i++) {
             // Spieler "amZug" fragen welche Karte er legen möchte
-            aktuelleSpielKarte = this.spieler[i].legeEineKarte();
+            Mitspieler aktuellerSpieler = spieler.poll();
+            assert aktuellerSpieler != null;
+            aktuellerSpieler.legeEineKarte();
+            spieler.offer(aktuellerSpieler);
         }
 
         // Auswertung des Stichs
         int sieger = ermittleSieger(aktuellerStich);
-        letzterStich = aktuellerStich.clone(); // nicht mit Referenz übergeben, da aktuellerStich sich ändert
+        Spielkarte[] letzterStich = aktuellerStich.clone(); // nicht mit Referenz übergeben, da aktuellerStich sich ändert
         punkte[sieger] += ermittlePunkte(aktuellerStich);
 
         // Ausgabe des Stichergebnisses
         for (int i = 0; i < 4; i++) {
-            spieler[i].stichGewonnen(sieger);
+            Mitspieler aktuellerSpieler = spieler.poll();
+            assert aktuellerSpieler != null;
+            aktuellerSpieler.stichGewonnen(sieger);
+            spieler.offer(aktuellerSpieler);
         }
 
         // Rekursionsschritt
@@ -169,7 +183,7 @@ public class Runde {
         int aktuellePunkte = 0;
 
         for (int i = 0; i < 4; i++) {
-            aktuellePunkte += aktuellerStich[i].gebeWert().gebeWerteID();
+            // aktuellePunkte += aktuellerStich[i].gebeWert().gebePunktzahl();
         }
 
         return aktuellePunkte;
