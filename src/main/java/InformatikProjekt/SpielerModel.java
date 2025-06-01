@@ -11,8 +11,7 @@ public class SpielerModel {
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
     private WelcherSpieler ausrufenderSpieler;
-    private Spielkarte sau;
-    private Farbe soloFarbe;
+    private Farbe farbe;
     //Attribute für Lege-/Stichrunden
     private WelcherSpieler rundeErsterSpieler;
     private ArrayList<Spielkarte> stich; //speichert Karten eines Stichs
@@ -24,8 +23,7 @@ public class SpielerModel {
 
         spielArt = null;
         ausrufenderSpieler = null;
-        sau = null;
-        soloFarbe = null;
+        farbe = null;
 
         stich = new ArrayList<Spielkarte>();
         anzahlSpielerSchonGelegt = 0;
@@ -57,30 +55,21 @@ public class SpielerModel {
     /**setzt alle wichtigen Attribute für eine Runde nach dem Ausrufen
      *
      * @param spieler
-     * @param ausgerufeneSau
      * @param ausgerufeneFarbe
      * @param ausgerufeneSpielArt
      */
-    public void setzeSpielArt(WelcherSpieler spieler, SpielArt ausgerufeneSpielArt, Spielkarte ausgerufeneSau, Farbe ausgerufeneFarbe) {
+    public void setzeSpielArt(WelcherSpieler spieler, SpielArt ausgerufeneSpielArt, Farbe ausgerufeneFarbe) {
         spielArt = ausgerufeneSpielArt;
         ausrufenderSpieler = spieler;
-        if(ausgerufeneSau != null) {
-            sau = ausgerufeneSau;
-        } else if(ausgerufeneFarbe != null) {
-            soloFarbe = ausgerufeneFarbe;
-        }
+        farbe = ausgerufeneFarbe;
     }
 
     public SpielArt gebeSpielArt() {
         return spielArt;
     }
 
-    public Spielkarte gebeSau() {
-        return sau;
-    }
-
-    public Farbe gebeSoloFarbe() {
-        return soloFarbe;
+    public Farbe gebeFarbe() {
+        return farbe;
     }
 
     public void setzeGelegteKarte(Spielkarte karte) {
@@ -90,10 +79,6 @@ public class SpielerModel {
 
     public Spielkarte gebeVorgegebeneKarte() {
         return stich.get(0);
-    }
-
-    public int leangeStich() {
-        return stich.size();
     }
 
     public void stichBeendet() {

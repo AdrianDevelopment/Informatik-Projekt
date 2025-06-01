@@ -1,7 +1,6 @@
 package InformatikProjekt;
 
 import java.util.ArrayList;
-import java.util.Queue;
 
 // Programmierer: Adrian
 
@@ -9,11 +8,11 @@ public class Runde {
     private final ArrayList<Mitspieler> spieler; // Queue, da erster Mitspieler in Queue Vorhand ist, gecycelt wird in Tunier
     private int[] punkte;
     private int ausrufer;
+    private int mitspieler;
     private Mitspieler ausruferObjekt;
     private Spielkarte[] aktuellerStich;
     private Spielkarte aktuelleSpielKarte;
 
-    // @params Array mit Mitspielern, int welcher Index der Spieler ist, int wer die Runde startet (Vorhand)
     public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler) {
         this.spieler = spieler;
 
@@ -50,16 +49,20 @@ public class Runde {
         switch (hoechstesSpiel) {
             case KEINSPIEL:
                 starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
-                return punkte;
+                return null;
             case SAUSPIEL:
                 spielSchleifeSau(8, vorhand);
-                return punkte;
+                int[] sieger = rundenSiegerErmitteln();
+                for (Mitspieler aktuellerSpieler : spieler) {
+                    aktuellerSpieler.rundeGewonnen(sieger, punkte);
+                }
+                return sieger;
             case WENZ:
                 // spielSchleifeWenz();
-                return punkte;
+                return null;
             case SOLO:
                 // spielSchleifeSolo();
-                return punkte;
+                return null;
         }
 
         System.out.println("ERROR: Fehler in starteRunde()");
@@ -196,5 +199,24 @@ public class Runde {
         }
 
         return aktuellePunkte;
+    }
+
+    public int[] rundenSiegerErmitteln() {
+        int punkteSpieler = punkte[ausrufer] + punkte[mitspieler];
+        int[] gegenspieler = new int[2];
+        int position = 0;
+
+        if (punkteSpieler >= 60) {
+            return new int[] {ausrufer, mitspieler};
+        }
+        else {
+            for (int i = 0; i < 4; i++) {
+                if (i != ausrufer && i != mitspieler) {
+                    gegenspieler[position] = i;
+                    position++;
+                }
+            }
+            return gegenspieler;
+        }
     }
 }

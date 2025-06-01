@@ -30,11 +30,6 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         gui.zeigeWelcherSpieler(wieVielterSpieler);
     }
 
-    @Override
-    public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
-
-    }
-
     /**
      * Anfrage:
      * Anfrage an User für Spielabsicht
@@ -78,9 +73,10 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     }
 
-    public void spielArtEntschieden(int spieler, Spielkarte sau, Farbe farbeSolo, SpielArt spielArt) {
+    @Override
+    public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        model.setzeSpielArt(welcherSpieler, spielArt, sau, farbeSolo);
+        model.setzeSpielArt(welcherSpieler, spielArt, farbe);
 
         String ausgabe = "";
         switch (spielArt) {
@@ -88,21 +84,21 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
                 ausgabe = "Niemand wollte spielen";
             case SAUSPIEL:
                 ausgabe = "Sauspiel auf die ";
-                Farbe sauFarbe = sau.gebeFarbe();
-                switch (sauFarbe) { //TODO: Namen der Sau raussuchen
+                switch (farbe) {
                     case SCHELLEN:
-                        break;
-                    case HERZ:
+                        ausgabe += "Bumbe";
                         break;
                     case GRAS:
+                        ausgabe += "Blaue";
                         break;
                     case EICHEL:
+                        ausgabe += "Alte";
                         break;
                 }
             case WENZ:
                 ausgabe = "Wenz";
             case SOLO:
-                ausgabe = "Solo mit der Farbe " + farbeSolo; //TODO: Farbe mit switch in ausgabe reinschreiben
+                ausgabe = "Solo mit der Farbe " + farbe; //TODO: Farbe mit switch in ausgabe reinschreiben
             default:
                 break;
         }
@@ -130,7 +126,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         //Überprüfung, ob Karte erlaubt ist
         if (anzahlSpielerSchonGelegt != 0) {
             karteIstErlaubt = false;
-            erlaubteKarten = gibErlaubteKarten(model.gebeHandkarten(), model.gebeSpielArt(), model.gebeSau(),model.gebeVorgegebeneKarte(), model.gebeSoloFarbe());
+            erlaubteKarten = gibErlaubteKarten(model.gebeHandkarten(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU),model.gebeVorgegebeneKarte(), model.gebeFarbe()); //TODO: anpassen, wenn Tim Methode anpasst
             for (int i = 0; i < erlaubteKarten.size(); i++) {
                 if (zuLegendeKarte.equals(erlaubteKarten.get(i))) {
                     karteIstErlaubt = true;
@@ -178,7 +174,6 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
     /**
      * Gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
      * @param spieler: von Runde übergeben
-     * @return
      */
     public WelcherSpieler wieVielterSpieler(int spieler) {
         WelcherSpieler spielerImUhrzeigersinn = null;

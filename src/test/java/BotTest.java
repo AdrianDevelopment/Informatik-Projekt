@@ -53,7 +53,8 @@ public class BotTest {
         //Hand setzten
         bot.rundeStarten(hand, 0);
 
-        bot.spielArtEntschieden(1, new Spielkarte(Farbe.SCHELLEN, Werte.SAU), null, SpielArt.SAUSPIEL);
+        // bot.spielArtEntschieden(1, new Spielkarte(Farbe.SCHELLEN, Werte.SAU), null, SpielArt.SAUSPIEL);
+        bot.spielArtEntschieden(1, Farbe.SCHELLEN, SpielArt.SAUSPIEL);
 
         bot.karteWurdeGelegt(new Spielkarte(Farbe.EICHEL, Werte.SAU), 1);
 

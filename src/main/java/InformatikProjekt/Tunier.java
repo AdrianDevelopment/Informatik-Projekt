@@ -20,11 +20,11 @@ public class Tunier {
     }
 
     public void tunierStarten() {
-        // Spieler-Warteschlange vorbereiten
         Random random = new Random();
         int positionSpieler = random.nextInt(4);
         int vorhand = 0;
 
+        // Spieler-ArrayList vorbereiten
         for (int i = 0; i < 4; i++) {
             if (i != positionSpieler) {
                 spieler.add(new Bot());
@@ -45,13 +45,12 @@ public class Tunier {
         // Runden spielen
         for (int i = 0; i < anzahlRunden; i++) {
             Runde runde = new Runde(spieler, spielKarten, positionSpieler); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
-            int[] punkte = runde.starteRunde(vorhand);
+            int[] sieger = runde.starteRunde(vorhand);
 
             vorhand = (vorhand == 3) ? 0 : vorhand + 1;
 
-            for (int j = 0; j < 4; j++) {
-                punkteTunier[j] += punkte[j];
-            }
+            punkteTunier[sieger[0]]++;
+            punkteTunier[sieger[1]]++;
         }
     }
 }
