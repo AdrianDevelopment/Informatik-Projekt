@@ -25,3 +25,4 @@ public enum Werte {
     }
 }
 
+// 寫些評論吧，你這個傻瓜

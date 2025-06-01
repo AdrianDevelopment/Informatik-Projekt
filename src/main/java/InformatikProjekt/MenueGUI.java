@@ -29,8 +29,8 @@ public class MenueGUI {
         label1.setBounds(75,0,350,40);
 
         //Hier werden Buttons erstellt:
-        playButton = new JButton();
-        playButton.addActionListener( e -> System.out.println("hi"));
+        JButton playButton = new JButton();
+        playButton.addActionListener( e -> new SpielGUI());
         // playButton.addActionListener(e -> Menue.startMainGame());
         playButton.setBounds(150,50,200,40);
         playButton.setText("SPIELEN");
