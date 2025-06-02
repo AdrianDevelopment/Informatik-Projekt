@@ -53,9 +53,15 @@ public class SpielerGUI {
         System.out.println(spieler.gebeName() + " hat den Stich gewonnen.");
     }
 
+    public void rundeGewonnen(WelcherSpieler gewinner1, WelcherSpieler gewinner2, int[] punkte) {
+        int gewinnerPunkte = punkte[0] + punkte[1];
+        System.out.println(gewinner1.gebeName() + " und " + gewinner2.gebeName() + " haben die Runde mit " + gewinnerPunkte + " Punkten gewonnen.");
+        //TODO: wie soll das der GUI übergeben werden?
+    }
+
 
     //Methode wird aufgerufen, wenn Spieler auf irgendeinen Button klickt
     public void zeigeLetztenStich() {
-        System.out.println(spieler.letztenStichAnsehen());
+        System.out.println(spieler.gebeLetztenStich());
     }
 }

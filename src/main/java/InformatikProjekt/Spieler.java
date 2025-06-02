@@ -136,7 +136,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         } else {
             karteIstErlaubt = true;
         }
-        //Karte zurückgeben, wenn erlaubt
+        //Karte zurückgeben, wenn erlaubt //TODO: Verkürzung möglich?
         //sonst nochmal
         if (karteIstErlaubt) {
             return zuLegendeKarte;
@@ -167,8 +167,16 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
 
     @Override
-    public void rundeGewonnen(int spieler) {
+    public void rundeGewonnen(int[] gewinner, int[] uebergebenePunkte) {
+        WelcherSpieler gewinner1 = wieVielterSpieler(gewinner[0]);
+        WelcherSpieler gewinner2 = wieVielterSpieler(gewinner[1]);
 
+        int[] punkte = new int[4]; //richtig sortierte Punkte
+        punkte[0] = uebergebenePunkte[gewinner[0]];
+        punkte[1] = uebergebenePunkte[gewinner[1]];
+
+        //TODO: wie soll das der GUI übergeben werden?
+        gui.rundeGewonnen(gewinner1, gewinner2, punkte);
     }
 
     /**
@@ -195,7 +203,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
     /**
      * Methode, die GUI aufruft, wenn Spieler den letzten Stich sehen will
      */
-    public ArrayList<Spielkarte> letztenStichAnsehen() {
+    public ArrayList<Spielkarte> gebeLetztenStich() {
         return model.gebeLetzterStich(); //TODO: @Thiemo Rückgabewert abklären
     }
 

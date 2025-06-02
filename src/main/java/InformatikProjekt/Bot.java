@@ -118,7 +118,7 @@ public  class Bot extends Mitspieler {
         model.kartenZaehlerZuruecksetzten();
     }
     @Override
-    public void rundeGewonnen(int spieler) {
+    public void rundeGewonnen(int[] gewinner, int[] punkte) {
 
     }
     @Override

@@ -27,7 +27,7 @@ public abstract class Mitspieler {
     public abstract void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt);
 
     //Nachricht an Mitspieler welcher spieler die Runde gewonnen hat.
-    public abstract void rundeGewonnen(int spieler);
+    public abstract void rundeGewonnen(int[] gewinner, int[] punkte);
 
     //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
     public abstract void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt);
