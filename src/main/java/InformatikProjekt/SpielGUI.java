@@ -1,9 +1,13 @@
 package InformatikProjekt;
 
 import javax.swing.*;
+import java.util.ArrayList;
+
 
 class SpielGUI {
-    public SpielGUI() {
+    private Spieler spieler;
+    public SpielGUI(Spieler spieler) {
+        this.spieler = spieler;
         JFrame mainFrame = new JFrame();
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         mainFrame.setVisible(true);
@@ -14,8 +18,43 @@ class SpielGUI {
         ImageIcon playerIcon = new ImageIcon("src\\main\\resources\\spieler.png");
         ImageIcon botIcon = new ImageIcon("src\\main\\resources\\bot.png");
         ImageIcon kartenRuekseite = new ImageIcon("src\\main\\resources\\rueckseiteKarte.png");
-        // \src\main\resources
 
+
+        ImageIcon eichelKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_7.png");
+        ImageIcon eichelKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_8.png");
+        ImageIcon eichelKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_9.png");
+        ImageIcon eichelKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_10.png");
+        ImageIcon eichelKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ass.png");
+        ImageIcon eichelKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Koenig.png");
+        ImageIcon eichelKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ober.png");
+        ImageIcon eichelKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Unter.png");
+
+        ImageIcon GrassKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Grass_7.png");
+        ImageIcon GrassKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Grass_8.png");
+        ImageIcon GrassKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Grass_9.png");
+        ImageIcon GrassKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Grass_10.png");
+        ImageIcon GrassKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ass.png");
+        ImageIcon GrassKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Grass_Koenig.png");
+        ImageIcon GrassKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ober.png");
+        ImageIcon GrassKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Grass_Unter.png");
+
+        ImageIcon HerzKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Herz_7.png");
+        ImageIcon HerzKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Herz_8.png");
+        ImageIcon HerzKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Herz_9.png");
+        ImageIcon HerzKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Herz_10.png");
+        ImageIcon HerzKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ass.png");
+        ImageIcon HerzKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Herz_Koenig.png");
+        ImageIcon HerzKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ober.png");
+        ImageIcon HerzKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Herz_Unter.png");
+
+        ImageIcon SchelleKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_7.png");
+        ImageIcon SchelleKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_8.png");
+        ImageIcon SchelleKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_9.png");
+        ImageIcon SchelleKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_10.png");
+        ImageIcon SchelleKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ass.png");
+        ImageIcon SchelleKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Koenig.png");
+        ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
+        ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
 
         //Spieler1
         JLabel Spieler1 = new JLabel();
@@ -134,6 +173,17 @@ class SpielGUI {
         ruekseitenKarte38.setIcon(kartenRuekseite);
         ruekseitenKarte38.setBounds(890,20,80,95);
 
+
+        //Buttuns zum Auswählen der Aktionen:
+        JButton weiterButton = new JButton("Weiter");
+        weiterButton.setBounds(1000, 600, 100, 50);
+        weiterButton.addActionListener(e -> spieler.);
+
+        JButton sauButton = new JButton("SAU");
+        sauButton.setBounds(1100, 600, 100, 50);
+        sauButton.addActionListener(e -> System.out.println("SAU"));
+
+
         //Karten von Spieler1 werden erstellt:
         JButton spieler1Karte1 = new JButton();
         spieler1Karte1.addActionListener(e -> System.out.println("hhhhh"));
@@ -142,6 +192,15 @@ class SpielGUI {
         spieler1Karte1.setBorderPainted(false);
         spieler1Karte1.setContentAreaFilled(false);
         spieler1Karte1.setFocusPainted(false);
+
+        JButton beispielEichel = new JButton();
+        beispielEichel.addActionListener(e -> System.out.println("Eichel"));
+        beispielEichel.setIcon(eichelKarte);
+        beispielEichel.setBounds(400,560,80,100);
+        beispielEichel.setBorderPainted(false);
+        beispielEichel.setContentAreaFilled(false);
+        beispielEichel.setFocusPainted(false);
+
 
 
         //Sachen zum Frame hinzufügen
@@ -180,8 +239,12 @@ class SpielGUI {
         mainFrame.add(spieler1Karte1);
     }
 
-    public void spieler1Startkarten(){
-        System.out.println("Tommilein");
+    public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
+
+    }
+
+    public void absichtAbfragen(){
+
     }
 
 }
