@@ -30,38 +30,41 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
     }
 
     /**
-     * Anfrage:
-     * Anfrage an User für Spielabsicht
-     *
-     * @param hoechstesSpiel
+     * Anfrage: an GUI für Spielabsicht
+     * nur wenn Sauspiel überhaupt möglich
      * @return
      */
     @Override
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
-        String spielabsicht = gui.spielabsichtFragen(hoechstesSpiel);
-        //TODO: gui
-        switch (spielabsicht) {
-            case "weiter":
-                return SpielArt.KEINSPIEL;
-            case "Sau":
-                return SpielArt.SAUSPIEL;
-            case "Wenz":
-                return SpielArt.WENZ;
-            case "Solo":
-                return SpielArt.SOLO;
-            default:
-                gui.ungueltigeEingabe();
-                return spielabsichtFragen(hoechstesSpiel);
+        SpielArt spielabsicht = null;
+        gui.spielabsichtFragen();
+
+        while (spielabsicht == null) {
+            spielabsicht = model.gebeSpielabsicht();
         }
+        return spielabsicht;
     }
 
-    public void spielabsichtSpieler(SpielArt spielabsicht) {
-        model.setzeSpielabsichtSpieler(spielabsicht);
+    /**
+     * Methode wird von GUI aufgerufen und übergibt dem model die Spielabsicht
+     */
+    public void spielabsichtGUI(SpielArt spielabsicht) {
+        model.setzeSpielabsicht(spielabsicht);
     }
 
     @Override
     public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
-        return null;
+        Farbe spielasichtFarbe = null;
+        gui.farbeFuerSpielAbsicht();
+
+        while(spielasichtFarbe == null) {
+            spielasichtFarbe = model.gebeSpielabsichtFarbe();
+        }
+        return spielasichtFarbe;
+    }
+
+    public void farbeFuerSpielAbsichtGUI(Farbe farbe) {
+        model.setzteSpielabsichtFarbe(farbe);
     }
 
     /**

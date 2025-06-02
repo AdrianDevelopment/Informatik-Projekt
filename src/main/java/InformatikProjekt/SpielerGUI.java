@@ -15,10 +15,14 @@ public class SpielerGUI {
     }
 
     //gui-Methode, die Benutzer nach Spielabsicht frägt und als String zurückgibt
-    public String spielabsichtFragen(SpielArt hoechstesSpiel) {
-        System.out.println("Das aktuell höchste Spiel ist:" + hoechstesSpiel + "Gib bitte deine Spielabsicht ein, also entweder 'weiter', 'Sau', 'Wenz' oder 'Solo'");
-        return benutzerEingabe.nextLine();
+    public void spielabsichtFragen() {
+        System.out.println("Das aktuell höchste Spiel ist: Gib bitte deine Spielabsicht ein, also entweder 'weiter', 'Sau', 'Wenz' oder 'Solo'");
+        //return benutzerEingabe.nextLine();
         //Handkarten müssen währenddessen angezeigt werden + die bisher höchste Spielart und von wem ausgerufen;
+    }
+
+    public void farbeFuerSpielAbsicht() {
+        //rufe spieler.farbeFuerSpielAbsichtGUI(farbe) auf
     }
 
     public void ungueltigeEingabe() {
@@ -32,9 +36,9 @@ public class SpielerGUI {
         }
     }
 
-    public void zeigeWelcherSpieler(int wieVielterSpieler) {
+    /*public void zeigeWelcherSpieler(int wieVielterSpieler) {
         System.out.println("Du bist der " + wieVielterSpieler + ". Spieler.");
-    }
+    }*/
 
     public void spielArtEntschieden(int spieler, String ausgabe) {
         System.out.println(ausgabe);
@@ -53,9 +57,9 @@ public class SpielerGUI {
         System.out.println(spieler.gebeName() + " hat den Stich gewonnen.");
     }
 
-    public void rundeGewonnen(WelcherSpieler gewinner1, WelcherSpieler gewinner2, int[] punkte) {
+    public void rundeGewonnen(int[] punkte) {
         int gewinnerPunkte = punkte[0] + punkte[1];
-        System.out.println(gewinner1.gebeName() + " und " + gewinner2.gebeName() + " haben die Runde mit " + gewinnerPunkte + " Punkten gewonnen.");
+        System.out.println(punkte[0] + " und haben die Runde mit " + gewinnerPunkte + " Punkten gewonnen.");
         //TODO: wie soll das der GUI übergeben werden?
     }
 
