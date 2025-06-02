@@ -26,20 +26,28 @@ public class MenueGUI {
         label1.setVerticalAlignment(JLabel.TOP);
         label1.setHorizontalAlignment(JLabel.CENTER);
         label1.setFont(new Font("My Boli",Font.PLAIN, 40));
-        label1.setBounds(75,0,350,40);
+        label1.setBounds(75,0,350,50);
 
         //Hier werden Buttons erstellt:
         JButton playButton = new JButton();
         playButton.addActionListener( e -> new SpielGUI());
         // playButton.addActionListener(e -> Menue.startMainGame());
-        playButton.setBounds(150,50,200,40);
+        playButton.setBounds(150,60,200,40);
         playButton.setText("SPIELEN");
         playButton.setFocusable(false);
+
+        JButton statistikButton = new JButton();
+        statistikButton.addActionListener(e -> new StatistikGUI());
+        statistikButton.setBounds(150,120,200,40);
+        statistikButton.setText("STATISTIK");
+        statistikButton.setFocusable(false);
+
 
         //Hier wird der Frame bearbeitet
         frame.setLayout(null);
         frame.add(label1);
         frame.add(playButton);
+        frame.add(statistikButton);
 
         return 0;
     }
