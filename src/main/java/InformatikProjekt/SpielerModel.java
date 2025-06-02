@@ -102,23 +102,10 @@ public class SpielerModel {
 
 
     /**Methoden für GUI-Rückgabe*/
-
     //spielabsicht
-    public void setzeSpielabsicht(SpielArt spielabsicht) {
-        this.spielabsicht = spielabsicht;
-    }
-
-    public SpielArt gebeSpielabsicht() {
-        return spielabsicht;
-    }
-
+    public void setzeSpielabsicht(SpielArt spielabsicht) {this.spielabsicht = spielabsicht;}
+    public SpielArt gebeSpielabsicht() {return spielabsicht;}
     //spielabsichtFarbe
-    public void setzteSpielabsichtFarbe(Farbe farbe) {
-        spielabsichtFarbe = farbe;
-    }
-
-    public Farbe gebeSpielabsichtFarbe() {
-        return spielabsichtFarbe;
-    }
-
+    public void setzeSpielabsichtFarbe(Farbe farbe) {spielabsichtFarbe = farbe;}
+    public Farbe gebeSpielabsichtFarbe() {return spielabsichtFarbe;}
 }

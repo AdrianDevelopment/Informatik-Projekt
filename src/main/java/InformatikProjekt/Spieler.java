@@ -31,53 +31,67 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     /**
      * Anfrage: an GUI für Spielabsicht
-     * nur wenn Sauspiel überhaupt möglich
-     * @return
+     * Überprüfung, ob Sauspiel möglich → Rückgabe oder erneute GUI-Anfrage
      */
     @Override
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
         SpielArt spielabsicht = null;
         gui.spielabsichtFragen();
-
+        //wartet bis GUI Nutzereingabe dem Controller meldet
         while (spielabsicht == null) {
             spielabsicht = model.gebeSpielabsicht();
+        }
+        //Überprüfen, ob überhaupt möglich
+        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
+        if (farbe.isEmpty()) {
+            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen");
+            //"Rekursionsschritt"
+            model.setzeSpielabsicht(null); //Abbruchbedingung zurücksetzen
+            return spielabsichtFragen(hoechstesSpiel);
         }
         return spielabsicht;
     }
 
-    /**
-     * Methode wird von GUI aufgerufen und übergibt dem model die Spielabsicht
-     */
+    /*Methode wird von GUI aufgerufen und übergibt dem model die Spielabsicht*/
     public void spielabsichtGUI(SpielArt spielabsicht) {
         model.setzeSpielabsicht(spielabsicht);
     }
 
+    /**
+     * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
+     * Überprüfung, ob Spiel auf Sau möglich → Rückgabe oder erneute GUI-Anfrage
+     */
     @Override
     public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
         Farbe spielasichtFarbe = null;
         gui.farbeFuerSpielAbsicht();
-
+        //wartet bis GUI Nutzereingabe dem Controller meldet
         while(spielasichtFarbe == null) {
             spielasichtFarbe = model.gebeSpielabsichtFarbe();
+        }
+        //Überprüfen, ob überhaupt möglich
+        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
+        if (farbe.isEmpty()) {
+            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen");
+            //"Rekursionsschritt"
+            model.setzeSpielabsichtFarbe(null); //Abbruchbedingung zurücksetzen
+            return farbeFuerSpielAbsicht(spielArt);
         }
         return spielasichtFarbe;
     }
 
+    /*Methode wird von GUI aufgerufen und übergibt dem Model die Farbe für die Sau*/
     public void farbeFuerSpielAbsichtGUI(Farbe farbe) {
-        model.setzteSpielabsichtFarbe(farbe);
+        model.setzeSpielabsichtFarbe(farbe);
     }
 
-    /**
-     * GUI:
-     * Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss
-     *
-     * @param spielAbsicht
-     * @param spieler
-     */
+    /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
 
-        //TODO: GUI übergeben, wer welches Spiel ausgerufen hat
-
+        if (welcherSpieler != WelcherSpieler.NUTZER) { //wenn Spieler Nutzer ist, dann weiß es der Spieler schon -> keine Übergabe an GUI
+            gui.spielerHatSpielerabsichtGesagt(spielAbsicht, welcherSpieler);
+        }
     }
 
     @Override
@@ -148,7 +162,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         if (karteIstErlaubt) {
             return zuLegendeKarte;
         } else {
-            gui.ungueltigeEingabe();
+            gui.ungueltigeEingabe("");
             return legeEineKarte();
         }
     }

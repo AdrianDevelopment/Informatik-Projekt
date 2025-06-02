@@ -25,8 +25,12 @@ public class SpielerGUI {
         //rufe spieler.farbeFuerSpielAbsichtGUI(farbe) auf
     }
 
-    public void ungueltigeEingabe() {
-        System.out.println("Das war leider eine ungültige Eingabe");
+
+    public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler) {
+    }
+
+    public void ungueltigeEingabe(String konkretisierung) {
+        System.out.println("Das war leider eine ungültige Eingabe. " + konkretisierung);
     }
 
     public void zeigeHandkarten(ArrayList<Spielkarte> handkarten) {
@@ -68,4 +72,5 @@ public class SpielerGUI {
     public void zeigeLetztenStich() {
         System.out.println(spieler.gebeLetztenStich());
     }
+
 }
