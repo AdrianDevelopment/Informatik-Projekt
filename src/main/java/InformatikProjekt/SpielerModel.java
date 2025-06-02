@@ -8,6 +8,7 @@ public class SpielerModel {
     private ArrayList<Spielkarte> handkarten; //speichert eigene Handkarten
     private int[] andereSpielerKarten; //speichert Anzahl der Spielerkarten von den anderen Spielern
     private int welcherSpieler;
+    private SpielArt spielabsicht; //speichert Spielabsicht vom Spieler
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
     private WelcherSpieler ausrufenderSpieler;
@@ -40,7 +41,10 @@ public class SpielerModel {
         }
     }
 
-    //andereSpielerKarten
+    //spielabsicht
+    public void setzeSpielabsichtSpieler(SpielArt spielabsicht) {
+        this.spielabsicht = spielabsicht;
+    }
 
 
     //welcher Spieler

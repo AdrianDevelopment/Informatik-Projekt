@@ -27,7 +27,6 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         model.setzeWelcherSpieler(wieVielterSpieler);
 
         gui.zeigeHandkarten(karten);
-        gui.zeigeWelcherSpieler(wieVielterSpieler);
     }
 
     /**
@@ -40,6 +39,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
     @Override
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
         String spielabsicht = gui.spielabsichtFragen(hoechstesSpiel);
+        //TODO: gui
         switch (spielabsicht) {
             case "weiter":
                 return SpielArt.KEINSPIEL;
@@ -53,6 +53,10 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
                 gui.ungueltigeEingabe();
                 return spielabsichtFragen(hoechstesSpiel);
         }
+    }
+
+    public void spielabsichtSpieler(SpielArt spielabsicht) {
+        model.setzeSpielabsichtSpieler(spielabsicht);
     }
 
     @Override
@@ -171,12 +175,13 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         WelcherSpieler gewinner1 = wieVielterSpieler(gewinner[0]);
         WelcherSpieler gewinner2 = wieVielterSpieler(gewinner[1]);
 
-        int[] punkte = new int[4]; //richtig sortierte Punkte
-        punkte[0] = uebergebenePunkte[gewinner[0]];
-        punkte[1] = uebergebenePunkte[gewinner[1]];
+        int[] punkte = new int[3]; //richtig sortierte Punkte: gewinnerteamPunkte, verliererteamPunkte, spielerPunkte
+        punkte[0] = uebergebenePunkte[gewinner[0]] + uebergebenePunkte[gewinner[1]];
+        punkte[1] = 120 - punkte[0];
+        punkte[2] = uebergebenePunkte[model.gebeWelcherSpieler()];
 
         //TODO: wie soll das der GUI übergeben werden?
-        gui.rundeGewonnen(gewinner1, gewinner2, punkte);
+        gui.rundeGewonnen(punkte);
     }
 
     /**
