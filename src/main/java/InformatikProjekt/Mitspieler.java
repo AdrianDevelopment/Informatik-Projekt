@@ -3,7 +3,7 @@ package InformatikProjekt;
 
 import java.util.ArrayList;
 
-
+// TODO: ich (Adrian, also Runde) übergeb bisher nur die Position des echten Spielers. Brauchst du aber immer jeweils die eigene Position, auch bei Bots?
 
 public abstract class Mitspieler {
 
