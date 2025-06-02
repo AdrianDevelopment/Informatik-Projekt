@@ -6,8 +6,47 @@ import java.util.ArrayList;
 
 class SpielGUI {
     private Spieler spieler;
+
+    private ArrayList<JButton> spieler1handkarten;
+    ImageIcon eichelKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_7.png");
+    ImageIcon eichelKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_8.png");
+    ImageIcon eichelKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_9.png");
+    ImageIcon eichelKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_10.png");
+    ImageIcon eichelKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ass.png");
+    ImageIcon eichelKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Koenig.png");
+    ImageIcon eichelKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ober.png");
+    ImageIcon eichelKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Unter.png");
+
+    ImageIcon GrassKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Grass_7.png");
+    ImageIcon GrassKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Grass_8.png");
+    ImageIcon GrassKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Grass_9.png");
+    ImageIcon GrassKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Grass_10.png");
+    ImageIcon GrassKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ass.png");
+    ImageIcon GrassKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Grass_Koenig.png");
+    ImageIcon GrassKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ober.png");
+    ImageIcon GrassKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Grass_Unter.png");
+
+    ImageIcon HerzKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Herz_7.png");
+    ImageIcon HerzKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Herz_8.png");
+    ImageIcon HerzKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Herz_9.png");
+    ImageIcon HerzKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Herz_10.png");
+    ImageIcon HerzKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ass.png");
+    ImageIcon HerzKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Herz_Koenig.png");
+    ImageIcon HerzKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ober.png");
+    ImageIcon HerzKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Herz_Unter.png");
+
+    ImageIcon SchelleKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_7.png");
+    ImageIcon SchelleKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_8.png");
+    ImageIcon SchelleKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_9.png");
+    ImageIcon SchelleKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_10.png");
+    ImageIcon SchelleKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ass.png");
+    ImageIcon SchelleKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Koenig.png");
+    ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
+    ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
+
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
+        spieler1handkarten = new ArrayList<JButton>();
         JFrame mainFrame = new JFrame();
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         mainFrame.setVisible(true);
@@ -18,43 +57,6 @@ class SpielGUI {
         ImageIcon playerIcon = new ImageIcon("src\\main\\resources\\spieler.png");
         ImageIcon botIcon = new ImageIcon("src\\main\\resources\\bot.png");
         ImageIcon kartenRuekseite = new ImageIcon("src\\main\\resources\\rueckseiteKarte.png");
-
-
-        ImageIcon eichelKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_7.png");
-        ImageIcon eichelKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_8.png");
-        ImageIcon eichelKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_9.png");
-        ImageIcon eichelKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_10.png");
-        ImageIcon eichelKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ass.png");
-        ImageIcon eichelKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Koenig.png");
-        ImageIcon eichelKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ober.png");
-        ImageIcon eichelKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Unter.png");
-
-        ImageIcon GrassKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Grass_7.png");
-        ImageIcon GrassKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Grass_8.png");
-        ImageIcon GrassKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Grass_9.png");
-        ImageIcon GrassKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Grass_10.png");
-        ImageIcon GrassKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ass.png");
-        ImageIcon GrassKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Grass_Koenig.png");
-        ImageIcon GrassKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ober.png");
-        ImageIcon GrassKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Grass_Unter.png");
-
-        ImageIcon HerzKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Herz_7.png");
-        ImageIcon HerzKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Herz_8.png");
-        ImageIcon HerzKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Herz_9.png");
-        ImageIcon HerzKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Herz_10.png");
-        ImageIcon HerzKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ass.png");
-        ImageIcon HerzKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Herz_Koenig.png");
-        ImageIcon HerzKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ober.png");
-        ImageIcon HerzKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Herz_Unter.png");
-
-        ImageIcon SchelleKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_7.png");
-        ImageIcon SchelleKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_8.png");
-        ImageIcon SchelleKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_9.png");
-        ImageIcon SchelleKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_10.png");
-        ImageIcon SchelleKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ass.png");
-        ImageIcon SchelleKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Koenig.png");
-        ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
-        ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
 
         //Spieler1
         JLabel Spieler1 = new JLabel();
@@ -177,11 +179,11 @@ class SpielGUI {
         //Buttuns zum Auswählen der Aktionen:
         JButton weiterButton = new JButton("Weiter");
         weiterButton.setBounds(1000, 600, 100, 50);
-        weiterButton.addActionListener(e -> spieler.);
+        weiterButton.addActionListener(e -> spieler.spielabsichtGUI(SpielArt.KEINSPIEL));
 
         JButton sauButton = new JButton("SAU");
         sauButton.setBounds(1100, 600, 100, 50);
-        sauButton.addActionListener(e -> System.out.println("SAU"));
+        sauButton.addActionListener(e -> spieler.spielabsichtGUI(SpielArt.SAUSPIEL));
 
 
         //Karten von Spieler1 werden erstellt:
@@ -236,14 +238,338 @@ class SpielGUI {
         mainFrame.add(ruekseitenKarte37);
         mainFrame.add(ruekseitenKarte38);
 
+        mainFrame.add(weiterButton);
+        mainFrame.add(sauButton);
         mainFrame.add(spieler1Karte1);
     }
 
     public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
 
+
+        for(int i = 0; i < 8; i++){
+
+            if (handKarten.get(i).gebeFarbe() == Farbe.SCHELLEN){
+                if (handKarten.get(i).gebeWert() == Werte.SIEBENER){
+                    JButton schellenSiebener = new JButton();
+                    schellenSiebener.addActionListener(e -> System.out.println("hhhhh"));
+                    schellenSiebener.setIcon(SchelleKarte7);
+                    schellenSiebener.setBorderPainted(false);
+                    schellenSiebener.setContentAreaFilled(false);
+                    schellenSiebener.setFocusPainted(false);
+                    spieler1handkarten.add(schellenSiebener);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.ACHTER){
+                    JButton schellenAchtner = new JButton();
+                    schellenAchtner.addActionListener(e -> System.out.println("hhhhh"));
+                    schellenAchtner.setIcon(SchelleKarte8);
+                    schellenAchtner.setBorderPainted(false);
+                    schellenAchtner.setContentAreaFilled(false);
+                    schellenAchtner.setFocusPainted(false);
+                    spieler1handkarten.add(schellenAchtner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.NEUNER){
+                    JButton schellenNeuner = new JButton();
+                    schellenNeuner.addActionListener(e -> System.out.println("hhhhh"));
+                    schellenNeuner.setIcon(SchelleKarte9);
+                    schellenNeuner.setBorderPainted(false);
+                    schellenNeuner.setContentAreaFilled(false);
+                    schellenNeuner.setFocusPainted(false);
+                    spieler1handkarten.add(schellenNeuner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.ZEHNER){
+                    JButton schellenZehner = new JButton();
+                    schellenZehner.addActionListener(e -> System.out.println("hhhhh"));
+                    schellenZehner.setIcon(SchelleKarte10);
+                    schellenZehner.setBorderPainted(false);
+                    schellenZehner.setContentAreaFilled(false);
+                    schellenZehner.setFocusPainted(false);
+                    spieler1handkarten.add(schellenZehner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.SAU){
+                    JButton schellenSau = new JButton();
+                    schellenSau.addActionListener(e -> System.out.println("hhhhh"));
+                    schellenSau.setIcon(SchelleKarteAss);
+                    schellenSau.setBorderPainted(false);
+                    schellenSau.setContentAreaFilled(false);
+                    schellenSau.setFocusPainted(false);
+                    spieler1handkarten.add(schellenSau);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.UNTER){
+                    JButton schellenUnter = new JButton();
+                    schellenUnter.addActionListener(e -> System.out.println("hhhhh"));
+                    schellenUnter.setIcon(SchelleKarteUnter);
+                    schellenUnter.setBorderPainted(false);
+                    schellenUnter.setContentAreaFilled(false);
+                    schellenUnter.setFocusPainted(false);
+                    spieler1handkarten.add(schellenUnter);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.OBER){
+                    JButton schellenOber = new JButton();
+                    schellenOber.addActionListener(e -> System.out.println("hhhhh"));
+                    schellenOber.setIcon(SchelleKarteOber);
+                    schellenOber.setBorderPainted(false);
+                    schellenOber.setContentAreaFilled(false);
+                    schellenOber.setFocusPainted(false);
+                    spieler1handkarten.add(schellenOber);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.KOENIG){
+                    JButton schellenKoenig = new JButton();
+                    schellenKoenig.addActionListener(e -> System.out.println("hhhhh"));
+                    schellenKoenig.setIcon(SchelleKarteKoenig);
+                    schellenKoenig.setBorderPainted(false);
+                    schellenKoenig.setContentAreaFilled(false);
+                    schellenKoenig.setFocusPainted(false);
+                    spieler1handkarten.add(schellenKoenig);
+                }
+            }
+            else if (handKarten.get(i).gebeFarbe() == Farbe.GRAS){
+                if (handKarten.get(i).gebeWert() == Werte.SIEBENER){
+                    JButton grasSiebener = new JButton();
+                    grasSiebener.addActionListener(e -> System.out.println("hhhhh"));
+                    grasSiebener.setIcon(GrassKarte7);
+                    grasSiebener.setBorderPainted(false);
+                    grasSiebener.setContentAreaFilled(false);
+                    grasSiebener.setFocusPainted(false);
+                    spieler1handkarten.add(grasSiebener);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.ACHTER){
+                    JButton grasAchtner = new JButton();
+                    grasAchtner.addActionListener(e -> System.out.println("hhhhh"));
+                    grasAchtner.setIcon(GrassKarte8);
+                    grasAchtner.setBorderPainted(false);
+                    grasAchtner.setContentAreaFilled(false);
+                    grasAchtner.setFocusPainted(false);
+                    spieler1handkarten.add(grasAchtner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.NEUNER){
+                    JButton grasNeuner = new JButton();
+                    grasNeuner.addActionListener(e -> System.out.println("hhhhh"));
+                    grasNeuner.setIcon(GrassKarte9);
+                    grasNeuner.setBorderPainted(false);
+                    grasNeuner.setContentAreaFilled(false);
+                    grasNeuner.setFocusPainted(false);
+                    spieler1handkarten.add(grasNeuner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.ZEHNER){
+                    JButton grasZehner = new JButton();
+                    grasZehner.addActionListener(e -> System.out.println("hhhhh"));
+                    grasZehner.setIcon(GrassKarte10);
+                    grasZehner.setBorderPainted(false);
+                    grasZehner.setContentAreaFilled(false);
+                    grasZehner.setFocusPainted(false);
+                    spieler1handkarten.add(grasZehner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.SAU){
+                    JButton grasSau = new JButton();
+                    grasSau.addActionListener(e -> System.out.println("hhhhh"));
+                    grasSau.setIcon(GrassKarteAss);
+                    grasSau.setBorderPainted(false);
+                    grasSau.setContentAreaFilled(false);
+                    grasSau.setFocusPainted(false);
+                    spieler1handkarten.add(grasSau);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.UNTER){
+                    JButton grasUnter = new JButton();
+                    grasUnter.addActionListener(e -> System.out.println("hhhhh"));
+                    grasUnter.setIcon(GrassKarteUnter);
+                    grasUnter.setBorderPainted(false);
+                    grasUnter.setContentAreaFilled(false);
+                    grasUnter.setFocusPainted(false);
+                    spieler1handkarten.add(grasUnter);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.OBER){
+                    JButton grasOber = new JButton();
+                    grasOber.addActionListener(e -> System.out.println("hhhhh"));
+                    grasOber.setIcon(GrassKarteOber);
+                    grasOber.setBorderPainted(false);
+                    grasOber.setContentAreaFilled(false);
+                    grasOber.setFocusPainted(false);
+                    spieler1handkarten.add(grasOber);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.KOENIG){
+                    JButton grasKoenig = new JButton();
+                    grasKoenig.addActionListener(e -> System.out.println("hhhhh"));
+                    grasKoenig.setIcon(GrassKarteKoenig);
+                    grasKoenig.setBorderPainted(false);
+                    grasKoenig.setContentAreaFilled(false);
+                    grasKoenig.setFocusPainted(false);
+                    spieler1handkarten.add(grasKoenig);
+                }
+            }
+            else if (handKarten.get(i).gebeFarbe() == Farbe.EICHEL){
+                if (handKarten.get(i).gebeWert() == Werte.SIEBENER){
+                    JButton eichelSiebener = new JButton();
+                    eichelSiebener.addActionListener(e -> System.out.println("hhhhh"));
+                    eichelSiebener.setIcon(eichelKarte7);
+                    eichelSiebener.setBorderPainted(false);
+                    eichelSiebener.setContentAreaFilled(false);
+                    eichelSiebener.setFocusPainted(false);
+                    spieler1handkarten.add(eichelSiebener);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.ACHTER){
+                    JButton eichelAchtner = new JButton();
+                    eichelAchtner.addActionListener(e -> System.out.println("hhhhh"));
+                    eichelAchtner.setIcon(eichelKarte8);
+                    eichelAchtner.setBorderPainted(false);
+                    eichelAchtner.setContentAreaFilled(false);
+                    eichelAchtner.setFocusPainted(false);
+                    spieler1handkarten.add(eichelAchtner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.NEUNER){
+                    JButton eichelNeuner = new JButton();
+                    eichelNeuner.addActionListener(e -> System.out.println("hhhhh"));
+                    eichelNeuner.setIcon(eichelKarte9);
+                    eichelNeuner.setBorderPainted(false);
+                    eichelNeuner.setContentAreaFilled(false);
+                    eichelNeuner.setFocusPainted(false);
+                    spieler1handkarten.add(eichelNeuner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.ZEHNER){
+                    JButton eichelZehner = new JButton();
+                    eichelZehner.addActionListener(e -> System.out.println("hhhhh"));
+                    eichelZehner.setIcon(eichelKarte10);
+                    eichelZehner.setBorderPainted(false);
+                    eichelZehner.setContentAreaFilled(false);
+                    eichelZehner.setFocusPainted(false);
+                    spieler1handkarten.add(eichelZehner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.SAU){
+                    JButton eichelSau = new JButton();
+                    eichelSau.addActionListener(e -> System.out.println("hhhhh"));
+                    eichelSau.setIcon(eichelKarteAss);
+                    eichelSau.setBorderPainted(false);
+                    eichelSau.setContentAreaFilled(false);
+                    eichelSau.setFocusPainted(false);
+                    spieler1handkarten.add(eichelSau);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.UNTER){
+                    JButton eichelUnter = new JButton();
+                    eichelUnter.addActionListener(e -> System.out.println("hhhhh"));
+                    eichelUnter.setIcon(eichelKarteUnter);
+                    eichelUnter.setBorderPainted(false);
+                    eichelUnter.setContentAreaFilled(false);
+                    eichelUnter.setFocusPainted(false);
+                    spieler1handkarten.add(eichelUnter);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.OBER){
+                    JButton eichelOber = new JButton();
+                    eichelOber.addActionListener(e -> System.out.println("hhhhh"));
+                    eichelOber.setIcon(eichelKarteOber);
+                    eichelOber.setBorderPainted(false);
+                    eichelOber.setContentAreaFilled(false);
+                    eichelOber.setFocusPainted(false);
+                    spieler1handkarten.add(eichelOber);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.KOENIG){
+                    JButton eichelKoenig = new JButton();
+                    eichelKoenig.addActionListener(e -> System.out.println("hhhhh"));
+                    eichelKoenig.setIcon(eichelKarteKoenig);
+                    eichelKoenig.setBorderPainted(false);
+                    eichelKoenig.setContentAreaFilled(false);
+                    eichelKoenig.setFocusPainted(false);
+                    spieler1handkarten.add(eichelKoenig);
+                }
+            }
+            else if (handKarten.get(i).gebeFarbe() == Farbe.HERZ){
+                if (handKarten.get(i).gebeWert() == Werte.SIEBENER){
+                    JButton herzSiebener = new JButton();
+                    herzSiebener.addActionListener(e -> System.out.println("hhhhh"));
+                    herzSiebener.setIcon(HerzKarte7);
+                    herzSiebener.setBorderPainted(false);
+                    herzSiebener.setContentAreaFilled(false);
+                    herzSiebener.setFocusPainted(false);
+                    spieler1handkarten.add(herzSiebener);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.ACHTER){
+                    JButton herzAchtner = new JButton();
+                    herzAchtner.addActionListener(e -> System.out.println("hhhhh"));
+                    herzAchtner.setIcon(HerzKarte8);
+                    herzAchtner.setBorderPainted(false);
+                    herzAchtner.setContentAreaFilled(false);
+                    herzAchtner.setFocusPainted(false);
+                    spieler1handkarten.add(herzAchtner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.NEUNER){
+                    JButton herzNeuner = new JButton();
+                    herzNeuner.addActionListener(e -> System.out.println("hhhhh"));
+                    herzNeuner.setIcon(HerzKarte9);
+                    herzNeuner.setBorderPainted(false);
+                    herzNeuner.setContentAreaFilled(false);
+                    herzNeuner.setFocusPainted(false);
+                    spieler1handkarten.add(herzNeuner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.ZEHNER){
+                    JButton herzZehner = new JButton();
+                    herzZehner.addActionListener(e -> System.out.println("hhhhh"));
+                    herzZehner.setIcon(HerzKarte10);
+                    herzZehner.setBorderPainted(false);
+                    herzZehner.setContentAreaFilled(false);
+                    herzZehner.setFocusPainted(false);
+                    spieler1handkarten.add(herzZehner);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.SAU){
+                    JButton herzSau = new JButton();
+                    herzSau.addActionListener(e -> System.out.println("hhhhh"));
+                    herzSau.setIcon(HerzKarteAss);
+                    herzSau.setBorderPainted(false);
+                    herzSau.setContentAreaFilled(false);
+                    herzSau.setFocusPainted(false);
+                    spieler1handkarten.add(herzSau);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.UNTER){
+                    JButton herzUnter = new JButton();
+                    herzUnter.addActionListener(e -> System.out.println("hhhhh"));
+                    herzUnter.setIcon(HerzKarteUnter);
+                    herzUnter.setBorderPainted(false);
+                    herzUnter.setContentAreaFilled(false);
+                    herzUnter.setFocusPainted(false);
+                    spieler1handkarten.add(herzUnter);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.OBER){
+                    JButton herzOber = new JButton();
+                    herzOber.addActionListener(e -> System.out.println("hhhhh"));
+                    herzOber.setIcon(HerzKarteOber);
+                    herzOber.setBorderPainted(false);
+                    herzOber.setContentAreaFilled(false);
+                    herzOber.setFocusPainted(false);
+                    spieler1handkarten.add(herzOber);
+                }
+                else if (handKarten.get(i).gebeWert() == Werte.KOENIG){
+                    JButton herzKoenig = new JButton();
+                    herzKoenig.addActionListener(e -> System.out.println("hhhhh"));
+                    herzKoenig.setIcon(HerzKarteKoenig);
+                    herzKoenig.setBorderPainted(false);
+                    herzKoenig.setContentAreaFilled(false);
+                    herzKoenig.setFocusPainted(false);
+                    spieler1handkarten.add(herzKoenig);
+                }
+            }
+        }
     }
 
     public void absichtAbfragen(){
+
+    }
+
+    public Farbe farbeFuerSpielabsicht(){
+        JFrame farbauswahlFenster = new JFrame("Farbe auswählen");
+        farbauswahlFenster.setSize(300, 100);
+        farbauswahlFenster.setLayout(null);
+
+
+        JButton schellenButton = new JButton("Schellen");
+        schellenButton.setBounds(100, 30, 100, 50);
+        schellenButton.addActionListener(e -> Farbe.SCHELLEN);
+        farbauswahlFenster.add(schellenButton);
+
+
+        JButton grasButton = new JButton("Gras");
+        grasButton.setBounds(100, 80, 100, 50);
+        farbauswahlFenster.add(grasButton);
+
+        JButton eichelButton = new JButton("Eichel");
+        eichelButton.setBounds(100, 130, 100, 50);
+        farbauswahlFenster.add(eichelButton);
 
     }
 
