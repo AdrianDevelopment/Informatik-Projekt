@@ -10,6 +10,11 @@ public class Speicherung {
      *
      * @return
      */
+    private static Speicherung speicherung = null;
+    public static Speicherung speicherungErstellen(){
+        if (speicherung==null)speicherung = new Speicherung();
+        return  speicherung;
+    }
     private int gewonneneSpiele;
     private int verloreneSpiele;
     private int verloreneSpieleSchneider;
@@ -20,9 +25,24 @@ public class Speicherung {
     private int[] verloreneModiSchneider;
     private int gesamtePunkte;
     private int gespielteKarten;
+    private int gespielteTurniere;
+    private int gewonneneTurniere;
+    private int verloreneTurniere;
+    private int hoechstePunktzahlRunde;
 
     public void KarteGespielt(){gespielteKarten++;}
     public void gesamtePunkteErhöhen(int punkte){gesamtePunkte += punkte;}
+    public void TurnierGewonnen(){
+        gewonneneTurniere++;
+        gespielteTurniere++;
+    }
+    public void TurnierVerloren(){
+        verloreneTurniere++;
+        gespielteTurniere++;
+    }
+    public void RundePunktzahlMelden(int punkte){
+        if (punkte>hoechstePunktzahlRunde)hoechstePunktzahlRunde=punkte;
+    }
     public void SpielGewonnen(SpielArt art){
         gespielteSpiele++;
         gewonneneSpiele++;
@@ -69,6 +89,18 @@ public class Speicherung {
     public int gewonneneSpieleGeben(){
         return gewonneneSpiele;
     }
+    public int gespielteTurniereGeben(){
+        return gespielteTurniere;
+    }
+    public int verloreneTurniereGeben(){
+        return verloreneTurniere;
+    }
+    public int gewonneneTurniereGeben(){
+        return  gewonneneTurniere;
+    }
+    public int hoechstePunktzahlRundeGeben(){
+        return  hoechstePunktzahlRunde;
+    }
     private void zahlenArraysInitialisieren(){
         gespielteModi = new int[3];
         gewonneneModi = new int[3];
@@ -87,11 +119,29 @@ public class Speicherung {
         verloreneSpieleSchneider = 0;
         gesamtePunkte = 0;
         gespielteKarten = 0;
+        gewonneneTurniere = 0;
+        verloreneTurniere = 0;
+        gespielteTurniere = 0;
+        hoechstePunktzahlRunde = 0;
         zahlenArraysInitialisieren();
         ArraySetzenAuf(gespielteModi,0);
         ArraySetzenAuf(gewonneneModi,0);
         ArraySetzenAuf(verloreneModi,0);
         ArraySetzenAuf(verloreneModiSchneider,0);
+    }
+    private int zahlLesenMindestVersion(FileInputStream fis,
+                                       int versionAktuell,
+                                       int versionMindestens,
+                                       int standard) throws IOException{
+        return (versionAktuell>=versionMindestens?zahlLesen(fis):standard);
+    }
+    private void zahlArrayLesenMindestVersion(FileInputStream fis,
+                                              int versionAktuell,
+                                              int versionMindestens,
+                                              int[] array,
+                                              int standard) throws IOException{
+        if (versionAktuell>=versionMindestens)zahlArrayLesen(fis,array);
+        else ArraySetzenAuf(array,standard);
     }
     private int zahlLesen(FileInputStream fis) throws IOException {
             int b1 = fis.read();
@@ -118,39 +168,44 @@ public class Speicherung {
             zahlSchreiben(fos, zahlen[i]);
         }
     }
-    public Speicherung(){
+    private Speicherung() {
         FileInputStream fis;
-        try{
+        try {
             fis = new FileInputStream("statistiken.dat");
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             zurücksetzen();
             return;
         }
-        try{
+        try {
+            int version = zahlLesen(fis);
             gewonneneSpiele = zahlLesen(fis);
             gespielteSpiele = zahlLesen(fis);
             verloreneSpiele = zahlLesen(fis);
             verloreneSpieleSchneider = zahlLesen(fis);
             gesamtePunkte = zahlLesen(fis);
             gespielteKarten = zahlLesen(fis);
+            gespielteTurniere = zahlLesen(fis);
+            gewonneneTurniere = zahlLesen(fis);
+            verloreneTurniere = zahlLesen(fis);
+            hoechstePunktzahlRunde = zahlLesen(fis);
             zahlenArraysInitialisieren();
-            zahlArrayLesen(fis,gespielteModi);
-            zahlArrayLesen(fis,gewonneneModi);
-            zahlArrayLesen(fis,verloreneModi);
-            zahlArrayLesen(fis,verloreneModiSchneider);
-        }catch (IOException e){
+            zahlArrayLesen(fis, gespielteModi);
+            zahlArrayLesen(fis, gewonneneModi);
+            zahlArrayLesen(fis, verloreneModi);
+            zahlArrayLesen(fis, verloreneModiSchneider);
+        } catch (IOException e) {
             zurücksetzen();
-            try{
+            try {
                 fis.close();
-            }catch(IOException e2){
-                
+            } catch (IOException e2) {
+
             }
             return;
         }
-        try{
+        try {
             fis.close();
-        }catch(IOException e){
-            
+        } catch (IOException e) {
+
         }
     }
     public void DatenSpeichern(){
@@ -161,12 +216,17 @@ public class Speicherung {
             return;
         }
         try{
+            zahlSchreiben(fos, 0); // Dateiversion
             zahlSchreiben(fos, gewonneneSpiele); // Spiele: Tunier -> Runden sollten auch gespeichert werden
             zahlSchreiben(fos, gespielteSpiele);
             zahlSchreiben(fos, verloreneSpiele);
             zahlSchreiben(fos, verloreneSpieleSchneider); // bisher nicht implementiert
             zahlSchreiben(fos, gesamtePunkte);
             zahlSchreiben(fos, gespielteKarten);
+            zahlSchreiben(fos, gespielteTurniere);
+            zahlSchreiben(fos, gewonneneTurniere);
+            zahlSchreiben(fos, verloreneTurniere);
+            zahlSchreiben(fos, hoechstePunktzahlRunde);
             zahlArraySchreiben(fos, gespielteModi);
             zahlArraySchreiben(fos, gewonneneModi);
             zahlArraySchreiben(fos, verloreneModi);
@@ -180,5 +240,9 @@ public class Speicherung {
             
         }
     }
-
+    @Override
+    protected void finalize() throws Throwable{
+        DatenSpeichern();
+        super.finalize();
+    }
 }
