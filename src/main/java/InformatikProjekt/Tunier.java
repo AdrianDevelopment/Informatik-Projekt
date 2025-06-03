@@ -17,7 +17,7 @@ public class Tunier {
     Tunier(int anzahlRunden, Spieler echterSpieler) {
         spieler = new ArrayList<>(4);
         spielKarten = new ArrayList<>();
-        speicherung = new Speicherung();
+        speicherung = Speicherung.speicherungErstellen();
         this.anzahlRunden = anzahlRunden;
         this.echterSpieler = echterSpieler;
     }
