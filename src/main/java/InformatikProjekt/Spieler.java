@@ -41,12 +41,21 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         while (spielabsicht == null) {
             spielabsicht = model.gebeSpielabsicht();
         }
+
         //Überprüfen, ob überhaupt möglich
+        //ist Sauspiel schon das höchste Spiel?
+        if(spielabsicht == hoechstesSpiel) {
+            gui.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also höher ausrufen oder weiter sagen.");
+            //"Rekursionsschritt"
+            model.setzeSpielabsicht(null); //Abbruchbedingung zurücksetzen
+            return spielabsichtFragen(hoechstesSpiel);
+        }
+        //Kann auf eine Sau ausgerufen werden?
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         if (farbe.isEmpty()) {
             gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen");
             //"Rekursionsschritt"
-            model.setzeSpielabsicht(null); //Abbruchbedingung zurücksetzen
+            model.setzeSpielabsicht(null); //Abbruchbedingung der while-Schleife zurücksetzen
             return spielabsichtFragen(hoechstesSpiel);
         }
         return spielabsicht;
@@ -59,7 +68,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     /**
      * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
-     * Überprüfung, ob Spiel auf Sau möglich → Rückgabe oder erneute GUI-Anfrage
+     * Überprüfung, ob gewählte Farbe möglich → Rückgabe oder erneute GUI-Anfrage
      */
     @Override
     public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
@@ -69,15 +78,17 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         while(spielasichtFarbe == null) {
             spielasichtFarbe = model.gebeSpielabsichtFarbe();
         }
-        //Überprüfen, ob überhaupt möglich
+        //Überprüfen, ob gewählte Farbe möglich
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
-        if (farbe.isEmpty()) {
-            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen");
-            //"Rekursionsschritt"
-            model.setzeSpielabsichtFarbe(null); //Abbruchbedingung zurücksetzen
-            return farbeFuerSpielAbsicht(spielArt);
+        for (int i = 0; i < farbe.size(); i++) {
+            if (spielasichtFarbe == farbe.get(i)) {
+                return spielasichtFarbe; //Farbe ist erlaubt → Rückgabe
+            }
         }
-        return spielasichtFarbe;
+        gui.ungueltigeEingabe("Du kannst auf diese Sau nicht ausrufen.");
+        //"Rekursionsschritt"
+        model.setzeSpielabsichtFarbe(null); //Abbruchbedingung der while-Schleife zurücksetzen
+        return farbeFuerSpielAbsicht(spielArt);
     }
 
     /*Methode wird von GUI aufgerufen und übergibt dem Model die Farbe für die Sau*/
@@ -88,42 +99,19 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-
-        if (welcherSpieler != WelcherSpieler.NUTZER) { //wenn Spieler Nutzer ist, dann weiß es der Spieler schon -> keine Übergabe an GUI
-            gui.spielerHatSpielerabsichtGesagt(spielAbsicht, welcherSpieler);
-        }
+        gui.spielerHatSpielerabsichtGesagt(spielAbsicht, welcherSpieler);
     }
 
+    /**
+     * gibt Spielart, ausgerufenen spieler und Farbe an Model und GUI weiter
+     * spieler: int Wert, wie ihn die Runde speichert (braucht ihn dann wieder, deswegen Übergabe an Model)
+     * welcherSpieler: Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
+     */
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        model.setzeSpielArt(welcherSpieler, spielArt, farbe);
-
-        String ausgabe = "";
-        switch (spielArt) {
-            case KEINSPIEL:
-                ausgabe = "Niemand wollte spielen";
-            case SAUSPIEL:
-                ausgabe = "Sauspiel auf die ";
-                switch (farbe) {
-                    case SCHELLEN:
-                        ausgabe += "Bumbe";
-                        break;
-                    case GRAS:
-                        ausgabe += "Blaue";
-                        break;
-                    case EICHEL:
-                        ausgabe += "Alte";
-                        break;
-                }
-            case WENZ:
-                ausgabe = "Wenz";
-            case SOLO:
-                ausgabe = "Solo mit der Farbe " + farbe; //TODO: Farbe mit switch in ausgabe reinschreiben
-            default:
-                break;
-        }
-        gui.spielArtEntschieden(spieler, ausgabe);
+        model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
+        gui.spielArtEntschieden(welcherSpieler, spielArt, farbe);
     }
 
 

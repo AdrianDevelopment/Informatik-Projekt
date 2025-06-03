@@ -11,6 +11,7 @@ public class SpielerModel {
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
     private WelcherSpieler ausrufenderSpieler;
+    private int[] spieler; //speichert wer ausruft und wer Mitspieler ist
     private Farbe farbe;
     //Attribute für Lege-/Stichrunden
     private WelcherSpieler rundeErsterSpieler;
@@ -27,6 +28,7 @@ public class SpielerModel {
 
         spielArt = null;
         ausrufenderSpieler = null;
+        spieler = new int[2];
         farbe = null;
 
         stich = new ArrayList<Spielkarte>();
@@ -61,9 +63,10 @@ public class SpielerModel {
      * @param ausgerufeneFarbe
      * @param ausgerufeneSpielArt
      */
-    public void setzeSpielArt(WelcherSpieler spieler, SpielArt ausgerufeneSpielArt, Farbe ausgerufeneFarbe) {
+    public void setzeSpielArt(WelcherSpieler ausrufenderSpieler, SpielArt ausgerufeneSpielArt, Farbe ausgerufeneFarbe, int spieler) {
         spielArt = ausgerufeneSpielArt;
-        ausrufenderSpieler = spieler;
+        this.ausrufenderSpieler = ausrufenderSpieler;
+        this.spieler[0] = spieler;
         farbe = ausgerufeneFarbe;
     }
 
