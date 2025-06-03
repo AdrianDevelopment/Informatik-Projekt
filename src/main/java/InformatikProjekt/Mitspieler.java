@@ -10,18 +10,18 @@ public abstract class Mitspieler {
 
     //Fragt die Spielabsicht der Mitspieler ab.
     public abstract SpielArt spielabsichtFragen(SpielArt hoechstesSpiel);
+
     //Fragt die Farbe für das Spiel von dem Spieler, der das hoechste Spiel angeboten hat ab. (Farbe bei Sau fürs Ausrufen, bei Solo für Trumpf)
     public abstract Farbe farbeFuerSpielAbsicht(SpielArt spielArt);
 
     //Nachricht an Mitspieler, nachdem ein Spieler eine Spielabsicht abgegeben hat.
     public abstract void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler);
+
     //Forder einen Mitspieler auf eine legale Karte zu legen.
     public abstract Spielkarte legeEineKarte();
 
     //Legt die Startwerte fuer eine neue Runde fest.
-    public abstract void rundeStarten(
-            ArrayList<Spielkarte> karten, int wieVielterSpieler
-    );
+    public abstract void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler);
 
     //Nachricht an Mitspieler welche Spielart gespielt wird, ueberreicht Farbe wenn Solo und Sau wenn Sauspiel.
     public abstract void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt);
@@ -40,11 +40,11 @@ public abstract class Mitspieler {
     //Diese Methode nicht Aufrufen, wenn die erste Karte gelegt wird!!!
     public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe) {
 
-        ArrayList<Spielkarte> legaleKarten = new ArrayList<Spielkarte>();
+        ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<Spielkarte>();
         switch (spielArt) {
             case SOLO:
 
-                legaleKarten = this.soloErlaubteKarten(hand, soloFarbe, vorgegebeneKarte);
+                gezwungeneKarten = this.soloErlaubteKarten(hand, soloFarbe, vorgegebeneKarte);
 
                 break;
             case WENZ:
@@ -52,14 +52,14 @@ public abstract class Mitspieler {
                 if (vorgegebeneKarte.gebeWert() == Werte.UNTER) {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeWert() == Werte.UNTER) {
-                            legaleKarten.add(karte);
+                            gezwungeneKarten.add(karte);
                         }
                     }
 
                 } else {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && karte.gebeWert() != Werte.UNTER) {
-                            legaleKarten.add(karte);
+                            gezwungeneKarten.add(karte);
                         }
 
                     }
@@ -70,26 +70,40 @@ public abstract class Mitspieler {
                 //todo sau darf nur gelegt werden wenn die Farbe ausgerufen wird.
                 int anzahlSauFarbeKarten = 0;
                 boolean hatSau = false;
+
+                //Gesuchte Sau darf nicht gelegt werden, wenn nicht die richtige Farbe liegt. Braucht Information, ob die gesuchte Farbe der Sau schon gelegt wurde.
+                /*
+                if (vorgegebeneKarte.gebeFarbe() != sau.gebeFarbe() && gesuchteFarbeNochNichtGespielt) {
+
+                    for (Spielkarte karte : hand) {
+                        if (karte == sau) {
+                            hand.remove(sau);
+                        }
+                    }
+
+                }
+                */
+
                 for (Spielkarte karte : hand) {
-                    if (karte.gebeFarbe() == sau.gebeFarbe() && !((karte.gebeWert() != Werte.UNTER)|| karte.gebeWert() != Werte.OBER )) {
-                        anzahlSauFarbeKarten ++;
-                        if(karte.gebeWert() == Werte.SAU){
+                    if (vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() && karte.gebeFarbe() == sau.gebeFarbe() && !((karte.gebeWert() != Werte.UNTER) || karte.gebeWert() != Werte.OBER)) {
+                        anzahlSauFarbeKarten++;
+                        if (karte.gebeWert() == Werte.SAU) {
                             hatSau = true;
                         }
 
                     }
 
                 }
-                if(hatSau && anzahlSauFarbeKarten <4){
-                    legaleKarten.add(sau);
-                    return  legaleKarten;
-
+                if (hatSau && anzahlSauFarbeKarten < 4) {
+                    gezwungeneKarten.add(sau);
+                    return gezwungeneKarten;
                 }
+
                 if (vorgegebeneKarte.gebeFarbe() == Farbe.HERZ || vorgegebeneKarte.gebeWert() == Werte.OBER || vorgegebeneKarte.gebeWert() == Werte.UNTER) {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeFarbe() == Farbe.HERZ || karte.gebeWert() == Werte.OBER || karte.gebeWert() == Werte.UNTER) {
 
-                            legaleKarten.add(karte);
+                            gezwungeneKarten.add(karte);
                         }
                     }
 
@@ -97,19 +111,18 @@ public abstract class Mitspieler {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe()) {
 
-                            legaleKarten.add(karte);
+                            gezwungeneKarten.add(karte);
                         }
 
                     }
 
                 }
-                //gesuchte Sau entfernen, wenn sie auf der Hand ist
 
 
                 break;
         }
-        if (!legaleKarten.isEmpty()) {
-            return legaleKarten;
+        if (!gezwungeneKarten.isEmpty()) {
+            return gezwungeneKarten;
         } else {
             return hand;
         }
@@ -117,29 +130,30 @@ public abstract class Mitspieler {
     }
 
     private ArrayList<Spielkarte> soloErlaubteKarten(ArrayList<Spielkarte> hand, Farbe farbeSolo, Spielkarte vorgegebeneKarte) {
-        ArrayList<Spielkarte> legaleKarten = new ArrayList<Spielkarte>();
+        ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<Spielkarte>();
         if (vorgegebeneKarte.gebeFarbe() == farbeSolo || vorgegebeneKarte.gebeWert() == Werte.OBER || vorgegebeneKarte.gebeWert() == Werte.UNTER) {
             for (Spielkarte karte : hand) {
                 if (karte.gebeFarbe() == farbeSolo || karte.gebeWert() == Werte.OBER || karte.gebeWert() == Werte.UNTER) {
-                    legaleKarten.add(karte);
+                    gezwungeneKarten.add(karte);
                 }
             }
-            return legaleKarten;
+            return gezwungeneKarten;
 
         } else {
             for (Spielkarte karte : hand) {
                 if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe()) {
-                    legaleKarten.add(karte);
+                    gezwungeneKarten.add(karte);
                 }
 
             }
-            return legaleKarten;
+            return gezwungeneKarten;
 
         }
 
     }
+
     //Gibt alle Farben zurueck fuer, die der Spieler eine Sau ausrufen kann. Die Farbe mit der niedrigsten Anzahl an Karten hat Index 0.
-    public ArrayList<Farbe> sauZumAusrufen(ArrayList<Spielkarte> hand){
+    public ArrayList<Farbe> sauZumAusrufen(ArrayList<Spielkarte> hand) {
         int anzahlEichel = 0;
         int anzahlGras = 0;
         int anzahlSchellen = 0;
@@ -149,22 +163,22 @@ public abstract class Mitspieler {
         boolean hatSchellenSau = false;
 
         for (Spielkarte karte : hand) {
-            switch (karte.gebeFarbe()){
+            switch (karte.gebeFarbe()) {
                 case SCHELLEN:
-                    anzahlSchellen ++;
-                    if (karte.gebeWert() == Werte.SAU){
+                    anzahlSchellen++;
+                    if (karte.gebeWert() == Werte.SAU) {
                         hatSchellenSau = true;
                     }
                     break;
                 case GRAS:
-                    anzahlGras ++;
-                    if (karte.gebeWert() == Werte.SAU){
+                    anzahlGras++;
+                    if (karte.gebeWert() == Werte.SAU) {
                         hatGrasau = true;
                     }
                     break;
                 case EICHEL:
-                    anzahlEichel ++;
-                    if (karte.gebeWert() == Werte.SAU){
+                    anzahlEichel++;
+                    if (karte.gebeWert() == Werte.SAU) {
                         hatEichelSau = true;
                     }
                     break;
@@ -174,32 +188,32 @@ public abstract class Mitspieler {
             }
         }
         ArrayList<Farbe> erlaubteFarben = new ArrayList<>();
-        if (anzahlGras!=0 && !hatGrasau){
+        if (anzahlGras != 0 && !hatGrasau) {
             erlaubteFarben.add(Farbe.GRAS);
         }
-        if (anzahlSchellen!=0  && !hatSchellenSau){
-            if (anzahlSchellen < anzahlGras){
-                erlaubteFarben.add( 0,Farbe.SCHELLEN);
-            }else{
+        if (anzahlSchellen != 0 && !hatSchellenSau) {
+            if (anzahlSchellen < anzahlGras) {
+                erlaubteFarben.add(0, Farbe.SCHELLEN);
+            } else {
                 erlaubteFarben.add(Farbe.SCHELLEN);
             }
 
         }
-        if (anzahlEichel!=0  && !hatEichelSau){
-          int positionInListe = 0;
-          for (Farbe farbe : erlaubteFarben){
-              if (farbe == Farbe.GRAS && anzahlEichel > anzahlGras){
-                      positionInListe++;
-              }
-              if (farbe == Farbe.SCHELLEN && anzahlEichel > anzahlSchellen){
-                  positionInListe++;
-              }
+        if (anzahlEichel != 0 && !hatEichelSau) {
+            int positionInListe = 0;
+            for (Farbe farbe : erlaubteFarben) {
+                if (farbe == Farbe.GRAS && anzahlEichel > anzahlGras) {
+                    positionInListe++;
+                }
+                if (farbe == Farbe.SCHELLEN && anzahlEichel > anzahlSchellen) {
+                    positionInListe++;
+                }
 
-          }
-            erlaubteFarben.add(positionInListe,Farbe.EICHEL);
+            }
+            erlaubteFarben.add(positionInListe, Farbe.EICHEL);
         }
-        return  erlaubteFarben;
-        
+        return erlaubteFarben;
+
     }
 }
 
