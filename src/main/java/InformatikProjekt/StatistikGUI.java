@@ -13,7 +13,7 @@ public class StatistikGUI {
         JFrame Statistik = new JFrame("Statistiken");
         Statistik.setSize(500, 500);
         Statistik.setVisible(true);
-        Statistik.setDefaultCloseOperation(Statistik.EXIT_ON_CLOSE);
+        //Statistik.setDefaultCloseOperation(Statistik.EXIT_ON_CLOSE);
         Statistik.setResizable(false);
         Statistik.setLayout(null);
 
