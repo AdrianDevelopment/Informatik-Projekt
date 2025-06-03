@@ -29,35 +29,44 @@ public class Speicherung {
     private int gewonneneTurniere;
     private int verloreneTurniere;
     private int hoechstePunktzahlRunde;
+    private boolean datenGeaendert;
 
     public void KarteGespielt(){gespielteKarten++;}
     public void gesamtePunkteErhöhen(int punkte){gesamtePunkte += punkte;}
     public void TurnierGewonnen(){
         gewonneneTurniere++;
         gespielteTurniere++;
+        datenGeaendert = true;
     }
     public void TurnierVerloren(){
         verloreneTurniere++;
         gespielteTurniere++;
+        datenGeaendert = true;
     }
     public void RundePunktzahlMelden(int punkte){
-        if (punkte>hoechstePunktzahlRunde)hoechstePunktzahlRunde=punkte;
+        if (punkte>hoechstePunktzahlRunde){
+            hoechstePunktzahlRunde=punkte;
+            datenGeaendert = true;
+        }
     }
     public void SpielGewonnen(SpielArt art){
         gespielteSpiele++;
         gewonneneSpiele++;
         gespielteModi[art.gebeSpielArtID() - 1]++;
         gewonneneModi[art.gebeSpielArtID() - 1]++;
+        datenGeaendert = true;
     }
     public void SpielVerloren(SpielArt art){
         verloreneSpiele++;
         gespielteSpiele++;
         gespielteModi[art.gebeSpielArtID() - 1]++;
         verloreneModi[art.gebeSpielArtID() - 1]++;
+        datenGeaendert = true;
     }
     public void SpielVerlorenSchneider(SpielArt art){
         verloreneSpieleSchneider++;
         verloreneModiSchneider[art.gebeSpielArtID() - 1]++;
+        datenGeaendert = true;
     }
     public int modusSpielzahlGeben(SpielArt art){
         return gespielteModi[art.gebeSpielArtID() - 1];
@@ -128,6 +137,7 @@ public class Speicherung {
         ArraySetzenAuf(gewonneneModi,0);
         ArraySetzenAuf(verloreneModi,0);
         ArraySetzenAuf(verloreneModiSchneider,0);
+        datenGeaendert = true;
     }
     private int zahlLesenMindestVersion(FileInputStream fis,
                                        int versionAktuell,
@@ -193,6 +203,8 @@ public class Speicherung {
             zahlArrayLesen(fis, gewonneneModi);
             zahlArrayLesen(fis, verloreneModi);
             zahlArrayLesen(fis, verloreneModiSchneider);
+            if (version==0)datenGeaendert = false;
+            else datenGeaendert = true; // Version muss aktualisiert werden
         } catch (IOException e) {
             zurücksetzen();
             try {
@@ -209,6 +221,7 @@ public class Speicherung {
         }
     }
     public void DatenSpeichern(){
+        if (!datenGeaendert)return;
         FileOutputStream fos;
         try{
             fos = new FileOutputStream("statistiken.dat");
@@ -231,6 +244,7 @@ public class Speicherung {
             zahlArraySchreiben(fos, gewonneneModi);
             zahlArraySchreiben(fos, verloreneModi);
             zahlArraySchreiben(fos, verloreneModiSchneider);
+            datenGeaendert = false;
         }catch (IOException e){
             
         }
