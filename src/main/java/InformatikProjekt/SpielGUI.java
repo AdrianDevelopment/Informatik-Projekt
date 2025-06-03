@@ -44,10 +44,12 @@ class SpielGUI {
     ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
     ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
 
+    JFrame mainFrame;
+
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
         spieler1handkarten = new ArrayList<JButton>();
-        JFrame mainFrame = new JFrame();
+        mainFrame = new JFrame();
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         mainFrame.setVisible(true);
         //mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
@@ -537,12 +539,19 @@ class SpielGUI {
                 }
             }
         }
+        handkartenAusteilen(spieler1handkarten);
     }
 
     public void absichtAbfragen(){
 
     }
 
+    public void handkartenAusteilen(ArrayList<JButton> spieler1handkarten){
+        for (int i = 0; i < spieler1handkarten.size(); i++){
+            mainFrame.add(spieler1handkarten.get(i));
+            spieler1handkarten.get(i).setBounds((400 + i*60) + 100, 100, 100, 600);
+        }
+    }
     public void farbeFuerSpielabsicht(){
         JFrame farbauswahlFenster = new JFrame("Farbe auswählen");
         farbauswahlFenster.setSize(300, 100);
