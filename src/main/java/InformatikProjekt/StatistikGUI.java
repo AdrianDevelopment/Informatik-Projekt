@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class StatistikGUI {
-    
+
     private Speicherung speicherung;
-    
+
     public StatistikGUI() {
-        speicherung = new Speicherung();
-        
+        speicherung = Speicherung.speicherungErstellen();
+
         JFrame Statistik = new JFrame("Statistiken");
         Statistik.setSize(500, 500);
         Statistik.setVisible(true);
