@@ -6,15 +6,19 @@ import java.util.ArrayList;
 
 public class Runde {
     private final ArrayList<Mitspieler> spieler; // Queue, da erster Mitspieler in Queue Vorhand ist, gecycelt wird in Tunier
+    private Speicherung speicherung;
     private int[] punkte;
     private int ausrufer;
     private int mitspieler;
     private Mitspieler ausruferObjekt;
     private Spielkarte[] aktuellerStich;
     private Spielkarte aktuelleSpielKarte;
+    private int positionSpieler;
 
-    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler) {
+    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung) {
         this.spieler = spieler;
+        this.speicherung = speicherung;
+        this.positionSpieler = positionSpieler;
 
         for (int i = 0; i < 4; i++) {
             spieler.get(i).rundeStarten(spielKarten, positionSpieler);
@@ -56,6 +60,17 @@ public class Runde {
                 for (Mitspieler aktuellerSpieler : spieler) {
                     aktuellerSpieler.rundeGewonnen(sieger, punkte);
                 }
+
+                // Speicherung
+                if (sieger[0] == positionSpieler || sieger[1] == positionSpieler) {
+                    speicherung.gesamtePunkteErhöhen(punkte[positionSpieler]);
+                    speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
+                }
+                else {
+                    speicherung.SpielVerloren(SpielArt.SAUSPIEL);
+                }
+                speicherung.DatenSpeichern();
+
                 return sieger;
             case WENZ:
                 // spielSchleifeWenz();
@@ -66,7 +81,7 @@ public class Runde {
         }
 
         System.out.println("ERROR: Fehler in starteRunde()");
-        return punkte;
+        return null;
     }
 
     // TODO: spielSchleifeWenz(), spielSchleifeSolo()
@@ -85,6 +100,9 @@ public class Runde {
 
             amZug = (amZug == 3) ? 0 : amZug + 1;
         }
+
+        // Speicherung
+        speicherung.KarteGespielt();
 
         // Auswertung des Stichs
         int sieger = ermittleSieger(aktuellerStich);

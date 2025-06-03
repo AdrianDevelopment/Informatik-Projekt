@@ -161,10 +161,10 @@ public class Speicherung {
             return;
         }
         try{
-            zahlSchreiben(fos, gewonneneSpiele);
+            zahlSchreiben(fos, gewonneneSpiele); // Spiele: Tunier -> Runden sollten auch gespeichert werden
             zahlSchreiben(fos, gespielteSpiele);
             zahlSchreiben(fos, verloreneSpiele);
-            zahlSchreiben(fos, verloreneSpieleSchneider);
+            zahlSchreiben(fos, verloreneSpieleSchneider); // bisher nicht implementiert
             zahlSchreiben(fos, gesamtePunkte);
             zahlSchreiben(fos, gespielteKarten);
             zahlArraySchreiben(fos, gespielteModi);
