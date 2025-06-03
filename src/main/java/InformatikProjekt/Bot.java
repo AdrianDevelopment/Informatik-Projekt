@@ -117,6 +117,12 @@ public  class Bot extends Mitspieler {
     public void stichGewonnen(int spieler) {
         model.kartenZaehlerZuruecksetzten();
     }
+
+    @Override
+    public int gebeMitspieler() {
+        return -1;
+    }
+
     @Override
     public void rundeGewonnen(int[] gewinner, int[] punkte) {
 

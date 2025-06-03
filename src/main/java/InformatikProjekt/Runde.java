@@ -50,6 +50,9 @@ public class Runde {
             aktuellerSpieler.spielArtEntschieden(ausrufer, farbe, hoechstesSpiel);
         }
 
+        mitspieler = spieler.get(positionSpieler).gebeMitspieler();
+        if (mitspieler == -1) System.out.println("ERROR: Position des echten Spielers ist falsch!");
+
         switch (hoechstesSpiel) {
             case KEINSPIEL:
                 starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion

@@ -35,6 +35,7 @@ public abstract class Mitspieler {
     //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat.
     public abstract void stichGewonnen(int spieler);
 
+    public abstract int gebeMitspieler();
 
     //Methode fuer Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden koennen zurueckgibt.
     //Diese Methode nicht Aufrufen, wenn die erste Karte gelegt wird!!!
