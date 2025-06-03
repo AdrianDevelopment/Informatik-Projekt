@@ -9,6 +9,7 @@ public class MenueGUI {
     //globale Variablen erstellen
     JButton playButton;
     private Spieler spieler;
+    private ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\hintergrundMenueGUI.png");
 
     public MenueGUI(Spieler spieler) {
         this.spieler = spieler;
@@ -17,10 +18,13 @@ public class MenueGUI {
     public int guiStart() {
         JFrame frame = new JFrame();
         frame.setTitle("Startmenue");
-        frame.setSize(500, 500); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
+        frame.setSize(889, 500); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         frame.setVisible(true);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        frame.getContentPane().setBackground(Color.green);
+        //frame.setBackground(Color.GREEN);
+        JLabel lblHintergrund = new JLabel(imageIcon);
+        lblHintergrund.setOpaque(false);
+        frame.setContentPane(lblHintergrund);
 
         Border border = BorderFactory.createLineBorder(Color.black);
 
@@ -31,19 +35,19 @@ public class MenueGUI {
         label1.setVerticalAlignment(JLabel.TOP);
         label1.setHorizontalAlignment(JLabel.CENTER);
         label1.setFont(new Font("My Boli",Font.PLAIN, 40));
-        label1.setBounds(75,0,350,50);
+        label1.setBounds(269,0,350,50);
 
         //Hier werden Buttons erstellt:
         JButton playButton = new JButton();
         playButton.addActionListener( e -> new SpielGUI(spieler));
         // playButton.addActionListener(e -> Menue.startMainGame());
-        playButton.setBounds(150,60,200,40);
+        playButton.setBounds(344,60,200,40);
         playButton.setText("SPIELEN");
         playButton.setFocusable(false);
 
         JButton statistikButton = new JButton();
         statistikButton.addActionListener(e -> new StatistikGUI());
-        statistikButton.setBounds(150,120,200,40);
+        statistikButton.setBounds(344,120,200,40);
         statistikButton.setText("STATISTIK");
         statistikButton.setFocusable(false);
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 class SpielGUI {
     private Spieler spieler;
 
+    private ArrayList<Spielkarte> handKarten = new ArrayList<Spielkarte>();
     private ArrayList<JButton> spieler1handkarten;
     private ImageIcon eichelKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_7.png");
     private ImageIcon eichelKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_8.png");
@@ -182,22 +183,11 @@ class SpielGUI {
         JButton weiterButton = new JButton("Weiter");
         weiterButton.setBounds(1000, 600, 100, 50);
         weiterButton.addActionListener(e -> spieler.spielabsichtGUI(SpielArt.KEINSPIEL));
+        //weiterButton.addActionListener(e -> zeigeHandkarten(handKarten));
 
         JButton sauButton = new JButton("SAU");
         sauButton.setBounds(1100, 600, 100, 50);
         sauButton.addActionListener(e -> spieler.spielabsichtGUI(SpielArt.SAUSPIEL));
-
-
-        //Karten von Spieler1 werden erstellt:
-        JButton spieler1Karte1 = new JButton();
-        spieler1Karte1.addActionListener(e -> System.out.println("hhhhh"));
-        spieler1Karte1.setIcon(kartenRuekseite);
-        spieler1Karte1.setBounds(300,560,80,100);
-        spieler1Karte1.setBorderPainted(false);
-        spieler1Karte1.setContentAreaFilled(false);
-        spieler1Karte1.setFocusPainted(false);
-
-
 
         //Sachen zum Frame hinzufügen
         mainFrame.add(Spieler1);
@@ -234,7 +224,6 @@ class SpielGUI {
 
         mainFrame.add(weiterButton);
         mainFrame.add(sauButton);
-        mainFrame.add(spieler1Karte1);
     }
 
     public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
@@ -539,7 +528,12 @@ class SpielGUI {
                 }
             }
         }
-        handkartenAusteilen(spieler1handkarten);
+        if (spieler1handkarten.isEmpty()) {
+            System.out.println("keine passende karte gefunden");
+        }
+        else{
+            handkartenAusteilen(spieler1handkarten);
+        }
     }
 
     public void spielabsichtAbfragen(){
@@ -560,7 +554,7 @@ class SpielGUI {
     }
 
     public void handkartenAusteilen(ArrayList<JButton> spieler1handkarten){
-        for (int i = 0; i < spieler1handkarten.size(); i++){
+        for (int i = 0; i < 8; i++){
             mainFrame.add(spieler1handkarten.get(i));
             spieler1handkarten.get(i).setBounds((400 + i*60) + 100, 100, 100, 600);
         }
