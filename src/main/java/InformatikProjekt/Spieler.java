@@ -44,7 +44,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
         //Überprüfen, ob überhaupt möglich
         //ist Sauspiel schon das höchste Spiel?
-        if(spielabsicht == hoechstesSpiel) {
+        if (spielabsicht == hoechstesSpiel) {
             gui.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also höher ausrufen oder weiter sagen.");
             //"Rekursionsschritt"
             model.setzeSpielabsicht(null); //Abbruchbedingung zurücksetzen
@@ -75,7 +75,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         Farbe spielasichtFarbe = null;
         gui.farbeFuerSpielAbsicht();
         //wartet bis GUI Nutzereingabe dem Controller meldet
-        while(spielasichtFarbe == null) {
+        while (spielasichtFarbe == null) {
             spielasichtFarbe = model.gebeSpielabsichtFarbe();
         }
         //Überprüfen, ob gewählte Farbe möglich
@@ -116,13 +116,13 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
 
     /**
-     → Aufruf an GUI, eine Karte zu legen
-        - schauen, ob ich der erste in der Lege-/Stichrunde bin
-        → keine Überprüfung, weil jede Karte gelegt werden kann
-     - wenn ich nicht der erste in der Lege-/Stichrunde bin
-        → model abfragen, welche Karte ich legen muss
-        → überprüfen, ob ich Karte legen darf
-        → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
+     * → Aufruf an GUI, eine Karte zu legen
+     * - schauen, ob ich der erste in der Lege-/Stichrunde bin
+     * → keine Überprüfung, weil jede Karte gelegt werden kann
+     * - wenn ich nicht der erste in der Lege-/Stichrunde bin
+     * → model abfragen, welche Karte ich legen muss
+     * → überprüfen, ob ich Karte legen darf
+     * → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
      */
     @Override
     public Spielkarte legeEineKarte() {//TODO: nicht fertig
@@ -135,7 +135,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         //Überprüfung, ob Karte erlaubt ist
         if (anzahlSpielerSchonGelegt != 0) {
             karteIstErlaubt = false;
-            erlaubteKarten = gibErlaubteKarten(model.gebeHandkarten(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU),model.gebeVorgegebeneKarte(), model.gebeFarbe()); //TODO: anpassen, wenn Tim Methode anpasst
+            erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt()); //TODO: anpassen, wenn Tim Methode anpasst
             for (int i = 0; i < erlaubteKarten.size(); i++) {
                 if (zuLegendeKarte.equals(erlaubteKarten.get(i))) {
                     karteIstErlaubt = true;
@@ -157,6 +157,11 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
+        //todo anpassen mit Solofarbe anstatt null
+        //Wenn auf Vorhand die Farbe der Sau gespielt wird setzeSauFarbeVorhandGespielt = true
+        if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
+            model.setzteSauFarbeVorhandGespielt(true);
+        }
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         model.setzeGelegteKarte(karte);
         gui.zeigeGelegteKarte(karte, welcherSpieler);
@@ -196,12 +201,13 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     /**
      * Gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
+     *
      * @param spieler: von Runde übergeben
      */
     public WelcherSpieler wieVielterSpieler(int spieler) {
         WelcherSpieler spielerImUhrzeigersinn = null;
         int rechnung = spieler - model.gebeWelcherSpieler(); //positive Zahlen im Uhrzeigersinn; negative gegen den Uhrzeigersinn
-        if(rechnung == 0) {
+        if (rechnung == 0) {
             spielerImUhrzeigersinn = WelcherSpieler.NUTZER; //Nutzer
         } else if (rechnung == 1 || rechnung == -3) {
             spielerImUhrzeigersinn = WelcherSpieler.LINKER; //linker Spieler

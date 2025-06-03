@@ -29,14 +29,14 @@ public class MitSpielerTest {
         hand.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
 
         //Verschiedene Spielsituationen
-        ArrayList<Spielkarte> erlaubteKartenSauTrumpf = bot.gibErlaubteKarten(hand, SpielArt.SAUSPIEL, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.EICHEL, Werte.OBER), Farbe.GRAS);
-        ArrayList<Spielkarte> erlaubteKartenSauFarbe = bot.gibErlaubteKarten(hand, SpielArt.SAUSPIEL, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.EICHEL, Werte.ZEHNER), Farbe.GRAS);
+        ArrayList<Spielkarte> erlaubteKartenSauTrumpf = bot.gibErlaubteKarten(hand, SpielArt.SAUSPIEL, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.EICHEL, Werte.OBER), Farbe.GRAS, false);
+        ArrayList<Spielkarte> erlaubteKartenSauFarbe = bot.gibErlaubteKarten(hand, SpielArt.SAUSPIEL, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.EICHEL, Werte.ZEHNER), Farbe.GRAS, false);
 
-        ArrayList<Spielkarte> erlaubteKartenWenzTrumpf = bot.gibErlaubteKarten(hand, SpielArt.WENZ, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.EICHEL, Werte.UNTER), Farbe.GRAS);
-        ArrayList<Spielkarte> erlaubteKartenWenzFarbe = bot.gibErlaubteKarten(hand, SpielArt.WENZ, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.HERZ, Werte.ZEHNER), Farbe.GRAS);
+        ArrayList<Spielkarte> erlaubteKartenWenzTrumpf = bot.gibErlaubteKarten(hand, SpielArt.WENZ, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.EICHEL, Werte.UNTER), Farbe.GRAS, false);
+        ArrayList<Spielkarte> erlaubteKartenWenzFarbe = bot.gibErlaubteKarten(hand, SpielArt.WENZ, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.HERZ, Werte.ZEHNER), Farbe.GRAS, false);
 
-        ArrayList<Spielkarte> erlaubteKartenSoloGrasTrumpf = bot.gibErlaubteKarten(hand, SpielArt.SOLO, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.EICHEL, Werte.UNTER), Farbe.GRAS);
-        ArrayList<Spielkarte> erlaubteKartenSoloGrasFarbe = bot.gibErlaubteKarten(hand, SpielArt.SOLO, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.HERZ, Werte.ZEHNER), Farbe.GRAS);
+        ArrayList<Spielkarte> erlaubteKartenSoloGrasTrumpf = bot.gibErlaubteKarten(hand, SpielArt.SOLO, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.EICHEL, Werte.UNTER), Farbe.GRAS, false);
+        ArrayList<Spielkarte> erlaubteKartenSoloGrasFarbe = bot.gibErlaubteKarten(hand, SpielArt.SOLO, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.HERZ, Werte.ZEHNER), Farbe.GRAS, false);
 
         //Überprüfung
         assertEquals(5, erlaubteKartenSauTrumpf.size(), "Testet erlaubteKartenSauTrumpf");
@@ -68,7 +68,7 @@ public class MitSpielerTest {
         hand.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
 
         //Verschiedene Spielsituationen
-        ArrayList<Spielkarte> erlaubteKartenSauDavonlaufen = bot.gibErlaubteKarten(hand, SpielArt.SAUSPIEL, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.GRAS, Werte.ACHTER), Farbe.GRAS);
+        ArrayList<Spielkarte> erlaubteKartenSauDavonlaufen = bot.gibErlaubteKarten(hand, SpielArt.SAUSPIEL, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.GRAS, Werte.ACHTER), Farbe.GRAS, false);
 
         assertEquals(4, erlaubteKartenSauDavonlaufen.size(), "Test Davonlaufen");
 
@@ -83,7 +83,7 @@ public class MitSpielerTest {
 
         //Hand
         ArrayList<Spielkarte> hand = new ArrayList<>();
-        hand.add(new Spielkarte(Farbe.EICHEL, Werte.SIEBENER));
+        hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.SIEBENER));
         hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.KOENIG));
         hand.add(new Spielkarte(Farbe.HERZ, Werte.OBER));
         hand.add(new Spielkarte(Farbe.HERZ, Werte.SAU));
@@ -94,15 +94,22 @@ public class MitSpielerTest {
 
         //Verschiedene Spielsituationen
         Spielkarte gesuchteSau = new Spielkarte(Farbe.EICHEL, Werte.SAU);
-        ArrayList<Spielkarte> erlaubteKarten = bot.gibErlaubteKarten(hand, SpielArt.SAUSPIEL, gesuchteSau, new Spielkarte(Farbe.GRAS, Werte.ACHTER), Farbe.GRAS);
+        bot.rundeStarten(hand, 3);
 
-        //todo Regel  muss implementieren werden
-        for (Spielkarte karte : erlaubteKarten) {
-            System.out.println(karte.gebeWert());
-            System.out.println(karte.gebeFarbe());
-            assertNotEquals(karte, gesuchteSau, "Gesuchte Sau darf nicht gelegt werden. Da Eichel nicht ausgerufen wurde.");
-        }
+        bot.spielArtEntschieden(1, Farbe.EICHEL, SpielArt.SAUSPIEL);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.ACHTER), 1);
 
+        bot.legeEineKarte();
+        bot.legeEineKarte();
+        bot.legeEineKarte();
+        bot.legeEineKarte();
+        bot.legeEineKarte();
+        bot.legeEineKarte();
+        bot.legeEineKarte();
+
+        Spielkarte sau = bot.legeEineKarte();
+
+        assertEquals(sau, gesuchteSau, "Gesuchte Sau sollte als Letzte Karte im letzten Stich gelegt werden.");
 
         //Weiteren Test schreiben
 

@@ -4,10 +4,10 @@ package InformatikProjekt;
 import java.util.ArrayList;
 import java.util.Random;
 
-public  class Bot extends Mitspieler {
+public class Bot extends Mitspieler {
     BotModel model;
 
-    public Bot(){
+    public Bot() {
         model = new BotModel();
     }
 
@@ -18,8 +18,8 @@ public  class Bot extends Mitspieler {
 
         int indexFarbeMitMeistenKarten = besondereKarten[3];
 
-        for(int i = 3; i <= 6; i++){
-            if (besondereKarten[indexFarbeMitMeistenKarten] <besondereKarten[i]){
+        for (int i = 3; i <= 6; i++) {
+            if (besondereKarten[indexFarbeMitMeistenKarten] < besondereKarten[i]) {
                 indexFarbeMitMeistenKarten = i;
             }
 
@@ -44,9 +44,9 @@ public  class Bot extends Mitspieler {
         */
         ArrayList<Farbe> farbenZumAusrufen = sauZumAusrufen(model.gibHand());
         //Sauspiel, wenn eine Sau ausgerufen werden kann und mindestens 5 Truempfe auf der Hand.
-        if(!farbenZumAusrufen.isEmpty() && anzahlOU + besondereKarten[4] >= 5 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SAUSPIEL.gebeSpielArtID()){
-           model.setzteSau(new Spielkarte(farbenZumAusrufen.get(0),Werte.SAU));
-           return  SpielArt.SAUSPIEL;
+        if (!farbenZumAusrufen.isEmpty() && anzahlOU + besondereKarten[4] >= 5 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SAUSPIEL.gebeSpielArtID()) {
+            model.setzteSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
+            return SpielArt.SAUSPIEL;
         }
 
 
@@ -56,7 +56,7 @@ public  class Bot extends Mitspieler {
 
     @Override
     public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
-        switch (spielArt){
+        switch (spielArt) {
             case KEINSPIEL:
                 break;
             case SAUSPIEL:
@@ -68,38 +68,70 @@ public  class Bot extends Mitspieler {
                 return model.gibsoloFarbe();
 
         }
-       return null;
+        return null;
     }
-
-
 
 
     @Override
     public Spielkarte legeEineKarte() {
         ArrayList<Spielkarte> moeglicheKarten = new ArrayList<>();
         //Wenn keine Karten auf dem Tisch liegen können alle Karten gespielt werden.
-        if (model.gibKartenZaehler() == 0){
+        if (model.gibGelegteKartenAnzahl() == 0) {
             moeglicheKarten = model.gibHand();
-        }else{
-            moeglicheKarten = gibErlaubteKarten( model.gibHand(), model.gibSpielArt(), model.gibSau(),model.gibErsteKarteAufTisch(), model.gibsoloFarbe());
+        } else {
+            moeglicheKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gibHand().clone(), model.gibSpielArt(), model.gibSau(), model.gibErsteKarteAufTisch(), model.gibsoloFarbe(), model.gebeSauFarbeVorhandGespielt());
+        }
+        Spielkarte gewaelteKarte = null;
+        switch (model.gibSpielArt()) {
+            case KEINSPIEL:
+                break;
+            case SAUSPIEL:
+                gewaelteKarte = sauSpielKarteWaehlen(moeglicheKarten);
+
+
+            case WENZ:
+                break;
+            case SOLO:
+                break;
         }
 
+        model.entferneKarteAusHand(gewaelteKarte);
+        return gewaelteKarte;
+
+    }
+
+
+    public Spielkarte sauSpielKarteWaehlen(ArrayList<Spielkarte> erlaubteKarten) {
         Random zufall = new Random();
-        int zufaelligerIndex = zufall.nextInt(moeglicheKarten.size());
-        model.entferneKarteAusHand(moeglicheKarten.get(zufaelligerIndex));
-        return moeglicheKarten.get(zufaelligerIndex);
+
+        ;
+
+        int zufaelligerIndex = zufall.nextInt(erlaubteKarten.size());
+
+
+        return erlaubteKarten.get(zufaelligerIndex);
+
+        //if (model.gibWertFuerBisherGelegteKarten() > 20) {
+        //todo lege hohen Trumpf
+        //}
+        //todo Spieltips nochmal anschauen
+        //todo wenn Teammitglied hohen Trump hat dann Schmieren
+        //todo wenn gegner keine Trümpe und andere Farben mehr haben dann diese Farben legen
+        //todo Wenn stich nicht gewinnen kann dan niedrige Werte
+
     }
 
     @Override
-    public void rundeStarten(ArrayList<Spielkarte> karten, int wievielterSpieler) {
-        model.setzteHand(karten);
-        model.setWievielterSpieler(wievielterSpieler);
-    }
+    public void rundeStarten(ArrayList<Spielkarte> karten, int spielerIndex) {
 
+        model.setzteHand(karten);
+        model.setzeSpielerIndex(spielerIndex);
+    }
 
 
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
+        model.setzeSpielerHatSauAusgerufen(spieler);
         model.setzteSau(new Spielkarte(farbe, Werte.SAU));
         model.setzteSpielArt(spielArt);
         model.setzteSoloFarbe(farbe);
@@ -108,14 +140,36 @@ public  class Bot extends Mitspieler {
 
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
+        //Wenn auf Vorhand die Farbe der Sau gespielt wird setzeSauFarbeVorhandGespielt = true
+        if (model.gibGelegteKartenAnzahl() == 0 && model.gibSau().gebeFarbe() == karte.gebeFarbe() && !karte.istTrumpf(model.gibSpielArt(), model.gibsoloFarbe())) {
+            model.setzeSauFarbeVorhandGespielt(true);
+        }
         model.fuegeGelegteKarteHinzu(karte);
-        model.kartenZaehlerHochZaehlen();
+        model.fuegeSpielerNummerGelegteKarteHinzu(spielerHatGelegt);
+        //Legt Mitspieler fest, wenn die gesuchte Sau ausgerufen wird.
+        if (model.gibSau() == karte) {
+            if (model.gibSpielerHatSauAusgerufen() == model.gibSpielerIndex()) {
+                model.setzteTeamSpieler(spielerHatGelegt);
+            } else {
+                model.setzteTeamSpieler(6 - (spielerHatGelegt + model.gibSpielerHatSauAusgerufen() + model.gibSpielerIndex()));
+            }
+        }
+
+        //Todo abspeichern welche Karten die Mitspieler noch haben
+        //Todo bei Spielart Unterscheiden --> in mehrere Methoden aufteilen
+        /*
+        if (model.gibErsteKarteAufTisch().gebeWert() != Werte.OBER) {
+            model.setzteMitspielerDaten(null, Werte.OBER, false, spielerHatGelegt);
+        }
+        */
+
+
     }
 
 
     @Override
     public void stichGewonnen(int spieler) {
-        model.kartenZaehlerZuruecksetzten();
+        model.spielerNummerGelegteKarteZuruecksetzen();
     }
 
     @Override
@@ -125,15 +179,21 @@ public  class Bot extends Mitspieler {
 
     @Override
     public void rundeGewonnen(int[] gewinner, int[] punkte) {
-
+        //Werte vom Model zurücksetzen bei einer neuen Runde
+        model = new BotModel();
     }
+
     @Override
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
 
     }
 
-    //Für den Test
-    public int gibAnzahlKartenInHand(){
+    //Für Tests
+    public int gibAnzahlKartenInHand() {
         return model.gibHand().size();
+    }
+
+    public int gibWertFuerBisherGelegteKarten() {
+        return model.gibWertFuerBisherGelegteKarten();
     }
 }

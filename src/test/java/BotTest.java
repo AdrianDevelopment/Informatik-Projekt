@@ -1,7 +1,9 @@
 import InformatikProjekt.*;
 import org.junit.jupiter.api.Test;
+
 import java.io.Console;
 import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -13,13 +15,13 @@ public class BotTest {
         Mitspieler bot = new Bot();
 
         //Hand
-        ArrayList<Spielkarte>  hand = new ArrayList<>();
+        ArrayList<Spielkarte> hand = new ArrayList<>();
         hand.add(new Spielkarte(Farbe.HERZ, Werte.UNTER));
         hand.add(new Spielkarte(Farbe.GRAS, Werte.UNTER));
         hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.OBER));
         hand.add(new Spielkarte(Farbe.HERZ, Werte.OBER));
         hand.add(new Spielkarte(Farbe.GRAS, Werte.ZEHNER));
-        hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.KOENIG));
+        hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.UNTER));
         hand.add(new Spielkarte(Farbe.EICHEL, Werte.SIEBENER));
         hand.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
 
@@ -27,11 +29,15 @@ public class BotTest {
         bot.rundeStarten(hand, 0);
 
         //Überprüfung
-        assertEquals(SpielArt.SAUSPIEL, bot.spielabsichtFragen(SpielArt.KEINSPIEL), "Testet ob Sauspiel bei erfüllten Anforderungen gewählt wird");
         assertEquals(SpielArt.KEINSPIEL, bot.spielabsichtFragen(SpielArt.SOLO), "Testet ob keine Spielart gewählt wird wenn das höchste Spiel zu groß ist");
+        assertEquals(SpielArt.SAUSPIEL, bot.spielabsichtFragen(SpielArt.KEINSPIEL), "Testet ob Sauspiel bei erfüllten Anforderungen gewählt wird");
+
+
+        assertEquals(Farbe.EICHEL, bot.farbeFuerSpielAbsicht(SpielArt.SAUSPIEL), "Testet Eichel als Farbe fuer das Sauspiel gewaelt wird");
 
 
     }
+
     @Test
     public void testKarteLegen() {
         //todo test fürs davon laufen schreiben
@@ -40,7 +46,7 @@ public class BotTest {
 
 
         //Hand
-        ArrayList<Spielkarte>  hand = new ArrayList<>();
+        ArrayList<Spielkarte> hand = new ArrayList<>();
         hand.add(new Spielkarte(Farbe.HERZ, Werte.UNTER));
         hand.add(new Spielkarte(Farbe.GRAS, Werte.UNTER));
         hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.OBER));
@@ -51,7 +57,7 @@ public class BotTest {
         hand.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
 
         //Hand setzten
-        bot.rundeStarten(hand, 0);
+        bot.rundeStarten((ArrayList<Spielkarte>) hand.clone(), 0);
 
         // bot.spielArtEntschieden(1, new Spielkarte(Farbe.SCHELLEN, Werte.SAU), null, SpielArt.SAUSPIEL);
         bot.spielArtEntschieden(1, Farbe.SCHELLEN, SpielArt.SAUSPIEL);
@@ -63,19 +69,25 @@ public class BotTest {
         assertEquals(7, bot.gibAnzahlKartenInHand(), "Bot hat die Karte nicht aus seiner Hand gelöscht.");
         Spielkarte karte = bot.legeEineKarte();
         //Entfernt Schellen 7 aus Hand ArrayList
-        hand.remove(5);
+        hand.remove(6);
 
         boolean karteIstVorhanden = false;
-        for (Spielkarte k : hand){
-            if(k==karte){
+      
+        for (Spielkarte k : hand) {
+            if (k == karte) {
+
                 karteIstVorhanden = true;
             }
         }
-        assertEquals(true, karteIstVorhanden, "Karte ist nicht auf der Hand");
+        assertEquals(true, karteIstVorhanden, "Karte die Bot gelegt hast ist nicht auf seiner Hand");
+        bot.stichGewonnen(0);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.EICHEL, Werte.SAU), 1);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.SCHELLEN, Werte.SIEBENER), 2);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.HERZ, Werte.ZEHNER), 3);
 
 
-
-
+        assertEquals(21, bot.gibWertFuerBisherGelegteKarten(), "Es wurde die falsche Punkteanazhl berechnet");
+        bot.rundeGewonnen(null, null);
 
     }
 

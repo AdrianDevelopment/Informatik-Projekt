@@ -39,7 +39,7 @@ public abstract class Mitspieler {
 
     //Methode fuer Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden koennen zurueckgibt.
     //Diese Methode nicht Aufrufen, wenn die erste Karte gelegt wird!!!
-    public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe) {
+    public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe, boolean sauFarbeVorhandGespielt) {
 
         ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<Spielkarte>();
         switch (spielArt) {
@@ -68,25 +68,25 @@ public abstract class Mitspieler {
 
                 break;
             case SAUSPIEL:
-                //todo sau darf nur gelegt werden wenn die Farbe ausgerufen wird.
+                //todo alternative zu clone finden
                 int anzahlSauFarbeKarten = 0;
                 boolean hatSau = false;
 
-                //Gesuchte Sau darf nicht gelegt werden, wenn nicht die richtige Farbe liegt. Braucht Information, ob die gesuchte Farbe der Sau schon gelegt wurde.
-                /*
-                if (vorgegebeneKarte.gebeFarbe() != sau.gebeFarbe() && gesuchteFarbeNochNichtGespielt) {
+                //Gesuchte Sau darf nicht gelegt werden, wenn nicht die richtige Farbe liegt.
+                //Sonst darf Sau nur gelegt werden, nachdem die Farbe mindestens einmal in Vorhand gespielt wurde oder es der letzte Stich ist.
+                if (vorgegebeneKarte.gebeFarbe() != sau.gebeFarbe() && !sauFarbeVorhandGespielt && hand.size() > 1) {
 
-                    for (Spielkarte karte : hand) {
-                        if (karte == sau) {
-                            hand.remove(sau);
-                        }
+
+                    if (hand.contains(sau)) {
+                        hand.remove(sau);
                     }
 
+
                 }
-                */
+
 
                 for (Spielkarte karte : hand) {
-                    if (vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() && karte.gebeFarbe() == sau.gebeFarbe() && !((karte.gebeWert() != Werte.UNTER) || karte.gebeWert() != Werte.OBER)) {
+                    if (vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() && karte.gebeFarbe() == sau.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
                         anzahlSauFarbeKarten++;
                         if (karte.gebeWert() == Werte.SAU) {
                             hatSau = true;
@@ -100,9 +100,9 @@ public abstract class Mitspieler {
                     return gezwungeneKarten;
                 }
 
-                if (vorgegebeneKarte.gebeFarbe() == Farbe.HERZ || vorgegebeneKarte.gebeWert() == Werte.OBER || vorgegebeneKarte.gebeWert() == Werte.UNTER) {
+                if (vorgegebeneKarte.istTrumpf(spielArt, soloFarbe)) {
                     for (Spielkarte karte : hand) {
-                        if (karte.gebeFarbe() == Farbe.HERZ || karte.gebeWert() == Werte.OBER || karte.gebeWert() == Werte.UNTER) {
+                        if (karte.istTrumpf(spielArt, soloFarbe)) {
 
                             gezwungeneKarten.add(karte);
                         }
