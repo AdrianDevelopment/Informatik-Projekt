@@ -8,43 +8,43 @@ class SpielGUI {
     private Spieler spieler;
 
     private ArrayList<JButton> spieler1handkarten;
-    ImageIcon eichelKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_7.png");
-    ImageIcon eichelKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_8.png");
-    ImageIcon eichelKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_9.png");
-    ImageIcon eichelKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_10.png");
-    ImageIcon eichelKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ass.png");
-    ImageIcon eichelKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Koenig.png");
-    ImageIcon eichelKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ober.png");
-    ImageIcon eichelKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Unter.png");
+    private ImageIcon eichelKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_7.png");
+    private ImageIcon eichelKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_8.png");
+    private ImageIcon eichelKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_9.png");
+    private ImageIcon eichelKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_10.png");
+    private ImageIcon eichelKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ass.png");
+    private ImageIcon eichelKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Koenig.png");
+    private ImageIcon eichelKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Ober.png");
+    private ImageIcon eichelKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Eichel_Unter.png");
 
-    ImageIcon GrassKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Grass_7.png");
-    ImageIcon GrassKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Grass_8.png");
-    ImageIcon GrassKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Grass_9.png");
-    ImageIcon GrassKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Grass_10.png");
-    ImageIcon GrassKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ass.png");
-    ImageIcon GrassKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Grass_Koenig.png");
-    ImageIcon GrassKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ober.png");
-    ImageIcon GrassKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Grass_Unter.png");
+    private ImageIcon GrassKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Grass_7.png");
+    private ImageIcon GrassKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Grass_8.png");
+    private ImageIcon GrassKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Grass_9.png");
+    private ImageIcon GrassKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Grass_10.png");
+    private ImageIcon GrassKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ass.png");
+    private ImageIcon GrassKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Grass_Koenig.png");
+    private ImageIcon GrassKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Grass_Ober.png");
+    private ImageIcon GrassKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Grass_Unter.png");
 
-    ImageIcon HerzKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Herz_7.png");
-    ImageIcon HerzKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Herz_8.png");
-    ImageIcon HerzKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Herz_9.png");
-    ImageIcon HerzKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Herz_10.png");
-    ImageIcon HerzKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ass.png");
-    ImageIcon HerzKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Herz_Koenig.png");
-    ImageIcon HerzKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ober.png");
-    ImageIcon HerzKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Herz_Unter.png");
+    private ImageIcon HerzKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Herz_7.png");
+    private ImageIcon HerzKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Herz_8.png");
+    private ImageIcon HerzKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Herz_9.png");
+    private ImageIcon HerzKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Herz_10.png");
+    private ImageIcon HerzKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ass.png");
+    private ImageIcon HerzKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Herz_Koenig.png");
+    private ImageIcon HerzKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Herz_Ober.png");
+    private ImageIcon HerzKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Herz_Unter.png");
 
-    ImageIcon SchelleKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_7.png");
-    ImageIcon SchelleKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_8.png");
-    ImageIcon SchelleKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_9.png");
-    ImageIcon SchelleKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_10.png");
-    ImageIcon SchelleKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ass.png");
-    ImageIcon SchelleKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Koenig.png");
-    ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
-    ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
+    private ImageIcon SchelleKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_7.png");
+    private ImageIcon SchelleKarte8 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_8.png");
+    private ImageIcon SchelleKarte9 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_9.png");
+    private ImageIcon SchelleKarte10 = new ImageIcon("src\\main\\resources\\Karten\\Schelle_10.png");
+    private ImageIcon SchelleKarteAss = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ass.png");
+    private ImageIcon SchelleKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Koenig.png");
+    private ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
+    private ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
 
-    JFrame mainFrame;
+    private JFrame mainFrame;
 
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
@@ -542,8 +542,21 @@ class SpielGUI {
         handkartenAusteilen(spieler1handkarten);
     }
 
-    public void absichtAbfragen(){
+    public void spielabsichtAbfragen(){
 
+    }
+
+    public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler){}
+    public void ungueltigeEingabe(String konkretisierung){}
+    public void spielArtEntschieden(WelcherSpieler welcherSpieler, SpielArt spielArt, Farbe farbe) {}
+    public Spielkarte legeKarte() {
+        return null;
+    }
+    public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {}
+    public void stichGewonnen(WelcherSpieler spieler) {}
+    public void rundeGewonnen(int[] punkte) {}
+    public void zeigeLetztenStich() {
+        System.out.println(spieler.gebeLetztenStich());
     }
 
     public void handkartenAusteilen(ArrayList<JButton> spieler1handkarten){
