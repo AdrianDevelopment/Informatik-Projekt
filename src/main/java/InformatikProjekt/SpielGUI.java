@@ -195,14 +195,6 @@ class SpielGUI {
         spieler1Karte1.setContentAreaFilled(false);
         spieler1Karte1.setFocusPainted(false);
 
-        JButton beispielEichel = new JButton();
-        beispielEichel.addActionListener(e -> System.out.println("Eichel"));
-        beispielEichel.setIcon(eichelKarte);
-        beispielEichel.setBounds(400,560,80,100);
-        beispielEichel.setBorderPainted(false);
-        beispielEichel.setContentAreaFilled(false);
-        beispielEichel.setFocusPainted(false);
-
 
 
         //Sachen zum Frame hinzufügen
@@ -551,7 +543,7 @@ class SpielGUI {
 
     }
 
-    public Farbe farbeFuerSpielabsicht(){
+    public void farbeFuerSpielabsicht(){
         JFrame farbauswahlFenster = new JFrame("Farbe auswählen");
         farbauswahlFenster.setSize(300, 100);
         farbauswahlFenster.setLayout(null);
@@ -559,7 +551,7 @@ class SpielGUI {
 
         JButton schellenButton = new JButton("Schellen");
         schellenButton.setBounds(100, 30, 100, 50);
-        schellenButton.addActionListener(e -> Farbe.SCHELLEN);
+        schellenButton.addActionListener(e -> System.out.println("hi"));
         farbauswahlFenster.add(schellenButton);
 
 

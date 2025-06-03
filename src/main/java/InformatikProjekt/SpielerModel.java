@@ -83,6 +83,14 @@ public class SpielerModel {
         anzahlSpielerSchonGelegt++;
     }
 
+    public void setzeMitspieler(int spielerHatGelegt) {
+        spieler[1] = spielerHatGelegt; //Mitspieler (der Sau hat) wird gesetzt
+    }
+
+    public int gebeMitspieler() {
+        return spieler[1];
+    }
+
     public Spielkarte gebeVorgegebeneKarte() {
         return stich.get(0);
     }

@@ -125,7 +125,7 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
      */
     @Override
-    public Spielkarte legeEineKarte() {
+    public Spielkarte legeEineKarte() {//TODO: nicht fertig
         int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
         ArrayList<Spielkarte> erlaubteKarten;
         boolean karteIstErlaubt;
@@ -158,8 +158,13 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
-        gui.zeigeGelegteKarte(karte, welcherSpieler);
         model.setzeGelegteKarte(karte);
+        gui.zeigeGelegteKarte(karte, welcherSpieler);
+
+        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern wer Mitspieler ist
+        if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
+            model.setzeMitspieler(spielerHatGelegt);
+        }
     }
 
     /**
@@ -210,12 +215,14 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
         return spielerImUhrzeigersinn;
     }
 
-    /**
-     * Methode, die GUI aufruft, wenn Spieler den letzten Stich sehen will
-     */
+    /*Methode, die GUI aufruft, wenn Spieler den letzten Stich sehen will*/
     public ArrayList<Spielkarte> gebeLetztenStich() {
         return model.gebeLetzterStich(); //TODO: @Thiemo Rückgabewert abklären
     }
 
+    /*Methode, die von Runde aufgerufen wird, um den Mitspieler raus zu bekommen*/
+    public int gebeMitspieler() {
+        return model.gebeMitspieler();
+    }
 
 }
