@@ -27,6 +27,7 @@ public class SpielerGUI {
 
 
     public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler) {
+        System.out.println(welcherSpieler.gebeName() + " hat " + spielAbsicht + " ausgerufen.");
     }
 
     public void ungueltigeEingabe(String konkretisierung) {
@@ -44,7 +45,28 @@ public class SpielerGUI {
         System.out.println("Du bist der " + wieVielterSpieler + ". Spieler.");
     }*/
 
-    public void spielArtEntschieden(int spieler, String ausgabe) {
+    public void spielArtEntschieden(WelcherSpieler welcherSpieler, SpielArt spielArt, Farbe farbe) {
+        String ausgabe = "Ausrufer: " + welcherSpieler.gebeName() + "| ";
+        switch (spielArt) {
+            case KEINSPIEL:
+                ausgabe += "Niemand wollte spielen";
+            case SAUSPIEL:
+                ausgabe = "Sauspiel auf die ";
+                switch (farbe) {
+                    case SCHELLEN:
+                        ausgabe += "Bumbe";
+                        break;
+                    case GRAS:
+                        ausgabe += "Blaue";
+                        break;
+                    case EICHEL:
+                        ausgabe += "Alte";
+                        break;
+                }
+            default:
+                ausgabe += "Spielart noch nicht implementiert";
+                break;
+        }
         System.out.println(ausgabe);
     }
 
