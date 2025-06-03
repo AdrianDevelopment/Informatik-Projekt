@@ -8,6 +8,11 @@ public class MenueGUI {
 
     //globale Variablen erstellen
     JButton playButton;
+    private Spieler spieler;
+
+    public MenueGUI(Spieler spieler) {
+        this.spieler = spieler;
+    }
 
     public int guiStart() {
         JFrame frame = new JFrame();
@@ -30,7 +35,7 @@ public class MenueGUI {
 
         //Hier werden Buttons erstellt:
         JButton playButton = new JButton();
-        playButton.addActionListener( e -> new SpielGUI());
+        playButton.addActionListener( e -> new SpielGUI(spieler));
         // playButton.addActionListener(e -> Menue.startMainGame());
         playButton.setBounds(150,60,200,40);
         playButton.setText("SPIELEN");

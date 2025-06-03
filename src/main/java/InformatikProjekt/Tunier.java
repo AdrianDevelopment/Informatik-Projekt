@@ -12,12 +12,14 @@ public class Tunier {
     private final ArrayList<Spielkarte> spielKarten; // vielleicht nicht final?
     private final int anzahlRunden;
     private int[] punkteTunier;
+    private Spieler echterSpieler;
 
-    Tunier(int anzahlRunden) {
+    Tunier(int anzahlRunden, Spieler echterSpieler) {
         spieler = new ArrayList<>(4);
         spielKarten = new ArrayList<>();
         speicherung = new Speicherung();
         this.anzahlRunden = anzahlRunden;
+        this.echterSpieler = echterSpieler;
     }
 
     public void tunierStarten() {
@@ -31,7 +33,7 @@ public class Tunier {
                 spieler.add(new Bot());
             }
             else {
-                spieler.add(new Spieler());
+                spieler.add(echterSpieler);
             }
         }
 
