@@ -41,10 +41,6 @@ public class SpielerGUI {
         }
     }
 
-    /*public void zeigeWelcherSpieler(int wieVielterSpieler) {
-        System.out.println("Du bist der " + wieVielterSpieler + ". Spieler.");
-    }*/
-
     public void spielArtEntschieden(WelcherSpieler welcherSpieler, SpielArt spielArt, Farbe farbe) {
         String ausgabe = "Ausrufer: " + welcherSpieler.gebeName() + "| ";
         switch (spielArt) {

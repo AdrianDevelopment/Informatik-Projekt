@@ -21,8 +21,7 @@ public class SpielerModel {
     //temporäre Attribute für GUI-Übergabe
     private SpielArt spielabsicht; //speichert Spielabsicht vom Spieler
     private Farbe spielabsichtFarbe;
-    //Benötigt um zu Überprüfen, ob die Sau gelegt werden darf.
-    private boolean sauFarbeVorhandGespielt;
+    private boolean sauFarbeVorhandGespielt; //Tim: Benötigt um zu überprüfen, ob die Sau gelegt werden darf.
 
     public SpielerModel() {
         handkarten = new ArrayList<Spielkarte>();
@@ -60,10 +59,6 @@ public class SpielerModel {
 
     /**
      * setzt alle wichtigen Attribute für eine Runde nach dem Ausrufen
-     *
-     * @param spieler
-     * @param ausgerufeneFarbe
-     * @param ausgerufeneSpielArt
      */
     public void setzeSpielArt(WelcherSpieler ausrufenderSpieler, SpielArt ausgerufeneSpielArt, Farbe ausgerufeneFarbe, int spieler) {
         spielArt = ausgerufeneSpielArt;
@@ -114,14 +109,11 @@ public class SpielerModel {
     }
 
 
-    /**
-     * Methoden für GUI-Rückgabe
-     */
+    /**Methoden für GUI-Rückgabe*/
     //spielabsicht
     public void setzeSpielabsicht(SpielArt spielabsicht) {
         this.spielabsicht = spielabsicht;
     }
-
     public SpielArt gebeSpielabsicht() {
         return spielabsicht;
     }
@@ -130,16 +122,14 @@ public class SpielerModel {
     public void setzeSpielabsichtFarbe(Farbe farbe) {
         spielabsichtFarbe = farbe;
     }
-
     public Farbe gebeSpielabsichtFarbe() {
         return spielabsichtFarbe;
     }
 
-    //erlaubte Karten
+    //Tim: erlaubte Karten
     public boolean gebeSauFarbeVorhandGespielt() {
         return sauFarbeVorhandGespielt;
     }
-
     public void setzteSauFarbeVorhandGespielt(boolean b) {
         sauFarbeVorhandGespielt = b;
     }

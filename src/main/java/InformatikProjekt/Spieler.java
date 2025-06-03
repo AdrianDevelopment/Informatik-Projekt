@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 //Programmierer: Tom
 
-public class Spieler extends Mitspieler { //TODO: Methoden sortieren
+public class Spieler extends Mitspieler {
     private SpielerModel model; //speichert Daten des Spielers
     private SpielerGUI gui;
 
-    public Spieler() {
+    public Spieler() { //TODO: SpielGUI gui -
         model = new SpielerModel();
         gui = new SpielerGUI(this);
     }
@@ -117,12 +117,12 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     /**
      * → Aufruf an GUI, eine Karte zu legen
-     * - schauen, ob ich der erste in der Lege-/Stichrunde bin
-     * → keine Überprüfung, weil jede Karte gelegt werden kann
+     *   - schauen, ob ich der erste in der Lege-/Stichrunde bin
+     *   → keine Überprüfung, weil jede Karte gelegt werden kann
      * - wenn ich nicht der erste in der Lege-/Stichrunde bin
-     * → model abfragen, welche Karte ich legen muss
-     * → überprüfen, ob ich Karte legen darf
-     * → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
+     *   → model abfragen, welche Karte ich legen muss
+     *   → überprüfen, ob ich Karte legen darf
+     *   → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
      */
     @Override
     public Spielkarte legeEineKarte() {//TODO: nicht fertig
@@ -157,11 +157,13 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
+        //Tim
         //todo anpassen mit Solofarbe anstatt null
         //Wenn auf Vorhand die Farbe der Sau gespielt wird setzeSauFarbeVorhandGespielt = true
         if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
             model.setzteSauFarbeVorhandGespielt(true);
         }
+        //Tim
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         model.setzeGelegteKarte(karte);
         gui.zeigeGelegteKarte(karte, welcherSpieler);
@@ -201,7 +203,6 @@ public class Spieler extends Mitspieler { //TODO: Methoden sortieren
 
     /**
      * Gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
-     *
      * @param spieler: von Runde übergeben
      */
     public WelcherSpieler wieVielterSpieler(int spieler) {
