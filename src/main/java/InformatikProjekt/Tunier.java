@@ -7,8 +7,8 @@ import java.util.Collections;
 // Programmierer: Adrian
 
 public class Tunier {
+    private Speicherung speicherung;
     private final ArrayList<Mitspieler> spieler; // vielleicht nicht final?
-    private int vorhand;
     private final ArrayList<Spielkarte> spielKarten; // vielleicht nicht final?
     private final int anzahlRunden;
     private int[] punkteTunier;
@@ -16,6 +16,7 @@ public class Tunier {
     Tunier(int anzahlRunden) {
         spieler = new ArrayList<>(4);
         spielKarten = new ArrayList<>();
+        speicherung = new Speicherung();
         this.anzahlRunden = anzahlRunden;
     }
 
@@ -44,13 +45,15 @@ public class Tunier {
 
         // Runden spielen
         for (int i = 0; i < anzahlRunden; i++) {
-            Runde runde = new Runde(spieler, spielKarten, positionSpieler); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
+            Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
             int[] sieger = runde.starteRunde(vorhand);
 
             vorhand = (vorhand == 3) ? 0 : vorhand + 1;
 
             punkteTunier[sieger[0]]++;
             punkteTunier[sieger[1]]++;
+
+
         }
     }
 }
