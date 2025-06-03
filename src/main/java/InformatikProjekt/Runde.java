@@ -21,7 +21,12 @@ public class Runde {
         this.positionSpieler = positionSpieler;
 
         for (int i = 0; i < 4; i++) {
-            spieler.get(i).rundeStarten(spielKarten, positionSpieler);
+            ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
+            for (int j = 0; j < 8; j++) {
+                spielKartenProSpieler.add(spielKarten.get(i + j));
+            }
+
+            spieler.get(i).rundeStarten(spielKartenProSpieler, positionSpieler);
         }
     }
 
@@ -192,7 +197,7 @@ public class Runde {
             }
         }
 
-        System.out.println("DEBUG: Fehler bei der Berechnung des Trumpf-Rangs");
+        System.out.println("ERROR: Fehler bei der Berechnung des Trumpf-Rangs");
         return -1;
     }
 
@@ -208,7 +213,7 @@ public class Runde {
             case SIEBENER: return 5;
         }
 
-        System.out.println("DEBUG: Fehler bei der Berechnung des Rangs einer Farbe");
+        System.out.println("ERROR: Fehler bei der Berechnung des Rangs einer Farbe");
         return -1;
     }
 

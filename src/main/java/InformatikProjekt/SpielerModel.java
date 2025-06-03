@@ -44,7 +44,7 @@ public class SpielerModel {
 
     public void setzeHandkarten(ArrayList<Spielkarte> neueKarten) {
         for (int i = 0; i < 8; i++) {
-            handkarten.set(i, neueKarten.get(i));
+            handkarten.add(i, neueKarten.get(i));
         }
     }
 

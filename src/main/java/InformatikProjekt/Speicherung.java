@@ -118,7 +118,7 @@ public class Speicherung {
             zahlSchreiben(fos, zahlen[i]);
         }
     }
-    Speicherung(){
+    public Speicherung(){
         FileInputStream fis;
         try{
             fis = new FileInputStream("statistiken.dat");
