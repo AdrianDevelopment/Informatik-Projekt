@@ -8,9 +8,12 @@ public class Spieler extends Mitspieler {
     private SpielerModel model; //speichert Daten des Spielers
     private SpielGUI gui;
 
-    public Spieler(SpielGUI spielgui) { //TODO: SpielGUI gui -
+    public Spieler() { //TODO: SpielGUI gui -
         model = new SpielerModel();
-        gui = spielgui;
+    }
+
+    public void setzeGUI(SpielGUI spielGUI) {
+        gui = spielGUI;
     }
 
     /**
