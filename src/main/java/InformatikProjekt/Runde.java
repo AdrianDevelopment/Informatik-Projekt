@@ -71,7 +71,7 @@ public class Runde {
 
                 // Speicherung
                 if (sieger[0] == positionSpieler || sieger[1] == positionSpieler) {
-                    speicherung.gesamtePunkteErhöhen(punkte[positionSpieler]);
+                    speicherung.gesamtePunkteErhoehen(punkte[positionSpieler]);
                     speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
                 }
                 else {

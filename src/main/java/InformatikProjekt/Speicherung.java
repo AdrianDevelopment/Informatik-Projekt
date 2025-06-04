@@ -32,7 +32,7 @@ public class Speicherung {
     private boolean datenGeaendert;
 
     public void KarteGespielt(){gespielteKarten++;}
-    public void gesamtePunkteErhöhen(int punkte){gesamtePunkte += punkte;}
+    public void gesamtePunkteErhoehen(int punkte){gesamtePunkte += punkte;}
     public void TurnierGewonnen(){
         gewonneneTurniere++;
         gespielteTurniere++;

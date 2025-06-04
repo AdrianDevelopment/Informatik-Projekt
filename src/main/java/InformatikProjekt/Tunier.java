@@ -54,8 +54,25 @@ public class Tunier {
 
             punkteTunier[sieger[0]]++;
             punkteTunier[sieger[1]]++;
+        }
 
-
+        // Tunier auswerten
+        int hoechsteTunierPunkte = -1;
+        int tunierSieger = -1;
+        for (int i = 0; i < 4; i++) {
+            if (punkteTunier[i] > hoechsteTunierPunkte) {
+                hoechsteTunierPunkte = punkteTunier[i];
+                tunierSieger = i;
+            }
+            else if (punkteTunier[i] == hoechsteTunierPunkte) {
+                // Sonderfall, geht über Prototyp hinaus; Gewinner ist, wer als erstes die meisten Punkte hat
+            }
+        }
+        if (tunierSieger == positionSpieler) {
+            speicherung.TurnierGewonnen();
+        }
+        else {
+            speicherung.TurnierVerloren();
         }
     }
 }
