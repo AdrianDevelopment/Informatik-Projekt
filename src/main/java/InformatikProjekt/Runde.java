@@ -5,21 +5,21 @@ import java.util.ArrayList;
 // Programmierer: Adrian
 
 public class Runde {
-    private final ArrayList<Mitspieler> spieler; // Queue, da erster Mitspieler in Queue Vorhand ist, gecycelt wird in Tunier
+    private ArrayList<Mitspieler> spieler;
     private Speicherung speicherung;
     private int[] punkte;
     private int ausrufer;
-    private int mitspieler;
     private Mitspieler ausruferObjekt;
     private Spielkarte[] aktuellerStich;
-    private Spielkarte aktuelleSpielKarte;
     private int positionSpieler;
 
     public Runde(ArrayList<Mitspieler> spieler, Spieler echterSpieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung) {
         this.spieler = spieler;
         this.speicherung = speicherung;
         this.positionSpieler = positionSpieler;
-        
+        punkte = new int[4];
+        aktuellerStich = new Spielkarte[4];
+
         SpielGUI spielGUI = new SpielGUI(echterSpieler);
         echterSpieler.setzeGUI(spielGUI);
 
@@ -71,12 +71,21 @@ public class Runde {
 
                 // Speicherung
                 if (sieger[0] == positionSpieler || sieger[1] == positionSpieler) {
-                    speicherung.gesamtePunkteErhoehen(punkte[positionSpieler]);
-                    speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
+                    speicherung.gesamtePunkteErhoehen(punkte[sieger[0]] + punkte[sieger[1]]); // Speicherung der zusammengerechneten Punkte der Sieger
+                    if (punkte[sieger[0]] + punkte[sieger[1]] > 120) {
+                        // Methode SpielGewonnen Schneider noch nicht vorhanden
+                    }
+                    else {
+                        speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
+                    }
+                }
+                else if ((punkte[sieger[0]] + punkte[sieger[1]]) > 90) { // unter 30 Punkte ist man Schneider
+                    speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
                 }
                 else {
                     speicherung.SpielVerloren(SpielArt.SAUSPIEL);
                 }
+                speicherung.RundePunktzahlMelden(punkte[positionSpieler]);
                 speicherung.DatenSpeichern();
 
                 return sieger;
@@ -111,6 +120,7 @@ public class Runde {
 
         // Speicherung
         speicherung.KarteGespielt();
+        speicherung.DatenSpeichern();
 
         // Auswertung des Stichs
         int sieger = ermittleSieger(aktuellerStich);
@@ -228,7 +238,7 @@ public class Runde {
     }
 
     public int[] rundenSiegerErmitteln() {
-        mitspieler = spieler.get(positionSpieler).gebeMitspieler();
+        int mitspieler = spieler.get(positionSpieler).gebeMitspieler();
         if (mitspieler == -1) System.out.println("ERROR: Position des echten Spielers ist falsch!");
 
         int punkteSpieler = punkte[ausrufer] + punkte[mitspieler];
