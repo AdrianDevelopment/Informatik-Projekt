@@ -20,7 +20,7 @@ public class Runde {
         this.speicherung = speicherung;
         this.positionSpieler = positionSpieler;
         
-        SpielGUI spielGUI = new SpielGUI();
+        SpielGUI spielGUI = new SpielGUI(spieler.get(positionSpieler);
         spieler.get(positionSpieler).setzeGUI(spielGUI);
 
         for (int i = 0; i < 4; i++) {
