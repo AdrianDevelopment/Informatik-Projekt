@@ -19,6 +19,9 @@ public class Runde {
         this.spieler = spieler;
         this.speicherung = speicherung;
         this.positionSpieler = positionSpieler;
+        
+        SpielGUI spielGUI = new SpielGUI();
+        spieler.get(positionSpieler).setzeGUI(spielGUI);
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
