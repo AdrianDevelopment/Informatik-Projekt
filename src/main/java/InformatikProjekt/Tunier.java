@@ -7,14 +7,12 @@ import java.util.Collections;
 // Programmierer: Adrian
 
 public class Tunier {
-    private Speicherung speicherung;
-    private TunierModel tunierModel;
-    private ArrayList<Mitspieler> spieler; // vielleicht nicht final?
-    private ArrayList<Spielkarte> spielKarten; // vielleicht nicht final?
+    private final Speicherung speicherung;
+    private final TunierModel tunierModel;
+    private final ArrayList<Mitspieler> spieler;
 
     Tunier(int anzahlRunden, Spieler echterSpieler) {
         spieler = new ArrayList<>(4);
-        spielKarten = new ArrayList<>();
         speicherung = Speicherung.speicherungErstellen();
 
         tunierModel = new TunierModel(anzahlRunden, echterSpieler);
@@ -36,6 +34,7 @@ public class Tunier {
         }
 
         // Spielkarten vorbereiten
+        ArrayList<Spielkarte> spielKarten = new ArrayList<>();
         for (Farbe farbe : Farbe.values()) {
             for (Werte wert : Werte.values()) {
                 spielKarten.add(new Spielkarte(farbe, wert));
