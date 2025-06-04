@@ -8,18 +8,16 @@ import java.util.Collections;
 
 public class Tunier {
     private Speicherung speicherung;
-    private final ArrayList<Mitspieler> spieler; // vielleicht nicht final?
-    private final ArrayList<Spielkarte> spielKarten; // vielleicht nicht final?
-    private final int anzahlRunden;
-    private int[] punkteTunier;
-    private Spieler echterSpieler;
+    private TunierModel tunierModel;
+    private ArrayList<Mitspieler> spieler; // vielleicht nicht final?
+    private ArrayList<Spielkarte> spielKarten; // vielleicht nicht final?
 
     Tunier(int anzahlRunden, Spieler echterSpieler) {
         spieler = new ArrayList<>(4);
         spielKarten = new ArrayList<>();
         speicherung = Speicherung.speicherungErstellen();
-        this.anzahlRunden = anzahlRunden;
-        this.echterSpieler = echterSpieler;
+
+        tunierModel = new TunierModel(anzahlRunden, echterSpieler);
     }
 
     public void tunierStarten() {
@@ -33,7 +31,7 @@ public class Tunier {
                 spieler.add(new Bot());
             }
             else {
-                spieler.add(echterSpieler);
+                spieler.add(tunierModel.gebeEchterSpieler());
             }
         }
 
@@ -46,25 +44,25 @@ public class Tunier {
         Collections.shuffle(spielKarten);
 
         // Runden spielen
-        for (int i = 0; i < anzahlRunden; i++) {
-            Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
+        for (int i = 0; i < tunierModel.gebeAnzahlRunden(); i++) {
+            Runde runde = new Runde(spieler, tunierModel.gebeEchterSpieler(), spielKarten, positionSpieler, speicherung); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
             int[] sieger = runde.starteRunde(vorhand);
 
             vorhand = (vorhand == 3) ? 0 : vorhand + 1;
 
-            punkteTunier[sieger[0]]++;
-            punkteTunier[sieger[1]]++;
+            tunierModel.erhoehePunkteTunierUmEins(sieger[0]);
+            tunierModel.erhoehePunkteTunierUmEins(sieger[1]);
         }
 
         // Tunier auswerten
         int hoechsteTunierPunkte = -1;
         int tunierSieger = -1;
         for (int i = 0; i < 4; i++) {
-            if (punkteTunier[i] > hoechsteTunierPunkte) {
-                hoechsteTunierPunkte = punkteTunier[i];
+            if (tunierModel.gebePunkteTunier(i) > hoechsteTunierPunkte) {
+                hoechsteTunierPunkte = tunierModel.gebePunkteTunier(i);
                 tunierSieger = i;
             }
-            else if (punkteTunier[i] == hoechsteTunierPunkte) {
+            else if (tunierModel.gebePunkteTunier(i) == hoechsteTunierPunkte) {
                 // Sonderfall, geht über Prototyp hinaus; Gewinner ist, wer als erstes die meisten Punkte hat
             }
         }
