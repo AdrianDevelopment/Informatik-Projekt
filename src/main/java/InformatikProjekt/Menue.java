@@ -4,11 +4,11 @@ package InformatikProjekt;
 
 public class Menue {
     private final MenueGUI menueGUI;
-    private Spieler spieler;
+    private Spieler echterSpieler;
 
     public Menue() {
-        spieler = new Spieler();
-        menueGUI = new MenueGUI(spieler);
+        echterSpieler = new Spieler();
+        menueGUI = new MenueGUI(echterSpieler);
     }
 
     public void starteGame() {
@@ -17,7 +17,7 @@ public class Menue {
             case 0:
                 break;
             case 1:
-                Tunier tunier = new Tunier(4, spieler); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
+                Tunier tunier = new Tunier(4, echterSpieler); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
                 tunier.tunierStarten();
                 break;
             case 2:

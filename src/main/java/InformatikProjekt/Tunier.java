@@ -47,7 +47,7 @@ public class Tunier {
 
         // Runden spielen
         for (int i = 0; i < anzahlRunden; i++) {
-            Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
+            Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
             int[] sieger = runde.starteRunde(vorhand);
 
             vorhand = (vorhand == 3) ? 0 : vorhand + 1;

@@ -15,13 +15,13 @@ public class Runde {
     private Spielkarte aktuelleSpielKarte;
     private int positionSpieler;
 
-    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung) {
+    public Runde(ArrayList<Mitspieler> spieler, Spieler echterSpieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung) {
         this.spieler = spieler;
         this.speicherung = speicherung;
         this.positionSpieler = positionSpieler;
         
-        SpielGUI spielGUI = new SpielGUI(spieler.get(positionSpieler);
-        spieler.get(positionSpieler).setzeGUI(spielGUI);
+        SpielGUI spielGUI = new SpielGUI(echterSpieler);
+        echterSpieler.setzeGUI(spielGUI);
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
@@ -57,9 +57,6 @@ public class Runde {
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.spielArtEntschieden(ausrufer, farbe, hoechstesSpiel);
         }
-
-        mitspieler = spieler.get(positionSpieler).gebeMitspieler();
-        if (mitspieler == -1) System.out.println("ERROR: Position des echten Spielers ist falsch!");
 
         switch (hoechstesSpiel) {
             case KEINSPIEL:
@@ -231,6 +228,9 @@ public class Runde {
     }
 
     public int[] rundenSiegerErmitteln() {
+        mitspieler = spieler.get(positionSpieler).gebeMitspieler();
+        if (mitspieler == -1) System.out.println("ERROR: Position des echten Spielers ist falsch!");
+
         int punkteSpieler = punkte[ausrufer] + punkte[mitspieler];
         int[] gegenspieler = new int[2];
         int position = 0;
