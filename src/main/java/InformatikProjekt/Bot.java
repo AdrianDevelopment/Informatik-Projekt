@@ -77,7 +77,7 @@ public class Bot extends Mitspieler {
         ArrayList<Spielkarte> moeglicheKarten = new ArrayList<>();
         //Wenn keine Karten auf dem Tisch liegen können alle Karten gespielt werden.
         if (model.gibGelegteKartenAnzahl() == 0) {
-            moeglicheKarten = model.gibHand();
+            moeglicheKarten = erlaubteKartenAusspielenBeiSauspiel(model.gibHand(), model.gibSau());
         } else {
             moeglicheKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gibHand().clone(), model.gibSpielArt(), model.gibSau(), model.gibErsteKarteAufTisch(), model.gibsoloFarbe(), model.gebeSauFarbeVorhandGespielt());
         }
@@ -87,8 +87,6 @@ public class Bot extends Mitspieler {
                 break;
             case SAUSPIEL:
                 gewaelteKarte = sauSpielKarteWaehlen(moeglicheKarten);
-
-
             case WENZ:
                 break;
             case SOLO:
@@ -103,12 +101,7 @@ public class Bot extends Mitspieler {
 
     public Spielkarte sauSpielKarteWaehlen(ArrayList<Spielkarte> erlaubteKarten) {
         Random zufall = new Random();
-
-        ;
-
         int zufaelligerIndex = zufall.nextInt(erlaubteKarten.size());
-
-
         return erlaubteKarten.get(zufaelligerIndex);
 
         //if (model.gibWertFuerBisherGelegteKarten() > 20) {
@@ -140,7 +133,7 @@ public class Bot extends Mitspieler {
 
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
-        //Wenn auf Vorhand die Farbe der Sau gespielt wird setzeSauFarbeVorhandGespielt = true
+        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte,  wie jede andere Karte einer Farbe frei gespielt werden.
         if (model.gibGelegteKartenAnzahl() == 0 && model.gibSau().gebeFarbe() == karte.gebeFarbe() && !karte.istTrumpf(model.gibSpielArt(), model.gibsoloFarbe())) {
             model.setzeSauFarbeVorhandGespielt(true);
         }

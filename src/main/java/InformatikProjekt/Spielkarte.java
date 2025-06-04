@@ -40,7 +40,7 @@ public class Spielkarte {
     }
 
     public boolean istTrumpf(SpielArt spielArt, Farbe soloSpielFarbe) {
-        //todo return fuer die anderen Spielarten festlegen
+
         switch (spielArt) {
             case KEINSPIEL:
                 break;
@@ -50,8 +50,14 @@ public class Spielkarte {
                 }
                 break;
             case WENZ:
+                if (wert == Werte.UNTER) {
+                    return true;
+                }
                 break;
             case SOLO:
+                if (wert == Werte.OBER || wert == Werte.UNTER || farbe == soloSpielFarbe) {
+                    return true;
+                }
                 break;
         }
         return false;

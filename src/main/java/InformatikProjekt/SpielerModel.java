@@ -126,7 +126,7 @@ public class SpielerModel {
         return spielabsichtFarbe;
     }
 
-    //Tim: erlaubte Karten
+    //Tim: benötigt um zu bestimmen, ob die gesuchte Sau gespielt werden darf.
     public boolean gebeSauFarbeVorhandGespielt() {
         return sauFarbeVorhandGespielt;
     }

@@ -142,7 +142,7 @@ public class Spieler extends Mitspieler {
                     break;
                 }
             }
-        } else {
+        } else { //Todo davonlaufen beim Ausspielen überprüfen mit erlaubteKartenAusspielenBeiSauspiel()
             karteIstErlaubt = true;
         }
         //Karte zurückgeben, wenn erlaubt //TODO: Verkürzung möglich?
@@ -159,7 +159,7 @@ public class Spieler extends Mitspieler {
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
         //Tim
         //todo anpassen mit Solofarbe anstatt null
-        //Wenn auf Vorhand die Farbe der Sau gespielt wird setzeSauFarbeVorhandGespielt = true
+        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte  wie jede andere Karte einer Farbe frei gespielt werden.
         if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
             model.setzteSauFarbeVorhandGespielt(true);
         }

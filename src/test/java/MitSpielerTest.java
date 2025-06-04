@@ -46,7 +46,7 @@ public class MitSpielerTest {
         assertEquals(2, erlaubteKartenWenzFarbe.size(), "Testet erlaubteKartenWenzFarbe");
 
         assertEquals(4, erlaubteKartenSoloGrasTrumpf.size(), "Testet erlaubteKartenSoloGrasTrumpf");
-        assertEquals(3, erlaubteKartenSoloGrasFarbe.size(), "Testet erlaubteKartenSoloGrasFarbe");
+        assertEquals(2, erlaubteKartenSoloGrasFarbe.size(), "Testet erlaubteKartenSoloGrasFarbe");
 
 
     }
@@ -68,9 +68,24 @@ public class MitSpielerTest {
         hand.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
 
         //Verschiedene Spielsituationen
-        ArrayList<Spielkarte> erlaubteKartenSauDavonlaufen = bot.gibErlaubteKarten(hand, SpielArt.SAUSPIEL, new Spielkarte(Farbe.GRAS, Werte.SAU), new Spielkarte(Farbe.GRAS, Werte.ACHTER), Farbe.GRAS, false);
+        ArrayList<Spielkarte> erlaubteKartenSauDarfDavonlaufen = bot.erlaubteKartenAusspielenBeiSauspiel(hand, new Spielkarte(Farbe.GRAS, Werte.SAU));
 
-        assertEquals(4, erlaubteKartenSauDavonlaufen.size(), "Test Davonlaufen");
+        assertEquals(8, erlaubteKartenSauDarfDavonlaufen.size(), "Darf Davonlaufen");
+
+        ArrayList<Spielkarte> hand2 = new ArrayList<>();
+        hand2.add(new Spielkarte(Farbe.SCHELLEN, Werte.SIEBENER));
+        hand2.add(new Spielkarte(Farbe.GRAS, Werte.KOENIG));
+        hand2.add(new Spielkarte(Farbe.GRAS, Werte.NEUNER));
+        hand2.add(new Spielkarte(Farbe.HERZ, Werte.SAU));
+        hand2.add(new Spielkarte(Farbe.GRAS, Werte.SAU));
+        hand2.add(new Spielkarte(Farbe.SCHELLEN, Werte.KOENIG));
+        hand2.add(new Spielkarte(Farbe.EICHEL, Werte.SIEBENER));
+        hand2.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
+
+        ArrayList<Spielkarte> erlaubteKartenSauDarfNichtDavonlaufen = bot.erlaubteKartenAusspielenBeiSauspiel(hand2, new Spielkarte(Farbe.GRAS, Werte.SAU));
+
+
+        assertEquals(6, erlaubteKartenSauDarfNichtDavonlaufen.size(), "Darf nicht Davonlaufen");
 
         //Weiteren Test schreiben
 
