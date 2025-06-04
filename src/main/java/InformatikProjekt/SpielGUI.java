@@ -549,6 +549,8 @@ class SpielGUI {
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {}
     public void stichGewonnen(WelcherSpieler spieler) {}
     public void rundeGewonnen(int[] punkte) {}
+    public void spielabsichtFragen() {}
+    public void farbeFuerSpielAbsicht() {}
     public void zeigeLetztenStich() {
         System.out.println(spieler.gebeLetztenStich());
     }

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class Spieler extends Mitspieler {
     private SpielerModel model; //speichert Daten des Spielers
-    private SpielerGUI gui;
+    private SpielGUI gui;
 
-    public Spieler() { //TODO: SpielGUI gui -
+    public Spieler(SpielGUI spielgui) { //TODO: SpielGUI gui -
         model = new SpielerModel();
-        gui = new SpielerGUI(this);
+        gui = spielgui;
     }
 
     /**
