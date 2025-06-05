@@ -1,10 +1,6 @@
 package InformatikProjekt;
 
-import InformatikProjekt.SpielGUI;
-
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 //Programmierer: Tom
 
@@ -40,35 +36,6 @@ public class Spieler extends Mitspieler {
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
         final SpielArt[] spielabsicht = {SpielArt.KEINSPIEL};
         gui.spielabsichtFragen();
-        System.out.println("Test");
-        //wartet bis Nutzereingabe reinkommt
-        /*        int zaehler = 0;
-        boolean[] ausgewaehlterButton;
-        while (zaehler < 99999) {
-            ausgewaehlterButton = gui.gebeSpielabsicht();
-            if (ausgewaehlterButton[0]) {
-                System.out.println("weiter");
-                break;
-            } else if (ausgewaehlterButton[1]) {
-                spielabsicht = SpielArt.SAUSPIEL;
-                System.out.println("sauspiel");
-                break;
-            }
-            System.out.println(zaehler);
-            zaehler++;
-        }
-        System.out.println(zaehler);
-        gui.spielabsichtFragenAbschluss();
-        */
-        Future<boolean[]> lol = gui.gebeSpielabsicht();
-        boolean[] was;
-        try {
-            was = lol.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            was = new boolean[2];
-        }
-        System.out.println(was[0] + " " + was[1]);
 
         //Überprüfen, ob überhaupt möglich
         //ist Sauspiel schon das höchste Spiel?
