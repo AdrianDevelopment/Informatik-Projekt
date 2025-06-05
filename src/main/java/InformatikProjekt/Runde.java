@@ -1,6 +1,7 @@
 package InformatikProjekt;
 
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 
 // Programmierer: Adrian
 
@@ -19,10 +20,14 @@ public class Runde {
         this.speicherung = speicherung;
         rundeModel = new RundeModel(positionSpieler);
 
+//        final SpielGUI[] spielgui = new SpielGUI[1];
+//        SwingUtilities.invokeLater(() -> {
+//            spielgui[0] = new SpielGUI(echterSpieler);
+//        });
+//        spielgui[0].spielGUIErstellen();
+//        echterSpieler.setzeGUI(spielgui[0]);
         SpielGUI spielGUI = new SpielGUI(echterSpieler);
-       // spielGUI.erstelleSpielGUI();
-        Thread thread = new Thread(spielGUI);
-        thread.start();
+        spielGUI.spielGUIErstellen();
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
@@ -50,12 +55,14 @@ public class Runde {
                 ausruferObjekt = spieler.get(i);
             }
         }
+        if (hoechstesSpiel == SpielArt.KEINSPIEL) {
+            return null;
+        }
 
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.spielerHatSpielabsichtGesagt(hoechstesSpiel, rundeModel.gebeAusrufer());
         }
 
-        if (ausruferObjekt == null) System.out.println("ERROR: kein Ausrufer gefunden!");
         Farbe farbe = ausruferObjekt.farbeFuerSpielAbsicht(hoechstesSpiel);
 
         for (Mitspieler aktuellerSpieler : spieler) {
@@ -63,9 +70,9 @@ public class Runde {
         }
 
         switch (hoechstesSpiel) {
-            case KEINSPIEL:
-                starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
-                return null;
+//            case KEINSPIEL:
+//                starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
+//                return null;
             case SAUSPIEL:
                 spielSchleifeSau(8, vorhand);
                 int[] sieger = rundenSiegerErmitteln();
