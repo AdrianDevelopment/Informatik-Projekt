@@ -65,7 +65,6 @@ class SpielGUI {
         mainFrame = new JFrame();
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         mainFrame.setVisible(true);
-        //mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(null);
 
         weiterButton = new JRadioButton("Weiter");
