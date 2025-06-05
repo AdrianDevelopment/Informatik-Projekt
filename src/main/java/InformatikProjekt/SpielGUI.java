@@ -7,6 +7,7 @@ import java.util.ArrayList;
 class SpielGUI {
     private Spieler spieler;
 
+
     private ArrayList<Spielkarte> handKarten = new ArrayList<Spielkarte>();
     private ArrayList<JButton> spieler1handkarten;
     private ImageIcon eichelKarte7 = new ImageIcon("src\\main\\resources\\Karten\\Eichel_7.png");
@@ -45,7 +46,9 @@ class SpielGUI {
     private ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
     private ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
 
-    private JFrame mainFrame;
+    private JButton weiterButton;
+    private JButton sauButton;
+    private final JFrame mainFrame;
 
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
@@ -181,13 +184,16 @@ class SpielGUI {
 
         //Buttuns zum Auswählen der Aktionen:
         JButton weiterButton = new JButton("Weiter");
+        weiterButton.addActionListener(e -> spielabsichtFragenAbschluss(0));
         weiterButton.setBounds(1000, 600, 100, 50);
-        weiterButton.addActionListener(e -> spieler.spielabsichtGUI(SpielArt.KEINSPIEL));
-        //weiterButton.addActionListener(e -> zeigeHandkarten(handKarten));
+        weiterButton.setVisible(false);
 
         JButton sauButton = new JButton("SAU");
+        sauButton.addActionListener(e -> spielabsichtFragenAbschluss(1));
         sauButton.setBounds(1100, 600, 100, 50);
-        sauButton.addActionListener(e -> spieler.spielabsichtGUI(SpielArt.SAUSPIEL));
+        sauButton.setVisible(false);
+
+
 
         //Sachen zum Frame hinzufügen
         mainFrame.add(Spieler1);
@@ -230,7 +236,7 @@ class SpielGUI {
 
 
         for(int i = 0; i < 8; i++){
-
+            ImageIcon icon;
             if (handKarten.get(i).gebeFarbe() == Farbe.SCHELLEN){
                 if (handKarten.get(i).gebeWert() == Werte.SIEBENER){
                     JButton schellenSiebener = new JButton();
@@ -540,6 +546,24 @@ class SpielGUI {
 
     }
 
+    public void spielabsichtFragen() {
+        weiterButton.setVisible(true);
+        sauButton.setVisible(true);
+    }
+
+    public void spielabsichtFragenAbschluss(int vergleich){
+        weiterButton.setVisible(false);
+        sauButton.setVisible(false);
+        if (vergleich == 1){
+            spieler.spielabsichtGUI(SpielArt.SAUSPIEL);
+        }
+        else if (vergleich == 0){
+            spieler.spielabsichtGUI(SpielArt.KEINSPIEL);
+        }
+        else {System.out.println("Fehler: Keine Valide Spielart ausgewählt ;(");}
+
+    }
+
     public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler){}
     public void ungueltigeEingabe(String konkretisierung){}
     public void spielArtEntschieden(WelcherSpieler welcherSpieler, SpielArt spielArt, Farbe farbe) {}
@@ -549,7 +573,7 @@ class SpielGUI {
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {}
     public void stichGewonnen(WelcherSpieler spieler) {}
     public void rundeGewonnen(int[] punkte) {}
-    public void spielabsichtFragen() {}
+
     public void farbeFuerSpielAbsicht() {}
     public void zeigeLetztenStich() {
         System.out.println(spieler.gebeLetztenStich());

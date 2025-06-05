@@ -9,10 +9,11 @@ public class MenueGUI {
     //globale Variablen erstellen
     JButton playButton;
     private Spieler spieler;
+    private Menue menue;
     private ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\hintergrundMenueGUI.png");
 
-    public MenueGUI(Spieler spieler) {
-        this.spieler = spieler;
+    public MenueGUI(Menue menue) {
+        this.menue = menue;
     }
 
     public int guiStart() {
@@ -39,7 +40,7 @@ public class MenueGUI {
 
         //Hier werden Buttons erstellt:
         JButton playButton = new JButton();
-        playButton.addActionListener( e -> new SpielGUI(spieler));
+        playButton.addActionListener( e -> menue.setzeMenueAuswahl(1));
         // playButton.addActionListener(e -> Menue.startMainGame());
         playButton.setBounds(344,60,200,40);
         playButton.setText("SPIELEN");
