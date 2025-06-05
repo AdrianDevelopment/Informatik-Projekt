@@ -18,6 +18,7 @@ class SpielGUI {
     private ArrayList<JButton> weiterSauButtons;
     private ArrayList<JButton> farbauswahlButtons;
 
+    private JFrame spielabsichtFrame;
     private final JFrame mainFrame;
 
     public SpielGUI(Spieler spieler) {
@@ -205,13 +206,13 @@ class SpielGUI {
     public ArrayList<JButton> spielabsichtFragen() {
         JButton weiterButton = new JButton("Weiter");
         weiterSauButtons.add(weiterButton);
-        JButton sauButton = new JButton("Weiter");
+        JButton sauButton = new JButton("Sau");
         weiterSauButtons.add(sauButton);
         return weiterSauButtons;
     }
 
     public ArrayList<JButton> farbeFuerSpielabsicht(){
-        JFrame spielabsichtFrame = new JFrame("Auswahl: Spielabsicht");
+        spielabsichtFrame = new JFrame("Auswahl: Spielabsicht");
         spielabsichtFrame.setSize(1000, 600);
         spielabsichtFrame.setLayout(null);
 
@@ -235,16 +236,44 @@ class SpielGUI {
         return farbauswahlButtons;
     }
 
-    public boolean[] gebefarbeFuerSpielabsicht(){
-        boolean[] uebergabeArray = new boolean[3];
-        uebergabeArray[0] = schellenButton.isSelected();
-        uebergabeArray[1] = grasButton.isSelected();
-        uebergabeArray[2] = eichelButton.isSelected();
-        return uebergabeArray;
+    public void setzeSpielabsichtUnsichtbar(){
+        spielabsichtFrame.setVisible(false);
     }
 
-    public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
+    public void handkartenAusteilen(){
+        for (int i = 0; i < 8; i++){
+            mainFrame.add(spieler1KartenArray.get(i));
+            spieler1KartenArray.get(i).setBounds((300 + i*60) + 120, 380, 100, 410);
+        }
+    }
 
+
+    public void  karteInDieMitte(JButton karteFuerDieMitte, WelcherSpieler adressat){
+        switch (adressat){
+            case NUTZER:
+                karteFuerDieMitte.setBounds(220, 380, 100, 210);
+                break;
+            case LINKER:
+                karteFuerDieMitte.setBounds(320, 380, 100, 210);
+                break;
+            case OBERER:
+                karteFuerDieMitte.setBounds(420, 380, 100, 210);
+                break;
+            case RECHTER:
+                karteFuerDieMitte.setBounds(520, 380, 100, 210);
+                break;
+        }
+        mainFrame.add(karteFuerDieMitte);
+        karteFuerDieMitte.setVisible(true);
+
+    }
+
+    public void handkartenAktualisieren(int t){
+        mainFrame.remove(spieler1KartenArray.get(t));
+    }
+
+    //jjjjjjjjjjjj
+    public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
     }
 
     public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler){}
@@ -263,11 +292,5 @@ class SpielGUI {
         System.out.println(spieler.gebeLetztenStich());
     }
 
-    public void handkartenAusteilen(ArrayList<JButton> spieler1handkarten){
-        for (int i = 0; i < 8; i++){
-            mainFrame.add(spieler1handkarten.get(i));
-            spieler1handkarten.get(i).setBounds((300 + i*60) + 120, 380, 100, 410);
-        }
-    }
 
 }
