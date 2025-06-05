@@ -37,8 +37,12 @@ public class Spieler extends Mitspieler {
         SpielArt spielabsicht = null;
         gui.spielabsichtFragen();
         //wartet bis GUI Nutzereingabe dem Controller meldet
-        while (spielabsicht == null) {
-            spielabsicht = model.gebeSpielabsicht();
+        int zaehler = 0;
+        while (zaehler < 1000) {
+            zaehler++;
+        }
+        if (gui.gebeRadioButton()) {
+            //...
         }
 
         //Überprüfen, ob überhaupt möglich

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 class SpielGUI {
     private Spieler spieler;
 
+    JRadioButton radioButton; //neu
 
     private ArrayList<Spielkarte> handKarten = new ArrayList<Spielkarte>();
     private ArrayList<JButton> spieler1handkarten;
@@ -58,6 +59,11 @@ class SpielGUI {
         mainFrame.setVisible(true);
         //mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(null);
+
+        //neues für Thiemo neu
+        radioButton = new JRadioButton("Weiter");
+        radioButton.setBounds(1000, 600, 100, 50);
+        radioButton.setVisible(true);
 
         //Bilder als Variablen festlegen
         ImageIcon playerIcon = new ImageIcon("src\\main\\resources\\spieler.png");
@@ -230,6 +236,10 @@ class SpielGUI {
 
         mainFrame.add(weiterButton);
         mainFrame.add(sauButton);
+    }
+
+    public boolean gebeRadioButton() { //neu
+        return radioButton.isSelected();
     }
 
     public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
