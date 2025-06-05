@@ -8,14 +8,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RundeTest {
 
     private final ArrayList<Mitspieler> spieler;
+    private final Spieler echterSpieler;
     private final ArrayList<Spielkarte> spielKarten;
     private final int positionSpieler;
     private final Speicherung speicherung;
 
     private RundeTest() {
         spieler = new ArrayList<>(4);
+        echterSpieler = new Spieler();
         spielKarten = new ArrayList<>(32);
-        speicherung = new Speicherung();
+        speicherung = Speicherung.speicherungErstellen();
 
         spieler.add(new Spieler());
         spieler.add(new Bot());
@@ -34,7 +36,7 @@ public class RundeTest {
 
     @Test
     public void ermittleSiegerTesten() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.GRAS, Werte.SIEBENER);
@@ -50,7 +52,7 @@ public class RundeTest {
 
     @Test
     public void alleKartenGleicheFarbeTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.ACHTER);
@@ -66,7 +68,7 @@ public class RundeTest {
 
     @Test
     public void trumpfKarteSchlaegtAndereTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.NEUNER);
@@ -82,7 +84,7 @@ public class RundeTest {
 
     @Test
     public void hoechsteTrumpfKarteGewinntTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.UNTER);
@@ -98,7 +100,7 @@ public class RundeTest {
 
     @Test
     public void farbMischungTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.EICHEL, Werte.SAU);
@@ -114,7 +116,7 @@ public class RundeTest {
 
     @Test
     public void mehrereHerzTruempfeTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.OBER);
@@ -130,7 +132,7 @@ public class RundeTest {
 
     @Test
     public void alleTruempfeTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.SIEBENER);
@@ -146,7 +148,7 @@ public class RundeTest {
 
     @Test
     public void keinTrumpfTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.GRAS, Werte.ZEHNER);
@@ -162,7 +164,7 @@ public class RundeTest {
 
     @Test
     public void ersteFarbeGewinntTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.EICHEL, Werte.ZEHNER);
@@ -178,7 +180,7 @@ public class RundeTest {
 
     @Test
     public void hoechteFarbeGewinntTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung);
+        Runde runde = new Runde(spieler, echterSpieler, spielKarten, positionSpieler, speicherung);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.ACHTER);

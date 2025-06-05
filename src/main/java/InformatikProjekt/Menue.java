@@ -3,16 +3,19 @@ package InformatikProjekt;
 // Programmierer: Adrian
 
 public class Menue {
-    private final MenueGUI menueGUI;
-    private Spieler echterSpieler;
+    private final Spieler echterSpieler;
 
     public Menue() {
         echterSpieler = new Spieler();
-        menueGUI = new MenueGUI(echterSpieler);
+        MenueGUI menueGUI = new MenueGUI(this);
+        menueGUI.guiStart();
     }
 
-    public void starteGame() {
-        int menueAuswahl = menueGUI.guiStart();
+    public void setzeMenueAuswahl(int menueAuswahl) {
+        starteGame(menueAuswahl);
+    }
+
+    public void starteGame(int menueAuswahl) {
         switch (menueAuswahl) {
             case 0:
                 break;

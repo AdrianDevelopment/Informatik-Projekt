@@ -11,6 +11,7 @@ public class TunierModel {
         this.punkteTunier = new int[4];
     }
 
+    // Geber
     public int gebeAnzahlRunden() {
         return anzahlRunden;
     }
@@ -23,6 +24,7 @@ public class TunierModel {
         return punkteTunier[index];
     }
 
+    // Setzer
     public void setzePunkteTunier(int index, int punkte) {
         punkteTunier[index] = punkte;
     }

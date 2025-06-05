@@ -7,21 +7,19 @@ import java.util.ArrayList;
 public class Runde {
     private ArrayList<Mitspieler> spieler;
     private Speicherung speicherung;
-    private int[] punkte;
-    private int ausrufer;
-    private Mitspieler ausruferObjekt;
-    private Spielkarte[] aktuellerStich;
-    private int positionSpieler;
+    private RundeModel rundeModel;
+//    private int[] punkte;
+//    private int ausrufer;
+//    private Mitspieler ausruferObjekt;
+//    private Spielkarte[] aktuellerStich;
+//    private int positionSpieler;
 
     public Runde(ArrayList<Mitspieler> spieler, Spieler echterSpieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung) {
         this.spieler = spieler;
         this.speicherung = speicherung;
-        this.positionSpieler = positionSpieler;
-        punkte = new int[4];
-        aktuellerStich = new Spielkarte[4];
+        rundeModel = new RundeModel(positionSpieler);
 
-        SpielGUI spielGUI = new SpielGUI(echterSpieler);
-        echterSpieler.setzeGUI(spielGUI);
+        echterSpieler.setzeGUI(new SpielGUI(echterSpieler));
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
@@ -36,6 +34,7 @@ public class Runde {
     public int[] starteRunde(int vorhand) {
         SpielArt aktuellHoechstesSpiel;
         SpielArt hoechstesSpiel = SpielArt.KEINSPIEL;
+        Mitspieler ausruferObjekt = null;
 
         for (int i = 0; i < 4; i++) {
             // do {
@@ -43,19 +42,20 @@ public class Runde {
             // } while (aktuellHoechstesSpiel != SpielArt.KEINSPIEL || aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0); // zur Sicherheit wird hier nochmal geschaut, ob das gegebene höchste Spiel auch legal ist, sollte aber schon in Mitspieler geregelt werden
             if (aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0) {
                 hoechstesSpiel = aktuellHoechstesSpiel;
-                ausrufer = i;
+                rundeModel.setzeAusrufer(i);
                 ausruferObjekt = spieler.get(i);
             }
         }
 
         for (Mitspieler aktuellerSpieler : spieler) {
-            aktuellerSpieler.spielerHatSpielabsichtGesagt(hoechstesSpiel, ausrufer);
+            aktuellerSpieler.spielerHatSpielabsichtGesagt(hoechstesSpiel, rundeModel.gebeAusrufer());
         }
 
+        if (ausruferObjekt == null) System.out.println("ERROR: kein Ausrufer gefunden!");
         Farbe farbe = ausruferObjekt.farbeFuerSpielAbsicht(hoechstesSpiel);
 
         for (Mitspieler aktuellerSpieler : spieler) {
-            aktuellerSpieler.spielArtEntschieden(ausrufer, farbe, hoechstesSpiel);
+            aktuellerSpieler.spielArtEntschieden(rundeModel.gebeAusrufer(), farbe, hoechstesSpiel);
         }
 
         switch (hoechstesSpiel) {
@@ -66,26 +66,26 @@ public class Runde {
                 spielSchleifeSau(8, vorhand);
                 int[] sieger = rundenSiegerErmitteln();
                 for (Mitspieler aktuellerSpieler : spieler) {
-                    aktuellerSpieler.rundeGewonnen(sieger, punkte);
+                    aktuellerSpieler.rundeGewonnen(sieger, rundeModel.gebePunkteArray());
                 }
 
                 // Speicherung
-                if (sieger[0] == positionSpieler || sieger[1] == positionSpieler) {
-                    speicherung.gesamtePunkteErhoehen(punkte[sieger[0]] + punkte[sieger[1]]); // Speicherung der zusammengerechneten Punkte der Sieger
-                    if (punkte[sieger[0]] + punkte[sieger[1]] > 120) {
+                if (sieger[0] == rundeModel.gebePositionSpieler() || sieger[1] == rundeModel.gebePositionSpieler()) {
+                    speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1])); // Speicherung der zusammengerechneten Punkte der Sieger
+                    if (rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1]) > 120) {
                         // Methode SpielGewonnen Schneider noch nicht vorhanden
                     }
                     else {
                         speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
                     }
                 }
-                else if ((punkte[sieger[0]] + punkte[sieger[1]]) > 90) { // unter 30 Punkte ist man Schneider
+                else if (rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1]) > 90) { // unter 30 Punkte ist man Schneider
                     speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
                 }
                 else {
                     speicherung.SpielVerloren(SpielArt.SAUSPIEL);
                 }
-                speicherung.RundePunktzahlMelden(punkte[positionSpieler]);
+                speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
                 speicherung.DatenSpeichern();
 
                 return sieger;
@@ -109,7 +109,7 @@ public class Runde {
         for (int i = 0; i < 4; i++) {
             // Spieler "amZug" fragen welche Karte er legen möchte
             Spielkarte aktuelleSpielkarte = spieler.get(amZug).legeEineKarte();
-            aktuellerStich[amZug] = aktuelleSpielkarte;
+            rundeModel.setzeAktuellenStich(amZug, aktuelleSpielkarte);
 
             for (Mitspieler aktuellerSpieler : spieler) {
                 aktuellerSpieler.karteWurdeGelegt(aktuelleSpielkarte, amZug);
@@ -123,9 +123,9 @@ public class Runde {
         speicherung.DatenSpeichern();
 
         // Auswertung des Stichs
-        int sieger = ermittleSieger(aktuellerStich);
-        Spielkarte[] letzterStich = aktuellerStich.clone(); // nicht mit Referenz übergeben, da aktuellerStich sich ändert
-        punkte[sieger] += ermittlePunkte(aktuellerStich);
+        int sieger = ermittleSieger(rundeModel.gebeAktuellerStichArray());
+        Spielkarte[] letzterStich = rundeModel.gebeAktuellerStichArray().clone(); // nicht mit Referenz übergeben, da aktuellerStich sich ändert
+        rundeModel.addierePunkte(sieger, ermittlePunkte(rundeModel.gebeAktuellerStichArray()));
 
         // Ausgabe des Stichergebnisses
         for (Mitspieler aktuellerSpieler : spieler) {
@@ -238,19 +238,19 @@ public class Runde {
     }
 
     public int[] rundenSiegerErmitteln() {
-        int mitspieler = spieler.get(positionSpieler).gebeMitspieler();
+        int mitspieler = spieler.get(rundeModel.gebePositionSpieler()).gebeMitspieler();
         if (mitspieler == -1) System.out.println("ERROR: Position des echten Spielers ist falsch!");
 
-        int punkteSpieler = punkte[ausrufer] + punkte[mitspieler];
+        int punkteSpieler = rundeModel.gebePunkte(rundeModel.gebeAusrufer()) + rundeModel.gebePunkte(mitspieler);
         int[] gegenspieler = new int[2];
         int position = 0;
 
         if (punkteSpieler >= 60) {
-            return new int[] {ausrufer, mitspieler};
+            return new int[] {rundeModel.gebeAusrufer(), mitspieler};
         }
         else {
             for (int i = 0; i < 4; i++) {
-                if (i != ausrufer && i != mitspieler) {
+                if (i != rundeModel.gebeAusrufer() && i != mitspieler) {
                     gegenspieler[position] = i;
                     position++;
                 }

@@ -5,53 +5,54 @@ import java.util.ArrayList;
 public class RundeModel {
     private int[] punkte;
     private int ausrufer;
-    private Mitspieler ausruferObjekt;
+    private int positionSpieler;
     private Spielkarte[] aktuellerStich;
 
-    public RundeModel() {
+    public RundeModel(int positionSpieler) {
         punkte = new int[4];
         aktuellerStich = new Spielkarte[4];
+        this.positionSpieler = positionSpieler;
     }
 
-    public int ermittleSieger(Spielkarte[] aktuellerStich) {
-        // Logik wie im Originalcode
+    // Geber
+    public int gebePunkte(int index) {
+        return punkte[index];
     }
 
-    public int gebeTrumpfRang(Spielkarte karte) {
-        // Logik wie im Originalcode
-    }
-
-    public int gebeFarbeRang(Spielkarte karte) {
-        // Logik wie im Originalcode
-    }
-
-    public int ermittlePunkte(Spielkarte[] aktuellerStich) {
-        // Logik wie im Originalcode
-    }
-
-    public int[] rundenSiegerErmitteln(int ausrufer, Mitspieler spielerObjekt) {
-        // Logik aus rundenSiegerErmitteln()
-    }
-
-    // Getter und Setter für Daten
-    public void setzePunkte(int spielerIndex, int punktzahl) {
-        punkte[spielerIndex] = punktzahl;
-    }
-
-    public int gebePunkte(int spielerIndex) {
-        return punkte[spielerIndex];
-    }
-    
-    public void setzeAusrufer(int ausrufer, Mitspieler ausruferObjekt) {
-        this.ausrufer = ausrufer;
-        this.ausruferObjekt = ausruferObjekt;
+    public int[] gebePunkteArray() {
+        return punkte;
     }
 
     public int gebeAusrufer() {
         return ausrufer;
     }
-    
-    public Spielkarte[] gebeAktuellerStich() {
+
+    public int gebePositionSpieler() {
+        return positionSpieler;
+    }
+
+    public Spielkarte gebeAktuellerStich(int index) {
+        return aktuellerStich[index];
+    }
+
+    public Spielkarte[] gebeAktuellerStichArray() {
         return aktuellerStich;
+    }
+
+    // Setzer
+    public void setzePunkte(int index, int punktzahl) {
+        punkte[index] = punktzahl;
+    }
+
+    public void addierePunkte(int index, int punktzahl) {
+        punkte[index] += punktzahl;
+    }
+
+    public void setzeAusrufer(int ausrufer) {
+        this.ausrufer = ausrufer;
+    }
+
+    public void setzeAktuellenStich(int index, Spielkarte spielkarte) {
+        aktuellerStich[index] = spielkarte;
     }
 }
