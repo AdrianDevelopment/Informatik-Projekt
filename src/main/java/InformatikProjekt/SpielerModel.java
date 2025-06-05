@@ -18,6 +18,7 @@ public class SpielerModel {
     private ArrayList<Spielkarte> stich; //speichert Karten eines Stichs
     private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs
     private int anzahlSpielerSchonGelegt; //gibt an, wie viele Spieler in der Lege-Runde dran waren
+    private Spielkarte zuLegeKarte;
     //temporäre Attribute für GUI-Übergabe
     private SpielArt spielabsicht; //speichert Spielabsicht vom Spieler
     private Farbe spielabsichtFarbe;
@@ -124,6 +125,14 @@ public class SpielerModel {
     }
     public Farbe gebeSpielabsichtFarbe() {
         return spielabsichtFarbe;
+    }
+
+    //zuLegendeFarbe
+    public void setzeZuLegendeKarte(Spielkarte spielkarte) {
+        zuLegeKarte = spielkarte;
+    }
+    public Spielkarte gebeZuLegendeKarte() {
+        return zuLegeKarte;
     }
 
     //Tim: benötigt um zu bestimmen, ob die gesuchte Sau gespielt werden darf.

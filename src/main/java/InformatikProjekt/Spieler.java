@@ -120,42 +120,49 @@ public class Spieler extends Mitspieler {
 
     /**
      * → Aufruf an GUI, eine Karte zu legen
-     *   - schauen, ob ich der erste in der Lege-/Stichrunde bin
-     *   → keine Überprüfung, weil jede Karte gelegt werden kann
+     * - schauen, ob ich der erste in der Lege-/Stichrunde bin
+     * → keine Überprüfung, weil jede Karte gelegt werden kann
      * - wenn ich nicht der erste in der Lege-/Stichrunde bin
-     *   → model abfragen, welche Karte ich legen muss
-     *   → überprüfen, ob ich Karte legen darf
-     *   → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
+     * → model abfragen, welche Karte ich legen muss
+     * → überprüfen, ob ich Karte legen darf
+     * → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
      */
     @Override
     public Spielkarte legeEineKarte() {//TODO: nicht fertig
         int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
         ArrayList<Spielkarte> erlaubteKarten;
-        boolean karteIstErlaubt;
+        boolean karteIstErlaubt = false;
+        Spielkarte zuLegendeKarte = null;
 
-        Spielkarte zuLegendeKarte = gui.legeKarte(); //TODO: mit Thiemo überprüfen, ob Rückgabewert so Sinn macht
-
+        gui.legeKarte();
+        //wartet bis GUI Nutzereingabe dem Controller meldet
+        while (zuLegendeKarte == null) {
+            zuLegendeKarte = model.gebeZuLegendeKarte();
+        }
         //Überprüfung, ob Karte erlaubt ist
+        //Überprüfung, ob man weglaufen darf
+        if (anzahlSpielerSchonGelegt == 0) {
+            Spielkarte sau = new Spielkarte(model.gebeFarbe(), Werte.SAU);
+            erlaubteKarten = erlaubteKartenAusspielenBeiSauspiel(model.gebeHandkarten(), sau);
+            for (Spielkarte spielkarte : erlaubteKarten) {
+                if (zuLegendeKarte.equals(spielkarte)) {
+                    return zuLegendeKarte; //Karte ist erlaubt und wird zurückgegeben
+                }
+            }
+        }
+        //Überprüfung, welche Karte gelegt werden darf, wenn schon eine liegt
         if (anzahlSpielerSchonGelegt != 0) {
             karteIstErlaubt = false;
             erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt()); //TODO: anpassen, wenn Tim Methode anpasst
             for (int i = 0; i < erlaubteKarten.size(); i++) {
                 if (zuLegendeKarte.equals(erlaubteKarten.get(i))) {
-                    karteIstErlaubt = true;
-                    break;
+                    return zuLegendeKarte; //Karte ist erlaubt und wird zurückgegeben
                 }
             }
-        } else { //Todo davonlaufen beim Ausspielen überprüfen mit erlaubteKartenAusspielenBeiSauspiel()
-            karteIstErlaubt = true;
         }
-        //Karte zurückgeben, wenn erlaubt //TODO: Verkürzung möglich?
         //sonst nochmal
-        if (karteIstErlaubt) {
-            return zuLegendeKarte;
-        } else {
-            gui.ungueltigeEingabe("");
-            return legeEineKarte();
-        }
+        gui.ungueltigeEingabe("Die Karte kann nicht gelegt werden.");
+        return legeEineKarte();
     }
 
     @Override
@@ -206,6 +213,7 @@ public class Spieler extends Mitspieler {
 
     /**
      * Gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
+     *
      * @param spieler: von Runde übergeben
      */
     public WelcherSpieler wieVielterSpieler(int spieler) {
