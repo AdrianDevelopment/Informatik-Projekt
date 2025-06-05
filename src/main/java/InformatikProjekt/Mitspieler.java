@@ -9,16 +9,17 @@ public abstract class Mitspieler {
 
 
     //Fragt die Spielabsicht der Mitspieler ab.
-    public abstract SpielArt spielabsichtFragen(SpielArt hoechstesSpiel);
+    public abstract void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand);
 
     //Fragt die Farbe für das Spiel von dem Spieler, der das hoechste Spiel angeboten hat ab. (Farbe bei Sau fürs Ausrufen, bei Solo für Trumpf)
-    public abstract Farbe farbeFuerSpielAbsicht(SpielArt spielArt);
+    public abstract void farbeFuerSpielAbsicht(SpielArt spielArt);
 
     //Nachricht an Mitspieler, nachdem ein Spieler eine Spielabsicht abgegeben hat.
     public abstract void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler);
 
     //Forder einen Mitspieler auf eine legale Karte zu legen.
-    public abstract Spielkarte legeEineKarte();
+    public abstract void legeEineKarte(int wiederholung, int vorhand);
+
 
     //Legt die Startwerte fuer eine neue Runde fest.
     public abstract void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler);
@@ -219,5 +220,7 @@ public abstract class Mitspieler {
         return erlaubteFarben;
 
     }
+
+
 }
 
