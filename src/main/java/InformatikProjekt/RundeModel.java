@@ -11,12 +11,19 @@ public class RundeModel {
     private SpielArt hoechsteSpielart;
     private Mitspieler ausruferReferenz;
     private int vorhand;
+    private int[] sieger;
+    private int wiederholungenRunden;
 
-    public RundeModel(int positionSpieler, int vorhand) {
+    public RundeModel(int positionSpieler, int vorhand, int wiederholungenRunden) {
         punkte = new int[4];
-        aktuellerStich = new Spielkarte[4];
+        ausrufer = -1;
         this.positionSpieler = positionSpieler;
+        aktuellerStich = new Spielkarte[4];
+        this.letzerStich = new Spielkarte[4];
+        this.hoechsteSpielart = SpielArt.KEINSPIEL;
         this.vorhand = vorhand;
+        this.sieger = new int[2];
+        this.wiederholungenRunden = wiederholungenRunden;
     }
 
     // Geber
@@ -60,6 +67,18 @@ public class RundeModel {
         return letzerStich;
     }
 
+    public int gebeSieger(int index) {
+        return sieger[index];
+    }
+
+    public int[] gebeSiegerArray() {
+        return sieger;
+    }
+
+    public int gebeWiederholungenRunden() {
+        return wiederholungenRunden;
+    }
+
     // Setzer
     public void setzePunkte(int index, int punktzahl) {
         punkte[index] = punktzahl;
@@ -91,5 +110,17 @@ public class RundeModel {
 
     public void kopiereInLetzerStich(Spielkarte[] aktuellerStich) {
         letzerStich = aktuellerStich.clone();
+    }
+
+    public void setzeSieger(int index, int sieger) {
+        this.sieger[index] = sieger;
+    }
+
+    public void setzeSiegerArray(int[] sieger) {
+        this.sieger = sieger;
+    }
+
+    public void setzeWiederholungenRunden(int wiederholungenRunden) {
+        this.wiederholungenRunden = wiederholungenRunden;
     }
 }

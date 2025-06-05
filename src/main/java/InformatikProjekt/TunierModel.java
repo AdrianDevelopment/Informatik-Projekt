@@ -4,6 +4,7 @@ public class TunierModel {
     private int anzahlRunden;
     private Spieler echteSpieler;
     private int[] punkteTunier;
+    private int positionSpieler;
 
     public TunierModel(int anzahlRunden, Spieler echterSpieler) {
         this.anzahlRunden = anzahlRunden;
@@ -24,6 +25,10 @@ public class TunierModel {
         return punkteTunier[index];
     }
 
+    public int gebePositionSpieler() {
+        return positionSpieler;
+    }
+
     // Setzer
     public void setzePunkteTunier(int index, int punkte) {
         punkteTunier[index] = punkte;
@@ -31,5 +36,9 @@ public class TunierModel {
 
     public void erhoehePunkteTunierUmEins(int index) {
         punkteTunier[index]++;
+    }
+
+    public void setzePositionSpieler(int positionSpieler) {
+        this.positionSpieler = positionSpieler;
     }
 }
