@@ -1,6 +1,7 @@
 package InformatikProjekt;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 
 
@@ -17,6 +18,8 @@ class SpielGUI {
     private ArrayList<JButton> spieler1KartenArray;
     private ArrayList<JButton> weiterSauButtons;
     private ArrayList<JButton> farbauswahlButtons;
+
+    ImageIcon kartenRuekseite;
 
     private JFrame spielabsichtFrame;
     private final JFrame mainFrame;
@@ -46,7 +49,7 @@ class SpielGUI {
         //Bilder als Variablen festlegen
         ImageIcon playerIcon = new ImageIcon("src\\main\\resources\\spieler.png");
         ImageIcon botIcon = new ImageIcon("src\\main\\resources\\bot.png");
-        ImageIcon kartenRuekseite = new ImageIcon("src\\main\\resources\\rueckseiteKarte.png");
+        kartenRuekseite = new ImageIcon("src\\main\\resources\\rueckseiteKarte.png");
 
         //Spieler1
         JLabel Spieler1 = new JLabel();
@@ -221,12 +224,16 @@ class SpielGUI {
         //Schellen, Gras und Eichel
         JButton schellenButton = new JButton("Schellen");
         schellenButton.setBounds(100, 100, 100, 50);
+        schellenButton.setVisible(true);
         farbauswahlButtons.add(schellenButton);
+
         JButton grasButton = new JButton("Gras");
         grasButton.setBounds(100, 200, 100, 50);
+        grasButton.setVisible(true);
         farbauswahlButtons.add(grasButton);
         JButton eichelButton = new JButton("Eichel");
         eichelButton.setBounds(100, 300, 100, 50);
+        eichelButton.setVisible(true);
         farbauswahlButtons.add(eichelButton);
 
         spielabsichtFrame.add(schellenButton);
@@ -244,6 +251,7 @@ class SpielGUI {
         for (int i = 0; i < 8; i++){
             mainFrame.add(spieler1KartenArray.get(i));
             spieler1KartenArray.get(i).setBounds((300 + i*60) + 120, 380, 100, 410);
+            spieler1KartenArray.get(i).setVisible(true);
         }
     }
 
@@ -286,6 +294,36 @@ class SpielGUI {
 
     public void mitteAufrauemen(){
 
+
+    }
+
+    public void kartenZuweisen(WelcherSpieler spieler){
+        if (spieler == WelcherSpieler.NUTZER) {
+            JLabel stapelLabel1 = new JLabel();
+            stapelLabel1.setIcon(kartenRuekseite);
+            mainFrame.add(stapelLabel1);
+            stapelLabel1.setVisible(true);
+            stapelLabel1.setBounds(600, 300, 100, 100);
+        }
+        else if (spieler == WelcherSpieler.LINKER){
+            JLabel stapelLabel2 = new JLabel();
+            stapelLabel2.setIcon(kartenRuekseite);
+            stapelLabel2.setBounds(400, 300, 100, 100);
+            mainFrame.add(stapelLabel2);
+            stapelLabel2.setVisible(true);
+        } else if (spieler == WelcherSpieler.OBERER) {
+            JLabel stapelLabel3 = new JLabel();
+            stapelLabel3.setIcon(kartenRuekseite);
+            stapelLabel3.setBounds(400, 300, 100, 100);
+            mainFrame.add(stapelLabel3);
+            stapelLabel3.setVisible(true);
+        } else if (spieler == WelcherSpieler.RECHTER) {
+            JLabel stapelLabel4 = new JLabel();
+            stapelLabel4.setIcon(kartenRuekseite);
+            stapelLabel4.setBounds(600, 300, 100, 100);
+            mainFrame.add(stapelLabel4);
+            stapelLabel4.setVisible(true);
+        }
     }
     public void handkartenAktualisieren(int t){
         mainFrame.remove(spieler1KartenArray.get(t));
