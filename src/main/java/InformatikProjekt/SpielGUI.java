@@ -71,7 +71,7 @@ class SpielGUI {
         sauButton.setBounds(1100, 600, 100, 50);
 
         mainFrame.add(weiterButton);
-        weiterButton.setVisible(false);
+        //weiterButton.setVisible(false);
         mainFrame.add(sauButton);
         sauButton.setVisible(false);
 
