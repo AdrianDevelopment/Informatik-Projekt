@@ -8,7 +8,7 @@ public class Spieler extends Mitspieler {
     private SpielerModel model; //speichert Daten des Spielers
     private SpielGUI gui;
 
-    public Spieler() { //TODO: SpielGUI gui -
+    public Spieler() {
         model = new SpielerModel();
     }
 
@@ -20,15 +20,11 @@ public class Spieler extends Mitspieler {
      * Model + GUI:
      * - Übergibt die wichtigen Dinge dem SpielerModel
      * - gibt wieVielterSpieler an GUI weiter zur Anzeige
-     *
-     * @param karten
-     * @param wieVielterSpieler
      */
     @Override
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
         model.setzeWelcherSpieler(wieVielterSpieler);
-
         gui.zeigeHandkarten(karten);
     }
 
@@ -128,10 +124,9 @@ public class Spieler extends Mitspieler {
      * → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
      */
     @Override
-    public Spielkarte legeEineKarte() {//TODO: nicht fertig
+    public Spielkarte legeEineKarte() {
         int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
         ArrayList<Spielkarte> erlaubteKarten;
-        boolean karteIstErlaubt = false;
         Spielkarte zuLegendeKarte = null;
 
         gui.legeKarte();
@@ -152,7 +147,6 @@ public class Spieler extends Mitspieler {
         }
         //Überprüfung, welche Karte gelegt werden darf, wenn schon eine liegt
         if (anzahlSpielerSchonGelegt != 0) {
-            karteIstErlaubt = false;
             erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt()); //TODO: anpassen, wenn Tim Methode anpasst
             for (int i = 0; i < erlaubteKarten.size(); i++) {
                 if (zuLegendeKarte.equals(erlaubteKarten.get(i))) {
@@ -160,25 +154,38 @@ public class Spieler extends Mitspieler {
                 }
             }
         }
-        //sonst nochmal
+        //Karte war nicht erlaubt
         gui.ungueltigeEingabe("Die Karte kann nicht gelegt werden.");
+        //"Rekursionsschritt"
+        model.setzeZuLegendeKarte(null); //Abbruchbedingung der while-Schleife zurücksetzen
         return legeEineKarte();
     }
 
+    /*Methode wird von GUI aufgerufen und übergibt dem Model die zu legende Karte*/
+    public void legeEineKarteGUI(Spielkarte spielkarte) {
+        model.setzeZuLegendeKarte(spielkarte);
+    }
+
+    /**
+     * - Überprüfung für Sau legen bzw. weglaufen
+     * - gibt die gelegte Karte und welcher Spieler diese gelegt hat zurück
+     * - Überprüfung, ob gesuchte Sau gelegt wurde → Model übergeben
+     */
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
         //Tim
         //todo anpassen mit Solofarbe anstatt null
-        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte  wie jede andere Karte einer Farbe frei gespielt werden.
+        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
         if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
             model.setzteSauFarbeVorhandGespielt(true);
         }
         //Tim
+
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         model.setzeGelegteKarte(karte);
         gui.zeigeGelegteKarte(karte, welcherSpieler);
 
-        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern wer Mitspieler ist
+        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
         }
@@ -197,11 +204,16 @@ public class Spieler extends Mitspieler {
     }
 
 
+    /**
+     *
+     * @param gewinner: übergibt die int Werte, wo die Gewinner sitzen
+     * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
+     */
     @Override
     public void rundeGewonnen(int[] gewinner, int[] uebergebenePunkte) {
         WelcherSpieler gewinner1 = wieVielterSpieler(gewinner[0]);
         WelcherSpieler gewinner2 = wieVielterSpieler(gewinner[1]);
-
+        //Punkte in ein Array sortieren
         int[] punkte = new int[3]; //richtig sortierte Punkte: gewinnerteamPunkte, verliererteamPunkte, spielerPunkte
         punkte[0] = uebergebenePunkte[gewinner[0]] + uebergebenePunkte[gewinner[1]];
         punkte[1] = 120 - punkte[0];
@@ -212,8 +224,7 @@ public class Spieler extends Mitspieler {
     }
 
     /**
-     * Gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
-     *
+     * gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
      * @param spieler: von Runde übergeben
      */
     public WelcherSpieler wieVielterSpieler(int spieler) {
@@ -242,5 +253,4 @@ public class Spieler extends Mitspieler {
     public int gebeMitspieler() {
         return model.gebeMitspieler();
     }
-
 }
