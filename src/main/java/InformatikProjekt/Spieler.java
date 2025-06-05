@@ -205,7 +205,7 @@ public class Spieler extends Mitspieler {
 
 
     /**
-     *
+     * //TODO
      * @param gewinner: übergibt die int Werte, wo die Gewinner sitzen
      * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
      */
