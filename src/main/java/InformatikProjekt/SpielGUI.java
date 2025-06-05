@@ -10,6 +10,9 @@ class SpielGUI {
     JRadioButton weiterButton; //neu
     JRadioButton sauButton;
 
+    JRadioButton schellenButton;
+    JRadioButton grasButton;
+    JRadioButton eichelButton;
 
     private ArrayList<Spielkarte> handKarten = new ArrayList<Spielkarte>();
     private ArrayList<JButton> spieler1handkarten;
@@ -68,7 +71,9 @@ class SpielGUI {
         sauButton.setBounds(1100, 600, 100, 50);
 
         mainFrame.add(weiterButton);
+        weiterButton.setVisible(false);
         mainFrame.add(sauButton);
+        sauButton.setVisible(false);
 
         ButtonGroup group = new ButtonGroup();
         group.add(weiterButton);
@@ -247,8 +252,6 @@ class SpielGUI {
 
         mainFrame.add(weiterButton);
         mainFrame.add(sauButton);
-        mainFrame.setVisible(true);
-        mainFrame.setVisible(true);
     }
 
     public void spielabsichtFragen() {
@@ -262,6 +265,38 @@ class SpielGUI {
         uebergabeArray[1] = sauButton.isSelected();
         return uebergabeArray;
     }
+    public void spielabsichtFragenAbschluss(){
+        weiterButton.setVisible(false);
+        sauButton.setVisible(false);
+    }
+
+
+    public void farbeFuerSpielabsicht(){
+        JFrame spielabsichtFrame = new JFrame("Auswahl: Spielabsicht");
+        spielabsichtFrame.setSize(1000, 600);
+        spielabsichtFrame.setLayout(null);
+
+        //Schellen, Gras und Eichel
+        schellenButton = new JRadioButton("Schellen");
+        schellenButton.setBounds(100, 100, 100, 50);
+        grasButton = new JRadioButton("Gras");
+        grasButton.setBounds(100, 200, 100, 50);
+        eichelButton = new JRadioButton("Eichel");
+        eichelButton.setBounds(100, 300, 100, 50);
+
+        spielabsichtFrame.add(schellenButton);
+        spielabsichtFrame.add(grasButton);
+        spielabsichtFrame.add(eichelButton);
+    }
+
+    public boolean[] gebefarbeFuerSpielabsicht(){
+        boolean[] uebergabeArray = new boolean[3];
+        uebergabeArray[0] = schellenButton.isSelected();
+        uebergabeArray[1] = grasButton.isSelected();
+        uebergabeArray[2] = eichelButton.isSelected();
+        return uebergabeArray;
+    }
+
     public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
 
 
@@ -572,23 +607,6 @@ class SpielGUI {
         }
     }
 
-    public void spielabsichtAbfragen(){
-
-    }
-
-    public void spielabsichtFragenAbschluss(int vergleich){
-        weiterButton.setVisible(false);
-        sauButton.setVisible(false);
-        if (vergleich == 1){
-            spieler.spielabsichtGUI(SpielArt.SAUSPIEL);
-        }
-        else if (vergleich == 0){
-            spieler.spielabsichtGUI(SpielArt.KEINSPIEL);
-        }
-        else {System.out.println("Fehler: Keine Valide Spielart ausgewählt ;(");}
-
-    }
-
     public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler){}
     public void ungueltigeEingabe(String konkretisierung){}
     public void spielArtEntschieden(WelcherSpieler welcherSpieler, SpielArt spielArt, Farbe farbe) {}
@@ -607,29 +625,8 @@ class SpielGUI {
     public void handkartenAusteilen(ArrayList<JButton> spieler1handkarten){
         for (int i = 0; i < 8; i++){
             mainFrame.add(spieler1handkarten.get(i));
-            spieler1handkarten.get(i).setBounds((400 + i*60) + 100, 100, 100, 600);
+            spieler1handkarten.get(i).setBounds((300 + i*60) + 120, 380, 100, 410);
         }
-    }
-    public void farbeFuerSpielabsicht(){
-        JFrame farbauswahlFenster = new JFrame("Farbe auswählen");
-        farbauswahlFenster.setSize(300, 100);
-        farbauswahlFenster.setLayout(null);
-
-
-        JButton schellenButton = new JButton("Schellen");
-        schellenButton.setBounds(100, 30, 100, 50);
-        schellenButton.addActionListener(e -> System.out.println("hi"));
-        farbauswahlFenster.add(schellenButton);
-
-
-        JButton grasButton = new JButton("Gras");
-        grasButton.setBounds(100, 80, 100, 50);
-        farbauswahlFenster.add(grasButton);
-
-        JButton eichelButton = new JButton("Eichel");
-        eichelButton.setBounds(100, 130, 100, 50);
-        farbauswahlFenster.add(eichelButton);
-
     }
 
 }
