@@ -183,15 +183,15 @@ class SpielGUI {
 
 
         //Buttuns zum Auswählen der Aktionen:
-        JButton weiterButton = new JButton("Weiter");
+        weiterButton = new JButton("Weiter");
         weiterButton.addActionListener(e -> spielabsichtFragenAbschluss(0));
         weiterButton.setBounds(1000, 600, 100, 50);
         weiterButton.setVisible(false);
 
-        JButton sauButton = new JButton("SAU");
+        sauButton = new JButton("SAU");
         sauButton.addActionListener(e -> spielabsichtFragenAbschluss(1));
         sauButton.setBounds(1100, 600, 100, 50);
-        sauButton.setVisible(false);
+        //sauButton.setVisible(false);
 
 
 
