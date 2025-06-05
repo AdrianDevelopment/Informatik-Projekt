@@ -41,9 +41,6 @@ public class Spieler extends Mitspieler {
         while (zaehler < 1000) {
             zaehler++;
         }
-        if (gui.gebeRadioButton()) {
-
-        }
 
         //Überprüfen, ob überhaupt möglich
         //ist Sauspiel schon das höchste Spiel?

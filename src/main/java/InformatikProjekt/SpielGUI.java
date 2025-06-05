@@ -7,8 +7,8 @@ import java.util.ArrayList;
 class SpielGUI {
     private Spieler spieler;
 
-    JRadioButton radioButton; //neu
-    JRadioButton radioButton2;
+    JRadioButton weiterButton; //neu
+    JRadioButton sauButton;
 
 
     private ArrayList<Spielkarte> handKarten = new ArrayList<Spielkarte>();
@@ -48,10 +48,9 @@ class SpielGUI {
     private ImageIcon SchelleKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Koenig.png");
     private ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
     private ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
-
-    private JButton weiterButton;
-    private JButton sauButton;
     private final JFrame mainFrame;
+
+    public ButtonModel x;
 
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
@@ -62,16 +61,18 @@ class SpielGUI {
         //mainFrame.setDefaultCloseOperation(mainFrame.EXIT_ON_CLOSE);
         mainFrame.setLayout(null);
 
-        //neues für Thiemo neu
-        radioButton = new JRadioButton("Weiter");
-        radioButton.setBounds(1000, 600, 100, 50);
-        radioButton.setVisible(true);
-        radioButton2 = new JRadioButton("Sau");
-        radioButton2.setBounds(1000, 600, 100, 50);
-        radioButton2.setVisible(true);
+        weiterButton = new JRadioButton("Weiter");
+        weiterButton.setBounds(1000, 600, 100, 50);
+
+        sauButton = new JRadioButton("Sau");
+        sauButton.setBounds(1100, 600, 100, 50);
+
+        mainFrame.add(weiterButton);
+        mainFrame.add(sauButton);
+
         ButtonGroup group = new ButtonGroup();
-        group.add(radioButton);
-        group.add(radioButton2);
+        group.add(weiterButton);
+        group.add(sauButton);
         ButtonModel x = group.getSelection();
 
         //Bilder als Variablen festlegen
@@ -196,7 +197,7 @@ class SpielGUI {
         ruekseitenKarte38.setIcon(kartenRuekseite);
         ruekseitenKarte38.setBounds(890,20,80,95);
 
-
+        /* Alte Methode:
         //Buttuns zum Auswählen der Aktionen:
         weiterButton = new JButton("Weiter");
         weiterButton.addActionListener(e -> spielabsichtFragenAbschluss(0));
@@ -207,6 +208,7 @@ class SpielGUI {
         sauButton.addActionListener(e -> spielabsichtFragenAbschluss(1));
         sauButton.setBounds(1100, 600, 100, 50);
         sauButton.setVisible(true);
+         */
 
 
 
@@ -245,12 +247,21 @@ class SpielGUI {
 
         mainFrame.add(weiterButton);
         mainFrame.add(sauButton);
+        mainFrame.setVisible(true);
+        mainFrame.setVisible(true);
     }
 
-    public boolean gebeRadioButton() { //neu
-        return radioButton.isSelected();
+    public void spielabsichtFragen() {
+        weiterButton.setVisible(true);
+        sauButton.setVisible(true);
     }
 
+    public boolean[] gebeSpielabsicht(){
+        boolean[] uebergabeArray = new boolean[2];
+        uebergabeArray[0] = weiterButton.isSelected();
+        uebergabeArray[1] = sauButton.isSelected();
+        return uebergabeArray;
+    }
     public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
 
 
@@ -563,11 +574,6 @@ class SpielGUI {
 
     public void spielabsichtAbfragen(){
 
-    }
-
-    public void spielabsichtFragen() {
-        weiterButton.setVisible(true);
-        sauButton.setVisible(true);
     }
 
     public void spielabsichtFragenAbschluss(int vergleich){
