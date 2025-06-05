@@ -39,7 +39,8 @@ public class Runde {
         for (int i = 0; i < 4; i++) {
             // do {
             aktuellHoechstesSpiel = spieler.get(i).spielabsichtFragen(hoechstesSpiel);
-            // } while (aktuellHoechstesSpiel != SpielArt.KEINSPIEL || aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0); // zur Sicherheit wird hier nochmal geschaut, ob das gegebene höchste Spiel auch legal ist, sollte aber schon in Mitspieler geregelt werden
+//            System.out.println("DEBUG: aktuellHoechstesSpiel: " + aktuellHoechstesSpiel);
+//            } while (aktuellHoechstesSpiel != SpielArt.KEINSPIEL || aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0); // zur Sicherheit wird hier nochmal geschaut, ob das gegebene höchste Spiel auch legal ist, sollte aber schon in Mitspieler geregelt werden
             if (aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0) {
                 hoechstesSpiel = aktuellHoechstesSpiel;
                 rundeModel.setzeAusrufer(i);
