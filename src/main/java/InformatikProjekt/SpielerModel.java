@@ -1,11 +1,13 @@
 package InformatikProjekt;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 //Programmierer: Tom
 
 public class SpielerModel {
     private ArrayList<Spielkarte> handkarten; //speichert eigene Handkarten
+    private ArrayList<JButton> handButtons; //speichert Handkarten als Buttons mit richtigen Bildern
     private int[] andereSpielerKarten; //speichert Anzahl der Spielerkarten von den anderen Spielern
     private int welcherSpieler;
     //Attribute für eine Runde nach dem Ausrufen
@@ -19,10 +21,13 @@ public class SpielerModel {
     private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs
     private int anzahlSpielerSchonGelegt; //gibt an, wie viele Spieler in der Lege-Runde dran waren
     private Spielkarte zuLegeKarte;
+    private boolean spielerIstDran;
     //temporäre Attribute für GUI-Übergabe
-    private SpielArt spielabsicht; //speichert Spielabsicht vom Spieler
-    private Farbe spielabsichtFarbe;
     private boolean sauFarbeVorhandGespielt; //Tim: Benötigt um zu überprüfen, ob die Sau gelegt werden darf.
+
+    //Attribute für Runde
+    private int wiederholung;
+    private int vorhand;
 
     public SpielerModel() {
         handkarten = new ArrayList<Spielkarte>();
@@ -34,8 +39,6 @@ public class SpielerModel {
 
         stich = new ArrayList<Spielkarte>();
         anzahlSpielerSchonGelegt = 0;
-        //temporäre Attribute für GUI-Übergabe
-        spielabsicht = null;
     }
 
     //handkarten
@@ -44,9 +47,19 @@ public class SpielerModel {
     }
 
     public void setzeHandkarten(ArrayList<Spielkarte> neueKarten) {
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < neueKarten.size(); i++) {
             handkarten.add(i, neueKarten.get(i));
         }
+    }
+
+    public void setzeHandButtons(ArrayList<JButton> neueButtons) {
+        for (int i = 0; i < neueButtons.size(); i++) {
+            handButtons.add(i, neueButtons.get(i));
+        }
+    }
+
+    public ArrayList<JButton> gebeHandButtons() {
+        return handButtons;
     }
 
     //welcher Spieler
@@ -109,24 +122,16 @@ public class SpielerModel {
         return anzahlSpielerSchonGelegt;
     }
 
+    //spielerIstDran
+    public void setzeSpielerIstDran(boolean dran) {
+        this.spielerIstDran = dran;
+    }
+    public boolean gebeSpielerIstDran() {
+        return spielerIstDran;
+    }
+
 
     /**Methoden für GUI-Rückgabe*/
-    //spielabsicht
-    public void setzeSpielabsicht(SpielArt spielabsicht) {
-        this.spielabsicht = spielabsicht;
-    }
-    public SpielArt gebeSpielabsicht() {
-        return spielabsicht;
-    }
-
-    //spielabsichtFarbe
-    public void setzeSpielabsichtFarbe(Farbe farbe) {
-        spielabsichtFarbe = farbe;
-    }
-    public Farbe gebeSpielabsichtFarbe() {
-        return spielabsichtFarbe;
-    }
-
     //zuLegendeFarbe
     public void setzeZuLegendeKarte(Spielkarte spielkarte) {
         zuLegeKarte = spielkarte;
@@ -136,11 +141,26 @@ public class SpielerModel {
     }
 
     //Tim: benötigt um zu bestimmen, ob die gesuchte Sau gespielt werden darf.
+    public void setzteSauFarbeVorhandGespielt(boolean b) {
+        sauFarbeVorhandGespielt = b;
+    }
     public boolean gebeSauFarbeVorhandGespielt() {
         return sauFarbeVorhandGespielt;
     }
-    public void setzteSauFarbeVorhandGespielt(boolean b) {
-        sauFarbeVorhandGespielt = b;
+
+    //Attribute für Runde
+    public void setzeWiederholung(int wiederholung) {
+        this.wiederholung = wiederholung;
+    }
+    public int gebeWiederholung() {
+        return wiederholung;
+    }
+
+    public void setzeVorhand(int vorhand) {
+        this.vorhand = vorhand;
+    }
+    public int gebeVorhand() {
+        return vorhand;
     }
 }
 

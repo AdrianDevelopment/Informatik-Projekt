@@ -1,5 +1,6 @@
 package InformatikProjekt;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 //Programmierer: Tom
@@ -7,52 +8,142 @@ import java.util.ArrayList;
 public class Spieler extends Mitspieler {
     private SpielerModel model; //speichert Daten des Spielers
     private SpielGUI gui;
+    private Runde runde;
 
-    public Spieler() {
+    public Spieler(Runde runde) {
         model = new SpielerModel();
-    }
-
-    public void setzeGUI(SpielGUI spielGUI) {
-        gui = spielGUI;
+        gui = new SpielGUI(this);
+        this.runde = runde;
     }
 
     /**
-     * Model + GUI:
-     * - Übergibt die wichtigen Dinge dem SpielerModel
-     * - gibt wieVielterSpieler an GUI weiter zur Anzeige
+     * Aufruf von Runde
+     * - im Model Übergabewerte setzen
+     * - Buttons Bilder zuordnen + GUI aufrufen (→ soll Handkarten anzeigen)
      */
     @Override
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
         model.setzeWelcherSpieler(wieVielterSpieler);
-        gui.zeigeHandkarten(karten);
+        model.setzeHandButtons(gui.spieler1ButtonsErstellen());
+        buttonKartenZuornden();
+        gui.handkartenAusteilen();
+    }
+
+    /*Buttons bekommen Icons zugewiesen*/
+    public void buttonKartenZuornden() {
+        ArrayList<JButton> handButtons = model.gebeHandButtons();
+        ArrayList<Spielkarte> handKarten = model.gebeHandkarten();
+        //Zuweisung von den passenden Bildern zu den Buttons
+        for (int i = 0; i < handButtons.size(); i++) {
+            handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
+            int finalI = i; //für Lambda Expression
+            handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
+        }
+    }
+
+    /*gibt zu einer Karte das ImageIcon mit passendem Bild (Co-Programmierer: Tim)*/
+    private ImageIcon gibBild(Spielkarte karte) {
+        String dateiname = "src\\main\\resources\\Karten\\";
+        switch (karte.gebeFarbe()) {
+            case SCHELLEN:
+                dateiname += "Schelle";
+                break;
+            case HERZ:
+                dateiname += "Herz";
+                break;
+            case GRAS:
+                dateiname += "Grass";
+                break;
+            case EICHEL:
+                dateiname += "Eichel";
+                break;
+        }
+        dateiname += "_";
+        switch (karte.gebeWert()) {
+            case SAU:
+                dateiname += "Ass";
+                break;
+            case ZEHNER:
+                dateiname += "10";
+                break;
+            case KOENIG:
+                dateiname += "Koenig";
+                break;
+            case OBER:
+                dateiname += "Ober";
+                break;
+            case UNTER:
+                dateiname += "Unter";
+                break;
+            case NEUNER:
+                dateiname += "9";
+                break;
+            case ACHTER:
+                dateiname += "8";
+                break;
+            case SIEBENER:
+                dateiname += "7";
+                break;
+        }
+        dateiname += ".png";
+        return new ImageIcon(dateiname);
     }
 
     /**
-     * Anfrage: an GUI für Spielabsicht
+     * Aufforderung der Runde eine Karte zu legen
+     * - im Model Übergabewerte setzen
+     * - Buttons wieder drückbar machen
+     */
+    @Override
+    public void legeEineKarte(int wiederholung, int vorhand) {
+        model.setzeWiederholung(wiederholung);
+        model.setzeVorhand(vorhand);
+        model.setzeSpielerIstDran(true);
+    }
+
+    public void karteGelegt(Spielkarte spielkarte, int index) {
+        if (!model.gebeSpielerIstDran()) { //Spieler soll keine Karte legen → nichts soll passieren
+            return;
+        }
+        //TODO: Überprüfung Handkarte legen
+        model.setzeSpielerIstDran(false);
+        gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
+        model.gebeHandkarten().remove(spielkarte);
+        runde.karteAbfragenAufgerufen(model.gebeWiederholung(), spielkarte, model.gebeVorhand());
+    }
+
+    /**
+     * Aufforderung der Runde die Spielabsicht zu sagen
+     * - im Model Übergabewerte setzen
+     * - Buttons sichtbar und drückbar machen
      * Überprüfung, ob Sauspiel möglich → Rückgabe + eventuell Ausgabe an User
      */
     @Override
-    public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
-        final SpielArt[] spielabsicht = {SpielArt.KEINSPIEL};
-        gui.spielabsichtFragen();
+    public void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand) {
+        model.setzeWiederholung(wiederholung);
+        model.setzeVorhand(vorhand);
+        ArrayList<JButton> spielabsichtButtons = gui.spielabsichtFragen();
+        spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL));
+        spielabsichtButtons.get(1).addActionListener(e -> spielabsichtGesagt(SpielArt.SAUSPIEL));
+    }
 
-        //Überprüfen, ob überhaupt möglich
-        //ist Sauspiel schon das höchste Spiel?
-        if (spielabsicht[0] == hoechstesSpiel) {
-            gui.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
-        }
-        //Kann auf eine Sau ausgerufen werden?
+    /**
+     * wird von spielabsichtButtons aufgerufen
+     * - setzt spielabsichtButtons
+     *
+     * @param spielabsicht: wird überprüft, ob es überhaupt geht
+     */
+    public void spielabsichtGesagt(SpielArt spielabsicht) {
+        SpielArt spielArt = spielabsicht;
+        gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
+        ///Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         if (farbe.isEmpty()) {
             gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen");
+            spielArt = SpielArt.KEINSPIEL;
         }
-        return spielabsicht[0];
-    }
-
-    /*Methode wird von GUI aufgerufen und übergibt dem model die Spielabsicht*/
-    public void spielabsichtGUI(SpielArt spielabsicht) {
-        model.setzeSpielabsicht(spielabsicht);
+        runde.spielAbsichtFragenAufgerufen(model.gebeWiederholung(), spielArt, model.gebeVorhand());
     }
 
     /**
@@ -82,15 +173,15 @@ public class Spieler extends Mitspieler {
         return farbeFuerSpielAbsicht(spielArt);
     }
 
-    /*Methode wird von GUI aufgerufen und übergibt dem Model die Farbe für die Sau*/
-    public void farbeFuerSpielAbsichtGUI(Farbe farbe) {
-        model.setzeSpielabsichtFarbe(farbe);
-    }
-
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        gui.spielerHatSpielerabsichtGesagt(spielAbsicht, welcherSpieler);
+        JLabel jLabel = new JLabel();
+        String text = "";
+        if (welcherSpieler == WelcherSpieler.NUTZER) {
+            text += "Du hast";
+        }
+        gui.spielerHatAusgerufen(jLabel);
     }
 
     /**
@@ -115,7 +206,6 @@ public class Spieler extends Mitspieler {
      * → überprüfen, ob ich Karte legen darf
      * → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
      */
-    @Override
     public Spielkarte legeEineKarte() {
         int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
         ArrayList<Spielkarte> erlaubteKarten;
@@ -165,6 +255,13 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
+        JButton button = new JButton();
+        button.setIcon(gibBild(karte));
+        gui.karteInDieMitte(button, welcherSpieler);
+        model.setzeGelegteKarte(karte);
+
+        //TODO: ab hier?
         //Tim
         //todo anpassen mit Solofarbe anstatt null
         //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
@@ -172,11 +269,6 @@ public class Spieler extends Mitspieler {
             model.setzteSauFarbeVorhandGespielt(true);
         }
         //Tim
-
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
-        model.setzeGelegteKarte(karte);
-        gui.zeigeGelegteKarte(karte, welcherSpieler);
-
         //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
@@ -198,7 +290,8 @@ public class Spieler extends Mitspieler {
 
     /**
      * //TODO
-     * @param gewinner: übergibt die int Werte, wo die Gewinner sitzen
+     *
+     * @param gewinner:          übergibt die int Werte, wo die Gewinner sitzen
      * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
      */
     @Override
@@ -217,6 +310,7 @@ public class Spieler extends Mitspieler {
 
     /**
      * gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
+     *
      * @param spieler: von Runde übergeben
      */
     public WelcherSpieler wieVielterSpieler(int spieler) {
