@@ -267,7 +267,26 @@ class SpielGUI {
         karteFuerDieMitte.setVisible(true);
 
     }
+    public void spielerHatAusgerufenHinzufügen(JLabel mitteText){
+        mainFrame.add(mitteText);
+        mitteText.setBounds(600, 300, 100, 100);
+        mitteText.setVisible(true);
+    }
 
+    public void spielerHatAusgerufen(JLabel mitteText, String text){
+        mitteText.setText(text);
+    }
+
+    public void spielerHatAusgerufenEntfernen(JLabel mitteText){
+        mainFrame.remove(mitteText);
+    }
+
+
+
+
+    public void mitteAufrauemen(){
+
+    }
     public void handkartenAktualisieren(int t){
         mainFrame.remove(spieler1KartenArray.get(t));
     }
