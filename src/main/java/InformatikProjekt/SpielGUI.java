@@ -218,13 +218,13 @@ class SpielGUI {
 
 
         //Schellen, Gras und Eichel
-        JButton schellenButton = new JRadioButton("Schellen");
+        JButton schellenButton = new JButton("Schellen");
         schellenButton.setBounds(100, 100, 100, 50);
         farbauswahlButtons.add(schellenButton);
-        JButton grasButton = new JRadioButton("Gras");
+        JButton grasButton = new JButton("Gras");
         grasButton.setBounds(100, 200, 100, 50);
         farbauswahlButtons.add(grasButton);
-        JButton eichelButton = new JRadioButton("Eichel");
+        JButton eichelButton = new JButton("Eichel");
         eichelButton.setBounds(100, 300, 100, 50);
         farbauswahlButtons.add(eichelButton);
 
