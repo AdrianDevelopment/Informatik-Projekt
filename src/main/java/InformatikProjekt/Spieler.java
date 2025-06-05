@@ -30,11 +30,11 @@ public class Spieler extends Mitspieler {
 
     /**
      * Anfrage: an GUI für Spielabsicht
-     * Überprüfung, ob Sauspiel möglich → Rückgabe oder erneute GUI-Anfrage
+     * Überprüfung, ob Sauspiel möglich → Rückgabe + eventuell Ausgabe an User
      */
     @Override
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
-        SpielArt spielabsicht = null;
+        SpielArt spielabsicht = SpielArt.KEINSPIEL;
         gui.spielabsichtFragen();
         //wartet bis GUI Nutzereingabe dem Controller meldet
         int zaehler = 0;
@@ -45,18 +45,12 @@ public class Spieler extends Mitspieler {
         //Überprüfen, ob überhaupt möglich
         //ist Sauspiel schon das höchste Spiel?
         if (spielabsicht == hoechstesSpiel) {
-            gui.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also höher ausrufen oder weiter sagen.");
-            //"Rekursionsschritt"
-            model.setzeSpielabsicht(null); //Abbruchbedingung zurücksetzen
-            return spielabsichtFragen(hoechstesSpiel);
+            gui.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
         }
         //Kann auf eine Sau ausgerufen werden?
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         if (farbe.isEmpty()) {
-            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen");
-            //"Rekursionsschritt"
-            model.setzeSpielabsicht(null); //Abbruchbedingung der while-Schleife zurücksetzen
-            return spielabsichtFragen(hoechstesSpiel);
+            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen");
         }
         return spielabsicht;
     }
@@ -75,9 +69,11 @@ public class Spieler extends Mitspieler {
         Farbe spielasichtFarbe = null;
         gui.farbeFuerSpielAbsicht();
         //wartet bis GUI Nutzereingabe dem Controller meldet
-        while (spielasichtFarbe == null) {
-            spielasichtFarbe = model.gebeSpielabsichtFarbe();
+        int zaehler = 0;
+        while (zaehler < 1000) {
+            zaehler++;
         }
+
         //Überprüfen, ob gewählte Farbe möglich
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         for (int i = 0; i < farbe.size(); i++) {
@@ -148,7 +144,7 @@ public class Spieler extends Mitspieler {
         }
         //Überprüfung, welche Karte gelegt werden darf, wenn schon eine liegt
         if (anzahlSpielerSchonGelegt != 0) {
-            erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt()); //TODO: anpassen, wenn Tim Methode anpasst
+            erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt());
             for (int i = 0; i < erlaubteKarten.size(); i++) {
                 if (zuLegendeKarte.equals(erlaubteKarten.get(i))) {
                     return zuLegendeKarte; //Karte ist erlaubt und wird zurückgegeben
