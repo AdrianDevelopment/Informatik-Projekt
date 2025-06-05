@@ -8,6 +8,8 @@ class SpielGUI {
     private Spieler spieler;
 
     JRadioButton radioButton; //neu
+    JRadioButton radioButton2;
+
 
     private ArrayList<Spielkarte> handKarten = new ArrayList<Spielkarte>();
     private ArrayList<JButton> spieler1handkarten;
@@ -64,6 +66,13 @@ class SpielGUI {
         radioButton = new JRadioButton("Weiter");
         radioButton.setBounds(1000, 600, 100, 50);
         radioButton.setVisible(true);
+        radioButton2 = new JRadioButton("Sau");
+        radioButton2.setBounds(1000, 600, 100, 50);
+        radioButton2.setVisible(true);
+        ButtonGroup group = new ButtonGroup();
+        group.add(radioButton);
+        group.add(radioButton2);
+        ButtonModel x = group.getSelection();
 
         //Bilder als Variablen festlegen
         ImageIcon playerIcon = new ImageIcon("src\\main\\resources\\spieler.png");

@@ -42,7 +42,7 @@ public class Spieler extends Mitspieler {
             zaehler++;
         }
         if (gui.gebeRadioButton()) {
-            //...
+
         }
 
         //Überprüfen, ob überhaupt möglich
