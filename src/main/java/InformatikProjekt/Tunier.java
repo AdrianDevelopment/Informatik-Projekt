@@ -46,11 +46,12 @@ public class Tunier {
         for (int i = 0; i < tunierModel.gebeAnzahlRunden(); i++) {
             Runde runde = new Runde(spieler, tunierModel.gebeEchterSpieler(), spielKarten, positionSpieler, speicherung); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
             int[] sieger = runde.starteRunde(vorhand);
+            if (sieger != null) {
+                tunierModel.erhoehePunkteTunierUmEins(sieger[0]);
+                tunierModel.erhoehePunkteTunierUmEins(sieger[1]);
+            }
 
             vorhand = (vorhand == 3) ? 0 : vorhand + 1;
-
-            tunierModel.erhoehePunkteTunierUmEins(sieger[0]);
-            tunierModel.erhoehePunkteTunierUmEins(sieger[1]);
         }
 
         // Tunier auswerten

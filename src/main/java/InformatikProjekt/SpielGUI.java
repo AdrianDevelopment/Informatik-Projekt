@@ -51,12 +51,16 @@ class SpielGUI {
     private ImageIcon SchelleKarteKoenig = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Koenig.png");
     private ImageIcon SchelleKarteOber = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Ober.png");
     private ImageIcon SchelleKarteUnter = new ImageIcon("src\\main\\resources\\Karten\\Schelle_Unter.png");
-    private final JFrame mainFrame;
+    private JFrame mainFrame;
 
     public ButtonModel x;
 
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
+        spieler.setzeGUI(this);
+    }
+
+    public void spielGUIErstellen() {
         spieler1handkarten = new ArrayList<JButton>();
         mainFrame = new JFrame();
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
