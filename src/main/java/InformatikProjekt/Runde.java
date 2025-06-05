@@ -19,7 +19,10 @@ public class Runde {
         this.speicherung = speicherung;
         rundeModel = new RundeModel(positionSpieler);
 
-        echterSpieler.setzeGUI(new SpielGUI(echterSpieler));
+        SpielGUI spielGUI = new SpielGUI(echterSpieler);
+       // spielGUI.erstelleSpielGUI();
+        Thread thread = new Thread(spielGUI);
+        thread.start();
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();

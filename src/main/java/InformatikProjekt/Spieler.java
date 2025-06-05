@@ -1,6 +1,10 @@
 package InformatikProjekt;
 
+import InformatikProjekt.SpielGUI;
+
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 //Programmierer: Tom
 
@@ -34,14 +38,14 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
-        SpielArt spielabsicht = SpielArt.KEINSPIEL;
+        final SpielArt[] spielabsicht = {SpielArt.KEINSPIEL};
         gui.spielabsichtFragen();
         System.out.println("Test");
         //wartet bis Nutzereingabe reinkommt
-        int zaehler = 0;
+        /*        int zaehler = 0;
         boolean[] ausgewaehlterButton;
         while (zaehler < 99999) {
-            /*ausgewaehlterButton = gui.gebeSpielabsicht();
+            ausgewaehlterButton = gui.gebeSpielabsicht();
             if (ausgewaehlterButton[0]) {
                 System.out.println("weiter");
                 break;
@@ -49,16 +53,26 @@ public class Spieler extends Mitspieler {
                 spielabsicht = SpielArt.SAUSPIEL;
                 System.out.println("sauspiel");
                 break;
-            }*/
+            }
             System.out.println(zaehler);
             zaehler++;
         }
         System.out.println(zaehler);
         gui.spielabsichtFragenAbschluss();
+        */
+        Future<boolean[]> lol = gui.gebeSpielabsicht();
+        boolean[] was;
+        try {
+            was = lol.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            was = new boolean[2];
+        }
+        System.out.println(was[0] + " " + was[1]);
 
         //Überprüfen, ob überhaupt möglich
         //ist Sauspiel schon das höchste Spiel?
-        if (spielabsicht == hoechstesSpiel) {
+        if (spielabsicht[0] == hoechstesSpiel) {
             gui.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
         }
         //Kann auf eine Sau ausgerufen werden?
@@ -66,7 +80,7 @@ public class Spieler extends Mitspieler {
         if (farbe.isEmpty()) {
             gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen");
         }
-        return spielabsicht;
+        return spielabsicht[0];
     }
 
     /*Methode wird von GUI aufgerufen und übergibt dem model die Spielabsicht*/
