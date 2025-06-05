@@ -1,7 +1,6 @@
 package InformatikProjekt;
 
 import java.util.ArrayList;
-import javax.swing.SwingUtilities;
 
 // Programmierer: Adrian
 
@@ -9,25 +8,12 @@ public class Runde {
     private ArrayList<Mitspieler> spieler;
     private Speicherung speicherung;
     private RundeModel rundeModel;
-//    private int[] punkte;
-//    private int ausrufer;
-//    private Mitspieler ausruferObjekt;
-//    private Spielkarte[] aktuellerStich;
-//    private int positionSpieler;
 
-    public Runde(ArrayList<Mitspieler> spieler, Spieler echterSpieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung) {
+    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung, int vorhand) {
         this.spieler = spieler;
         this.speicherung = speicherung;
-        rundeModel = new RundeModel(positionSpieler);
-
-//        final SpielGUI[] spielgui = new SpielGUI[1];
-//        SwingUtilities.invokeLater(() -> {
-//            spielgui[0] = new SpielGUI(echterSpieler);
-//        });
-//        spielgui[0].spielGUIErstellen();
-//        echterSpieler.setzeGUI(spielgui[0]);
-        SpielGUI spielGUI = new SpielGUI(echterSpieler);
-        spielGUI.spielGUIErstellen();
+        rundeModel = new RundeModel(positionSpieler, vorhand);
+        spieler.get(positionSpieler).setzeRundeReferenz(this);
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
@@ -37,117 +23,236 @@ public class Runde {
 
             spieler.get(i).rundeStarten(spielKartenProSpieler, positionSpieler);
         }
+
+        spielAbsichtFragenRunde(0, vorhand);
     }
 
-    public int[] starteRunde(int vorhand) {
-        SpielArt aktuellHoechstesSpiel;
-        SpielArt hoechstesSpiel = SpielArt.KEINSPIEL;
-        Mitspieler ausruferObjekt = null;
+    // Spielabsicht fragen
+    public void spielAbsichtFragenRunde(int wiederholung, int vorhand) {
+        spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart());
+    }
 
-        for (int i = 0; i < 4; i++) {
-            // do {
-            aktuellHoechstesSpiel = spieler.get(i).spielabsichtFragen(hoechstesSpiel);
-//            System.out.println("DEBUG: aktuellHoechstesSpiel: " + aktuellHoechstesSpiel);
-//            } while (aktuellHoechstesSpiel != SpielArt.KEINSPIEL || aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0); // zur Sicherheit wird hier nochmal geschaut, ob das gegebene höchste Spiel auch legal ist, sollte aber schon in Mitspieler geregelt werden
-            if (aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0) {
-                hoechstesSpiel = aktuellHoechstesSpiel;
-                rundeModel.setzeAusrufer(i);
-                ausruferObjekt = spieler.get(i);
+    public void spielAbsichtFragenAufgerufen(int wiederholung, SpielArt spielArt, int vorhand) {
+        if (spielArt.compareTo(rundeModel.gebeHoechsteSpielart()) > 0) {
+            rundeModel.setzeHoechsteSpielart(spielArt);
+            rundeModel.setzeAusrufer(wiederholung);
+            rundeModel.setzeAusruferReferenz(spieler.get(wiederholung));
+        }
+        if (wiederholung < 4) {
+            if (vorhand < 4) {
+                spielAbsichtFragenRunde(wiederholung++, vorhand++);
+            }
+            else {
+                spielAbsichtFragenRunde(wiederholung++, 0);
             }
         }
-        if (hoechstesSpiel == SpielArt.KEINSPIEL) {
-            return null;
+        else {
+            if (rundeModel.gebeHoechsteSpielart() == SpielArt.KEINSPIEL) {
+                return; // Spiel abbrechen?
+            }
+            else if (rundeModel.gebeHoechsteSpielart() == SpielArt.SAUSPIEL) {
+                spielAbsichtAusgeben();
+            }
+            else {
+                System.out.println("ERROR: Spielart nicht bekannt!");
+            }
         }
+    }
 
+    // SAUSPIEL:
+    // Spielabsicht ausgeben
+    public void spielAbsichtAusgeben() {
         for (Mitspieler aktuellerSpieler : spieler) {
-            aktuellerSpieler.spielerHatSpielabsichtGesagt(hoechstesSpiel, rundeModel.gebeAusrufer());
+            aktuellerSpieler.spielerHatSpielabsichtGesagt(rundeModel.gebeHoechsteSpielart(), rundeModel.gebeAusrufer());
         }
 
-        Farbe farbe = ausruferObjekt.farbeFuerSpielAbsicht(hoechstesSpiel);
+        rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
+    }
 
+    // Farbe abfragen und ausgeben
+    public void farbeFuerSpielAbsichtAufgerufen(Farbe farbe) {
         for (Mitspieler aktuellerSpieler : spieler) {
-            aktuellerSpieler.spielArtEntschieden(rundeModel.gebeAusrufer(), farbe, hoechstesSpiel);
+            aktuellerSpieler.spielArtEntschieden(rundeModel.gebeAusrufer(), farbe, rundeModel.gebeHoechsteSpielart());
         }
 
-        switch (hoechstesSpiel) {
-//            case KEINSPIEL:
-//                starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
-//                return null;
-            case SAUSPIEL:
-                spielSchleifeSau(8, vorhand);
-                int[] sieger = rundenSiegerErmitteln();
-                for (Mitspieler aktuellerSpieler : spieler) {
-                    aktuellerSpieler.rundeGewonnen(sieger, rundeModel.gebePunkteArray());
-                }
+        karteAbfragen(0, rundeModel.gebeVorhand());
+    }
 
-                // Speicherung
-                if (sieger[0] == rundeModel.gebePositionSpieler() || sieger[1] == rundeModel.gebePositionSpieler()) {
-                    speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1])); // Speicherung der zusammengerechneten Punkte der Sieger
-                    if (rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1]) > 120) {
-                        // Methode SpielGewonnen Schneider noch nicht vorhanden
-                    }
-                    else {
-                        speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
-                    }
-                }
-                else if (rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1]) > 90) { // unter 30 Punkte ist man Schneider
-                    speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
+    // Runde spielen
+    public void stichSpielen(int wiederholungStich) {
+        if (wiederholungStich < 8) {
+            karteAbfragen(0, rundeModel.gebeVorhand());
+        }
+        else {
+            int[] sieger = rundenSiegerErmitteln();
+            if (sieger[0] == rundeModel.gebePositionSpieler() || sieger[1] == rundeModel.gebePositionSpieler()) {
+                speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1])); // Speicherung der zusammengerechneten Punkte der Sieger
+                if (rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1]) > 120) {
+                    // Methode SpielGewonnen Schneider noch nicht vorhanden
                 }
                 else {
-                    speicherung.SpielVerloren(SpielArt.SAUSPIEL);
+                    speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
                 }
-                speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
-                speicherung.DatenSpeichern();
-
-                return sieger;
-            case WENZ:
-                // spielSchleifeWenz();
-                return null;
-            case SOLO:
-                // spielSchleifeSolo();
-                return null;
+            }
+            else if (rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1]) > 90) { // unter 30 Punkte ist man Schneider
+                speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
+            }
+            else {
+                speicherung.SpielVerloren(SpielArt.SAUSPIEL);
+            }
+            speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
+            speicherung.DatenSpeichern();
         }
-
-        System.out.println("ERROR: Fehler in starteRunde()");
-        return null;
     }
 
-    // TODO: spielSchleifeWenz(), spielSchleifeSolo()
-    private void spielSchleifeSau(int anzahlKarten, int vorhand) {
+    // Stich spielen
+    public void karteAbfragen(int wiederholung, int vorhand) {
+        spieler.get(vorhand).legeEineKarte(wiederholung);
+    }
 
-        // einen Stich spielen
-        int amZug = vorhand;
-        for (int i = 0; i < 4; i++) {
-            // Spieler "amZug" fragen welche Karte er legen möchte
-            Spielkarte aktuelleSpielkarte = spieler.get(amZug).legeEineKarte();
-            rundeModel.setzeAktuellenStich(amZug, aktuelleSpielkarte);
-
-            for (Mitspieler aktuellerSpieler : spieler) {
-                aktuellerSpieler.karteWurdeGelegt(aktuelleSpielkarte, amZug);
+    public void karteAbfragenAufgerufen(int wiederholung, Spielkarte karte, int vorhand) {
+        rundeModel.setzeAktuellenStich(wiederholung, karte);
+        for (Mitspieler aktuellerSpieler : spieler) {
+            aktuellerSpieler.karteWurdeGelegt(karte, vorhand);
+        }
+        if (wiederholung < 4) {
+            if (vorhand < 4) {
+                karteAbfragen(wiederholung++, vorhand++);
             }
+            else {
+                karteAbfragen(wiederholung++, 0);
+            }
+        }
+        else {
+            auswertungStich();
+        }
+    }
 
-            amZug = (amZug == 3) ? 0 : amZug + 1;
+    public void auswertungStich() {
+        int sieger = ermittleSieger(rundeModel.gebeAktuellerStichArray());
+        rundeModel.setzeVorhand(sieger);
+        rundeModel.kopiereInLetzerStich(rundeModel.gebeAktuellerStichArray());
+        rundeModel.addierePunkte(sieger, ermittlePunkte(rundeModel.gebeAktuellerStichArray()));
+        for (Mitspieler aktuellerSpieler : spieler) {
+            aktuellerSpieler.stichGewonnen(sieger);
         }
 
         // Speicherung
         speicherung.KarteGespielt();
         speicherung.DatenSpeichern();
-
-        // Auswertung des Stichs
-        int sieger = ermittleSieger(rundeModel.gebeAktuellerStichArray());
-        Spielkarte[] letzterStich = rundeModel.gebeAktuellerStichArray().clone(); // nicht mit Referenz übergeben, da aktuellerStich sich ändert
-        rundeModel.addierePunkte(sieger, ermittlePunkte(rundeModel.gebeAktuellerStichArray()));
-
-        // Ausgabe des Stichergebnisses
-        for (Mitspieler aktuellerSpieler : spieler) {
-            aktuellerSpieler.stichGewonnen(sieger);
-        }
-
-        // Rekursionsschritt
-        if (anzahlKarten > 0) {
-            spielSchleifeSau(anzahlKarten - 1, sieger); // Sieger wird neue Vorhand
-        }
     }
+
+
+
+//    public int[] starteRunde(int vorhand) {
+//        SpielArt aktuellHoechstesSpiel;
+//        SpielArt hoechstesSpiel = SpielArt.KEINSPIEL;
+//        Mitspieler ausruferObjekt = null;
+//
+//        for (int i = 0; i < 4; i++) {
+//            // do {
+//            aktuellHoechstesSpiel = spieler.get(i).spielabsichtFragen(hoechstesSpiel);
+////            System.out.println("DEBUG: aktuellHoechstesSpiel: " + aktuellHoechstesSpiel);
+////            } while (aktuellHoechstesSpiel != SpielArt.KEINSPIEL || aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0); // zur Sicherheit wird hier nochmal geschaut, ob das gegebene höchste Spiel auch legal ist, sollte aber schon in Mitspieler geregelt werden
+//            if (aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0) {
+//                hoechstesSpiel = aktuellHoechstesSpiel;
+//                rundeModel.setzeAusrufer(i);
+//                ausruferObjekt = spieler.get(i);
+//            }
+//        }
+//        if (hoechstesSpiel == SpielArt.KEINSPIEL) {
+//            return null;
+//        }
+//
+//        for (Mitspieler aktuellerSpieler : spieler) {
+//            aktuellerSpieler.spielerHatSpielabsichtGesagt(hoechstesSpiel, rundeModel.gebeAusrufer());
+//        }
+//
+//        Farbe farbe = ausruferObjekt.farbeFuerSpielAbsicht(hoechstesSpiel);
+//
+//        for (Mitspieler aktuellerSpieler : spieler) {
+//            aktuellerSpieler.spielArtEntschieden(rundeModel.gebeAusrufer(), farbe, hoechstesSpiel);
+//        }
+//
+//        switch (hoechstesSpiel) {
+////            case KEINSPIEL:
+////                starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
+////                return null;
+//            case SAUSPIEL:
+//                spielSchleifeSau(8, vorhand);
+//                int[] sieger = rundenSiegerErmitteln();
+//                for (Mitspieler aktuellerSpieler : spieler) {
+//                    aktuellerSpieler.rundeGewonnen(sieger, rundeModel.gebePunkteArray());
+//                }
+//
+//                // Speicherung
+//                if (sieger[0] == rundeModel.gebePositionSpieler() || sieger[1] == rundeModel.gebePositionSpieler()) {
+//                    speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1])); // Speicherung der zusammengerechneten Punkte der Sieger
+//                    if (rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1]) > 120) {
+//                        // Methode SpielGewonnen Schneider noch nicht vorhanden
+//                    }
+//                    else {
+//                        speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
+//                    }
+//                }
+//                else if (rundeModel.gebePunkte(sieger[0]) + rundeModel.gebePunkte(sieger[1]) > 90) { // unter 30 Punkte ist man Schneider
+//                    speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
+//                }
+//                else {
+//                    speicherung.SpielVerloren(SpielArt.SAUSPIEL);
+//                }
+//                speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
+//                speicherung.DatenSpeichern();
+//
+//                return sieger;
+//            case WENZ:
+//                // spielSchleifeWenz();
+//                return null;
+//            case SOLO:
+//                // spielSchleifeSolo();
+//                return null;
+//        }
+//
+//        System.out.println("ERROR: Fehler in starteRunde()");
+//        return null;
+//    }
+//
+//    // TODO: spielSchleifeWenz(), spielSchleifeSolo()
+//    private void spielSchleifeSau(int anzahlKarten, int vorhand) {
+//
+//        // einen Stich spielen
+//        int amZug = vorhand;
+//        for (int i = 0; i < 4; i++) {
+//            // Spieler "amZug" fragen welche Karte er legen möchte
+//            Spielkarte aktuelleSpielkarte = spieler.get(amZug).legeEineKarte();
+//            rundeModel.setzeAktuellenStich(amZug, aktuelleSpielkarte);
+//
+//            for (Mitspieler aktuellerSpieler : spieler) {
+//                aktuellerSpieler.karteWurdeGelegt(aktuelleSpielkarte, amZug);
+//            }
+//
+//            amZug = (amZug == 3) ? 0 : amZug + 1;
+//        }
+//
+//        // Speicherung
+//        speicherung.KarteGespielt();
+//        speicherung.DatenSpeichern();
+//
+//        // Auswertung des Stichs
+//        int sieger = ermittleSieger(rundeModel.gebeAktuellerStichArray());
+//        Spielkarte[] letzterStich = rundeModel.gebeAktuellerStichArray().clone(); // nicht mit Referenz übergeben, da aktuellerStich sich ändert
+//        rundeModel.addierePunkte(sieger, ermittlePunkte(rundeModel.gebeAktuellerStichArray()));
+//
+//        // Ausgabe des Stichergebnisses
+//        for (Mitspieler aktuellerSpieler : spieler) {
+//            aktuellerSpieler.stichGewonnen(sieger);
+//        }
+//
+//        // Rekursionsschritt
+//        if (anzahlKarten > 0) {
+//            spielSchleifeSau(anzahlKarten - 1, sieger); // Sieger wird neue Vorhand
+//        }
+//    }
 
     public int ermittleSieger(Spielkarte[] aktuellerStich) {
         Spielkarte hoechsteKarte = aktuellerStich[0];
