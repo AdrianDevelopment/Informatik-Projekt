@@ -10,7 +10,7 @@ public class BotModel {
     private Farbe soloFarbe;
     private ArrayList<Spielkarte> gelegteKarten;
     private int spielerIndex;
-    //von 0 bis 4 speichert wie viele Karten in dem Spiel gelegt wurden.
+
     private ArrayList<Integer> spielzugReihenfolge;
     private BotMitspielerDatenModel[] mitspielerDaten;
     private int spielerHatSauAusgerufen;
@@ -28,7 +28,7 @@ public class BotModel {
         sauFarbeVorhandGespielt = false;
     }
 
-    public int gibGelegteKartenAnzahl() {
+    public int gibStichGelegteKartenAnzahl() {
         return spielzugReihenfolge.size();
     }
 
@@ -64,8 +64,18 @@ public class BotModel {
         return spielerHatSauAusgerufen;
     }
 
-    public boolean gebeSauFarbeVorhandGespielt() {
+
+    //Todo name ändern
+    public boolean gibSauFarbeVorhandGespielt() {
         return sauFarbeVorhandGespielt;
+    }
+    public int gibTeamSpieler() {
+        return teamSpieler;
+    }
+
+
+    public ArrayList<Spielkarte> gibAlleGelegteKarten() {
+        return gelegteKarten;
     }
 
     public BotMitspielerDatenModel gibMitspielerDaten(int spielerNummer) {
@@ -77,51 +87,31 @@ public class BotModel {
         sauFarbeVorhandGespielt = b;
     }
 
-    public void setzteMitspielerDaten(Farbe farbe, Werte werte, boolean vorhanden, int spielerNr) {
-        switch (farbe) {
-            case SCHELLEN:
-                mitspielerDaten[spielerNr % 3].setzteHatSchellen(vorhanden);
-                break;
-            case HERZ:
-                mitspielerDaten[spielerNr % 3].setzteHatHerz(vorhanden);
-                break;
-            case GRAS:
-                mitspielerDaten[spielerNr % 3].setzteHatGras(vorhanden);
-                break;
-            case EICHEL:
-                mitspielerDaten[spielerNr % 3].setzteHatEichel(vorhanden);
-                break;
-        }
-        switch (werte) {
-            case SAU:
-                break;
-            case ZEHNER:
-                break;
-            case KOENIG:
-                break;
-            case OBER:
-                mitspielerDaten[spielerNr % 3].setzteHatOber(vorhanden);
-                break;
-            case UNTER:
-                mitspielerDaten[spielerNr % 3].setzteHatUnter(vorhanden);
-                break;
-            case NEUNER:
-                break;
-            case ACHTER:
-                break;
-            case SIEBENER:
-                break;
-        }
 
+    public void setzteMitspielerHatOber(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzteHatOber(istVorhanden);
     }
 
-    public int gibWertFuerBisherGelegteKarten() {
-        int gesamtWert = 0;
-        for (Spielkarte karte : gelegteKarten.subList(gelegteKarten.size() - spielzugReihenfolge.size(), gelegteKarten.size())) {
-            gesamtWert += karte.gebeWert().gebePunktzahl();
-        }
-        return gesamtWert;
+    public void setzteMitspielerHatUnter(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzteHatUnter(istVorhanden);
     }
+
+    public void setzteMitspielerHatSchellen(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzteHatSchellen(istVorhanden);
+    }
+
+    public void setzteMitspielerHatHerz(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzteHatHerz(istVorhanden);
+    }
+
+    public void setzteMitspielerHatEichel(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzteHatEichel(istVorhanden);
+    }
+
+    public void setzteMitspielerHatGras(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzteHatGras(istVorhanden);
+    }
+
 
     public void setzteTeamSpieler(int nSpielerNummer) {
         teamSpieler = nSpielerNummer;
@@ -139,18 +129,11 @@ public class BotModel {
         soloFarbe = nSoloFarbe;
     }
 
-    public void fuegeGelegteKarteHinzu(Spielkarte nKarte) {
-        gelegteKarten.add(nKarte);
-    }
 
     public void setzteHand(ArrayList<Spielkarte> nHand) {
         hand = nHand;
     }
 
-    public void entferneKarteAusHand(Spielkarte karte) {
-        hand.remove(karte);
-
-    }
 
     public void setzeSpielerIndex(int nSpielerNummer) {
         spielerIndex = nSpielerNummer;
@@ -166,47 +149,17 @@ public class BotModel {
         spielzugReihenfolge.add(spielerNummer);
     }
 
-    public void spielerNummerGelegteKarteZuruecksetzen() {
-        spielzugReihenfolge.clear();
+    public void entferneKarteAusHand(Spielkarte karte) {
+        hand.remove(karte);
+
     }
 
-    public int[] wieVieleBesondereKarten() {
-        int anzahlOber = 0;
-        int anzahlUnter = 0;
-        int anzahlSau = 0;
-        int anzahlHerz = 0;
-        int anzahlGras = 0;
-        int anzahlEichel = 0;
-        int anzahlSchellen = 0;
+    public void fuegeGelegteKarteHinzu(Spielkarte nKarte) {
+        gelegteKarten.add(nKarte);
+    }
 
-        for (Spielkarte karte : hand) {
-            if (karte.gebeWert() == Werte.OBER) {
-                anzahlOber++;
-            } else if (karte.gebeWert() == Werte.UNTER) {
-                anzahlUnter++;
-            } else {
-                if (karte.gebeWert() == Werte.SAU) {
-                    anzahlSau++;
-                }
-                switch (karte.gebeFarbe()) {
-                    case SCHELLEN:
-                        anzahlSchellen++;
-                        break;
-                    case HERZ:
-                        anzahlHerz++;
-                        break;
-                    case GRAS:
-                        anzahlGras++;
-                        break;
-                    case EICHEL:
-                        anzahlEichel++;
-                        break;
-                }
-            }
-
-
-        }
-        return new int[]{anzahlOber, anzahlUnter, anzahlSau, anzahlHerz, anzahlGras, anzahlEichel, anzahlSchellen};
+    public void spielerNummerGelegteKarteZuruecksetzen() {
+        spielzugReihenfolge.clear();
     }
 
 

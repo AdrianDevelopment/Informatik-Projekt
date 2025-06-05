@@ -55,17 +55,13 @@ public abstract class Mitspieler {
                             gezwungeneKarten.add(karte);
                         }
                     }
-
-
                 } else {
                     for (Spielkarte karte : hand) {
                         if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
                             gezwungeneKarten.add(karte);
                         }
-
                     }
                     return gezwungeneKarten;
-
                 }
                 break;
             case WENZ:
@@ -100,8 +96,6 @@ public abstract class Mitspieler {
                     if (karte.gebeWert() == Werte.SAU && vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() && karte.gebeFarbe() == sau.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
                         gezwungeneKarten.add(karte);
                         return gezwungeneKarten;
-
-
                     }
                 }
 

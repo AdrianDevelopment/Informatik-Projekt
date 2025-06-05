@@ -1,7 +1,6 @@
 import InformatikProjekt.*;
 import org.junit.jupiter.api.Test;
 
-import java.io.Console;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -89,6 +88,20 @@ public class BotTest {
         assertEquals(21, bot.gibWertFuerBisherGelegteKarten(), "Es wurde die falsche Punkteanazhl berechnet");
         bot.rundeGewonnen(null, null);
 
-    }
 
+
+    }
+    @Test
+    public void testErkenntMitspieler(){
+        Bot bot = new Bot();
+        bot.rundeStarten(null, 0);
+        //bot der Sau ausgerufen hat findet Mitspieler der Sau gelegt hat.
+        bot.spielArtEntschieden(0,Farbe.GRAS, SpielArt.SAUSPIEL);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.SAU),2);
+        assertEquals(2, bot.gibTeamSpieler());
+        //bot hat nicht Sau ausgerufen und findet Mitspieler der nicht sau gelegt hat
+        bot.spielArtEntschieden(1,Farbe.GRAS, SpielArt.SAUSPIEL);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.SAU),2);
+        assertEquals(3, bot.gibTeamSpieler());
+    }
 }
