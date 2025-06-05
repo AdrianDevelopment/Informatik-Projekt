@@ -15,7 +15,7 @@ public class MitSpielerTest {
     public void testErlaubteKarten() {
         //todo test fürs davon laufen schreiben
 
-        Mitspieler bot = new Bot();
+        Bot bot = new Bot(null);
 
         //Hand
         ArrayList<Spielkarte> hand = new ArrayList<>();
@@ -54,7 +54,7 @@ public class MitSpielerTest {
     @Test
     public void testErlaubteKartenWegLaufen() {
 
-        Mitspieler bot = new Bot();
+        Mitspieler bot = new Bot(null);
 
         //Hand
         ArrayList<Spielkarte> hand = new ArrayList<>();
@@ -94,7 +94,7 @@ public class MitSpielerTest {
     @Test
     public void testErlaubteKartenSauLegen() {
 
-        Mitspieler bot = new Bot();
+        Bot bot = new Bot(null);
 
         //Hand
         ArrayList<Spielkarte> hand = new ArrayList<>();
@@ -114,15 +114,15 @@ public class MitSpielerTest {
         bot.spielArtEntschieden(1, Farbe.EICHEL, SpielArt.SAUSPIEL);
         bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.ACHTER), 1);
 
-        bot.legeEineKarte();
-        bot.legeEineKarte();
-        bot.legeEineKarte();
-        bot.legeEineKarte();
-        bot.legeEineKarte();
-        bot.legeEineKarte();
-        bot.legeEineKarte();
+        bot.waehleEineKarte();
+        bot.waehleEineKarte();
+        bot.waehleEineKarte();
+        bot.waehleEineKarte();
+        bot.waehleEineKarte();
+        bot.waehleEineKarte();
+        bot.waehleEineKarte();
 
-        Spielkarte sau = bot.legeEineKarte();
+        Spielkarte sau = bot.waehleEineKarte();
 
         assertEquals(sau, gesuchteSau, "Gesuchte Sau sollte als Letzte Karte im letzten Stich gelegt werden.");
 
@@ -132,7 +132,7 @@ public class MitSpielerTest {
 
     @Test
     public void testsauZumAusrufen() {
-        Mitspieler bot = new Bot();
+        Bot bot = new Bot(null);
 
         //Hand
         ArrayList<Spielkarte> hand = new ArrayList<>();
