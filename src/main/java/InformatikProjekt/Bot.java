@@ -6,13 +6,19 @@ import java.util.Random;
 
 public class Bot extends Mitspieler {
     BotModel model;
+    Runde runde;
 
-    public Bot() {
+    public Bot(Runde runde) {
         model = new BotModel();
+        this.runde = runde;
     }
 
     @Override
-    public SpielArt spielabsichtFragen(SpielArt hoechsteSpiel) {
+    public void spielabsichtFragen(int wiederholung, SpielArt hoechsteSpiel, int vorhand) {
+        runde.spielAbsichtFragenAufgerufen(wiederholung, spielAbsichtWaehlen(hoechsteSpiel), vorhand);
+    }
+
+    public SpielArt spielAbsichtWaehlen(SpielArt hoechsteSpiel) {
         //Todo objekt statt array
         int[] besondereKarten = wieVieleBesondereKarten();
         int anzahlOU = besondereKarten[0] + besondereKarten[1];
@@ -47,14 +53,17 @@ public class Bot extends Mitspieler {
             model.setzteSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
             return SpielArt.SAUSPIEL;
         }
-
-
         return SpielArt.KEINSPIEL;
     }
 
 
     @Override
-    public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
+    public void farbeFuerSpielAbsicht(SpielArt spielArt) {
+
+        runde.farbeFuerSpielAbsichtAufgerufen(farbeFuerSpielAbsichtGewaehlt(spielArt));
+    }
+
+    public Farbe farbeFuerSpielAbsichtGewaehlt(SpielArt spielArt) {
         switch (spielArt) {
             case KEINSPIEL:
                 break;
@@ -70,7 +79,11 @@ public class Bot extends Mitspieler {
 
 
     @Override
-    public Spielkarte legeEineKarte() {
+    public void legeEineKarte(int wiederholung, int vorhand) {
+        runde.karteAbfragenAufgerufen(wiederholung, waehleEineKarte(), vorhand);
+    }
+
+    public Spielkarte waehleEineKarte() {
         ArrayList<Spielkarte> moeglicheKarten = new ArrayList<>();
         //Wenn keine Karten auf dem Tisch liegen können alle Karten gespielt werden.
         if (model.gibStichGelegteKartenAnzahl() == 0) {
@@ -89,10 +102,8 @@ public class Bot extends Mitspieler {
             case SOLO:
                 break;
         }
-
         model.entferneKarteAusHand(gewaelteKarte);
         return gewaelteKarte;
-
     }
 
 
@@ -139,7 +150,7 @@ public class Bot extends Mitspieler {
         model.fuegeGelegteKarteHinzu(karte);
         model.fuegeSpielerNummerGelegteKarteHinzu(spielerHatGelegt);
         //Legt Mitspieler fest, wenn die gesuchte Sau ausgerufen wird.
-        if (model.gibSau().equals( karte)) {
+        if (model.gibSau().equals(karte)) {
             if (model.gibSpielerHatSauAusgerufen() == model.gibSpielerIndex()) {
                 model.setzteTeamSpieler(spielerHatGelegt);
             } else {
@@ -229,43 +240,43 @@ public class Bot extends Mitspieler {
     }
 
     public void setzteMitspielerDaten(Farbe farbe, Werte werte, boolean vorhanden, int spielerNr) {
-        if (farbe != null){
+        if (farbe != null) {
             switch (farbe) {
                 case SCHELLEN:
-                    model.setzteMitspielerHatSchellen(spielerNr%3, vorhanden);
+                    model.setzteMitspielerHatSchellen(spielerNr % 3, vorhanden);
                     break;
                 case HERZ:
-                    model.setzteMitspielerHatHerz(spielerNr%3, vorhanden);
+                    model.setzteMitspielerHatHerz(spielerNr % 3, vorhanden);
                     break;
                 case GRAS:
-                    model.setzteMitspielerHatGras(spielerNr%3, vorhanden);
+                    model.setzteMitspielerHatGras(spielerNr % 3, vorhanden);
                     break;
                 case EICHEL:
-                    model.setzteMitspielerHatEichel(spielerNr%3, vorhanden);
+                    model.setzteMitspielerHatEichel(spielerNr % 3, vorhanden);
                     break;
             }
         }
-        if (werte != null){
-        switch (werte) {
-            case SAU:
-                break;
-            case ZEHNER:
-                break;
-            case KOENIG:
-                break;
-            case OBER:
-                model.setzteMitspielerHatOber(spielerNr % 3, vorhanden);
-                break;
-            case UNTER:
-                model.setzteMitspielerHatUnter(spielerNr % 3, vorhanden);
-                break;
-            case NEUNER:
-                break;
-            case ACHTER:
-                break;
-            case SIEBENER:
-                break;
-        }
+        if (werte != null) {
+            switch (werte) {
+                case SAU:
+                    break;
+                case ZEHNER:
+                    break;
+                case KOENIG:
+                    break;
+                case OBER:
+                    model.setzteMitspielerHatOber(spielerNr % 3, vorhanden);
+                    break;
+                case UNTER:
+                    model.setzteMitspielerHatUnter(spielerNr % 3, vorhanden);
+                    break;
+                case NEUNER:
+                    break;
+                case ACHTER:
+                    break;
+                case SIEBENER:
+                    break;
+            }
         }
 
     }
@@ -275,8 +286,8 @@ public class Bot extends Mitspieler {
         return model.gibHand().size();
     }
 
-    public int gibTeamSpieler(){
-        return  model.gibTeamSpieler();
+    public int gibTeamSpieler() {
+        return model.gibTeamSpieler();
     }
 
 
