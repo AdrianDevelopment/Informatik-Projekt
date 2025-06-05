@@ -36,11 +36,25 @@ public class Spieler extends Mitspieler {
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
         SpielArt spielabsicht = SpielArt.KEINSPIEL;
         gui.spielabsichtFragen();
-        //wartet bis GUI Nutzereingabe dem Controller meldet
+        System.out.println("Test");
+        //wartet bis Nutzereingabe reinkommt
         int zaehler = 0;
-        while (zaehler < 1000) {
+        boolean[] ausgewaehlterButton;
+        while (zaehler < 99999) {
+            /*ausgewaehlterButton = gui.gebeSpielabsicht();
+            if (ausgewaehlterButton[0]) {
+                System.out.println("weiter");
+                break;
+            } else if (ausgewaehlterButton[1]) {
+                spielabsicht = SpielArt.SAUSPIEL;
+                System.out.println("sauspiel");
+                break;
+            }*/
+            System.out.println(zaehler);
             zaehler++;
         }
+        System.out.println(zaehler);
+        gui.spielabsichtFragenAbschluss();
 
         //Überprüfen, ob überhaupt möglich
         //ist Sauspiel schon das höchste Spiel?
