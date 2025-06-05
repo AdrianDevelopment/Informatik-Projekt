@@ -10,6 +10,6 @@ public class SpielerTest {
     public void saer() {
          Spieler spieler = new Spieler();
 
-         assertEquals(spieler.spielabsichtFragen(), , );
+         //assertEquals(spieler.spielabsichtFragen(), , );
     }
 }
