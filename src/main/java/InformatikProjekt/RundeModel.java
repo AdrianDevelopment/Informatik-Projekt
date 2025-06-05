@@ -7,11 +7,16 @@ public class RundeModel {
     private int ausrufer;
     private int positionSpieler;
     private Spielkarte[] aktuellerStich;
+    private Spielkarte[] letzerStich;
+    private SpielArt hoechsteSpielart;
+    private Mitspieler ausruferReferenz;
+    private int vorhand;
 
-    public RundeModel(int positionSpieler) {
+    public RundeModel(int positionSpieler, int vorhand) {
         punkte = new int[4];
         aktuellerStich = new Spielkarte[4];
         this.positionSpieler = positionSpieler;
+        this.vorhand = vorhand;
     }
 
     // Geber
@@ -39,6 +44,22 @@ public class RundeModel {
         return aktuellerStich;
     }
 
+    public SpielArt gebeHoechsteSpielart() {
+        return hoechsteSpielart;
+    }
+
+    public Mitspieler gebeAusruferReferenz() {
+        return ausruferReferenz;
+    }
+
+    public int gebeVorhand() {
+        return vorhand;
+    }
+
+    public Spielkarte[] gebeLetzerStichArray() {
+        return letzerStich;
+    }
+
     // Setzer
     public void setzePunkte(int index, int punktzahl) {
         punkte[index] = punktzahl;
@@ -54,5 +75,21 @@ public class RundeModel {
 
     public void setzeAktuellenStich(int index, Spielkarte spielkarte) {
         aktuellerStich[index] = spielkarte;
+    }
+
+    public void setzeHoechsteSpielart(SpielArt hoechsteSpielart) {
+        this.hoechsteSpielart = hoechsteSpielart;
+    }
+
+    public void setzeAusruferReferenz(Mitspieler ausruferReferenz) {
+        this.ausruferReferenz = ausruferReferenz;
+    }
+
+    public void setzeVorhand(int vorhand) {
+        this.vorhand = vorhand;
+    }
+
+    public void kopiereInLetzerStich(Spielkarte[] aktuellerStich) {
+        letzerStich = aktuellerStich.clone();
     }
 }
