@@ -26,10 +26,10 @@ class SpielGUI {
     private ArrayList<JLabel> spieler3KartenLabels;
     private ArrayList<JLabel> spieler4KartenLabels;
 
-    private JLabel spieler1MitteKarte;
-    private JLabel spieler2MitteKarte;
-    private JLabel spieler3MitteKarte;
-    private JLabel spieler4MitteKarte;
+    //private JLabel spieler1MitteKarte;
+    //private JLabel spieler2MitteKarte;
+    //private JLabel spieler3MitteKarte;
+    //private JLabel spieler4MitteKarte;
     private JLabel mitteTextLabel;
 
     ImageIcon kartenRuekseite;
@@ -272,6 +272,7 @@ class SpielGUI {
         mitteTextLabel.setBounds(170, 150, 1000, 200);
         mitteTextLabel.setVisible(true);
         mainFrame.add(mitteTextLabel);
+        mitteKartenInitialisieren();
     }
 
     public ArrayList<JButton> spieler1ButtonsErstellen(){
@@ -338,34 +339,33 @@ class SpielGUI {
         }
     }
 
-
-    public void  karteInDieMitte(JLabel karteFuerDieMitte, WelcherSpieler adressat){
-        switch (adressat){
-            case NUTZER:
-                spieler1MitteKarte = karteFuerDieMitte;
-                spieler1MitteKarte.setBounds(220, 380, 100, 210);
-                spieler1MitteKarte.setVisible(true);
-                break;
-            case LINKER:
-                spieler2MitteKarte = karteFuerDieMitte;
-                spieler2MitteKarte.setBounds(320, 380, 100, 210);
-                spieler2MitteKarte.setVisible(true);
-                break;
-            case OBERER:
-                spieler3MitteKarte = karteFuerDieMitte;
-                spieler3MitteKarte.setBounds(420, 380, 100, 210);
-                spieler3MitteKarte.setVisible(true);
-                break;
-            case RECHTER:
-                spieler4MitteKarte = karteFuerDieMitte;
-                spieler4MitteKarte.setBounds(520, 380, 100, 210);
-                spieler4MitteKarte.setVisible(true);
-                break;
-        }
-        mainFrame.add(karteFuerDieMitte);
-        karteFuerDieMitte.setVisible(true);
-
+    private JLabel[] mitteKarten;
+    private void mitteKartenInitialisieren(){
+        mitteKarten = new JLabel[4];
+        mitteKarten[0]=MitteKartePlatzErstellen(220, 380);
+        mitteKarten[1]=MitteKartePlatzErstellen(320, 380);
+        mitteKarten[2]=MitteKartePlatzErstellen(420, 380);
+        mitteKarten[3]=MitteKartePlatzErstellen(520, 380);
     }
+    private JLabel MitteKartePlatzErstellen(int x, int y){
+        JLabel jl = new JLabel();
+        jl.setBounds(x,y,100,210);
+        jl.setVisible(false);
+        mainFrame.add(jl);
+        return jl;
+    }
+
+    private void StichKartenVerbergen(){
+        for (int i=0;i<mitteKarten.length;++i){
+            mitteKarten[i].setVisible(false);
+        }
+    }
+
+    public void  karteInDieMitte(ImageIcon bild, WelcherSpieler adressat){
+        mitteKarten[adressat.ordinal()].setIcon(bild);
+        mitteKarten[adressat.ordinal()].setVisible(true);
+    }
+
     public void spielerHatAusgerufenHinzufuegen(String text){
         mitteTextLabel.setText(text);
     }
