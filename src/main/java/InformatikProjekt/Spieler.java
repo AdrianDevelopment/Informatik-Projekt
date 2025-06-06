@@ -289,10 +289,10 @@ public class Spieler extends Mitspieler {
      * ja → Spielkarte entfernen und Runde geben
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
-        System.out.println("Karte gelegt");
         if (!model.gebeDranLegen()) { //Spieler soll keine Karte legen → nichts soll passieren
             return;
         }
+        System.out.println("Karte gelegt");
         model.setzeDranLegen(false);
         System.out.println("button handkarten geklickt");
 
@@ -378,9 +378,7 @@ public class Spieler extends Mitspieler {
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
-        JLabel label = new JLabel();
-        label.setIcon(gibBild(karte));
-        gui.karteInDieMitte(label, welcherSpieler);
+        gui.karteInDieMitte(gibBild(karte), welcherSpieler);
         model.setzeGelegteKarte(karte);
         //Tim Anfang //TODO: anpassen mit Solofarbe anstatt null @Tim
         //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
