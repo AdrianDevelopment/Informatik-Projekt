@@ -25,6 +25,7 @@ public class Spielkarte {
 
     @Override
     public boolean equals(Object obj) {
+        // Wird von Java-Standardmethoden wie ArrayList.contains zum Vergleichen verwendet
         if (obj == null) return false;
         if (obj.getClass() != Spielkarte.class) return false;
         return obj.hashCode() == this.hashCode();
@@ -37,6 +38,53 @@ public class Spielkarte {
 
     public int gibKartenID() {
         return hashCode();
+    }
+
+    @Override
+    public String toString(){
+        // Wird verwendet, wenn mit dem "+"-Operator ein String mit einer Spielkarte verbunden wird
+        String ergebnis = "";
+        switch (farbe){
+            case GRAS:
+                ergebnis = "Gras ";
+                break;
+            case HERZ:
+                ergebnis = "Herz ";
+                break;
+            case EICHEL:
+                ergebnis = "Eichel ";
+                break;
+            case SCHELLEN:
+                ergebnis = "Schellen ";
+                break;
+        }
+        switch (wert){
+            case SAU:
+                ergebnis += "Sau";
+                break;
+            case OBER:
+                ergebnis += "Ober";
+                break;
+            case UNTER:
+                ergebnis += "Unter";
+                break;
+            case KOENIG:
+                ergebnis += "König";
+                break;
+            case ACHTER:
+                ergebnis += "8";
+                break;
+            case NEUNER:
+                ergebnis += "9";
+                break;
+            case ZEHNER:
+                ergebnis += "10";
+                break;
+            case SIEBENER:
+                ergebnis += "7";
+                break;
+        }
+        return  ergebnis;
     }
 
     public boolean istTrumpf(SpielArt spielArt, Farbe soloSpielFarbe) {
