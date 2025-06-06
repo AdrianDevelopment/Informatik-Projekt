@@ -12,7 +12,6 @@ public class Spieler extends Mitspieler {
 
     public Spieler() {
         model = new SpielerModel();
-        gui = new SpielGUI(this);
     }
 
     @Override
@@ -25,6 +24,10 @@ public class Spieler extends Mitspieler {
      * - im Model Übergabewerte setzen
      * - Buttons Bilder zuordnen + GUI aufrufen (→ soll Handkarten anzeigen)
      */
+    public void spielGUIErstellen() {
+        gui = new SpielGUI(this);
+    }
+
     @Override
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
