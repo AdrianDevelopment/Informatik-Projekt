@@ -16,14 +16,14 @@ public class RundeModel {
     private Spieler echterSpieler;
     private SpielArt aktuelleSpielArt;
 
-    public RundeModel(int positionSpieler, int vorhand, int wiederholungenRunden, Spieler echterSpieler) {
+    public RundeModel(int positionSpieler, int vorhand, int wiederholungenRunden, Spieler echterSpieler, Mitspieler ausruferReferenz) {
         this.punkte = new int[4];
         this.ausrufer = 0;
         this.positionSpieler = positionSpieler;
         this.aktuellerStich = new Spielkarte[4];
         this.letzerStich = new Spielkarte[4];
         this.hoechsteSpielart = SpielArt.KEINSPIEL;
-        this.ausruferReferenz = ;
+        this.ausruferReferenz = ausruferReferenz;
         this.vorhand = vorhand;
         this.sieger = new int[2];
         this.wiederholungenRunden = wiederholungenRunden;
