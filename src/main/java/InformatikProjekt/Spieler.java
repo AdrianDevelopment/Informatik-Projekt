@@ -270,6 +270,8 @@ public class Spieler extends Mitspieler {
                     case EICHEL:
                         ausgabe += "auf die Alte ";
                         break;
+                    case null, default:
+                        break;
                 }
                 ausgabe += "ausgerufen";
             }
