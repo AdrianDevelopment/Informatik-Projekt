@@ -42,6 +42,7 @@ public class Runde {
 
     public void spielAbsichtFragenAufgerufen(int wiederholung, SpielArt spielArt, int vorhand) {
         rundeModel.setzeAktuelleSpielArt(spielArt);
+        System.out.println("DEBUG: test");
         if (spielArt.compareTo(rundeModel.gebeHoechsteSpielart()) > 0) {
             rundeModel.setzeHoechsteSpielart(spielArt);
             rundeModel.setzeAusrufer(wiederholung);
@@ -50,10 +51,10 @@ public class Runde {
         }
         if (wiederholung < 3) {
             if (vorhand < 3) {
-                rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung + 1, vorhand + 1, rundeModel.gebeAktuelleSpielArt(), rundeModel.gebeAusrufer());
+                rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung + 1, vorhand + 1, rundeModel.gebeAktuelleSpielArt());
             }
             else {
-                rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung + 1, 0, rundeModel.gebeAktuelleSpielArt(), rundeModel.gebeAusrufer());
+                rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung + 1, 0, rundeModel.gebeAktuelleSpielArt());
             }
         }
         else {
@@ -79,6 +80,10 @@ public class Runde {
 
     // fragt den Ausrufer, auf welche Sau er spielen möchte (von Spieler aufgerufen)
     public void farbeFuerSpielAbsicht() {
+        if (rundeModel.gebeAusruferReferenz() == null) {
+            System.out.println("DEBUG: rundeModel.gebeAusruferReferenz() == null in farbeFuerSpielAbsicht() -> NullPointerException");
+            return;
+        }
         rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
         System.out.println("Warte auf Farbe von Spieler " + rundeModel.gebeAusrufer());
     }

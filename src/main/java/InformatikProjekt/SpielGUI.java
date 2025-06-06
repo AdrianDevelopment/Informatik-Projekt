@@ -310,7 +310,8 @@ class SpielGUI {
     }
 
     public void setzeSpielabsichtUnsichtbar(){
-        spielabsichtFrame.setVisible(false);
+        sauButton.setVisible(false);
+        weiterButton.setVisible(false);
     }
 
     public void handkartenAusteilen(){
@@ -360,6 +361,9 @@ class SpielGUI {
 
     public JButton gebeOkButton() {
         return okButton;
+    }
+    public void setzeVisibleOkButton(boolean b) {
+        okButton.setVisible(b);
     }
 
 
