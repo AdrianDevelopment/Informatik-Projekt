@@ -63,7 +63,8 @@ public class Bot extends Mitspieler {
             case WENZ:
                 break;
             case SOLO:
-                return model.gibsoloFarbe();
+                break;
+//                return model.gibsoloFarbe();
         }
         return null;
     }

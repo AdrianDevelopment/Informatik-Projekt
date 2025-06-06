@@ -57,7 +57,7 @@ class SpielGUI {
 
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
-        spieler.setzeGUI(this);
+//        spieler.setzeGUI(this);
     }
 
     public void spielGUIErstellen() {

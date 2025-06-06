@@ -7,12 +7,7 @@ public class Menue {
 
     public Menue() {
         echterSpieler = new Spieler();
-        MenueGUI menueGUI = new MenueGUI(this);
-        menueGUI.guiStart();
-    }
-
-    public void setzeMenueAuswahl(int menueAuswahl) {
-        starteGame(menueAuswahl);
+        starteGame(1);
     }
 
     public void starteGame(int menueAuswahl) {

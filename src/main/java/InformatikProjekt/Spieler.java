@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 public class Spieler extends Mitspieler {
     private SpielerModel model; //speichert Daten des Spielers
-    private SpielGUI gui;
+    private CLI cli;
 
     public Spieler() {
         model = new SpielerModel();
     }
 
-    public void setzeGUI(SpielGUI spielGUI) {
-        gui = spielGUI;
+    public void setzeCLI(CLI cli) {
+        this.cli = cli;
     }
 
     /**
@@ -25,7 +25,7 @@ public class Spieler extends Mitspieler {
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
         model.setzeWelcherSpieler(wieVielterSpieler);
-        gui.zeigeHandkarten(karten);
+        cli.zeigeHandkarten(karten);
     }
 
     /**
@@ -34,25 +34,30 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
-        final SpielArt[] spielabsicht = {SpielArt.KEINSPIEL};
-        gui.spielabsichtFragen();
 
-        //Überprüfen, ob überhaupt möglich
-        //ist Sauspiel schon das höchste Spiel?
-        if (spielabsicht[0] == hoechstesSpiel) {
-            gui.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
-        }
-        //Kann auf eine Sau ausgerufen werden?
-        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
-        if (farbe.isEmpty()) {
-            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen");
-        }
-        return spielabsicht[0];
+        SpielArt spielArt = cli.spielabsichtFragen(hoechstesSpiel);
+        model.setzeSpielabsicht(spielArt);
+        return spielArt;
+
+//        final SpielArt[] spielabsicht = {SpielArt.KEINSPIEL};
+//
+//        Überprüfen, ob überhaupt möglich
+//        ist Sauspiel schon das höchste Spiel?
+//        if (spielabsicht[0] == hoechstesSpiel) {
+//            cli.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
+//        }
+//        //Kann auf eine Sau ausgerufen werden?
+//        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
+//        if (farbe.isEmpty()) {
+//            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen");
+//        }
+//        return spielabsicht[0];
     }
 
-    /*Methode wird von GUI aufgerufen und übergibt dem model die Spielabsicht*/
-    public void spielabsichtGUI(SpielArt spielabsicht) {
-        model.setzeSpielabsicht(spielabsicht);
+    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
+        model.setzeWelcherSpieler(spieler);
+        cli.spielerHatSpielerabsichtGesagt(spielAbsicht, welcherSpieler);
     }
 
     /**
@@ -61,26 +66,34 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
-        Farbe spielasichtFarbe = null;
-        gui.farbeFuerSpielAbsicht();
-        //wartet bis GUI Nutzereingabe dem Controller meldet
-        int zaehler = 0;
-        while (zaehler < 1000) {
-            zaehler++;
-        }
+        Farbe spielasichtFarbe = cli.farbeFuerSpielAbsicht();
 
-        //Überprüfen, ob gewählte Farbe möglich
+//        wartet bis GUI Nutzereingabe dem Controller meldet
+//        int zaehler = 0;
+//        while (zaehler < 1000) {
+//            zaehler++;
+//        }
+//        Überprüfen, ob gewählte Farbe möglich
+
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         for (int i = 0; i < farbe.size(); i++) {
             if (spielasichtFarbe == farbe.get(i)) {
-                return spielasichtFarbe; //Farbe ist erlaubt → Rückgabe
+                cli.spielerHatFarbeGesagt(spielasichtFarbe, wieVielterSpieler(model.gebeWelcherSpieler()));
+                return spielasichtFarbe; // Farbe ist erlaubt → Rückgabe
             }
         }
-        gui.ungueltigeEingabe("Du kannst auf diese Sau nicht ausrufen.");
-        //"Rekursionsschritt"
-        model.setzeSpielabsichtFarbe(null); //Abbruchbedingung der while-Schleife zurücksetzen
+        cli.ungueltigeEingabe("Du kannst auf diese Sau nicht ausrufen.");
         return farbeFuerSpielAbsicht(spielArt);
     }
+
+    /*Methode wird von GUI aufgerufen und übergibt dem model die Spielabsicht*/
+    public void spielabsichtGUI(SpielArt spielabsicht) {
+        model.setzeSpielabsicht(spielabsicht);
+    }
+
+
+
+
 
     /*Methode wird von GUI aufgerufen und übergibt dem Model die Farbe für die Sau*/
     public void farbeFuerSpielAbsichtGUI(Farbe farbe) {
@@ -88,10 +101,6 @@ public class Spieler extends Mitspieler {
     }
 
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
-    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        gui.spielerHatSpielerabsichtGesagt(spielAbsicht, welcherSpieler);
-    }
 
     /**
      * gibt Spielart, ausgerufenen spieler und Farbe an Model und GUI weiter
@@ -102,7 +111,7 @@ public class Spieler extends Mitspieler {
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
-        gui.spielArtEntschieden(welcherSpieler, spielArt, farbe);
+//        gui.spielArtEntschieden(welcherSpieler, spielArt, farbe);
     }
 
 
@@ -119,13 +128,13 @@ public class Spieler extends Mitspieler {
     public Spielkarte legeEineKarte() {
         int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
         ArrayList<Spielkarte> erlaubteKarten;
-        Spielkarte zuLegendeKarte = null;
+        Spielkarte zuLegendeKarte = model.gebeZuLegendeKarte();
 
-        gui.legeKarte();
+        cli.legeEineKarte(model.gebeHandkarten());
         //wartet bis GUI Nutzereingabe dem Controller meldet
-        while (zuLegendeKarte == null) {
-            zuLegendeKarte = model.gebeZuLegendeKarte();
-        }
+//        while (zuLegendeKarte == null) {
+//            zuLegendeKarte = model.gebeZuLegendeKarte();
+//        }
         //Überprüfung, ob Karte erlaubt ist
         //Überprüfung, ob man weglaufen darf
         if (anzahlSpielerSchonGelegt == 0) {
@@ -147,7 +156,7 @@ public class Spieler extends Mitspieler {
             }
         }
         //Karte war nicht erlaubt
-        gui.ungueltigeEingabe("Die Karte kann nicht gelegt werden.");
+        cli.ungueltigeEingabe("Die Karte kann nicht gelegt werden.");
         //"Rekursionsschritt"
         model.setzeZuLegendeKarte(null); //Abbruchbedingung der while-Schleife zurücksetzen
         return legeEineKarte();
@@ -175,7 +184,7 @@ public class Spieler extends Mitspieler {
 
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         model.setzeGelegteKarte(karte);
-        gui.zeigeGelegteKarte(karte, welcherSpieler);
+        cli.zeigeGelegteKarte(karte, welcherSpieler);
 
         //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
@@ -191,7 +200,7 @@ public class Spieler extends Mitspieler {
     @Override
     public void stichGewonnen(int spieler) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        gui.stichGewonnen(welcherSpieler);
+        cli.stichGewonnen(welcherSpieler);
         model.stichBeendet();
     }
 
@@ -212,7 +221,7 @@ public class Spieler extends Mitspieler {
         punkte[2] = uebergebenePunkte[model.gebeWelcherSpieler()];
 
         //TODO: wie soll das der GUI übergeben werden?
-        gui.rundeGewonnen(punkte);
+        cli.rundeGewonnen(uebergebenePunkte, gewinner);
     }
 
     /**

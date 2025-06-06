@@ -26,8 +26,10 @@ public class Runde {
 //        });
 //        spielgui[0].spielGUIErstellen();
 //        echterSpieler.setzeGUI(spielgui[0]);
-        SpielGUI spielGUI = new SpielGUI(echterSpieler);
-        spielGUI.spielGUIErstellen();
+//        SpielGUI spielGUI = new SpielGUI(echterSpieler);
+//        spielGUI.spielGUIErstellen();
+        CLI cli = new CLI();
+        echterSpieler.setzeCLI(cli);
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
