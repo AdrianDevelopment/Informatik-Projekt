@@ -18,12 +18,12 @@ public class RundeModel {
 
     public RundeModel(int positionSpieler, int vorhand, int wiederholungenRunden, Spieler echterSpieler) {
         this.punkte = new int[4];
-        this.ausrufer = -1;
+        this.ausrufer = 0;
         this.positionSpieler = positionSpieler;
         this.aktuellerStich = new Spielkarte[4];
         this.letzerStich = new Spielkarte[4];
         this.hoechsteSpielart = SpielArt.KEINSPIEL;
-        this.ausruferReferenz = null;
+        this.ausruferReferenz = ;
         this.vorhand = vorhand;
         this.sieger = new int[2];
         this.wiederholungenRunden = wiederholungenRunden;

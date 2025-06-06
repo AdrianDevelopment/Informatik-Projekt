@@ -35,12 +35,17 @@ public class Runde {
 
     // Spielabsicht fragen
     public void spielAbsichtFragenRunde(int wiederholung, int vorhand) {
-        System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + vorhand);
-        spieler.get(vorhand).setzeRunde(this);
-        spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
+        if (wiederholung < 3) {
+            System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + vorhand);
+            spieler.get(vorhand).setzeRunde(this);
+            spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
+        }
+        else {
+            rundeModel.gebeEchterSpieler().spielAbsichtAusgeben(rundeModel.gebeAusrufer(), rundeModel.gebeHoechsteSpielart());
+        }
     }
 
-    public void spielabsichtFragenAufgerufen(int wiederholung, SpielArt spielArt, int vorhand) {
+    public void spielabsichtFragenAufgerufen(int wiederholung, int vorhand, SpielArt spielArt) {
         rundeModel.setzeAktuelleSpielArt(spielArt);
         if (spielArt.compareTo(rundeModel.gebeHoechsteSpielart()) > 0) {
             rundeModel.setzeHoechsteSpielart(spielArt);
@@ -48,35 +53,10 @@ public class Runde {
             rundeModel.setzeAusruferReferenz(spieler.get(vorhand));
             System.out.println("DEBUG: aktuell hoechste Spielart: " + rundeModel.gebeHoechsteSpielart());
         }
-        if (wiederholung < 3) {
-            if (vorhand < 3) {
-                spieler.get(vorhand).spielabsichtFragen(wiederholung + 1, vorhand + 1, rundeModel.gebeAktuelleSpielArt(), rundeModel.gebeAusrufer());
-            }
-            else {
-                spieler.get(vorhand).spielabsichtFragen(wiederholung + 1, 0, rundeModel.gebeAktuelleSpielArt(), rundeModel.gebeAusrufer());
-            }
-        }
-        else {
-            if (rundeModel.gebeHoechsteSpielart() == SpielArt.KEINSPIEL) {
-                turnier.rundeStarten(rundeModel.gebeWiederholungenRunden(), rundeModel.gebeSiegerArray());
-            }
-            else if (rundeModel.gebeHoechsteSpielart() == SpielArt.SAUSPIEL) {
-                spielAbsichtAusgeben();
-            }
-            else {
-                System.out.println("ERROR: Spielart nicht bekannt!");
-            }
-        }
+        rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt2(wiederholung, vorhand, spielArt, rundeModel.gebeAusrufer());
     }
 
     // SAUSPIEL:
-    // Spielabsicht ausgeben
-    public void spielAbsichtAusgeben() {
-        for (Mitspieler aktuellerSpieler : spieler) {
-            aktuellerSpieler.spielerHatSpielabsichtGesagt(rundeModel.gebeHoechsteSpielart(), rundeModel.gebeAusrufer());
-        }
-    }
-
     // fragt den Ausrufer, auf welche Sau er spielen möchte (von Spieler aufgerufen)
     public void farbeFuerSpielAbsicht() {
         rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
