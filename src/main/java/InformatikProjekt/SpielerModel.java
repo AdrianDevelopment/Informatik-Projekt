@@ -21,7 +21,9 @@ public class SpielerModel {
     private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs
     private int anzahlSpielerSchonGelegt; //gibt an, wie viele Spieler in der Lege-Runde dran waren
     private Spielkarte zuLegeKarte;
-    private boolean spielerIstDran;
+    private boolean dranLegen;
+    private boolean dranSpielabsicht;
+    private boolean dranFarbeSpielabsicht;
     //temporäre Attribute für GUI-Übergabe
     private boolean sauFarbeVorhandGespielt; //Tim: Benötigt um zu überprüfen, ob die Sau gelegt werden darf.
 
@@ -123,12 +125,28 @@ public class SpielerModel {
         return anzahlSpielerSchonGelegt;
     }
 
-    //spielerIstDran
-    public void setzeSpielerIstDran(boolean dran) {
-        this.spielerIstDran = dran;
+    //dranLegen
+    public void setzeDranLegen(boolean dran) {
+        dranLegen = dran;
     }
-    public boolean gebeSpielerIstDran() {
-        return spielerIstDran;
+    public boolean gebeDranLegen() {
+        return dranLegen;
+    }
+
+    //dranSpielabsicht
+    public void setzeDranSpielabsicht(boolean dran) {
+       dranSpielabsicht = dran;
+    }
+    public boolean gebeDranSpielabsicht() {
+        return dranSpielabsicht;
+    }
+
+    //dranFarbeSpielabsicht
+    public void setzeDranFarbeSpielabsicht(boolean dran) {
+        dranFarbeSpielabsicht = dran;
+    }
+    public boolean gebeDranFarbeSpielabsicht() {
+        return dranFarbeSpielabsicht;
     }
 
 

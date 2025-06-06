@@ -211,10 +211,10 @@ class SpielGUI {
 
 
     public ArrayList<JButton> spielabsichtFragen() {
-//        weiterButton = new JButton("Weiter");
+//      weiterButton = new JButton("Weiter");
         weiterSauButtons.add(weiterButton);
         weiterButton.setVisible(true);
-  //      sauButton = new JButton("Sau");
+  //    sauButton = new JButton("Sau");
         weiterSauButtons.add(sauButton);
         sauButton.setVisible(true);
         return weiterSauButtons;

@@ -45,8 +45,8 @@ public class Spieler extends Mitspieler {
         for (int i = 0; i < handKarten.size(); i++) {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
             int finalI = i; //für Lambda Expression
-            handButtons.get(i).addActionListener(e -> spielabsichtFragen(1, SpielArt.KEINSPIEL, 2)); //gibt Spielkarte weiter und Index für handButtons
-            //handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
+            //handButtons.get(i).addActionListener(e -> spielabsichtFragen(1, SpielArt.KEINSPIEL, 2)); //gibt Spielkarte weiter und Index für handButtons
+            handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
 
         }
     }
@@ -110,6 +110,7 @@ public class Spieler extends Mitspieler {
     public void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand) {
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
+        model.setzeDranSpielabsicht(true);
         ArrayList<JButton> spielabsichtButtons = gui.spielabsichtFragen();
         spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL)); //TODO: funktioniert irgendwie nicht
         spielabsichtButtons.get(1).addActionListener(e -> spielabsichtGesagt(SpielArt.SAUSPIEL));
@@ -122,6 +123,11 @@ public class Spieler extends Mitspieler {
      * @param spielabsicht: wird überprüft, ob es überhaupt geht
      */
     public void spielabsichtGesagt(SpielArt spielabsicht) {
+        if (!model.gebeDranSpielabsicht()) { //Spieler soll keine Karte legen → nichts soll passieren
+            return;
+        }
+        model.setzeDranSpielabsicht(false);
+
         SpielArt spielArt = spielabsicht;
         System.out.println("Spielabsicht");
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
@@ -144,10 +150,11 @@ public class Spieler extends Mitspieler {
     public void legeEineKarte(int wiederholung, int vorhand) {
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
-        model.setzeSpielerIstDran(true);
+        model.setzeDranLegen(true);
     }
 
     /**
+     * gibt Runde Karte
      * Überprüfungen
      * - darf überhaupt was gerade gelegt werden?
      * - weglaufen ja/nein
@@ -155,10 +162,10 @@ public class Spieler extends Mitspieler {
      * ja → Spielkarte entfernen und Runde geben
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
-        if (!model.gebeSpielerIstDran()) { //Spieler soll keine Karte legen → nichts soll passieren
+        if (!model.gebeDranLegen()) { //Spieler soll keine Karte legen → nichts soll passieren
             return;
         }
-        model.setzeSpielerIstDran(false);
+        model.setzeDranLegen(false);
 
         //Überprüfung, ob Karte erlaubt ist
         boolean erlaubt = false;
@@ -201,6 +208,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
+        model.setzeDranFarbeSpielabsicht(true);
         ArrayList<JButton> jButtons = gui.farbeFuerSpielabsicht();
         jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
         jButtons.get(1).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
@@ -208,6 +216,10 @@ public class Spieler extends Mitspieler {
     }
 
     public void farbeFeurSpielAbsichtGesagt(Farbe farbe) {
+        if (!model.gebeDranFarbeSpielabsicht()) { //Spieler soll nichts abgeben können, wenn nicht dran
+            return;
+        }
+        model.setzeDranFarbeSpielabsicht(false);
         //Überprüfen, ob gewählte Farbe möglich
         ArrayList<Farbe> f = sauZumAusrufen(model.gebeHandkarten());
         for (int i = 0; i < f.size(); i++) {
