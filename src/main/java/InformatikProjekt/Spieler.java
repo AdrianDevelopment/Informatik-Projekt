@@ -380,9 +380,9 @@ public class Spieler extends Mitspieler {
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
-        JButton button = new JButton();
-        button.setIcon(gibBild(karte));
-        gui.karteInDieMitte(button, welcherSpieler);
+        JLabel label = new JLabel();
+        label.setIcon(gibBild(karte));
+        gui.karteInDieMitte(label, welcherSpieler);
         model.setzeGelegteKarte(karte);
         //Tim Anfang //TODO: anpassen mit Solofarbe anstatt null @Tim
         //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
