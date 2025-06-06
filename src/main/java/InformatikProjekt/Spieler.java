@@ -76,7 +76,7 @@ public class Spieler extends Mitspieler {
         for (int i = 0; i < handKarten.size(); i++) {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
             int finalI = i; //für Lambda Expression
-            System.out.println(handButtons.size());
+            System.out.println(handKarten.get(i).gebeFarbe() + "|" + handKarten.get(i).gebeWert());
             actionListenerLoeschen(handButtons.get(i));
             handButtons.get(i).validate();
         }
