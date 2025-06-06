@@ -266,8 +266,10 @@ class SpielGUI {
         spielabsichtFrame = new JFrame();
 
         mitteTextLabel = new JLabel();
-        mitteTextLabel.setFont(new Font("Arial", Font.BOLD, 50));
-        mitteTextLabel.setBounds(400, 150, 800, 200);
+        mitteTextLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        mitteTextLabel.setHorizontalAlignment(JLabel.CENTER);
+        mitteTextLabel.setVerticalAlignment(JLabel.CENTER);
+        mitteTextLabel.setBounds(170, 150, 1000, 200);
         mitteTextLabel.setVisible(true);
         mainFrame.add(mitteTextLabel);
     }
