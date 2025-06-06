@@ -59,6 +59,10 @@ public class Runde {
     // SAUSPIEL:
     // fragt den Ausrufer, auf welche Sau er spielen möchte (von Spieler aufgerufen)
     public void farbeFuerSpielAbsicht() {
+        if (rundeModel.gebeAusruferReferenz() == null) {
+            System.out.println("DEBUG: rundeModel.gebeAusruferReferenz() == null in farbeFuerSpielAbsicht() -> NullPointerException");
+            return;
+        }
         rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
         System.out.println("Warte auf Farbe von Spieler " + rundeModel.gebeAusrufer());
     }

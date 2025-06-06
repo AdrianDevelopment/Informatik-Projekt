@@ -114,6 +114,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand) {
+        gui.setzeVisibleOkButton(false); //damit man nicht draufklickt, wenn es nicht geschehen soll
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranSpielabsicht(true);
@@ -134,11 +135,11 @@ public class Spieler extends Mitspieler {
         }
         model.setzeDranSpielabsicht(false);
 
-        System.out.println("Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
+        System.out.println("debug: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
 
         SpielArt spielArt = spielabsicht;
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
-        System.out.println("Spielabsicht auf unsichtbar gesetzt");
+        System.out.println("debug: Spielabsicht auf unsichtbar gesetzt");
         ///Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         if (farbe.isEmpty()) {
@@ -149,12 +150,19 @@ public class Spieler extends Mitspieler {
     }
 
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
-    public void spielerHatSpielabsichtGesagt(int wiederholung, int vorhand, SpielArt spielAbsicht, int spieler) {
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
+    public void spielerHatSpielabsichtGesagt(int wiederholung, int vorhand, SpielArt spielAbsicht) {
+        WelcherSpieler welcherSpieler = wieVielterSpieler(vorhand);
         JLabel jLabel = new JLabel();
         String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
         gui.spielerHatAusgerufenHinzufuegen(jLabel); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
-        model.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
+        if (vorhand < 3) {
+            vorhand++;
+        } else {
+            vorhand = 0;
+        }
+        int finalI = vorhand;
+        model.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
+        gui.setzeVisibleOkButton(true);
     }
 
     @Override
@@ -213,7 +221,6 @@ public class Spieler extends Mitspieler {
             System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
         }
         model.gebeOkButton().addActionListener(e -> runde.stichSpielen(0));
-
     }
 
     /**
@@ -404,7 +411,7 @@ public class Spieler extends Mitspieler {
         } else if (rechnung == 3 || rechnung == -1) {
             spielerImUhrzeigersinn = WelcherSpieler.RECHTER; //rechter Spieler
         } else {
-            System.out.println("Fehler in Methode wieVielterSpieler"); //Test
+            System.out.println("Fehler in Methode wieVielterSpieler" + spieler); //Test
         }
         return spielerImUhrzeigersinn;
     }
