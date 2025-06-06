@@ -59,10 +59,6 @@ public class Runde {
     // SAUSPIEL:
     // fragt den Ausrufer, auf welche Sau er spielen möchte (von Spieler aufgerufen)
     public void farbeFuerSpielAbsicht() {
-        if (rundeModel.gebeAusruferReferenz() == null) {
-            System.out.println("DEBUG: rundeModel.gebeAusruferReferenz() == null in farbeFuerSpielAbsicht() -> NullPointerException");
-            return;
-        }
         rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
         System.out.println("Warte auf Farbe von Spieler " + rundeModel.gebeAusrufer());
     }
@@ -113,17 +109,10 @@ public class Runde {
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.karteWurdeGelegt(karte, vorhand);
         }
-        if (wiederholung < 3) {
-            if (vorhand < 3) {
-                karteAbfragen(wiederholung + 1, vorhand + 1);
-            }
-            else {
-                karteAbfragen(wiederholung + 1, 0);
-            }
-        }
-        else {
+        if (wiederholung == 3) {
             auswertungStich();
         }
+
     }
 
     public void auswertungStich() {

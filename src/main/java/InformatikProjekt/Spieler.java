@@ -51,9 +51,6 @@ public class Spieler extends Mitspieler {
         gui.setzeVisibleOkButton(false, 0);
         gui.setzeVisibleOkButton(true, 1);
         model.gebeOkButton(1).addActionListener(e -> runde.spielAbsichtFragenRunde(model.gebeWiederholung(), model.gebeVorhand()));
-        if (true) {
-            return;
-        }
     }
 
     /*Buttons bekommen Icons zugewiesen*/
@@ -196,8 +193,8 @@ public class Spieler extends Mitspieler {
         }
         gui.spielerHatAusgerufen(jLabel, text);
         gui.setzeVisibleOkButton(false, 1);
-        gui.setzeVisibleOkButton(true, 2);
         model.gebeOkButton(2).addActionListener(e -> runde.farbeFuerSpielAbsicht());
+        gui.setzeVisibleOkButton(true, 2);
     }
 
     /**
@@ -207,6 +204,8 @@ public class Spieler extends Mitspieler {
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
         model.setzeDranFarbeSpielabsicht(true);
+        System.out.println("Wenn Buttons nicht erscheinen, bitte rechts der Handkarten mit der Maus drüber hovern.");
+        System.out.println("Alternativ bitte das Fenster in der Größe verändern.");
         ArrayList<JButton> jButtons = gui.farbeFuerSpielabsicht();
         jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
         jButtons.get(1).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
@@ -221,6 +220,7 @@ public class Spieler extends Mitspieler {
             return;
         }
         model.setzeDranFarbeSpielabsicht(false);
+        gui.setzeFarbeFuerSpielabsichtUnsichtbar();
         //Überprüfen, ob gewählte Farbe möglich
         ArrayList<Farbe> f = sauZumAusrufen(model.gebeHandkarten());
         for (int i = 0; i < f.size(); i++) {
@@ -241,14 +241,19 @@ public class Spieler extends Mitspieler {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
 
-        JLabel jLabel = new JLabel();
+        JLabel jLabel = model.gebeMitteText();
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
-        jLabel.setText(text);
         gui.spielerHatAusgerufen(jLabel, text);
 
         gui.setzeVisibleOkButton(false, 2);
         gui.setzeVisibleOkButton(true, 3);
-        model.gebeOkButton(3).addActionListener(e -> runde.stichSpielen(0));
+        model.gebeOkButton(3).addActionListener(e -> stichSpielen(0));
+    }
+
+    public void stichSpielen(int wiederholung) {
+        JLabel jLabel = model.gebeMitteText();
+        gui.spielerHatAusgerufen(jLabel, "");
+        runde.stichSpielen(wiederholung);
     }
 
     /**
@@ -261,6 +266,9 @@ public class Spieler extends Mitspieler {
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranLegen(true);
+        JLabel jLabel = model.gebeMitteText();
+        String text = "Lege eine Karte.";
+        gui.spielerHatAusgerufen(jLabel, text);
     }
 
     /**
@@ -276,7 +284,8 @@ public class Spieler extends Mitspieler {
             return;
         }
         model.setzeDranLegen(false);
-        System.out.println("button handkarten geklickt");
+        JLabel jLabel = model.gebeMitteText();
+        gui.spielerHatAusgerufen(jLabel, "");
 
         //Überprüfung, ob Karte erlaubt ist
         boolean erlaubt = false;
@@ -307,11 +316,40 @@ public class Spieler extends Mitspieler {
             gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
             model.gebeHandkarten().remove(spielkarte);
             runde.karteAbfragenAufgerufen(model.gebeWiederholung(), spielkarte, model.gebeVorhand());
+            int vorhand = model.gebeVorhand();
+            int wiederholung = model.gebeWiederholung();
+            model.setzeWiederholung(wiederholung + 1);
+            if (vorhand < 3) {
+                vorhand += 1;
+            } else {
+                vorhand = 0;
+            }
+            model.setzeVorhand(vorhand);
         } else {
             legeEineKarte(model.gebeWiederholung(), model.gebeVorhand());
         }
     }
 
+    /**
+     * gibt Karte, die gelegt wurde mit dem Spieler der GUI weiter
+     */
+    @Override
+    public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
+        JButton button = new JButton();
+        button.setIcon(gibBild(karte));
+        gui.karteInDieMitte(button, welcherSpieler);
+        model.setzeGelegteKarte(karte);
+        //Tim Anfang //TODO: anpassen mit Solofarbe anstatt null @Tim
+        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
+        if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
+            model.setzteSauFarbeVorhandGespielt(true);
+        } //Tim Ende
+        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
+        if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
+            model.setzeMitspieler(spielerHatGelegt);
+        }
+    }
 
     /**
      * gibt Ausgabetext zurück, der alle Übergabeparameter beachtet
@@ -350,27 +388,6 @@ public class Spieler extends Mitspieler {
         return ausgabe;
     }
 
-
-    /**
-     * gibt Karte, die gelegt wurde mit dem Spieler der GUI weiter
-     */
-    @Override
-    public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
-        JButton button = new JButton();
-        button.setIcon(gibBild(karte));
-        gui.karteInDieMitte(button, welcherSpieler);
-        model.setzeGelegteKarte(karte);
-        //Tim Anfang //TODO: anpassen mit Solofarbe anstatt null @Tim
-        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
-        if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
-            model.setzteSauFarbeVorhandGespielt(true);
-        } //Tim Ende
-        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
-        if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
-            model.setzeMitspieler(spielerHatGelegt);
-        }
-    }
 
     /**
      * wenn Stich fertig ist
