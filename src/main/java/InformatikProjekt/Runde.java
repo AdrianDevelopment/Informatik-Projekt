@@ -14,7 +14,7 @@ public class Runde {
         this.spieler = spieler;
         this.speicherung = speicherung;
         this.turnier = turnier;
-        rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden);
+        rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden, spieler.get(positionSpieler));
         //spieler.get(positionSpieler).setzeRundeReferenz(this);
 
         for (int i = 0; i < 4; i++) {
@@ -26,14 +26,15 @@ public class Runde {
             spieler.get(i).rundeStarten(spielKartenProSpieler, positionSpieler);
         }
 
-        spielAbsichtFragenRunde(0, vorhand);
+        System.out.println("DEBUG: Karten wurden gesetz, jetzt hinlegen");
+        rundeModel.gebeEchterSpieler().kartenHinlegen(0, vorhand);
     }
 
     // Spielabsicht fragen
     public void spielAbsichtFragenRunde(int wiederholung, int vorhand) {
+        System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + vorhand);
         spieler.get(vorhand).setzeRunde(this);
         spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
-        System.out.println("Warte auf Spielabsicht von Spieler " + vorhand);
     }
 
     public void spielAbsichtFragenAufgerufen(int wiederholung, SpielArt spielArt, int vorhand) {

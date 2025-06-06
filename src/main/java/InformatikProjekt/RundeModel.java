@@ -13,8 +13,9 @@ public class RundeModel {
     private int vorhand;
     private int[] sieger;
     private int wiederholungenRunden;
+    private Spieler echterSpieler;
 
-    public RundeModel(int positionSpieler, int vorhand, int wiederholungenRunden) {
+    public RundeModel(int positionSpieler, int vorhand, int wiederholungenRunden, Spieler echterSpieler) {
         punkte = new int[4];
         ausrufer = -1;
         this.positionSpieler = positionSpieler;
@@ -24,6 +25,7 @@ public class RundeModel {
         this.vorhand = vorhand;
         this.sieger = new int[2];
         this.wiederholungenRunden = wiederholungenRunden;
+        this.echterSpieler = echterSpieler;
     }
 
     // Geber
@@ -79,6 +81,10 @@ public class RundeModel {
         return wiederholungenRunden;
     }
 
+    public Spieler gebeEchterSpieler() {
+        return echterSpieler;
+    }
+
     // Setzer
     public void setzePunkte(int index, int punktzahl) {
         punkte[index] = punktzahl;
@@ -122,5 +128,9 @@ public class RundeModel {
 
     public void setzeWiederholungenRunden(int wiederholungenRunden) {
         this.wiederholungenRunden = wiederholungenRunden;
+    }
+
+    public void setzeEchterSpieler(Spieler echterSpieler) {
+        this.echterSpieler = echterSpieler;
     }
 }
