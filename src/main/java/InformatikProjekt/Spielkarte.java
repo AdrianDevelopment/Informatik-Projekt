@@ -87,6 +87,10 @@ public class Spielkarte {
         return  ergebnis;
     }
 
+    /* Programmierer Tim
+            Gibt je nach Spielart zurück, ob eine Karte ein Trumpf ist.
+            Nutzbar in mehreren Klassen.
+     */
     public boolean istTrumpf(SpielArt spielArt, Farbe soloSpielFarbe) {
 
         switch (spielArt) {
@@ -103,6 +107,7 @@ public class Spielkarte {
     }
 
     //Int zum Vergleichen welche Karte welche Sticht bei ver. Spielarten
+    //Todo muss noch umgesetzt werden
     public int vergleichsWert(SpielArt spielArt, Spielkarte vorgebeneKarte) {
         //Todo Spielart und Vorgebene Karte 
         int kartenStaerke = 0;

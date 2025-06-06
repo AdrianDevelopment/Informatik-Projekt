@@ -4,23 +4,22 @@ package InformatikProjekt;
 import java.util.ArrayList;
 
 public class BotModel {
-    private ArrayList<Spielkarte> hand;
-    private Spielkarte sau;
-    private SpielArt spielArt;
-    private Farbe soloFarbe;
-    private ArrayList<Spielkarte> gelegteKarten;
-    private int spielerIndex;
-
-    private ArrayList<Integer> spielzugReihenfolge;
-    private BotMitspielerDatenModel[] mitspielerDaten;
-    private int spielerHatSauAusgerufen;
-    private int teamSpieler;
-    private boolean sauFarbeVorhandGespielt;
+    private ArrayList<Spielkarte> hand; //Karten auf der Hand
+    private Spielkarte sau; //Die ausgerufene Sau
+    private SpielArt spielArt; //Die Spielart der momentaten Runde
+    private Farbe soloFarbe; //Die Farbe des Solospieles;
+    private ArrayList<Spielkarte> gelegteKarten; //Alle Karten die bisher gelegt wurden.
+    private int spielerIndex; //Die einzigartige Spielernummer von diesem Bot.
+    private ArrayList<Integer> spielzugReihenfolge; //Die Reihenfolge der Spieler, anhand ihrer Spielernummer, die in dem Stich Karten gelegt haben.
+    private BotMitspielerDatenModel[] mitspielerDaten; //Abspeicherung von Informationen über die Hand der anderen Spieler.
+    private int spielerHatSauAusgerufen; //Spielernummer des Spielers der die Sau ausgerufen hat.
+    private int teamSpieler;//Spielernummer des Mitspielers
+    private boolean sauFarbeVorhandGespielt; // Speicherung ob die Farbe der Ausgerufnene Sau schon gespielt wurde.
 
     BotModel() {
         spielzugReihenfolge = new ArrayList<Integer>();
         gelegteKarten = new ArrayList<Spielkarte>();
-        teamSpieler = -1;
+        teamSpieler = -1; // -1 steht dafür das der Mitspieler noch nicht bekannt ist
         mitspielerDaten = new BotMitspielerDatenModel[3];
         mitspielerDaten[0] = new BotMitspielerDatenModel();
         mitspielerDaten[1] = new BotMitspielerDatenModel();
@@ -64,15 +63,13 @@ public class BotModel {
         return spielerHatSauAusgerufen;
     }
 
-
-    //Todo name ändern
     public boolean gibSauFarbeVorhandGespielt() {
         return sauFarbeVorhandGespielt;
     }
+
     public int gibTeamSpieler() {
         return teamSpieler;
     }
-
 
     public ArrayList<Spielkarte> gibAlleGelegteKarten() {
         return gelegteKarten;
@@ -83,10 +80,10 @@ public class BotModel {
     }
 
 
+
     public void setzeSauFarbeVorhandGespielt(boolean b) {
         sauFarbeVorhandGespielt = b;
     }
-
 
     public void setzteMitspielerHatOber(int spielerNummer, boolean istVorhanden) {
         mitspielerDaten[spielerNummer].setzteHatOber(istVorhanden);
@@ -112,7 +109,6 @@ public class BotModel {
         mitspielerDaten[spielerNummer].setzteHatGras(istVorhanden);
     }
 
-
     public void setzteTeamSpieler(int nSpielerNummer) {
         teamSpieler = nSpielerNummer;
     }
@@ -129,11 +125,9 @@ public class BotModel {
         soloFarbe = nSoloFarbe;
     }
 
-
     public void setzteHand(ArrayList<Spielkarte> nHand) {
         hand = nHand;
     }
-
 
     public void setzeSpielerIndex(int nSpielerNummer) {
         spielerIndex = nSpielerNummer;
@@ -142,8 +136,6 @@ public class BotModel {
     public void setzeSpielerHatSauAusgerufen(int nSpielerNummer) {
         spielerHatSauAusgerufen = nSpielerNummer;
     }
-
-    ;
 
     public void fuegeSpielerNummerGelegteKarteHinzu(int spielerNummer) {
         spielzugReihenfolge.add(spielerNummer);

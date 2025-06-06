@@ -4,6 +4,9 @@ package InformatikProjekt;
 import java.util.ArrayList;
 import java.util.Random;
 
+/*
+       Logik der Methoden von dem Override der Methoden der abstrakten Klasse getrennt, damit diese einfach getestet werden können.
+   */
 public class Bot extends Mitspieler {
     BotModel model;
     Runde runde;
@@ -12,18 +15,25 @@ public class Bot extends Mitspieler {
         model = new BotModel();
     }
 
-    @Override // Tom
+    @Override
     public void setzeRunde(Runde runde) {
         this.runde = runde;
     }
 
+    /*
+         Bestimmt, ob es sich lohnt ein Spiel auszurufen oder nicht.
+         Betrachtet wie viele Trümpfe und Karten einer Farbe auf der Hand sind.
+         Wenn eine bestimmte Anzahl von Trümpfen auf der Hand sind, wird ein Spiel ausgerufen.
+         Sonst wird kein Spiel zurückgegeben.
+    */
     @Override
     public void spielabsichtFragen(int wiederholung, SpielArt hoechsteSpiel, int vorhand) {
         runde.spielabsichtFragenAufgerufen(wiederholung, vorhand, spielAbsichtWaehlen(hoechsteSpiel));
     }
 
     public SpielArt spielAbsichtWaehlen(SpielArt hoechsteSpiel) {
-        //Todo objekt statt array
+        //Bestimmt wieviele und welche Art von Karten auf der Hand sind.
+        //Todo besondereKarten objekt statt array
         int[] besondereKarten = wieVieleBesondereKarten();
         int anzahlOU = besondereKarten[0] + besondereKarten[1];
         int indexFarbeMitMeistenKarten = besondereKarten[3];
@@ -51,9 +61,13 @@ public class Bot extends Mitspieler {
             return SpielArt.WENZ;
         }
         */
+
+        //Bestimmung welche Sau farben ausgerufen werden können.
         ArrayList<Farbe> farbenZumAusrufen = sauZumAusrufen(model.gibHand());
-        //Sauspiel, wenn eine Sau ausgerufen werden kann und mindestens 5 Truempfe auf der Hand.
+        //Sauspiel, wenn eine Sau ausgerufen werden kann und mindestens 5 Trümpfe auf der Hand sind.
         if (!farbenZumAusrufen.isEmpty() && anzahlOU + besondereKarten[4] >= 5 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SAUSPIEL.gebeSpielArtID()) {
+            //Speichert die Sau die Ausgerufen werden soll im Model ab.
+            //Die Methode farbenZumAusrufen gibt die beste Sau zum Ausrufen an Stelle 0 zurück.
             model.setzteSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
             return SpielArt.SAUSPIEL;
         }
@@ -61,6 +75,7 @@ public class Bot extends Mitspieler {
     }
 
 
+    // Gibt die Farbe für die Spielabsicht entweder die Farbe für ein Solo oder die ausgerufene Sau.
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
 
@@ -81,7 +96,11 @@ public class Bot extends Mitspieler {
         return null;
     }
 
-
+    /*
+        Wählt je nach Spielart eine Karte aus.
+        Dafür werden zuerst alle Karten bestimmt, die nach den Regeln gelegt werden könnten.
+        Danach wird eine der erlaubten Karten nach einem System ausgewählt.
+     */
     @Override
     public void legeEineKarte(int wiederholung, int vorhand) {
         runde.karteAbfragenAufgerufen(wiederholung, waehleEineKarte(), vorhand);
@@ -89,13 +108,14 @@ public class Bot extends Mitspieler {
 
     public Spielkarte waehleEineKarte() {
         ArrayList<Spielkarte> moeglicheKarten = new ArrayList<>();
-        //Wenn keine Karten auf dem Tisch liegen können alle Karten gespielt werden.
+        //Überprüfen, ob es der Beginn des Stiches ist und demanch erlaubte Karten bestimmen.
         if (model.gibStichGelegteKartenAnzahl() == 0) {
             moeglicheKarten = erlaubteKartenAusspielenBeiSauspiel(model.gibHand(), model.gibSau());
         } else {
             moeglicheKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gibHand().clone(), model.gibSpielArt(), model.gibSau(), model.gibErsteKarteAufTisch(), model.gibsoloFarbe(), model.gibSauFarbeVorhandGespielt());
         }
         Spielkarte gewaelteKarte = null;
+        //Wahl der Karte nach Spielart unterscheiden.
         switch (model.gibSpielArt()) {
             case KEINSPIEL:
                 break;
@@ -106,15 +126,18 @@ public class Bot extends Mitspieler {
             case SOLO:
                 break;
         }
+        //Gewählte Karte aus Hand entfernen und zurückgeben.
         model.entferneKarteAusHand(gewaelteKarte);
         return gewaelteKarte;
     }
 
-
+    /*
+        System zur Bestimmung welche Karte bei einem Sauspiel gelegt werden soll.
+        Für den Protypen wird eine zufällige Karte ausgewaählt.
+     */
     public Spielkarte sauSpielKarteWaehlen(ArrayList<Spielkarte> erlaubteKarten) {
         Random zufall = new Random();
         int zufaelligerIndex = zufall.nextInt(erlaubteKarten.size());
-
 
         int[] besondereKarten = wieVieleBesondereKarten();
         if (gibWertFuerBisherGelegteKarten() > 20) {
@@ -128,14 +151,14 @@ public class Bot extends Mitspieler {
 
     }
 
+    //Speichern von Daten im Model.
     @Override
     public void rundeStarten(ArrayList<Spielkarte> karten, int spielerIndex) {
-
         model.setzteHand(karten);
         model.setzeSpielerIndex(spielerIndex);
     }
 
-
+    //Speichern von Daten im Model.
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         model.setzeSpielerHatSauAusgerufen(spieler);
@@ -144,10 +167,17 @@ public class Bot extends Mitspieler {
         model.setzteSoloFarbe(farbe);
     }
 
-
+    /*
+        Mit dieser Methode werden folgende Daten abgespeichert:
+            Welche Karten gelegt wurden
+            wer in dem Stich eine Karte gelegt hat
+            ob die Farbe der Gesuchten sau gespielt wurde
+            sofern die gesuchte Sau gespielt, wird kann der Mitspieler abgespeichert werden.
+            //todo abspeichern von Informationen über die Art der Karten auf der Hand der anderen Spieler
+     */
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
-        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte,  wie jede andere Karte einer Farbe frei gespielt werden.
+        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte, wie jede andere Karte einer Farbe frei gespielt werden.
         if (model.gibStichGelegteKartenAnzahl() == 0 && model.gibSau().gebeFarbe() == karte.gebeFarbe() && !karte.istTrumpf(model.gibSpielArt(), model.gibsoloFarbe())) {
             model.setzeSauFarbeVorhandGespielt(true);
         }
@@ -156,8 +186,10 @@ public class Bot extends Mitspieler {
         //Legt Mitspieler fest, wenn die gesuchte Sau ausgerufen wird.
         if (model.gibSau().equals(karte)) {
             if (model.gibSpielerHatSauAusgerufen() == model.gibSpielerIndex()) {
+                //Mitspieler ist der Spieler, er die Sau gelegt hat, sofern man selbst die Sau ausgerufen hat.
                 model.setzteTeamSpieler(spielerHatGelegt);
             } else {
+                //Mitspieler ist der Spieler der werder die Sau ausgerufen noch gelegt hat.
                 model.setzteTeamSpieler(6 - (spielerHatGelegt + model.gibSpielerHatSauAusgerufen() + model.gibSpielerIndex()));
             }
         }
@@ -174,6 +206,7 @@ public class Bot extends Mitspieler {
     }
 
 
+    //Zurücksetzen von Daten über den Stich im Model.
     @Override
     public void stichGewonnen(int spieler) {
         model.spielerNummerGelegteKarteZuruecksetzen();
@@ -190,12 +223,17 @@ public class Bot extends Mitspieler {
         model = new BotModel();
     }
 
+    //Kein Nutzen für Bot
     @Override
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
 
     }
 
     //Hilfsmethoden
+
+    /*
+        Berechnet den Punktewert der Karten, die bisher in dem Stich gelegt wurden.
+     */
     public int gibWertFuerBisherGelegteKarten() {
         int gesamtWert = 0;
         for (Spielkarte karte : model.gibAlleGelegteKarten().subList(model.gibAlleGelegteKarten().size() - model.gibStichGelegteKartenAnzahl(), model.gibAlleGelegteKarten().size())) {
@@ -204,6 +242,11 @@ public class Bot extends Mitspieler {
         return gesamtWert;
     }
 
+    /*
+        Bestimmt die Anzahl von Karten Typen die für Entscheidung über Spielzüge elementar sind.
+        //todo Methode muss noch an Spielarten angepasst werden. (Bei Wenz ist der Ober eine Farbe)
+        //todo Ein Object mit den jeweiligen Arten von Karten als Attributen, um die Nutzung der Daten zu erleichtern. (Anstatt Array position zu merken)
+     */
     public int[] wieVieleBesondereKarten() {
         int anzahlOber = 0;
         int anzahlUnter = 0;
@@ -243,7 +286,12 @@ public class Bot extends Mitspieler {
         return new int[]{anzahlOber, anzahlUnter, anzahlSau, anzahlHerz, anzahlGras, anzahlEichel, anzahlSchellen};
     }
 
+    /*
+        Methode um die Daten von der Arraylist mit BotMitspielerDatenModel zu verändern.
+        Benötigt um Informationen über die Hand der andern Spieler abzuspeichern.
+     */
     public void setzteMitspielerDaten(Farbe farbe, Werte werte, boolean vorhanden, int spielerNr) {
+        // != null da auch null als Parameter übergeben werden kann. Da nur entweder bei einer Farbe oder einem Wert eine änderung vorgenommen werden soll.
         if (farbe != null) {
             switch (farbe) {
                 case SCHELLEN:
@@ -285,7 +333,8 @@ public class Bot extends Mitspieler {
 
     }
 
-    //Für Tests
+    //Zugriff von Daten vom Model
+    //benötigt zum Testen
     public int gibAnzahlKartenInHand() {
         return model.gibHand().size();
     }

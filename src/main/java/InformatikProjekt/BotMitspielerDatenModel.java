@@ -1,6 +1,10 @@
 package InformatikProjekt;
 
 public class BotMitspielerDatenModel {
+    /*
+        Speicherung ob der Spieler noch Karten mit einem bestimmten Wert oder einer bestimmten Farbe hat.
+        Benötigt um Spielentscheidungen zu treffen.
+     */
     private boolean hatOber;
     private boolean hatUnter;
 
