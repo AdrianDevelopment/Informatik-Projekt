@@ -35,6 +35,52 @@ public class Spielkarte {
         return (this.gebeFarbe().gebeFarbeID() << 16) | (this.gebeWert().gebeIndex());
     }
 
+    @Override
+    public String toString(){
+        String ergebnis = "";
+        switch (farbe){
+            case GRAS:
+                ergebnis = "Gras ";
+                break;
+            case HERZ:
+                ergebnis = "Herz ";
+                break;
+            case EICHEL:
+                ergebnis = "Eichel ";
+                break;
+            case SCHELLEN:
+                ergebnis = "Schellen ";
+                break;
+        }
+        switch (wert){
+            case SAU:
+                ergebnis += "Sau";
+                break;
+            case OBER:
+                ergebnis += "Ober";
+                break;
+            case UNTER:
+                ergebnis += "Unter";
+                break;
+            case KOENIG:
+                ergebnis += "König";
+                break;
+            case ACHTER:
+                ergebnis += "8";
+                break;
+            case NEUNER:
+                ergebnis += "9";
+                break;
+            case ZEHNER:
+                ergebnis += "10";
+                break;
+            case SIEBENER:
+                ergebnis += "7";
+                break;
+        }
+        return  ergebnis;
+    }
+
     public int gibKartenID() {
         return hashCode();
     }
