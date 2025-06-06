@@ -344,24 +344,28 @@ public class Spieler extends Mitspieler {
         } else {
             ausgabe += " hat";
         }
-        switch (spielArt) {
-            case KEINSPIEL -> ausgabe += " 'weiter' gesagt";
-            case SAUSPIEL -> {
-                ausgabe += " ein Sauspiel ";
-                switch (farbe) {
-                    case SCHELLEN:
-                        ausgabe += "auf die Bumbe ";
-                        break;
-                    case GRAS:
-                        ausgabe += "auf die Blaue ";
-                        break;
-                    case EICHEL:
-                        ausgabe += "auf die Alte ";
-                        break;
+        if (spielArt != null) {
+            switch (spielArt) {
+                case KEINSPIEL -> ausgabe += " 'weiter' gesagt";
+                case SAUSPIEL -> {
+                    ausgabe += " ein Sauspiel ";
+                    if (farbe != null) {
+                        switch (farbe) {
+                            case SCHELLEN:
+                                ausgabe += "auf die Bumbe ";
+                                break;
+                            case GRAS:
+                                ausgabe += "auf die Blaue ";
+                                break;
+                            case EICHEL:
+                                ausgabe += "auf die Alte ";
+                                break;
+                        }
+                    }
+                    ausgabe += "ausgerufen";
                 }
-                ausgabe += "ausgerufen";
+                default -> ausgabe += " eine ungültige Spielabsicht ausgerufen";
             }
-            default -> ausgabe += " eine ungültige Spielabsicht ausgerufen";
         }
         return ausgabe;
     }
