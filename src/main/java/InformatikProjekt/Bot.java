@@ -71,7 +71,9 @@ public class Bot extends Mitspieler {
             model.setzteSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
             return SpielArt.SAUSPIEL;
         }
-        return SpielArt.KEINSPIEL;
+        //Damit immer ein Spiel stattfindet --> Kein Spiel bei Rudne implimentieren
+        //Eigentlich kein Spiel
+        return SpielArt.SAUSPIEL;
     }
 
 
@@ -83,6 +85,10 @@ public class Bot extends Mitspieler {
     }
 
     public Farbe farbeFuerSpielAbsichtGewaehlt(SpielArt spielArt) {
+        if (spielArt == null){
+            System.out.println("farbeFuerSpielAbsichtGewaehlt() bei bot wurde null übergeben");
+        }
+
         switch (spielArt) {
             case KEINSPIEL:
                 break;
@@ -93,7 +99,7 @@ public class Bot extends Mitspieler {
             case SOLO:
                 return model.gibsoloFarbe();
         }
-        return null;
+        return Farbe.SCHELLEN;
     }
 
     /*

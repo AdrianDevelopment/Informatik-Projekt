@@ -10,7 +10,7 @@ public class SpielerModel {
     private ArrayList<JButton> handButtons; //speichert Handkarten als Buttons mit richtigen Bildern
     private int[] andereSpielerKarten; //speichert Anzahl der Spielerkarten von den anderen Spielern
     private int welcherSpieler;
-    private ArrayList<JButton> okButton;
+    private JButton okButton;
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
     private WelcherSpieler ausrufenderSpieler;
@@ -81,13 +81,11 @@ public class SpielerModel {
         okButton.add(jButton);
     }
 
-    public JButton gebeOkButton(int i) {
-        return okButton.get(i);
+    public JButton gebeOkButton() {
+        return okButton;
     }
 
-    public void setzeListeOkButton(ArrayList<JButton> buttons) {
-        okButton = buttons;
-    }
+
 
     /**
      * setzt alle wichtigen Attribute für eine Runde nach dem Ausrufen

@@ -17,6 +17,7 @@ public class BotModel {
     private boolean sauFarbeVorhandGespielt; // Speicherung ob die Farbe der Ausgerufnene Sau schon gespielt wurde.
 
     BotModel() {
+        sau = new Spielkarte(Farbe.GRAS, Werte.SAU);
         spielzugReihenfolge = new ArrayList<Integer>();
         gelegteKarten = new ArrayList<Spielkarte>();
         teamSpieler = -1; // -1 steht dafür das der Mitspieler noch nicht bekannt ist

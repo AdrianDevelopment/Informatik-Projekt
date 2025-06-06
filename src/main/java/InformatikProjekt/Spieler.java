@@ -1,6 +1,8 @@
 package InformatikProjekt;
 
 import javax.swing.*;
+import java.awt.desktop.SystemSleepEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 //Programmierer: Tom
@@ -28,12 +30,12 @@ public class Spieler extends Mitspieler {
     public void spielGUIErstellen(Turnier turnier) {
         gui = new SpielGUI(this);
         this.turnier = turnier;
-        JButton okButton = gui.gebeOkButton(0);
-        gui.setzeVisibleOkButton(true, 0);
+        JButton okButton = gui.gebeOkButton();
+        okButton.setVisible(true);
         int[] i = new int[]{-1, -1};
+
         okButton.addActionListener(e -> turnier.rundeStarten(0, i)); //1. Runde starten
-        model.setzeOkButton(okButton);
-        model.setzeListeOkButton(gui.gebeListeOkButton());
+        //model.setzeListeOkButton(gui.gebeListeOkButton());
     }
 
     @Override
@@ -41,19 +43,20 @@ public class Spieler extends Mitspieler {
         model.setzeHandkarten(karten);
         model.setzeWelcherSpieler(wieVielterSpieler);
         model.setzeHandButtons(gui.spieler1ButtonsErstellen());
-        buttonKartenZuornden();
+        buttonKartenZuorndenKeineReaktion();
         gui.handkartenAusteilen();
     }
 
     public void kartenHinlegen(int wiederholung, int vorhand) {
         int[] i = new int[]{-1, -1};
-        gui.setzeVisibleOkButton(false, 0);
-        model.gebeOkButton(1).addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
-        gui.setzeVisibleOkButton(true, 1);
+        actionListenerLoeschen(gui.gebeOkButton());
+        gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
+        gui.gebeOkButton().setVisible(true);
     }
 
     /*Buttons bekommen Icons zugewiesen*/
     public void buttonKartenZuornden() {
+        System.out.println("Handkarten an");
         ArrayList<JButton> handButtons = model.gebeHandButtons();
         ArrayList<Spielkarte> handKarten = model.gebeHandkarten();
         //Zuweisung von den passenden Bildern zu den Buttons
@@ -61,8 +64,24 @@ public class Spieler extends Mitspieler {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
             int finalI = i; //für Lambda Expression
             handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
+            handButtons.get(i).validate();
         }
     }
+
+    public void buttonKartenZuorndenKeineReaktion() {
+        System.out.println("Handkarten aus");
+        ArrayList<JButton> handButtons = model.gebeHandButtons();
+        ArrayList<Spielkarte> handKarten = model.gebeHandkarten();
+        //Zuweisung von den passenden Bildern zu den Buttons
+        for (int i = 0; i < handKarten.size(); i++) {
+            handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
+            int finalI = i; //für Lambda Expression
+            System.out.println(handButtons.size());
+            actionListenerLoeschen(handButtons.get(i));
+            handButtons.get(i).validate();
+        }
+    }
+
 
     /*gibt zu einer Karte das ImageIcon mit passendem Bild (Co-Programmierer: Tim)*/
     private ImageIcon gibBild(Spielkarte karte) {
@@ -121,13 +140,16 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand) {
-        gui.setzeVisibleOkButton(false, 1); //damit man nicht draufklickt, wenn es nicht geschehen soll
+        gui.gebeOkButton().setVisible(true);
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranSpielabsicht(true);
         ArrayList<JButton> spielabsichtButtons = gui.spielabsichtFragen();
-        spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL)); //TODO: funktioniert irgendwie nicht
+        actionListenerLoeschen(gui.gebeOkButton());
+        spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL));
+        spielabsichtButtons.get(0).setVisible(true);
         spielabsichtButtons.get(1).addActionListener(e -> spielabsichtGesagt(SpielArt.SAUSPIEL));
+        spielabsichtButtons.get(1).setVisible(true);
     }
 
     /**
@@ -168,9 +190,10 @@ public class Spieler extends Mitspieler {
             vorhand = 0;
         }
         int finalI = vorhand;
-        gui.setzeVisibleOkButton(false, 0);
-        model.gebeOkButton(1).addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
-        gui.setzeVisibleOkButton(true, 1);
+        actionListenerLoeschen(gui.gebeOkButton());
+        gui.gebeOkButton().setVisible(false);
+        gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
+        gui.gebeOkButton().setVisible(true);
     }
 
     @Override
@@ -182,6 +205,9 @@ public class Spieler extends Mitspieler {
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
         String text = ausgabeBeimAusrufen(hoechsteSpielart, welcherspieler, null);
         gui.spielerHatAusgerufenHinzufuegen(new JLabel(text));
+        actionListenerLoeschen(gui.gebeOkButton());
+        gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
+
     }
 
     /**
@@ -190,6 +216,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
+        actionListenerLoeschen(gui.gebeOkButton());
         model.setzeDranFarbeSpielabsicht(true);
         ArrayList<JButton> jButtons = gui.farbeFuerSpielabsicht();
         jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
@@ -234,8 +261,10 @@ public class Spieler extends Mitspieler {
             jLabel.setText(text);
             System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
         }
-        model.gebeOkButton(2).addActionListener(e -> runde.stichSpielen(0));
-        gui.setzeVisibleOkButton(true, 2);
+        actionListenerLoeschen(gui.gebeOkButton());
+        gui.gebeOkButton().setVisible(true);
+        gui.gebeOkButton().addActionListener(e -> runde.stichSpielen(0));
+        gui.gebeOkButton().setVisible(true);
     }
 
     /**
@@ -245,9 +274,12 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void legeEineKarte(int wiederholung, int vorhand) {
+        actionListenerLoeschen(gui.gebeOkButton());
+        buttonKartenZuornden();
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranLegen(true);
+        System.out.println("Lege eine Karte");
     }
 
     /**
@@ -259,6 +291,7 @@ public class Spieler extends Mitspieler {
      * ja → Spielkarte entfernen und Runde geben
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
+        System.out.println("Karte gelegt");
         if (!model.gebeDranLegen()) { //Spieler soll keine Karte legen → nichts soll passieren
             return;
         }
@@ -291,11 +324,14 @@ public class Spieler extends Mitspieler {
             }
         }
         if (erlaubt) {
-            gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
+            System.out.println("Karte erlaubt");
+           //gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
+            model.gebeHandButtons().remove(index);
             model.gebeHandkarten().remove(spielkarte);
+            System.out.println(model.gebeHandkarten().size());
+            buttonKartenZuorndenKeineReaktion();
             runde.karteAbfragenAufgerufen(model.gebeWiederholung(), spielkarte, model.gebeVorhand());
-        } else {
-            legeEineKarte(model.gebeWiederholung(), model.gebeVorhand());
+            gui.gebeOkButton().addActionListener(e-> runde.stichSpielen(model.gebeWiederholung()));
         }
     }
 
@@ -434,5 +470,12 @@ public class Spieler extends Mitspieler {
     /*Methode, die von Runde aufgerufen wird, um den Mitspieler herauszubekommen*/
     public int gebeMitspieler() {
         return model.gebeMitspieler();
+    }
+
+    private void actionListenerLoeschen(JButton button){
+
+        for( ActionListener al : button.getActionListeners() ) {
+            button.removeActionListener( al );
+        }
     }
 }

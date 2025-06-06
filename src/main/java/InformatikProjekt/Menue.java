@@ -4,12 +4,15 @@ package InformatikProjekt;
 
 public class Menue {
     //private final Spieler echterSpieler;
+    MenueGUI menueGUI;
+    public Menue(MenueGUI menueGUI) {
 
-    public Menue() {
-
-        MenueGUI menueGUI = new MenueGUI(this);
-        menueGUI.guiStart();
+        this.menueGUI = menueGUI;
         //echterSpieler = new Spieler();
+    }
+    public void uiIntialisieren(){
+        menueGUI.gibStatistikButton().addActionListener(e -> new StatistikGUI());
+        menueGUI.gibPlayButton().addActionListener(e -> starteGame(1));
     }
 
     public void starteGame(int menueAuswahl) {

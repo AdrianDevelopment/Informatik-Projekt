@@ -8,13 +8,14 @@ import java.util.ArrayList;
 class SpielGUI {
     private Spieler spieler;
 
-    private ArrayList<JButton> okButton;
+
     JButton weiterButton; //neu
     JButton sauButton;
 
     JRadioButton schellenButton;
     JRadioButton grasButton;
     JRadioButton eichelButton;
+    private  JButton okButton;
 
     private ArrayList<JButton> spieler1KartenArray;
     private ArrayList<JButton> weiterSauButtons;
@@ -24,6 +25,7 @@ class SpielGUI {
     private ArrayList<JLabel> spieler2KartenLabels;
     private ArrayList<JLabel> spieler3KartenLabels;
     private ArrayList<JLabel> spieler4KartenLabels;
+
 
     ImageIcon kartenRuekseite;
 
@@ -38,14 +40,12 @@ class SpielGUI {
         mainFrame.setVisible(true);
         mainFrame.setLayout(null);
 
-        okButton = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            JButton jButton = new JButton("Ok");
-            jButton.setBounds(1000, 400, 100, 50);
-            jButton.setVisible(false);
-            mainFrame.add(jButton);
-            okButton.add(jButton);
-        }
+        okButton = new JButton("Ok");
+        okButton.setBounds(1000, 400, 100, 50);
+        okButton.setVisible(false);
+        mainFrame.add(okButton);
+
+
 
         weiterButton = new JButton("Weiter");
         weiterButton.setBounds(1000, 600, 100, 50);
@@ -257,7 +257,7 @@ class SpielGUI {
 
         mainFrame.add(weiterButton);
         mainFrame.add(sauButton);
-
+        mainFrame.show();
         spielabsichtFrame = new JFrame();
     }
 
@@ -363,15 +363,11 @@ class SpielGUI {
         mainFrame.remove(mitteText);
     }
 
-    public JButton gebeOkButton(int i) {
-        return okButton.get(i);
-    }
-    public void setzeVisibleOkButton(boolean b, int i) {
-        okButton.get(i).setVisible(b);
-    }
-    public ArrayList<JButton> gebeListeOkButton() {
+    public JButton gebeOkButton() {
         return okButton;
     }
+
+
 
 
     public void mitteAufrauemen(){
@@ -409,6 +405,8 @@ class SpielGUI {
     }
     public void handkartenAktualisieren(int t){
         mainFrame.remove(spieler1KartenArray.get(t));
+        mainFrame.revalidate();
+
     }
 
     //jjjjjjjjjjjj

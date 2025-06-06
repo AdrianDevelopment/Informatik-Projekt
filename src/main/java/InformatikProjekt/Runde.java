@@ -35,12 +35,13 @@ public class Runde {
 
     // Spielabsicht fragen
     public void spielAbsichtFragenRunde(int wiederholung, int vorhand) {
-        if (wiederholung < 3) {
+        if (wiederholung < 4) {
             System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + vorhand);
             spieler.get(vorhand).setzeRunde(this);
             spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
         }
         else {
+
             rundeModel.gebeEchterSpieler().spielAbsichtAusgeben(rundeModel.gebeAusrufer(), rundeModel.gebeHoechsteSpielart());
         }
     }
