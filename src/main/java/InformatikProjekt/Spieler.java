@@ -27,8 +27,8 @@ public class Spieler extends Mitspieler {
     public void spielGUIErstellen(Turnier turnier) {
         gui = new SpielGUI(this);
         JButton okButton = gui.gebeOkButton();
-        int[] i = new int[] {-1, -1};
-        okButton.addActionListener(e -> turnier.rundeStarten(0,i)); //1. Runde starten
+        int[] i = new int[]{-1, -1};
+        okButton.addActionListener(e -> turnier.rundeStarten(0, i)); //1. Runde starten
         model.setzeOkButton(okButton);
     }
 
@@ -39,6 +39,10 @@ public class Spieler extends Mitspieler {
         model.setzeHandButtons(gui.spieler1ButtonsErstellen());
         buttonKartenZuornden();
         gui.handkartenAusteilen();
+    }
+
+    public void kartenHinlegen() {
+        model.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde());
     }
 
     /*Buttons bekommen Icons zugewiesen*/
