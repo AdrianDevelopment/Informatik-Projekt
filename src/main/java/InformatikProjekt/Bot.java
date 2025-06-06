@@ -119,6 +119,7 @@ public class Bot extends Mitspieler {
             moeglicheKarten = erlaubteKartenAusspielenBeiSauspiel(model.gibHand(), model.gibSau());
         } else {
             moeglicheKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gibHand().clone(), model.gibSpielArt(), model.gibSau(), model.gibErsteKarteAufTisch(), model.gibsoloFarbe(), model.gibSauFarbeVorhandGespielt());
+            System.out.println("DEBUG: Größe moeglicheKarten in Bot: " + moeglicheKarten.size());
         }
         Spielkarte gewaelteKarte = null;
         //Wahl der Karte nach Spielart unterscheiden.
