@@ -3,11 +3,12 @@ package InformatikProjekt;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//Programmierer: Tom
+//Programmierer: Tom und Robin
 
 public class SpielerGUI {
     private Scanner benutzerEingabe;
     private Spieler spieler;
+    private Spielkarte[] karten;
 
     public SpielerGUI(Spieler spieler) {
         this.spieler = spieler;
@@ -15,14 +16,20 @@ public class SpielerGUI {
     }
 
     //gui-Methode, die Benutzer nach Spielabsicht frägt und als String zurückgibt
-    public void spielabsichtFragen() {
+    public String spielabsichtFragen() {
         System.out.println("Das aktuell höchste Spiel ist: Gib bitte deine Spielabsicht ein, also entweder 'weiter', 'Sau', 'Wenz' oder 'Solo'");
-        //return benutzerEingabe.nextLine();
+        return benutzerEingabe.nextLine();
         //Handkarten müssen währenddessen angezeigt werden + die bisher höchste Spielart und von wem ausgerufen;
     }
 
-    public void farbeFuerSpielAbsicht() {
-        //rufe spieler.farbeFuerSpielAbsichtGUI(farbe) auf
+    public Farbe farbeFuerSpielAbsicht() {
+        System.out.println("Spielabsicht-Farbe eingeben(Schellen,Eichel,Herz,Gras):");
+        String spielabsicht = benutzerEingabe.nextLine().toUpperCase();
+        for (Farbe farbe : Farbe.values()){
+            if (farbe.name().toUpperCase().equals(spielabsicht))return  farbe;
+        }
+        System.out.println("Ungültige Farbe");
+        return  farbeFuerSpielAbsicht();
     }
 
 
@@ -35,9 +42,12 @@ public class SpielerGUI {
     }
 
     public void zeigeHandkarten(ArrayList<Spielkarte> handkarten) {
+        karten = new Spielkarte[handkarten.size()];
         System.out.println("Das sind deine Handkarten:");
-        for (Spielkarte karte : handkarten) {
+        for (int i=0;i<handkarten.size();++i) {
+            Spielkarte karte = handkarten.get(i);
             System.out.println(karte);
+            karten[i]=karte;
         }
     }
 
@@ -68,11 +78,18 @@ public class SpielerGUI {
 
 
     public Spielkarte legeKarte() {
-        return null;
+        System.out.println("Wähle aus den folgenden Karten und gib die Zahl ein:");
+        for (int i=0;i<karten.length;++i){
+            if (karten[i]!=null)System.out.println(i + " : " + karten[i]);
+        }
+        while (true){
+            int index = benutzerEingabe.nextInt(10);
+            if (index < karten.length && index>(-1) && karten[index]!=null)return karten[index];
+        }
     }
 
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {
-        System.out.println(spielerHatGelegt.gebeName() + " hat die Karte " + karte + " gelegt."); //TODO: kann man Karte so einfach anzeigen? -> @Thiemo zusammen setzen
+        System.out.println(spielerHatGelegt.gebeName() + " hat die Karte " + karte + " gelegt.");
     }
 
     public void stichGewonnen(WelcherSpieler spieler) {
@@ -88,7 +105,10 @@ public class SpielerGUI {
 
     //Methode wird aufgerufen, wenn Spieler auf irgendeinen Button klickt
     public void zeigeLetztenStich() {
-        System.out.println(spieler.gebeLetztenStich());
+        ArrayList<Spielkarte> karten = spieler.gebeLetztenStich();
+        for (Spielkarte i : karten){
+            System.out.println(i);
+        }
     }
 
 }
