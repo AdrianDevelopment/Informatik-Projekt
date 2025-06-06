@@ -238,7 +238,7 @@ public class Spieler extends Mitspieler {
         jLabel.setText(text);
         gui.spielerHatAusgerufen(jLabel, text);
         /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
-            - am besten mit einem weiter Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
+            - am besten mit einem Ok Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
          */
     }
 

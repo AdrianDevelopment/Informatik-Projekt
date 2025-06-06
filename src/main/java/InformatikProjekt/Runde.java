@@ -41,9 +41,10 @@ public class Runde {
             rundeModel.setzeHoechsteSpielart(spielArt);
             rundeModel.setzeAusrufer(wiederholung);
             rundeModel.setzeAusruferReferenz(spieler.get(wiederholung));
+            System.out.println("DEBUG: aktuell hoechste Spielart: " + rundeModel.gebeHoechsteSpielart());
         }
-        if (wiederholung < 4) {
-            if (vorhand < 4) {
+        if (wiederholung < 3) {
+            if (vorhand < 3) {
                 spielAbsichtFragenRunde(wiederholung + 1, vorhand + 1);
             }
             else {
@@ -85,7 +86,7 @@ public class Runde {
 
     // Runde spielen
     public void stichSpielen(int wiederholungStiche) {
-        if (wiederholungStiche < 8) {
+        if (wiederholungStiche < 7) {
             karteAbfragen(0, rundeModel.gebeVorhand());
         }
         else {
@@ -122,8 +123,8 @@ public class Runde {
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.karteWurdeGelegt(karte, vorhand);
         }
-        if (wiederholung < 4) {
-            if (vorhand < 4) {
+        if (wiederholung < 3) {
+            if (vorhand < 3) {
                 karteAbfragen(wiederholung + 1, vorhand + 1);
             }
             else {
