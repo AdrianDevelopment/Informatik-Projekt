@@ -39,20 +39,6 @@ public class Spieler extends Mitspieler {
         SpielArt spielArt = cli.spielabsichtFragen(hoechstesSpiel);
         model.setzeSpielabsicht(spielArt);
         return spielArt;
-
-//        final SpielArt[] spielabsicht = {SpielArt.KEINSPIEL};
-//
-//        Überprüfen, ob überhaupt möglich
-//        ist Sauspiel schon das höchste Spiel?
-//        if (spielabsicht[0] == hoechstesSpiel) {
-//            cli.ungueltigeEingabe("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
-//        }
-//        //Kann auf eine Sau ausgerufen werden?
-//        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
-//        if (farbe.isEmpty()) {
-//            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen");
-//        }
-//        return spielabsicht[0];
     }
 
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
@@ -129,13 +115,10 @@ public class Spieler extends Mitspieler {
     public Spielkarte legeEineKarte() {
         int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
         ArrayList<Spielkarte> erlaubteKarten;
-        Spielkarte zuLegendeKarte = model.gebeZuLegendeKarte();
+//        Spielkarte zuLegendeKarte = model.gebeZuLegendeKarte();
 
-        cli.legeEineKarte(model.gebeHandkarten());
-        //wartet bis GUI Nutzereingabe dem Controller meldet
-//        while (zuLegendeKarte == null) {
-//            zuLegendeKarte = model.gebeZuLegendeKarte();
-//        }
+        Spielkarte zuLegendeKarte = cli.legeEineKarte(model.gebeHandkarten());
+        model.setzeZuLegendeKarte(zuLegendeKarte);
         //Überprüfung, ob Karte erlaubt ist
         //Überprüfung, ob man weglaufen darf
         if (anzahlSpielerSchonGelegt == 0) {
