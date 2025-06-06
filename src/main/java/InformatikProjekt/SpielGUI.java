@@ -26,6 +26,11 @@ class SpielGUI {
     private ArrayList<JLabel> spieler3KartenLabels;
     private ArrayList<JLabel> spieler4KartenLabels;
 
+    private JLabel spieler1MitteKarte;
+    private JLabel spieler2MitteKarte;
+    private JLabel spieler3MitteKarte;
+    private JLabel spieler4MitteKarte;
+
 
     ImageIcon kartenRuekseite;
 
@@ -326,19 +331,27 @@ class SpielGUI {
     }
 
 
-    public void  karteInDieMitte(JButton karteFuerDieMitte, WelcherSpieler adressat){
+    public void  karteInDieMitte(JLabel karteFuerDieMitte, WelcherSpieler adressat){
         switch (adressat){
             case NUTZER:
-                karteFuerDieMitte.setBounds(220, 380, 100, 210);
+                spieler1MitteKarte = karteFuerDieMitte;
+                spieler1MitteKarte.setBounds(220, 380, 100, 210);
+                spieler1MitteKarte.setVisible(true);
                 break;
             case LINKER:
-                karteFuerDieMitte.setBounds(320, 380, 100, 210);
+                spieler2MitteKarte = karteFuerDieMitte;
+                spieler2MitteKarte.setBounds(320, 380, 100, 210);
+                spieler2MitteKarte.setVisible(true);
                 break;
             case OBERER:
-                karteFuerDieMitte.setBounds(420, 380, 100, 210);
+                spieler3MitteKarte = karteFuerDieMitte;
+                spieler3MitteKarte.setBounds(420, 380, 100, 210);
+                spieler3MitteKarte.setVisible(true);
                 break;
             case RECHTER:
-                karteFuerDieMitte.setBounds(520, 380, 100, 210);
+                spieler4MitteKarte = karteFuerDieMitte;
+                spieler4MitteKarte.setBounds(520, 380, 100, 210);
+                spieler4MitteKarte.setVisible(true);
                 break;
         }
         mainFrame.add(karteFuerDieMitte);
@@ -347,7 +360,8 @@ class SpielGUI {
     }
     public void spielerHatAusgerufenHinzufuegen(JLabel mitteText){
         mainFrame.add(mitteText);
-        mitteText.setBounds(400, 200, 600, 200);
+        mitteText.setFont(new Font("Arial", Font.BOLD, 50));
+        mitteText.setBounds(600, 150, 600, 200);
         mitteText.setVisible(true);
     }
 
