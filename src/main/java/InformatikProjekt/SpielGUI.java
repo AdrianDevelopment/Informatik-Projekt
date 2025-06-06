@@ -33,17 +33,7 @@ class SpielGUI {
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
         mainFrame = new JFrame();
-    }
-    public void guiStarten(){
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                mainFrameErstellen();
-            }
-        });
-    }
 
-    public void mainFrameErstellen(){
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         mainFrame.setVisible(true);
         mainFrame.setLayout(null);

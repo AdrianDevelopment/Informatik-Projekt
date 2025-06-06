@@ -26,7 +26,6 @@ public class Spieler extends Mitspieler {
      */
     public void spielGUIErstellen(Turnier turnier) {
         gui = new SpielGUI(this);
-        gui.guiStarten();
         JButton okButton = gui.gebeOkButton();
         int[] i = new int[]{-1, -1};
         okButton.addActionListener(e -> turnier.rundeStarten(0, i)); //1. Runde starten
