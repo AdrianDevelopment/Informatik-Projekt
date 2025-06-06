@@ -63,8 +63,6 @@ public class Spieler extends Mitspieler {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
             int finalI = i; //für Lambda Expression
             actionListenerLoeschen(handButtons.get(i));
-            System.out.println("Final I");
-            System.out.println(finalI);
             handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
             handButtons.get(i).validate();
         }
@@ -326,12 +324,13 @@ public class Spieler extends Mitspieler {
         if (erlaubt) {
             System.out.println("Karte erlaubt");
            //gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
-            model.gebeHandButtons().remove(index);
+
+            buttonKartenZuorndenKeineReaktion();
             actionListenerLoeschen(model.gebeHandButtons().get(index));
             model.gebeHandButtons().get(index).setVisible(false);
+            model.gebeHandButtons().remove(index);
             model.gebeHandkarten().remove(spielkarte);
             System.out.println(model.gebeHandkarten().size());
-            buttonKartenZuorndenKeineReaktion();
             runde.karteAbfragenAufgerufen(model.gebeWiederholung(), spielkarte, model.gebeVorhand());
             gui.gebeOkButton().addActionListener(e-> runde.stichSpielen(model.gebeWiederholung(),0));
         }
