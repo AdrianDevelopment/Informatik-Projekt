@@ -24,8 +24,12 @@ public class Spieler extends Mitspieler {
      * - im Model Übergabewerte setzen
      * - Buttons Bilder zuordnen + GUI aufrufen (→ soll Handkarten anzeigen)
      */
-    public void spielGUIErstellen() {
+    public void spielGUIErstellen(Turnier turnier) {
         gui = new SpielGUI(this);
+        JButton okButton = gui.gebeOkButton();
+        int[] i = new int[] {-1, -1};
+        okButton.addActionListener(e -> turnier.rundeStarten(0,i)); //1. Runde starten
+        model.setzeOkButton(okButton);
     }
 
     @Override
@@ -45,9 +49,7 @@ public class Spieler extends Mitspieler {
         for (int i = 0; i < handKarten.size(); i++) {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
             int finalI = i; //für Lambda Expression
-            //handButtons.get(i).addActionListener(e -> spielabsichtFragen(1, SpielArt.KEINSPIEL, 2)); //gibt Spielkarte weiter und Index für handButtons
             handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
-
         }
     }
 
@@ -128,9 +130,11 @@ public class Spieler extends Mitspieler {
         }
         model.setzeDranSpielabsicht(false);
 
+        System.out.println("Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
+
         SpielArt spielArt = spielabsicht;
-        System.out.println("Spielabsicht");
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
+        System.out.println("Spielabsicht auf unsichtbar gesetzt");
         ///Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         if (farbe.isEmpty()) {
@@ -166,6 +170,7 @@ public class Spieler extends Mitspieler {
             return;
         }
         model.setzeDranLegen(false);
+        System.out.println("button handkarten geklickt");
 
         //Überprüfung, ob Karte erlaubt ist
         boolean erlaubt = false;

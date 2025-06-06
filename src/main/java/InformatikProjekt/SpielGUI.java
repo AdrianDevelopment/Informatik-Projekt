@@ -8,6 +8,7 @@ import java.util.ArrayList;
 class SpielGUI {
     private Spieler spieler;
 
+    private JButton okButton;
     JButton weiterButton; //neu
     JButton sauButton;
 
@@ -26,10 +27,16 @@ class SpielGUI {
 
     public SpielGUI(Spieler spieler) {
         this.spieler = spieler;
+
         mainFrame = new JFrame();
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         mainFrame.setVisible(true);
         mainFrame.setLayout(null);
+
+        okButton = new JButton("OK");
+        okButton.setBounds(1000, 400, 100, 50);
+        okButton.setVisible(true);
+        mainFrame.add(okButton);
 
         weiterButton = new JButton("Weiter");
         weiterButton.setBounds(1000, 600, 100, 50);
@@ -295,7 +302,9 @@ class SpielGUI {
         mainFrame.remove(mitteText);
     }
 
-
+    public JButton gebeOkButton() {
+        return okButton;
+    }
 
 
     public void mitteAufrauemen(){

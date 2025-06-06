@@ -6,13 +6,13 @@ import java.util.Collections;
 
 // Programmierer: Adrian
 
-public class Tunier {
+public class Turnier {
     private final Speicherung speicherung;
     private final TunierModel tunierModel;
     private final ArrayList<Mitspieler> spieler;
     private final ArrayList<Spielkarte> spielKarten;
 
-    Tunier(int anzahlRunden) {
+    Turnier(int anzahlRunden) {
         Spieler echterSpieler = new Spieler();
         spieler = new ArrayList<>(4);
         speicherung = Speicherung.speicherungErstellen();
@@ -42,13 +42,11 @@ public class Tunier {
         }
         Collections.shuffle(spielKarten);
 
-        // 1. Runde starten
-        rundeStarten(0, new int[] {-1, -1});
+        tunierModel.gebeEchterSpieler().spielGUIErstellen(this);
     }
 
     public void rundeStarten(int wiederholungRunden, int[] sieger) {
         if (wiederholungRunden < tunierModel.gebeAnzahlRunden()) {
-            tunierModel.gebeEchterSpieler().spielGUIErstellen();
             Runde runde = new Runde(spieler, spielKarten, tunierModel.gebePositionSpieler(), speicherung, 0, this, wiederholungRunden);
         }
         else {

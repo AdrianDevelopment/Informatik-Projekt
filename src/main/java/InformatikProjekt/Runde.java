@@ -8,12 +8,12 @@ public class Runde {
     private ArrayList<Mitspieler> spieler;
     private Speicherung speicherung;
     private RundeModel rundeModel;
-    private Tunier tunier;
+    private Turnier turnier;
 
-    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung, int vorhand, Tunier tunier, int wiederholungRunden) {
+    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung, int vorhand, Turnier turnier, int wiederholungRunden) {
         this.spieler = spieler;
         this.speicherung = speicherung;
-        this.tunier = tunier;
+        this.turnier = turnier;
         rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden);
         //spieler.get(positionSpieler).setzeRundeReferenz(this);
 
@@ -53,7 +53,7 @@ public class Runde {
         }
         else {
             if (rundeModel.gebeHoechsteSpielart() == SpielArt.KEINSPIEL) {
-                tunier.rundeStarten(rundeModel.gebeWiederholungenRunden(), rundeModel.gebeSiegerArray());
+                turnier.rundeStarten(rundeModel.gebeWiederholungenRunden(), rundeModel.gebeSiegerArray());
             }
             else if (rundeModel.gebeHoechsteSpielart() == SpielArt.SAUSPIEL) {
                 spielAbsichtAusgeben();
@@ -108,7 +108,7 @@ public class Runde {
             }
             speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
             speicherung.DatenSpeichern();
-            tunier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
+            turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
         }
     }
 
