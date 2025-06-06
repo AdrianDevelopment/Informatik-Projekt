@@ -144,7 +144,7 @@ public class Runde {
         // Speicherung
         speicherung.KarteGespielt();
         speicherung.DatenSpeichern();
-        rundeModel.setzeVorhand(sieger);
+        rundeModel.setzeVorhand(0);
         rundeModel.setzteWiederholung(0);
         rundeModel.setzeStichWiederholung(rundeModel.gibStichWiederholung() + 1);
     }
