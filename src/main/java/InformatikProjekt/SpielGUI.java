@@ -20,6 +20,11 @@ class SpielGUI {
     private ArrayList<JButton> weiterSauButtons;
     private ArrayList<JButton> farbauswahlButtons;
 
+    private ArrayList<JLabel> spieler1KartenLabels;
+    private ArrayList<JLabel> spieler2KartenLabels;
+    private ArrayList<JLabel> spieler3KartenLabels;
+    private ArrayList<JLabel> spieler4KartenLabels;
+
     ImageIcon kartenRuekseite;
 
     private JFrame spielabsichtFrame;
@@ -50,6 +55,11 @@ class SpielGUI {
         weiterSauButtons = new ArrayList<JButton>();
         farbauswahlButtons = new ArrayList<JButton>();
 
+        spieler1KartenLabels = new ArrayList<JLabel>();
+        spieler2KartenLabels = new ArrayList<JLabel>();
+        spieler3KartenLabels = new ArrayList<JLabel>();
+        spieler4KartenLabels = new ArrayList<JLabel>();
+
         mainFrame.add(weiterButton);
         //weiterButton.setVisible(false);
         mainFrame.add(sauButton);
@@ -59,7 +69,6 @@ class SpielGUI {
         ImageIcon playerIcon = new ImageIcon("src\\main\\resources\\spieler.png");
         ImageIcon botIcon = new ImageIcon("src\\main\\resources\\bot.png");
         kartenRuekseite = new ImageIcon("src\\main\\resources\\rueckseiteKarte.png");
-
         //Spieler1
         JLabel Spieler1 = new JLabel();
         Spieler1.setText("Spieler 1");
@@ -91,6 +100,47 @@ class SpielGUI {
 
 
         //Umgedrehte Startkarten für Spieler 2 werden erstellt:
+        /*
+        for (int i = 0; i < 8; i++) {
+            int u = 0;
+            JLabel karte = new JLabel();
+            if (i % 2 == 0) {
+                karte.setBounds(60,140 + (i/2 * 100), 80, 100);
+            }
+            else {
+                karte.setBounds(0,40 + (i+1)/2, 80, 100);
+            }
+            karte.setIcon(kartenRuekseite);
+            spieler1KartenLabels.add(karte);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            int u = 0;
+            JLabel karte = new JLabel();
+            if (i % 2 == 0) {
+                karte.setBounds(60,140 + (i/2 * 100), 80, 100);
+            }
+            else {
+                karte.setBounds(0,40 + (i+1)/2, 80, 100);
+            }
+            karte.setIcon(kartenRuekseite);
+            spieler3KartenLabels.add(karte);
+        }
+
+        for (int i = 0; i < 8; i++) {
+            int u = 0;
+            JLabel karte = new JLabel();
+            if (i % 2 == 0) {
+                karte.setBounds(60,140 + (i/2 * 100), 80, 100);
+            }
+            else {
+                karte.setBounds(0,40 + (i+1)/2, 80, 100);
+            }
+            karte.setIcon(kartenRuekseite);
+            spieler4KartenLabels.add(karte);
+        }
+
+        */
         JLabel ruekseitenKarte21 = new JLabel();
         ruekseitenKarte21.setIcon(kartenRuekseite);
         ruekseitenKarte21.setBounds(0,140,80,100);
@@ -210,7 +260,10 @@ class SpielGUI {
     public ArrayList<JButton> spieler1ButtonsErstellen(){
         for (int i = 0; i < 8; i++){
             JButton button = new JButton();
-            button.setBounds((300 + i*60) + 120, 380, 100, 410);
+            button.setBounds((300 + i*60) + 120, 540, 70, 110);
+            button.setBorderPainted(false);
+            button.setContentAreaFilled(false);
+            button.setFocusPainted(false);
             spieler1KartenArray.add(button);
         }
         return spieler1KartenArray;
@@ -263,7 +316,6 @@ class SpielGUI {
     public void handkartenAusteilen(){
         for (int i = 0; i < 8; i++){
             mainFrame.add(spieler1KartenArray.get(i));
-            spieler1KartenArray.get(i).setBounds((300 + i*60) + 120, 380, 100, 410);
             spieler1KartenArray.get(i).setVisible(true);
         }
     }
@@ -295,7 +347,11 @@ class SpielGUI {
     }
 
     public void spielerHatAusgerufen(JLabel mitteText, String text){
+        mitteText.setSize(500, 100);
         mitteText.setText(text);
+        mitteText.setHorizontalTextPosition(JLabel.CENTER);
+        mitteText.setVerticalTextPosition(JLabel.CENTER);
+
     }
 
     public void spielerHatAusgerufenEntfernen(JLabel mitteText){
