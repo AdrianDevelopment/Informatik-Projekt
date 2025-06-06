@@ -280,5 +280,5 @@ public class Bot extends Mitspieler {
         return  model.gibTeamSpieler();
     }
 
-
+    public void keinSpiel() {}
 }

@@ -37,6 +37,8 @@ public abstract class Mitspieler {
 
     public abstract int gebeMitspieler();
 
+    public abstract void keinSpiel();
+
     //Methode fuer Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden koennen zurueckgibt.
     //Diese Methode nicht Aufrufen, wenn die erste Karte gelegt wird!!!
     public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe, boolean sauFarbeVorhandGespielt) {
@@ -46,6 +48,7 @@ public abstract class Mitspieler {
             gezwungeneKarten.add(hand.get(0));
             return gezwungeneKarten;
         }
+        else if (hand.size() == 0) System.out.println("DEBUG: auf Hand sind 0 Karten!");
         //bestimmt welche Karten gelegt werden dürfen, abhängig von der Spielart.
         switch (spielArt) {
             case SOLO:
@@ -122,7 +125,6 @@ public abstract class Mitspieler {
         } else {
             return hand;
         }
-
     }
 
     //Methode aufrufen, wenn man Selbst die Sau hat und Ausspielen muss.

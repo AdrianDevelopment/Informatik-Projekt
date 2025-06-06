@@ -1,7 +1,6 @@
 package InformatikProjekt;
 
 import java.util.ArrayList;
-import javax.swing.SwingUtilities;
 
 // Programmierer: Adrian
 
@@ -9,25 +8,12 @@ public class Runde {
     private ArrayList<Mitspieler> spieler;
     private Speicherung speicherung;
     private RundeModel rundeModel;
-//    private int[] punkte;
-//    private int ausrufer;
-//    private Mitspieler ausruferObjekt;
-//    private Spielkarte[] aktuellerStich;
-//    private int positionSpieler;
 
     public Runde(ArrayList<Mitspieler> spieler, Spieler echterSpieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung) {
         this.spieler = spieler;
         this.speicherung = speicherung;
-        rundeModel = new RundeModel(positionSpieler);
+        rundeModel = new RundeModel(positionSpieler, echterSpieler);
 
-//        final SpielGUI[] spielgui = new SpielGUI[1];
-//        SwingUtilities.invokeLater(() -> {
-//            spielgui[0] = new SpielGUI(echterSpieler);
-//        });
-//        spielgui[0].spielGUIErstellen();
-//        echterSpieler.setzeGUI(spielgui[0]);
-//        SpielGUI spielGUI = new SpielGUI(echterSpieler);
-//        spielGUI.spielGUIErstellen();
         CLI cli = new CLI();
         echterSpieler.setzeCLI(cli);
 
@@ -44,13 +30,11 @@ public class Runde {
     public int[] starteRunde(int vorhand) {
         SpielArt aktuellHoechstesSpiel;
         SpielArt hoechstesSpiel = SpielArt.KEINSPIEL;
-        Mitspieler ausruferObjekt = null;
+        Mitspieler ausruferObjekt = spieler.get(0);
 
         for (int i = 0; i < 4; i++) {
             // do {
             aktuellHoechstesSpiel = spieler.get(i).spielabsichtFragen(hoechstesSpiel);
-//            System.out.println("DEBUG: aktuellHoechstesSpiel: " + aktuellHoechstesSpiel);
-//            } while (aktuellHoechstesSpiel != SpielArt.KEINSPIEL || aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0); // zur Sicherheit wird hier nochmal geschaut, ob das gegebene höchste Spiel auch legal ist, sollte aber schon in Mitspieler geregelt werden
             if (aktuellHoechstesSpiel.compareTo(hoechstesSpiel) > 0) {
                 hoechstesSpiel = aktuellHoechstesSpiel;
                 rundeModel.setzeAusrufer(i);
@@ -58,7 +42,10 @@ public class Runde {
             }
         }
         if (hoechstesSpiel == SpielArt.KEINSPIEL) {
-            return null;
+            for (Mitspieler aktuellerSpieler : spieler) {
+                aktuellerSpieler.keinSpiel();
+            }
+            return rundeModel.gebePunkteArray();
         }
 
         for (Mitspieler aktuellerSpieler : spieler) {
@@ -72,9 +59,9 @@ public class Runde {
         }
 
         switch (hoechstesSpiel) {
-//            case KEINSPIEL:
-//                starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
-//                return null;
+            case KEINSPIEL:
+                starteRunde(vorhand); // oder Ramsch; Methode muss möglicherweise extern erneut aufgerufen werden, ohne Rekursion
+                return null;
             case SAUSPIEL:
                 spielSchleifeSau(8, vorhand);
                 int[] sieger = rundenSiegerErmitteln();

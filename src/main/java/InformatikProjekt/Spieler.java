@@ -25,6 +25,7 @@ public class Spieler extends Mitspieler {
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
         model.setzeWelcherSpieler(wieVielterSpieler);
+        cli.rundeStarten(wieVielterSpieler);
         cli.zeigeHandkarten(karten);
     }
 
@@ -253,5 +254,10 @@ public class Spieler extends Mitspieler {
     /*Methode, die von Runde aufgerufen wird, um den Mitspieler raus zu bekommen*/
     public int gebeMitspieler() {
         return model.gebeMitspieler();
+    }
+
+    @Override
+    public void keinSpiel() {
+        cli.keinSpiel();
     }
 }

@@ -7,11 +7,13 @@ public class RundeModel {
     private int ausrufer;
     private int positionSpieler;
     private Spielkarte[] aktuellerStich;
+    private Spieler echterSpieler;
 
-    public RundeModel(int positionSpieler) {
+    public RundeModel(int positionSpieler, Spieler echterSpieler) {
         punkte = new int[4];
         aktuellerStich = new Spielkarte[4];
         this.positionSpieler = positionSpieler;
+        this.echterSpieler = echterSpieler;
     }
 
     // Geber
@@ -39,6 +41,10 @@ public class RundeModel {
         return aktuellerStich;
     }
 
+    public Spieler gebeEchterSpieler() {
+        return echterSpieler;
+    }
+
     // Setzer
     public void setzePunkte(int index, int punktzahl) {
         punkte[index] = punktzahl;
@@ -54,5 +60,9 @@ public class RundeModel {
 
     public void setzeAktuellenStich(int index, Spielkarte spielkarte) {
         aktuellerStich[index] = spielkarte;
+    }
+
+    public void setzeEchterSpieler(Spieler echterSpieler) {
+        this.echterSpieler = echterSpieler;
     }
 }

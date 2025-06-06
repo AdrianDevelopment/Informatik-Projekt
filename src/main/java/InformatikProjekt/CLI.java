@@ -12,11 +12,18 @@ public class CLI {
         benutzerEingabe = new Scanner(System.in);
     }
 
+    public void rundeStarten(int positionSpieler) {
+        System.out.println("Herzlich Willkommen einer Runde Schafkopfen");
+        System.out.println("Sie sind der " + (positionSpieler + 1) + "te Spieler");
+    }
+
     // Handkarten anzeigen
     public void zeigeHandkarten(ArrayList<Spielkarte> spielkarten) {
+        System.out.println("------");
         for (Spielkarte spielkarte : spielkarten) {
             System.out.println(spielkarte.gebeFarbe() + "|" + spielkarte.gebeWert());
         }
+        System.out.println("------");
     }
 
     //gui-Methode, die Benutzer nach Spielabsicht frägt und als String zurückgibt
@@ -98,5 +105,10 @@ public class CLI {
 
     public void ungueltigeEingabe(String ausgabe) {
         System.out.println(ausgabe);
+    }
+
+    public void keinSpiel() {
+        System.out.println("Es kam kein Spiel zu stande!");
+        System.out.println("----------");
     }
 }
