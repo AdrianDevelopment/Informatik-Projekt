@@ -41,8 +41,8 @@ public class Spieler extends Mitspieler {
         gui.handkartenAusteilen();
     }
 
-    public void kartenHinlegen() {
-        model.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde());
+    public void kartenHinlegen(int wiederholung, int vorhand) {
+        model.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
     }
 
     /*Buttons bekommen Icons zugewiesen*/
@@ -148,6 +148,19 @@ public class Spieler extends Mitspieler {
         runde.spielAbsichtFragenAufgerufen(model.gebeWiederholung(), spielArt, model.gebeVorhand());
     }
 
+    /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
+    public void spielerHatSpielabsichtGesagt(int wiederholung, int vorhand, SpielArt spielAbsicht, int spieler) {
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
+        JLabel jLabel = new JLabel();
+        String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
+        gui.spielerHatAusgerufenHinzufuegen(jLabel); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
+        //model.gebeOkButton().addActionListener(e -> );
+    }
+
+    @Override
+    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
+
+    }
 
     /**
      * Aufforderung der Runde eine Karte zu legen
@@ -239,13 +252,7 @@ public class Spieler extends Mitspieler {
         System.out.println("Farbe darf nicht gelegt werden."); //TODO: nochmal aufrufen?
     }
 
-    /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
-    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        JLabel jLabel = new JLabel();
-        String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
-        gui.spielerHatAusgerufenHinzufuegen(jLabel); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
-    }
+
 
     /**
      * gibt Spielart, ausgerufenen spieler und Farbe an Model und GUI weiter
