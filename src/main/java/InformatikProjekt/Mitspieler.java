@@ -1,139 +1,139 @@
-//Programmierer: Tim
 package InformatikProjekt;
 
 import java.util.ArrayList;
 
-// TODO: ich (Adrian, also Runde) übergeb bisher nur die Position des echten Spielers. Brauchst du aber immer jeweils die eigene Position, auch bei Bots?
-
 public abstract class Mitspieler {
 
-
-    //Fragt die Spielabsicht der Mitspieler ab.
+    // Fragt die Spielabsicht der Mitspieler ab.
     public abstract SpielArt spielabsichtFragen(SpielArt hoechstesSpiel);
 
-    //Fragt die Farbe für das Spiel von dem Spieler, der das hoechste Spiel angeboten hat ab. (Farbe bei Sau fürs Ausrufen, bei Solo für Trumpf)
+    // Fragt die Farbe für das Spiel an (z. B. Sau fürs Ausrufen, bei Solo für Trumpf).
     public abstract Farbe farbeFuerSpielAbsicht(SpielArt spielArt);
 
-    //Nachricht an Mitspieler, nachdem ein Spieler eine Spielabsicht abgegeben hat.
+    // Benachrichtigt die Mitspieler, wenn ein Spieler seine Spielabsicht erklärt hat.
     public abstract void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler);
 
-    //Forder einen Mitspieler auf eine legale Karte zu legen.
+    // Fordert einen Mitspieler auf, eine legale Karte zu legen.
     public abstract Spielkarte legeEineKarte();
 
-    //Legt die Startwerte fuer eine neue Runde fest.
+    // Initialisiert die Werte für eine neue Runde.
     public abstract void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler);
 
-    //Nachricht an Mitspieler welche Spielart gespielt wird, ueberreicht Farbe wenn Solo und Sau wenn Sauspiel.
+    // Benachrichtigt die Mitspieler über die ausgewählte Spielart, inkl. relevanter Farben oder eines Sauspiel.
     public abstract void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt);
 
-    //Nachricht an Mitspieler welcher spieler die Runde gewonnen hat.
+    // Benachrichtigt die Mitspieler, welcher Spieler die Runde gewonnen hat.
     public abstract void rundeGewonnen(int[] gewinner, int[] punkte);
 
-    //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde(auch wenn der Mitspieler selbst die Karte gelegt hat).
+    // Benachrichtigt die Mitspieler über die Karte, die von einem Spieler gelegt wurde.
     public abstract void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt);
 
-    //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat.
+    // Benachrichtigt die Mitspieler, welcher Spieler den Stich gewonnen hat.
     public abstract void stichGewonnen(int spieler);
 
+    // Liefert die Position des Mitspielers.
     public abstract int gebeMitspieler();
 
+    // Benachrichtigt die Mitspieler, dass kein Spiel gespielt wird.
     public abstract void keinSpiel();
 
-    //Methode fuer Spieler und Bot die eine ArrayList mit allen Karten die gelegt werden koennen zurueckgibt.
-    //Diese Methode nicht Aufrufen, wenn die erste Karte gelegt wird!!!
+    // Gibt eine Liste von erlaubten Karten zurück, die gelegt werden dürfen.
     public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe, boolean sauFarbeVorhandGespielt) {
+        ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<>();
 
-        ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<Spielkarte>();
+        if (hand.isEmpty()) {
+            System.out.println("DEBUG: Keine Karten auf der Hand!");
+            return gezwungeneKarten;
+        }
+
         if (hand.size() == 1) {
             gezwungeneKarten.add(hand.get(0));
             return gezwungeneKarten;
         }
-        else if (hand.size() == 0) System.out.println("DEBUG: auf Hand sind 0 Karten!");
-        //bestimmt welche Karten gelegt werden dürfen, abhängig von der Spielart.
+
+        // Filterkriterien abhängig von der Spielart
         switch (spielArt) {
             case SOLO:
-                if (vorgegebeneKarte.istTrumpf(spielArt, soloFarbe)) {
-                    for (Spielkarte karte : hand) {
-                        if (karte.istTrumpf(spielArt, soloFarbe)) {
-                            gezwungeneKarten.add(karte);
-                        }
-                    }
-                } else {
-                    for (Spielkarte karte : hand) {
-                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
-                            gezwungeneKarten.add(karte);
-                        }
-                    }
-                    return gezwungeneKarten;
-                }
+                auswahlKartenSolo(hand, vorgegebeneKarte, soloFarbe, gezwungeneKarten);
                 break;
+
             case WENZ:
-
-                if (vorgegebeneKarte.istTrumpf(spielArt, soloFarbe)) {
-                    for (Spielkarte karte : hand) {
-                        if (karte.gebeWert() == Werte.UNTER) {
-                            gezwungeneKarten.add(karte);
-                        }
-                    }
-
-                } else {
-                    for (Spielkarte karte : hand) {
-                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
-                            gezwungeneKarten.add(karte);
-                        }
-                    }
-                }
-
+                auswahlKartenWenz(hand, vorgegebeneKarte, gezwungeneKarten);
                 break;
+
             case SAUSPIEL:
-
-                //Gesuchte Sau darf nicht gelegt werden, wenn nicht die richtige Farbe liegt.
-                //Sonst darf Sau nur gelegt werden, nachdem die Farbe mindestens einmal in Vorhand gespielt wurde oder es der letzte Stich ist.
-                if (vorgegebeneKarte.gebeFarbe() != sau.gebeFarbe() && !sauFarbeVorhandGespielt && hand.size() > 1) {
-                    hand.remove(sau);
-                }
-
-
-                //Bestimmt ob Sau auf der Hand ist und wie viele Karten der Farbe der Sau auf der Hand sind.
-                for (Spielkarte karte : hand) {
-                    if (karte.gebeWert() == Werte.SAU && vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() && karte.gebeFarbe() == sau.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
-                        gezwungeneKarten.add(karte);
-                        return gezwungeneKarten;
-                    }
-                }
-
-                if (vorgegebeneKarte.istTrumpf(spielArt, soloFarbe)) {
-                    for (Spielkarte karte : hand) {
-                        if (karte.istTrumpf(spielArt, soloFarbe)) {
-
-                            gezwungeneKarten.add(karte);
-                        }
-                    }
-
-                } else {
-                    for (Spielkarte karte : hand) {
-                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
-
-                            gezwungeneKarten.add(karte);
-                        }
-                    }
-                }
-
+                auswahlKartenSauspiel(hand, sau, vorgegebeneKarte, sauFarbeVorhandGespielt, gezwungeneKarten);
+                break;
         }
-        if (!gezwungeneKarten.isEmpty()) {
-            return gezwungeneKarten;
+
+        return gezwungeneKarten.isEmpty() ? hand : gezwungeneKarten;
+    }
+
+    private void auswahlKartenSolo(ArrayList<Spielkarte> hand, Spielkarte vorgegebeneKarte, Farbe soloFarbe, ArrayList<Spielkarte> gezwungeneKarten) {
+        if (vorgegebeneKarte.istTrumpf(SpielArt.SOLO, soloFarbe)) {
+            for (Spielkarte karte : hand) {
+                if (karte.istTrumpf(SpielArt.SOLO, soloFarbe)) {
+                    gezwungeneKarten.add(karte);
+                }
+            }
         } else {
-            return hand;
+            for (Spielkarte karte : hand) {
+                if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(SpielArt.SOLO, soloFarbe)) {
+                    gezwungeneKarten.add(karte);
+                }
+            }
         }
     }
 
-    //Methode aufrufen, wenn man Selbst die Sau hat und Ausspielen muss.
-    public ArrayList<Spielkarte> erlaubteKartenAusspielenBeiSauspiel(ArrayList<Spielkarte> hand, Spielkarte sau) {
-        ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<Spielkarte>();
-        int anzahlSauFarbeKarten = 0;
-        boolean hatSau = false;
+    private void auswahlKartenWenz(ArrayList<Spielkarte> hand, Spielkarte vorgegebeneKarte, ArrayList<Spielkarte> gezwungeneKarten) {
+        if (vorgegebeneKarte.istTrumpf(SpielArt.WENZ, null)) {
+            for (Spielkarte karte : hand) {
+                if (karte.gebeWert() == Werte.UNTER) {
+                    gezwungeneKarten.add(karte);
+                }
+            }
+        } else {
+            for (Spielkarte karte : hand) {
+                if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(SpielArt.WENZ, null)) {
+                    gezwungeneKarten.add(karte);
+                }
+            }
+        }
+    }
 
-        //Bestimmt ob Sau auf der Hand ist und wie viele Karten der Farbe der Sau auf der Hand sind.
+    private void auswahlKartenSauspiel(ArrayList<Spielkarte> hand, Spielkarte sau, Spielkarte vorgegebeneKarte, boolean sauFarbeVorhandGespielt, ArrayList<Spielkarte> gezwungeneKarten) {
+        if (!sauFarbeVorhandGespielt && vorgegebeneKarte.gebeFarbe() != sau.gebeFarbe()) {
+            hand.remove(sau); // Sau darf noch nicht gespielt werden.
+        }
+
+        for (Spielkarte karte : hand) {
+            if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
+                gezwungeneKarten.add(karte);
+                return;
+            }
+        }
+
+        if (vorgegebeneKarte.istTrumpf(SpielArt.SAUSPIEL, null)) {
+            for (Spielkarte karte : hand) {
+                if (karte.istTrumpf(SpielArt.SAUSPIEL, null)) {
+                    gezwungeneKarten.add(karte);
+                }
+            }
+        } else {
+            for (Spielkarte karte : hand) {
+                if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(SpielArt.SAUSPIEL, null)) {
+                    gezwungeneKarten.add(karte);
+                }
+            }
+        }
+    }
+
+    // Gibt erlaubte Karten zurück, wenn man selbst die Sau hat und ausspielen muss.
+    public ArrayList<Spielkarte> erlaubteKartenAusspielenBeiSauspiel(ArrayList<Spielkarte> hand, Spielkarte sau) {
+        ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<>();
+        boolean hatSau = false;
+        int anzahlSauFarbeKarten = 0;
+
         for (Spielkarte karte : hand) {
             if (karte.gebeFarbe() == sau.gebeFarbe() && !karte.istTrumpf(SpielArt.SAUSPIEL, null)) {
                 anzahlSauFarbeKarten++;
@@ -143,9 +143,7 @@ public abstract class Mitspieler {
             }
         }
 
-        //Wenn mehr als 4 Karten der Farbe der Sau auf der Hand sind, die keine Trümpfe sind, kann weggelaufen werden.
         for (Spielkarte karte : hand) {
-
             if (hatSau && anzahlSauFarbeKarten >= 4) {
                 gezwungeneKarten.add(karte);
             } else if (karte.gebeFarbe() != sau.gebeFarbe() || karte.istTrumpf(SpielArt.SAUSPIEL, null) || karte.gebeWert() == Werte.SAU) {
@@ -153,73 +151,30 @@ public abstract class Mitspieler {
             }
         }
 
-
         return gezwungeneKarten;
     }
 
-    //Gibt alle Farben zurueck fuer, die der Spieler eine Sau ausrufen kann. Die Farbe mit der niedrigsten Anzahl an Karten hat Index 0.
+    // Gibt alle Farben zurück, für die der Spieler eine Sau ausrufen kann.
     public ArrayList<Farbe> sauZumAusrufen(ArrayList<Spielkarte> hand) {
-        int anzahlEichel = 0;
-        int anzahlGras = 0;
-        int anzahlSchellen = 0;
-
-        boolean hatEichelSau = false;
-        boolean hatGrasau = false;
-        boolean hatSchellenSau = false;
+        int[] farbenZaehler = new int[Farbe.values().length];
+        boolean[] hatSau = new boolean[Farbe.values().length];
 
         for (Spielkarte karte : hand) {
-            switch (karte.gebeFarbe()) {
-                case SCHELLEN:
-                    anzahlSchellen++;
-                    if (karte.gebeWert() == Werte.SAU) {
-                        hatSchellenSau = true;
-                    }
-                    break;
-                case GRAS:
-                    anzahlGras++;
-                    if (karte.gebeWert() == Werte.SAU) {
-                        hatGrasau = true;
-                    }
-                    break;
-                case EICHEL:
-                    anzahlEichel++;
-                    if (karte.gebeWert() == Werte.SAU) {
-                        hatEichelSau = true;
-                    }
-                    break;
-                case HERZ:
-
-                    break;
+            int index = karte.gebeFarbe().ordinal();
+            farbenZaehler[index]++;
+            if (karte.gebeWert() == Werte.SAU) {
+                hatSau[index] = true;
             }
         }
-        //Vorhandene Farben die Ausgerufen werden können nach der Häufigkeit ihres Vorkommens in der Hand sortieren. Benötigt für Bot.
+
         ArrayList<Farbe> erlaubteFarben = new ArrayList<>();
-        if (anzahlGras != 0 && !hatGrasau) {
-            erlaubteFarben.add(Farbe.GRAS);
-        }
-        if (anzahlSchellen != 0 && !hatSchellenSau) {
-            if (anzahlSchellen < anzahlGras) {
-                erlaubteFarben.add(0, Farbe.SCHELLEN);
-            } else {
-                erlaubteFarben.add(Farbe.SCHELLEN);
+        for (int i = 0; i < farbenZaehler.length; i++) {
+            if (farbenZaehler[i] > 0 && !hatSau[i]) {
+                erlaubteFarben.add(Farbe.values()[i]);
             }
-
         }
-        if (anzahlEichel != 0 && !hatEichelSau) {
-            int positionInListe = 0;
-            for (Farbe farbe : erlaubteFarben) {
-                if (farbe == Farbe.GRAS && anzahlEichel > anzahlGras) {
-                    positionInListe++;
-                }
-                if (farbe == Farbe.SCHELLEN && anzahlEichel > anzahlSchellen) {
-                    positionInListe++;
-                }
 
-            }
-            erlaubteFarben.add(positionInListe, Farbe.EICHEL);
-        }
+        erlaubteFarben.sort((f1, f2) -> Integer.compare(farbenZaehler[f1.ordinal()], farbenZaehler[f2.ordinal()]));
         return erlaubteFarben;
-
     }
 }
-

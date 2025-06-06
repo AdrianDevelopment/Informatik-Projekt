@@ -1,9 +1,8 @@
 package InformatikProjekt;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
-
-//Programmierer: Tom, Robin und Adrian
 
 public class CLI {
     private final Scanner benutzerEingabe;
@@ -13,102 +12,143 @@ public class CLI {
     }
 
     public void rundeStarten(int positionSpieler) {
-        System.out.println("Herzlich Willkommen einer Runde Schafkopfen");
-        System.out.println("Sie sind der " + (positionSpieler + 1) + "te Spieler");
+        System.out.println("Herzlich Willkommen zu einer Runde Schafkopf!");
+        System.out.println("Sie sind Spieler Nr. " + (positionSpieler + 1) + ".");
     }
 
-    // Handkarten anzeigen
+    // Zeigt die Handkarten des Spielers an
     public void zeigeHandkarten(ArrayList<Spielkarte> spielkarten) {
-        System.out.println("------");
+        System.out.println("---- Ihre Handkarten ----");
         for (Spielkarte spielkarte : spielkarten) {
-            System.out.println(spielkarte.gebeFarbe() + "|" + spielkarte.gebeWert());
+            System.out.println(spielkarte.gebeFarbe() + " | " + spielkarte.gebeWert());
         }
-        System.out.println("------");
+        System.out.println("-------------------------");
     }
 
-    //gui-Methode, die Benutzer nach Spielabsicht frägt und als String zurückgibt
+    // Fragt die Spielabsicht des Benutzers ab und gibt die gewählte Spielart zurück.
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
-        System.out.println("Das aktuell höchste Spiel ist: " + hoechstesSpiel);
+        System.out.println("Momentan höchstes Spiel: " + hoechstesSpiel);
         System.out.print("Wollen Sie spielen [Weiter], [Sau]> ");
-        String spielart = benutzerEingabe.nextLine().toLowerCase();
 
-        if (spielart.equals("weiter")) {
-            return SpielArt.KEINSPIEL;
-        }
-        else if (spielart.equals("sau")) {
-            return SpielArt.SAUSPIEL;
-        }
-        else {
-            System.out.println("Gib bitte [Weiter] oder [Sau] als Antwort ein.");
-            return spielabsichtFragen(hoechstesSpiel);
-        }
+        while (true) {
+            String spielart = benutzerEingabe.nextLine().toLowerCase();
 
-        //Handkarten müssen währenddessen angezeigt werden + die bisher höchste Spielart und von wem ausgerufen;
+            switch (spielart) {
+                case "weiter":
+                    return SpielArt.KEINSPIEL;
+                case "sau":
+                    return SpielArt.SAUSPIEL;
+                default:
+                    System.out.println("Bitte geben Sie 'Weiter' oder 'Sau' ein.");
+            }
+        }
     }
 
     public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler) {
-        System.out.println(welcherSpieler.gebeName() + " hat " + spielAbsicht + " ausgerufen.");
+        if ((welcherSpieler.gebeName().equals("Du")))
+        {
+            System.out.println("Du hast " + spielAbsicht + " ausgerufen.");
+        }
+        else {
+            System.out.println(welcherSpieler.gebeName() + " hat " + spielAbsicht + " ausgerufen.");
+        }
     }
 
+    // Fragt die Farbe ab, auf welche die Sau gespielt werden soll.
     public Farbe farbeFuerSpielAbsicht() {
-        System.out.print("Auf welche Sau wollen Sie spielen [Schellen], [Eichel], [Gras]> ");
-        String spielabsicht = benutzerEingabe.nextLine().toUpperCase();
+        System.out.print("Wählen Sie eine Farbe für die Sau [Schellen], [Eichel], [Gras]> ");
 
-        for (Farbe farbe : Farbe.values()){
-            if (farbe.name().toUpperCase().equals(spielabsicht)) return  farbe;
+        while (true) {
+            String eingabe = benutzerEingabe.nextLine().toUpperCase();
+
+            for (Farbe farbe : Farbe.values()) {
+                if (farbe.name().equals(eingabe)) {
+                    return farbe;
+                }
+            }
+
+            System.out.println("Ungültige Eingabe. Bitte wählen Sie eine gültige Farbe.");
         }
-        System.out.println("Geben Sie bitte eine gültige Farbe ein");
-        return farbeFuerSpielAbsicht();
     }
 
     public void spielerHatFarbeGesagt(Farbe farbe, WelcherSpieler welcherSpieler) {
-        System.out.println(welcherSpieler.gebeName() + " spielt auf die " + farbe + "-Sau.");
+        if (welcherSpieler.gebeName().equals("Du")) {
+            System.out.println("Du spielst auf die " + farbe + "-Sau.");
+        }
+        else {
+            System.out.println(welcherSpieler.gebeName() + " spielt auf die " + farbe + "-Sau.");
+        }
     }
 
+    // Lässt den Benutzer eine Karte aus seiner Hand auswählen.
     public Spielkarte legeEineKarte(ArrayList<Spielkarte> spielkarten) {
-        for (int i = 0; i < spielkarten.size(); i++){
-            System.out.println((i + 1) + ": " + spielkarten.get(i).gebeFarbe() + "|" + spielkarten.get(i).gebeWert());
+        System.out.println("---- Wählen Sie eine Karte ----");
+
+        for (int i = 0; i < spielkarten.size(); i++) {
+            System.out.println((i + 1) + ": " + spielkarten.get(i).gebeFarbe() + " | " + spielkarten.get(i).gebeWert());
         }
-        System.out.print("Bitte wähle aus den obigen Karten eine aus und gebe die entsprechende Zahl ein>");
-        while (true){
+
+        System.out.print("Geben Sie die entsprechende Zahl ein> ");
+
+        while (true) {
             try {
-                int index = benutzerEingabe.nextInt();
-                if (index <= spielkarten.size() && index > 1 && spielkarten.get(index - 1) != null)
-                    return spielkarten.get(index - 1);
+                int auswahl = benutzerEingabe.nextInt();
+                benutzerEingabe.nextLine(); // Eingabe-Puffer säubern
+
+                if (auswahl > 0 && auswahl <= spielkarten.size()) {
+                    return spielkarten.get(auswahl - 1);
+                } else {
+                    System.out.println("Ungültige Eingabe. Bitte geben Sie eine Zahl zwischen 1 und " + spielkarten.size() + " ein.");
+                }
             } catch (Exception e) {
-                System.out.println("Bitte gebe eine Zahl zwischen 1 und " + spielkarten.size() + " ein.");
+                System.out.println("Ungültige Eingabe. Bitte geben Sie eine gültige Zahl ein.");
+                benutzerEingabe.nextLine(); // Eingabe-Puffer löschen
             }
         }
     }
 
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {
-        System.out.println(spielerHatGelegt.gebeName() + " hat die Karte " + karte + " gelegt.");
-    }
-
-    public void stichGewonnen(WelcherSpieler spieler) {
-        System.out.println(spieler.gebeName() + " hat den Stich gewonnen.");
-    }
-
-    public void rundeGewonnen(int[] punkte, int[] sieger) {
-        int gewinnerPunkte = punkte[0] + punkte[1];
-        System.out.println(sieger[0] + " und " + sieger[1] + " haben die Runde mit " + gewinnerPunkte + " Punkten gewonnen.");
-        //TODO: wie soll das der GUI übergeben werden?
-    }
-
-
-    //Methode wird aufgerufen, wenn Spieler auf irgendeinen Button klickt
-    public void zeigeLetztenStich(ArrayList<Spielkarte> letzerStich) {
-        for (Spielkarte spielkarte : letzerStich){
-            System.out.println(spielkarte.gebeFarbe() + "|" + spielkarte.gebeWert());
+        if (spielerHatGelegt.gebeName().equals("Du")) {
+            System.out.println("Sie haben die Karte " + karte.gebeFarbe() + " | " + karte.gebeWert() + " gelegt.");
+        }
+        else {
+            System.out.println(spielerHatGelegt.gebeName() + " hat die Karte " + karte.gebeFarbe() + " | " + karte.gebeWert() + " gelegt.");
         }
     }
 
+    public void stichGewonnen(WelcherSpieler spieler) {
+        if (spieler.gebeName().equals("Du")) {
+            System.out.println("Sie haben den Stich gewonnen!");
+        }
+        else {
+            System.out.println(spieler.gebeName() + " hat den Stich gewonnen!");
+        }
+    }
+
+    public void rundeGewonnen(WelcherSpieler sieger1, WelcherSpieler sieger2, int[] punkte) {
+        if (punkte.length >= 2) {
+            int gewinnerPunkte = punkte[0] + punkte[1];
+            System.out.println("Spieler " + sieger1 + " und Spieler " + sieger2 + " haben die Runde mit " + gewinnerPunkte + " Punkten gewonnen.");
+        } else {
+            System.out.println("Fehler: Ungültige Übergabe der Punkte oder Gewinner.");
+        }
+        System.out.println("----------");
+    }
+
+    public void zeigeLetztenStich(ArrayList<Spielkarte> letzterStich) {
+        System.out.println("---- Letzter Stich ----");
+        for (Spielkarte spielkarte : letzterStich) {
+            System.out.println(spielkarte.gebeFarbe() + " | " + spielkarte.gebeWert());
+        }
+        System.out.println("------------------------");
+    }
+
     public void ungueltigeEingabe(String ausgabe) {
-        System.out.println(ausgabe);
+        System.out.println("Ungültige Eingabe: " + ausgabe);
     }
 
     public void keinSpiel() {
-        System.out.println("Es kam kein Spiel zu stande!");
-        System.out.println("----------");
+        System.out.println("Es wurde kein Spiel ausgerufen!");
+        System.out.println("------------------------------");
     }
 }

@@ -1,11 +1,10 @@
 package InformatikProjekt;
 
+import javax.security.auth.Refreshable;
 import java.util.ArrayList;
 
-//Programmierer: Tom
-
 public class Spieler extends Mitspieler {
-    private SpielerModel model; //speichert Daten des Spielers
+    private SpielerModel model;
     private CLI cli;
 
     public Spieler() {
@@ -16,11 +15,6 @@ public class Spieler extends Mitspieler {
         this.cli = cli;
     }
 
-    /**
-     * Model + GUI:
-     * - Übergibt die wichtigen Dinge dem SpielerModel
-     * - gibt wieVielterSpieler an GUI weiter zur Anzeige
-     */
     @Override
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
@@ -29,13 +23,8 @@ public class Spieler extends Mitspieler {
         cli.zeigeHandkarten(karten);
     }
 
-    /**
-     * Anfrage: an GUI für Spielabsicht
-     * Überprüfung, ob Sauspiel möglich → Rückgabe + eventuell Ausgabe an User
-     */
     @Override
     public SpielArt spielabsichtFragen(SpielArt hoechstesSpiel) {
-
         SpielArt spielArt = cli.spielabsichtFragen(hoechstesSpiel);
         model.setzeSpielabsicht(spielArt);
         return spielArt;
@@ -47,140 +36,86 @@ public class Spieler extends Mitspieler {
         cli.spielerHatSpielerabsichtGesagt(spielAbsicht, welcherSpieler);
     }
 
-    /**
-     * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
-     * Überprüfung, ob gewählte Farbe möglich → Rückgabe oder erneute GUI-Anfrage
-     */
     @Override
     public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
-        Farbe spielasichtFarbe = cli.farbeFuerSpielAbsicht();
+        Farbe spielabsichtFarbe = cli.farbeFuerSpielAbsicht();
+        ArrayList<Farbe> erlaubteFarben = sauZumAusrufen(model.gebeHandkarten());
 
-//        wartet bis GUI Nutzereingabe dem Controller meldet
-//        int zaehler = 0;
-//        while (zaehler < 1000) {
-//            zaehler++;
-//        }
-//        Überprüfen, ob gewählte Farbe möglich
-
-        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
-        for (int i = 0; i < farbe.size(); i++) {
-            if (spielasichtFarbe == farbe.get(i)) {
-                cli.spielerHatFarbeGesagt(spielasichtFarbe, wieVielterSpieler(model.gebeWelcherSpieler()));
-                return spielasichtFarbe; // Farbe ist erlaubt → Rückgabe
-            }
+        if (erlaubteFarben.contains(spielabsichtFarbe)) {
+//            cli.spielerHatFarbeGesagt(spielabsichtFarbe, wieVielterSpieler(model.gebeWelcherSpieler()));
+            return spielabsichtFarbe;
         }
+
         cli.ungueltigeEingabe("Du kannst auf diese Sau nicht ausrufen.");
         return farbeFuerSpielAbsicht(spielArt);
     }
 
-    /*Methode wird von GUI aufgerufen und übergibt dem model die Spielabsicht*/
     public void spielabsichtGUI(SpielArt spielabsicht) {
         model.setzeSpielabsicht(spielabsicht);
     }
 
-
-
-
-
-    /*Methode wird von GUI aufgerufen und übergibt dem Model die Farbe für die Sau*/
     public void farbeFuerSpielAbsichtGUI(Farbe farbe) {
         model.setzeSpielabsichtFarbe(farbe);
     }
 
-    /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
-
-    /**
-     * gibt Spielart, ausgerufenen spieler und Farbe an Model und GUI weiter
-     * spieler: int Wert, wie ihn die Runde speichert (braucht ihn dann wieder, deswegen Übergabe an Model)
-     * welcherSpieler: Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
-     */
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
-//        gui.spielArtEntschieden(welcherSpieler, spielArt, farbe);
+        cli.spielerHatFarbeGesagt(farbe, welcherSpieler);
     }
 
-
-    /**
-     * → Aufruf an GUI, eine Karte zu legen
-     * - schauen, ob ich der erste in der Lege-/Stichrunde bin
-     * → keine Überprüfung, weil jede Karte gelegt werden kann
-     * - wenn ich nicht der erste in der Lege-/Stichrunde bin
-     * → model abfragen, welche Karte ich legen muss
-     * → überprüfen, ob ich Karte legen darf
-     * → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
-     */
     @Override
     public Spielkarte legeEineKarte() {
-        int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
-        ArrayList<Spielkarte> erlaubteKarten;
-//        Spielkarte zuLegendeKarte = model.gebeZuLegendeKarte();
-
         Spielkarte zuLegendeKarte = cli.legeEineKarte(model.gebeHandkarten());
-        model.setzeZuLegendeKarte(zuLegendeKarte);
-        //Überprüfung, ob Karte erlaubt ist
-        //Überprüfung, ob man weglaufen darf
-        if (anzahlSpielerSchonGelegt == 0) {
-            Spielkarte sau = new Spielkarte(model.gebeFarbe(), Werte.SAU);
-            erlaubteKarten = erlaubteKartenAusspielenBeiSauspiel(model.gebeHandkarten(), sau);
-            for (Spielkarte spielkarte : erlaubteKarten) {
-                if (zuLegendeKarte.equals(spielkarte)) {
-                    return zuLegendeKarte; //Karte ist erlaubt und wird zurückgegeben
-                }
-            }
+
+        ArrayList<Spielkarte> erlaubteKarten = model.gebeAnzahlSpielerSchonGelegt() == 0
+                ? erlaubteKartenAusspielenBeiSauspiel(model.gebeHandkarten(), new Spielkarte(model.gebeFarbe(), Werte.SAU))
+                : gibErlaubteKarten(
+                        new ArrayList<>(model.gebeHandkarten()),
+                        model.gebeSpielArt(),
+                        new Spielkarte(model.gebeFarbe(), Werte.SAU),
+                        model.gebeVorgegebeneKarte(),
+                        model.gebeFarbe(),
+                        model.gebeSauFarbeVorhandGespielt()
+                );
+
+        if (erlaubteKarten.contains(zuLegendeKarte)) {
+            // Entfernen der gelegten Karte von der Hand
+            model.gebeHandkarten().remove(zuLegendeKarte);
+            return zuLegendeKarte;
         }
-        //Überprüfung, welche Karte gelegt werden darf, wenn schon eine liegt
-        if (anzahlSpielerSchonGelegt != 0) {
-            erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt());
-            for (int i = 0; i < erlaubteKarten.size(); i++) {
-                if (zuLegendeKarte.equals(erlaubteKarten.get(i))) {
-                    return zuLegendeKarte; //Karte ist erlaubt und wird zurückgegeben
-                }
-            }
-        }
-        //Karte war nicht erlaubt
+
         cli.ungueltigeEingabe("Die Karte kann nicht gelegt werden.");
-        //"Rekursionsschritt"
-        model.setzeZuLegendeKarte(null); //Abbruchbedingung der while-Schleife zurücksetzen
         return legeEineKarte();
     }
 
-    /*Methode wird von GUI aufgerufen und übergibt dem Model die zu legende Karte*/
     public void legeEineKarteGUI(Spielkarte spielkarte) {
         model.setzeZuLegendeKarte(spielkarte);
     }
 
-    /**
-     * - Überprüfung für Sau legen bzw. weglaufen
-     * - gibt die gelegte Karte und welcher Spieler diese gelegt hat zurück
-     * - Überprüfung, ob gesuchte Sau gelegt wurde → Model übergeben
-     */
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
-        //Tim
-        //todo anpassen mit Solofarbe anstatt null
-        //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
-        if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
+        // Nur anzeigen, wenn die Karte nicht vom aktuellen Spieler gelegt wurde
+        if (spielerHatGelegt != model.gebeWelcherSpieler()) {
+            WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
+            cli.zeigeGelegteKarte(karte, welcherSpieler);
+        }
+
+        if (model.gebeAnzahlSpielerSchonGelegt() == 0
+                && karte.gebeFarbe() == model.gebeFarbe()
+                && !karte.istTrumpf(model.gebeSpielArt(), null)) {
             model.setzteSauFarbeVorhandGespielt(true);
         }
-        //Tim
 
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
-        model.setzeGelegteKarte(karte);
-        cli.zeigeGelegteKarte(karte, welcherSpieler);
-
-        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
         }
+
+        // Karte in Model speichern (ohne erneute Anzeige)
+        model.setzeGelegteKarte(karte);
     }
 
-    /**
-     * wenn Stich fertig ist
-     * - an GUI weitergeben, wer gewonnen hat
-     * - in Model letzterStich Karten überschreiben + Stichkarten löschen
-     */
     @Override
     public void stichGewonnen(int spieler) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
@@ -188,53 +123,31 @@ public class Spieler extends Mitspieler {
         model.stichBeendet();
     }
 
-
-    /**
-     * //TODO
-     * @param gewinner: übergibt die int Werte, wo die Gewinner sitzen
-     * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
-     */
     @Override
-    public void rundeGewonnen(int[] gewinner, int[] uebergebenePunkte) {
-        WelcherSpieler gewinner1 = wieVielterSpieler(gewinner[0]);
-        WelcherSpieler gewinner2 = wieVielterSpieler(gewinner[1]);
-        //Punkte in ein Array sortieren
-        int[] punkte = new int[3]; //richtig sortierte Punkte: gewinnerteamPunkte, verliererteamPunkte, spielerPunkte
-        punkte[0] = uebergebenePunkte[gewinner[0]] + uebergebenePunkte[gewinner[1]];
-        punkte[1] = 120 - punkte[0];
-        punkte[2] = uebergebenePunkte[model.gebeWelcherSpieler()];
-
-        //TODO: wie soll das der GUI übergeben werden?
-        cli.rundeGewonnen(uebergebenePunkte, gewinner);
+    public void rundeGewonnen(int[] sieger, int[] punkte) {
+        cli.rundeGewonnen(wieVielterSpieler(sieger[0]), wieVielterSpieler(sieger[1]), punkte);
     }
 
-    /**
-     * gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
-     * @param spieler: von Runde übergeben
-     */
     public WelcherSpieler wieVielterSpieler(int spieler) {
-        WelcherSpieler spielerImUhrzeigersinn = null;
-        int rechnung = spieler - model.gebeWelcherSpieler(); //positive Zahlen im Uhrzeigersinn; negative gegen den Uhrzeigersinn
-        if (rechnung == 0) {
-            spielerImUhrzeigersinn = WelcherSpieler.NUTZER; //Nutzer
-        } else if (rechnung == 1 || rechnung == -3) {
-            spielerImUhrzeigersinn = WelcherSpieler.LINKER; //linker Spieler
-        } else if (rechnung == 2 || rechnung == -2) {
-            spielerImUhrzeigersinn = WelcherSpieler.OBERER; //oberer Spieler
-        } else if (rechnung == 3 || rechnung == -1) {
-            spielerImUhrzeigersinn = WelcherSpieler.RECHTER; //rechter Spieler
-        } else {
-            System.out.println("Fehler in Methode wieVielterSpieler"); //Test
-        }
-        return spielerImUhrzeigersinn;
+        int eigenerSpielerIndex = model.gebeWelcherSpieler();
+        int differenz = (spieler - eigenerSpielerIndex + 4) % 4;
+
+        return switch (differenz) {
+            case 0 -> WelcherSpieler.NUTZER;
+            case 1 -> WelcherSpieler.LINKER;
+            case 2 -> WelcherSpieler.OBERER;
+            case 3 -> WelcherSpieler.RECHTER;
+            default -> {
+                System.err.println("Fehler in Methode wieVielterSpieler: Ungültiger Spielerindex");
+                yield null;
+            }
+        };
     }
 
-    /*Methode, die GUI aufruft, wenn Spieler den letzten Stich sehen will*/
     public ArrayList<Spielkarte> gebeLetztenStich() {
-        return model.gebeLetzterStich(); //TODO: @Thiemo Rückgabewert abklären
+        return model.gebeLetzterStich();
     }
 
-    /*Methode, die von Runde aufgerufen wird, um den Mitspieler raus zu bekommen*/
     public int gebeMitspieler() {
         return model.gebeMitspieler();
     }
