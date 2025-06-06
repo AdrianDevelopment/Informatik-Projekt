@@ -342,10 +342,10 @@ class SpielGUI {
     private JLabel[] mitteKarten;
     private void mitteKartenInitialisieren(){
         mitteKarten = new JLabel[4];
-        mitteKarten[0]=MitteKartePlatzErstellen(220, 380);
-        mitteKarten[1]=MitteKartePlatzErstellen(320, 380);
-        mitteKarten[2]=MitteKartePlatzErstellen(420, 380);
-        mitteKarten[3]=MitteKartePlatzErstellen(520, 380);
+        mitteKarten[0]=MitteKartePlatzErstellen(520, 250);
+        mitteKarten[1]=MitteKartePlatzErstellen(620, 250);
+        mitteKarten[2]=MitteKartePlatzErstellen(720, 250);
+        mitteKarten[3]=MitteKartePlatzErstellen(820, 250);
     }
     private JLabel MitteKartePlatzErstellen(int x, int y){
         JLabel jl = new JLabel();
@@ -357,8 +357,12 @@ class SpielGUI {
 
     private void StichKartenVerbergen(){
         for (int i=0;i<mitteKarten.length;++i){
-            mitteKarten[i].setVisible(false);
+            getMitteKarten()[i].setVisible(false);
         }
+    }
+
+    private JLabel[] getMitteKarten() {
+        return mitteKarten;
     }
 
     public void  karteInDieMitte(ImageIcon bild, WelcherSpieler adressat){
