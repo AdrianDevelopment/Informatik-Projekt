@@ -347,16 +347,15 @@ class SpielGUI {
     }
     public void spielerHatAusgerufenHinzufuegen(JLabel mitteText){
         mainFrame.add(mitteText);
-        mitteText.setBounds(600, 300, 100, 100);
+        mitteText.setBounds(400, 200, 600, 200);
         mitteText.setVisible(true);
     }
 
     public void spielerHatAusgerufen(JLabel mitteText, String text){
-        mitteText.setSize(500, 100);
+        mitteText.setSize(600, 200);
         mitteText.setText(text);
-        mitteText.setHorizontalTextPosition(JLabel.CENTER);
+        mitteText.setHorizontalTextPosition(JLabel.LEFT);
         mitteText.setVerticalTextPosition(JLabel.CENTER);
-
     }
 
     public void spielerHatAusgerufenEntfernen(JLabel mitteText){
