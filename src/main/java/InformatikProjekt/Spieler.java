@@ -1,7 +1,6 @@
 package InformatikProjekt;
 
 import javax.swing.*;
-import java.awt.desktop.SystemSleepEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -63,6 +62,9 @@ public class Spieler extends Mitspieler {
         for (int i = 0; i < handKarten.size(); i++) {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
             int finalI = i; //für Lambda Expression
+            actionListenerLoeschen(handButtons.get(i));
+            System.out.println("Final I");
+            System.out.println(finalI);
             handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
             handButtons.get(i).validate();
         }
@@ -261,7 +263,7 @@ public class Spieler extends Mitspieler {
         }
         actionListenerLoeschen(gui.gebeOkButton());
         gui.gebeOkButton().setVisible(true);
-        gui.gebeOkButton().addActionListener(e -> runde.stichSpielen(0));
+        gui.gebeOkButton().addActionListener(e -> runde.stichSpielen(0,0));
         gui.gebeOkButton().setVisible(true);
     }
 
@@ -289,7 +291,7 @@ public class Spieler extends Mitspieler {
      * ja → Spielkarte entfernen und Runde geben
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
-        if (!model.gebeDranLegen()) { //Spieler soll keine Karte legen → nichts soll passieren
+        if (!model.gebeDranLegen() && index > model.gebeHandkarten().size()) { //Spieler soll keine Karte legen → nichts soll passieren
             return;
         }
         System.out.println("Karte gelegt");
@@ -325,11 +327,13 @@ public class Spieler extends Mitspieler {
             System.out.println("Karte erlaubt");
            //gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
             model.gebeHandButtons().remove(index);
+            actionListenerLoeschen(model.gebeHandButtons().get(index));
+            model.gebeHandButtons().get(index).setVisible(false);
             model.gebeHandkarten().remove(spielkarte);
             System.out.println(model.gebeHandkarten().size());
             buttonKartenZuorndenKeineReaktion();
             runde.karteAbfragenAufgerufen(model.gebeWiederholung(), spielkarte, model.gebeVorhand());
-            gui.gebeOkButton().addActionListener(e-> runde.stichSpielen(model.gebeWiederholung()));
+            gui.gebeOkButton().addActionListener(e-> runde.stichSpielen(model.gebeWiederholung(),0));
         }
     }
 
@@ -367,6 +371,7 @@ public class Spieler extends Mitspieler {
                 default -> ausgabe += " eine ungültige Spielabsicht ausgerufen";
             }
         }
+
         return ausgabe;
     }
 
@@ -376,10 +381,12 @@ public class Spieler extends Mitspieler {
      */
     //Ich habe die Buttons in Labels geändert und das ganze in der GUI angepasst
     @Override
-    public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
+    public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         gui.karteInDieMitte(gibBild(karte), welcherSpieler);
         model.setzeGelegteKarte(karte);
+        model.setzeWiederholung(wiederholung);
+        model.setzeVorhand(spielerHatGelegt);
         //Tim Anfang //TODO: anpassen mit Solofarbe anstatt null @Tim
         //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
         if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
@@ -389,6 +396,8 @@ public class Spieler extends Mitspieler {
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
         }
+        actionListenerLoeschen(gui.gebeOkButton());
+        gui.gebeOkButton().addActionListener(e-> runde.frageStichVorbei(model.gebeWiederholung(), model.gebeVorhand()));
     }
 
     /**
@@ -398,6 +407,8 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void stichGewonnen(int spieler) {
+        model.setzeWiederholung(0);
+        model.setzeVorhand(0);
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         String text = ausgabeBeimAusrufen(null, welcherSpieler, null) + " den Stich gewonnen.";
 
@@ -407,6 +418,9 @@ public class Spieler extends Mitspieler {
          */
         gui.mitteAufrauemen();
         model.stichBeendet();
+        actionListenerLoeschen(gui.gebeOkButton());
+        gui.gebeOkButton().setVisible(true);
+        gui.gebeOkButton().addActionListener(e -> runde.stichSpielen(0,0));
     }
 
 

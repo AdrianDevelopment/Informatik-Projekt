@@ -65,15 +65,14 @@ public class Bot extends Mitspieler {
         //Bestimmung welche Sau farben ausgerufen werden können.
         ArrayList<Farbe> farbenZumAusrufen = sauZumAusrufen(model.gibHand());
         //Sauspiel, wenn eine Sau ausgerufen werden kann und mindestens 5 Trümpfe auf der Hand sind.
-        if (!farbenZumAusrufen.isEmpty() && anzahlOU + besondereKarten[4] >= 5 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SAUSPIEL.gebeSpielArtID()) {
+        if (!farbenZumAusrufen.isEmpty() && anzahlOU + besondereKarten[4] >= 0 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SAUSPIEL.gebeSpielArtID()) {
             //Speichert die Sau die Ausgerufen werden soll im Model ab.
             //Die Methode farbenZumAusrufen gibt die beste Sau zum Ausrufen an Stelle 0 zurück.
             model.setzteSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
             return SpielArt.SAUSPIEL;
         }
-        //Damit immer ein Spiel stattfindet --> Kein Spiel bei Rudne implimentieren
-        //Eigentlich kein Spiel
-        return SpielArt.SAUSPIEL;
+
+        return SpielArt.KEINSPIEL;
     }
 
 
@@ -98,7 +97,7 @@ public class Bot extends Mitspieler {
             case SOLO:
                 return model.gibsoloFarbe();
         }
-        return Farbe.SCHELLEN;
+        return null;
     }
 
     /*
@@ -143,6 +142,10 @@ public class Bot extends Mitspieler {
      */
     public Spielkarte sauSpielKarteWaehlen(ArrayList<Spielkarte> erlaubteKarten) {
         Random zufall = new Random();
+
+        if(model.gibHand().size() == 0){
+            System.out.println("Hand ist Leer bei Bot");
+        }
         int zufaelligerIndex = zufall.nextInt(erlaubteKarten.size());
 
         int[] besondereKarten = wieVieleBesondereKarten();
@@ -182,7 +185,7 @@ public class Bot extends Mitspieler {
             //todo abspeichern von Informationen über die Art der Karten auf der Hand der anderen Spieler
      */
     @Override
-    public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
+    public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
         //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte, wie jede andere Karte einer Farbe frei gespielt werden.
         if (model.gibStichGelegteKartenAnzahl() == 0 && model.gibSau().gebeFarbe() == karte.gebeFarbe() && !karte.istTrumpf(model.gibSpielArt(), model.gibsoloFarbe())) {
             model.setzeSauFarbeVorhandGespielt(true);

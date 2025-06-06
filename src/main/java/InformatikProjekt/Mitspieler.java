@@ -30,7 +30,7 @@ public abstract class Mitspieler {
     public abstract void rundeGewonnen(int[] gewinner, int[] punkte);
 
     //Nachricht an Mitspieler welche Karte von einem Mitspieler gelegt wurde (auch wenn der Mitspieler selbst die Karte gelegt hat).
-    public abstract void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt);
+    public abstract void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung);
 
     //Nachricht an Mitspieler welcher Spieler den Stich gewonnen hat.
     public abstract void stichGewonnen(int spieler);
@@ -130,10 +130,11 @@ public abstract class Mitspieler {
 
         }
         //Sofern keine Karte zwingend gespielt werden muss, dürfen alle Karten gespielt werden.
+
         if (!gezwungeneKarten.isEmpty()) {
             return gezwungeneKarten;
         } else {
-            return hand;
+            return (ArrayList<Spielkarte>) hand.clone();
         }
 
     }

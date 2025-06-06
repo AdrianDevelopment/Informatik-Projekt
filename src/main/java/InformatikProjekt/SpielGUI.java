@@ -414,11 +414,7 @@ class SpielGUI {
             stapelLabel4.setVisible(true);
         }
     }
-    public void handkartenAktualisieren(int t){
-        mainFrame.remove(spieler1KartenArray.get(t));
-        mainFrame.revalidate();
 
-    }
 
     //jjjjjjjjjjjj
     public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){

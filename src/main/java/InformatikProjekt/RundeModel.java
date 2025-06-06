@@ -15,6 +15,8 @@ public class RundeModel {
     private int wiederholungenRunden;
     private Spieler echterSpieler;
     private SpielArt aktuelleSpielArt;
+    private int stichWiederholung;
+    private int wiederholung;
 
     public RundeModel(int positionSpieler, int vorhand, int wiederholungenRunden, Spieler echterSpieler, Mitspieler ausruferReferenz) {
         this.punkte = new int[4];
@@ -29,6 +31,7 @@ public class RundeModel {
         this.wiederholungenRunden = wiederholungenRunden;
         this.echterSpieler = echterSpieler;
         this.aktuelleSpielArt = SpielArt.KEINSPIEL;
+        stichWiederholung = 0;
     }
 
     // Geber
@@ -92,7 +95,16 @@ public class RundeModel {
         return aktuelleSpielArt;
     }
 
+    public int gibStichWiederholung(){
+        return  stichWiederholung;
+    }
+    public int gibWiederholung(){
+        return  wiederholung;
+    }
     // Setzer
+    public  void setzteWiederholung(int n){
+        wiederholung = n;
+    }
     public void setzePunkte(int index, int punktzahl) {
         this.punkte[index] = punktzahl;
     }
@@ -109,6 +121,9 @@ public class RundeModel {
         this.aktuellerStich[index] = spielkarte;
     }
 
+    public void setzeStichWiederholung(int n){
+         stichWiederholung = n;
+    }
     public void setzeHoechsteSpielart(SpielArt hoechsteSpielart) {
         this.hoechsteSpielart = hoechsteSpielart;
     }

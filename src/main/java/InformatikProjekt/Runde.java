@@ -77,9 +77,9 @@ public class Runde {
     }
 
     // Runde spielen
-    public void stichSpielen(int wiederholungStiche) {
-        if (wiederholungStiche < 7) {
-            karteAbfragen(0, rundeModel.gebeVorhand());
+    public void stichSpielen(int wiederholungStiche, int wiederholung) {
+        if (rundeModel.gibStichWiederholung() < 8) {
+            karteAbfragen(rundeModel.gibWiederholung(), rundeModel.gebeVorhand());
         }
         else {
             rundeModel.setzeSiegerArray(rundenSiegerErmitteln());
@@ -106,22 +106,26 @@ public class Runde {
 
     // Stich spielen
     public void karteAbfragen(int wiederholung, int vorhand) {
-        spieler.get(vorhand).legeEineKarte(wiederholung, 0);
+        spieler.get(vorhand%4).legeEineKarte(rundeModel.gibWiederholung(), rundeModel.gebeVorhand());
+
         System.out.println("Warte auf Spielabsicht von Spieler " + vorhand);
     }
 
     public void karteAbfragenAufgerufen(int wiederholung, Spielkarte karte, int vorhand) {
-        rundeModel.setzeAktuellenStich(wiederholung, karte);
+        rundeModel.setzeAktuellenStich(rundeModel.gibWiederholung(), karte);
+
         for (Mitspieler aktuellerSpieler : spieler) {
-            aktuellerSpieler.karteWurdeGelegt(karte, vorhand);
+            aktuellerSpieler.karteWurdeGelegt(karte, rundeModel.gebeVorhand()%3, rundeModel.gibWiederholung());
         }
-        if (wiederholung < 3) {
-            if (vorhand < 3) {
-                karteAbfragen(wiederholung + 1, vorhand + 1);
-            }
-            else {
-                karteAbfragen(wiederholung + 1, 0);
-            }
+
+    }
+
+    public void frageStichVorbei(int wiederholung, int vorhand){
+        if (rundeModel.gibWiederholung() < 3) {
+            rundeModel.setzeVorhand(rundeModel.gebeVorhand()+1);
+            rundeModel.setzteWiederholung(rundeModel.gibWiederholung()+1);
+            karteAbfragen( rundeModel.gibWiederholung(),  rundeModel.gebeVorhand());
+
         }
         else {
             auswertungStich();
@@ -140,6 +144,9 @@ public class Runde {
         // Speicherung
         speicherung.KarteGespielt();
         speicherung.DatenSpeichern();
+        rundeModel.setzeVorhand(sieger);
+        rundeModel.setzteWiederholung(0);
+        rundeModel.setzeStichWiederholung(rundeModel.gibStichWiederholung() + 1);
     }
 
 

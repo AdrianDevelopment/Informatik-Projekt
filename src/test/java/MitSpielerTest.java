@@ -3,7 +3,6 @@
 import InformatikProjekt.*;
 import org.junit.jupiter.api.Test;
 
-import java.io.Console;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -118,7 +117,7 @@ public class MitSpielerTest {
         bot.spielArtEntschieden(1, Farbe.EICHEL, SpielArt.SAUSPIEL);
 
         //Eine Vorhand Karte wird festgelegt, welche nicht erlaubt das die Sau, vor dem letzten Stich gelegt werden darf.
-        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.ACHTER), 1);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.ACHTER), 1, wiederholung);
 
         bot.waehleEineKarte();
         bot.waehleEineKarte();

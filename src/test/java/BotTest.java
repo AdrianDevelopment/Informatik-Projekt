@@ -68,7 +68,7 @@ public class BotTest {
         bot.spielArtEntschieden(1, Farbe.SCHELLEN, SpielArt.SAUSPIEL);
 
         //Legen einer Spielkarte simulieren.
-        bot.karteWurdeGelegt(new Spielkarte(Farbe.EICHEL, Werte.SAU), 1);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.EICHEL, Werte.SAU), 1, wiederholung);
 
         assertEquals(new Spielkarte(Farbe.EICHEL, Werte.SIEBENER), bot.waehleEineKarte(), "Testet ob Eichel 7 gelegt wird, wenn Eichel die geforderte Farbe ist");
 
@@ -78,9 +78,9 @@ public class BotTest {
         assertEquals(7, bot.gibAnzahlKartenInHand(), "Bot hat die Karte nicht aus seiner Hand gelöscht.");
 
         //Simulieren von dem Legen mehrer Karten.
-        bot.karteWurdeGelegt(new Spielkarte(Farbe.EICHEL, Werte.SAU), 1);
-        bot.karteWurdeGelegt(new Spielkarte(Farbe.SCHELLEN, Werte.SIEBENER), 2);
-        bot.karteWurdeGelegt(new Spielkarte(Farbe.HERZ, Werte.ZEHNER), 3);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.EICHEL, Werte.SAU), 1, wiederholung);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.SCHELLEN, Werte.SIEBENER), 2, wiederholung);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.HERZ, Werte.ZEHNER), 3, wiederholung);
 
 
         assertEquals(21, bot.gibWertFuerBisherGelegteKarten(), "Es wurde die falsche Punkteanzahl berechnet");
@@ -98,11 +98,11 @@ public class BotTest {
         bot.rundeStarten(null, 0);
         //bot der Sau ausgerufen hat findet Mitspieler der Sau gelegt hat.
         bot.spielArtEntschieden(0, Farbe.GRAS, SpielArt.SAUSPIEL);
-        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.SAU), 2);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.SAU), 2, wiederholung);
         assertEquals(2, bot.gibTeamSpieler(), "Der Mitspieler wurde nicht erkannt");
         //bot hat nicht Sau ausgerufen und findet Mitspieler der nicht sau gelegt hat
         bot.spielArtEntschieden(1, Farbe.GRAS, SpielArt.SAUSPIEL);
-        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.SAU), 2);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.SAU), 2, wiederholung);
         assertEquals(3, bot.gibTeamSpieler(), "Der Mitspieler wurde nicht erkannt");
     }
 }
