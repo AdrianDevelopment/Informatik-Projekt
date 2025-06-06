@@ -40,21 +40,20 @@ public class Runde {
         spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
     }
 
-    public void spielAbsichtFragenAufgerufen(int wiederholung, SpielArt spielArt, int vorhand) {
+    public void spielabsichtFragenAufgerufen(int wiederholung, SpielArt spielArt, int vorhand) {
         rundeModel.setzeAktuelleSpielArt(spielArt);
-        System.out.println("DEBUG: test");
         if (spielArt.compareTo(rundeModel.gebeHoechsteSpielart()) > 0) {
             rundeModel.setzeHoechsteSpielart(spielArt);
-            rundeModel.setzeAusrufer(wiederholung);
-            rundeModel.setzeAusruferReferenz(spieler.get(wiederholung));
+            rundeModel.setzeAusrufer(vorhand);
+            rundeModel.setzeAusruferReferenz(spieler.get(vorhand));
             System.out.println("DEBUG: aktuell hoechste Spielart: " + rundeModel.gebeHoechsteSpielart());
         }
         if (wiederholung < 3) {
             if (vorhand < 3) {
-                rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung + 1, vorhand + 1, rundeModel.gebeAktuelleSpielArt());
+                spieler.get(vorhand).spielabsichtFragen(wiederholung + 1, vorhand + 1, rundeModel.gebeAktuelleSpielArt(), rundeModel.gebeAusrufer());
             }
             else {
-                rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung + 1, 0, rundeModel.gebeAktuelleSpielArt());
+                spieler.get(vorhand).spielabsichtFragen(wiederholung + 1, 0, rundeModel.gebeAktuelleSpielArt(), rundeModel.gebeAusrufer());
             }
         }
         else {
