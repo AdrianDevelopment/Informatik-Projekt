@@ -27,6 +27,9 @@ public class Runde {
         }
 
         System.out.println("DEBUG: Karten wurden gesetz, jetzt hinlegen");
+        for (int i = 0; i < spieler.size(); i++) {
+            spieler.get(i).setzeRunde(this);
+        }
         rundeModel.gebeEchterSpieler().kartenHinlegen(0, vorhand);
     }
 

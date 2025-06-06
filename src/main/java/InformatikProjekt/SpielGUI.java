@@ -34,7 +34,7 @@ class SpielGUI {
         this.spieler = spieler;
         mainFrame = new JFrame();
     }
-    public GUIStarten(){
+    public void guiStarten(){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

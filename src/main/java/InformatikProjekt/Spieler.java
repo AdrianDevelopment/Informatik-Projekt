@@ -26,6 +26,7 @@ public class Spieler extends Mitspieler {
      */
     public void spielGUIErstellen(Turnier turnier) {
         gui = new SpielGUI(this);
+        gui.guiStarten();
         JButton okButton = gui.gebeOkButton();
         int[] i = new int[]{-1, -1};
         okButton.addActionListener(e -> turnier.rundeStarten(0, i)); //1. Runde starten
@@ -154,7 +155,7 @@ public class Spieler extends Mitspieler {
         JLabel jLabel = new JLabel();
         String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
         gui.spielerHatAusgerufenHinzufuegen(jLabel); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
-        //model.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielabsicht());
+        model.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
     }
 
     @Override
