@@ -10,11 +10,11 @@ public class Runde {
     private RundeModel rundeModel;
     private Turnier turnier;
 
-    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung, int vorhand, Turnier turnier, int wiederholungRunden) {
+    public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung, int vorhand, Turnier turnier, int wiederholungRunden, Spieler echterSpieler) {
         this.spieler = spieler;
         this.speicherung = speicherung;
         this.turnier = turnier;
-        rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden, spieler.get(positionSpieler));
+        rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden, echterSpieler);
         //spieler.get(positionSpieler).setzeRundeReferenz(this);
 
         for (int i = 0; i < 4; i++) {
@@ -38,6 +38,7 @@ public class Runde {
     }
 
     public void spielAbsichtFragenAufgerufen(int wiederholung, SpielArt spielArt, int vorhand) {
+        rundeModel.setzeAktuelleSpielArt(spielArt);
         if (spielArt.compareTo(rundeModel.gebeHoechsteSpielart()) > 0) {
             rundeModel.setzeHoechsteSpielart(spielArt);
             rundeModel.setzeAusrufer(wiederholung);
@@ -46,10 +47,10 @@ public class Runde {
         }
         if (wiederholung < 3) {
             if (vorhand < 3) {
-                spielAbsichtFragenRunde(wiederholung + 1, vorhand + 1);
+                rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung + 1, vorhand + 1, rundeModel.gebeAktuelleSpielArt(), rundeModel.gebeAusrufer());
             }
             else {
-                spielAbsichtFragenRunde(wiederholung + 1, 0);
+                rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung + 1, 0, rundeModel.gebeAktuelleSpielArt(), rundeModel.gebeAusrufer());
             }
         }
         else {

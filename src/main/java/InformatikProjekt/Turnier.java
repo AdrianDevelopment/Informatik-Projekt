@@ -47,7 +47,7 @@ public class Turnier {
 
     public void rundeStarten(int wiederholungRunden, int[] sieger) {
         if (wiederholungRunden < tunierModel.gebeAnzahlRunden()) {
-            Runde runde = new Runde(spieler, spielKarten, tunierModel.gebePositionSpieler(), speicherung, 0, this, wiederholungRunden);
+            Runde runde = new Runde(spieler, spielKarten, tunierModel.gebePositionSpieler(), speicherung, 0, this, wiederholungRunden, tunierModel.gebeEchterSpieler());
         }
         else {
             if (sieger[0] == tunierModel.gebePositionSpieler() || sieger[1] == tunierModel.gebePositionSpieler()) {
