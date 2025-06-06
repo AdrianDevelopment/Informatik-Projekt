@@ -347,7 +347,7 @@ class SpielGUI {
     }
     public void spielerHatAusgerufenHinzufuegen(JLabel mitteText){
         mainFrame.add(mitteText);
-        mitteText.setBounds(600, 300, 100, 100);
+        mitteText.setBounds(600, 200, 500, 200);
         mitteText.setVisible(true);
     }
 

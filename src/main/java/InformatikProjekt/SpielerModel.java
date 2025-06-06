@@ -11,6 +11,7 @@ public class SpielerModel {
     private int[] andereSpielerKarten; //speichert Anzahl der Spielerkarten von den anderen Spielern
     private int welcherSpieler;
     private ArrayList<JButton> okButton;
+    private JLabel mitteText;
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
     private WelcherSpieler ausrufenderSpieler;
@@ -35,6 +36,8 @@ public class SpielerModel {
     public SpielerModel() {
         handkarten = new ArrayList<Spielkarte>();
         handButtons = new ArrayList<JButton>();
+        okButton = new ArrayList<>();
+        mitteText = new JLabel();
 
         spielArt = null;
         ausrufenderSpieler = null;
@@ -87,6 +90,14 @@ public class SpielerModel {
 
     public void setzeListeOkButton(ArrayList<JButton> buttons) {
         okButton = buttons;
+    }
+
+    //mitteText
+    public JLabel gebeMitteText() {
+        return mitteText;
+    }
+    public void setzeMitteText(JLabel jLabel) {
+        mitteText = jLabel;
     }
 
     /**

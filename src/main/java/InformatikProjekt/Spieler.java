@@ -34,6 +34,7 @@ public class Spieler extends Mitspieler {
         okButton.addActionListener(e -> turnier.rundeStarten(0, i)); //1. Runde starten
         model.setzeOkButton(okButton);
         model.setzeListeOkButton(gui.gebeListeOkButton());
+        gui.spielerHatAusgerufenHinzufuegen(model.gebeMitteText());
     }
 
     @Override
@@ -48,8 +49,11 @@ public class Spieler extends Mitspieler {
     public void kartenHinlegen(int wiederholung, int vorhand) {
         int[] i = new int[]{-1, -1};
         gui.setzeVisibleOkButton(false, 0);
-        model.gebeOkButton(1).addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
         gui.setzeVisibleOkButton(true, 1);
+        model.gebeOkButton(1).addActionListener(e -> runde.spielAbsichtFragenRunde(model.gebeWiederholung(), model.gebeVorhand()));
+        if (true) {
+            return;
+        }
     }
 
     /*Buttons bekommen Icons zugewiesen*/
@@ -159,17 +163,17 @@ public class Spieler extends Mitspieler {
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
     public void spielerHatSpielabsichtGesagt2(int wiederholung, int vorhand, SpielArt spielAbsicht) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(vorhand);
-        JLabel jLabel = new JLabel();
+        JLabel jLabel = model.gebeMitteText();
         String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
-        gui.spielerHatAusgerufenHinzufuegen(jLabel); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
+        gui.spielerHatAusgerufen(jLabel, text); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
         if (vorhand < 3) {
             vorhand++;
         } else {
             vorhand = 0;
         }
-        int finalI = vorhand;
+        model.setzeVorhand(vorhand);
+        model.setzeWiederholung(wiederholung + 1);
         gui.setzeVisibleOkButton(false, 0);
-        model.gebeOkButton(1).addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
         gui.setzeVisibleOkButton(true, 1);
     }
 
@@ -181,7 +185,8 @@ public class Spieler extends Mitspieler {
     public void spielAbsichtAusgeben(int ausrufer, SpielArt hoechsteSpielart) {
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
         String text = ausgabeBeimAusrufen(hoechsteSpielart, welcherspieler, null);
-        gui.spielerHatAusgerufenHinzufuegen(new JLabel(text));
+        JLabel jLabel = model.gebeMitteText();
+        gui.spielerHatAusgerufen(jLabel, text);
     }
 
     /**
