@@ -64,12 +64,13 @@ public class Runde {
             System.out.println("DEBUG: rundeModel.gebeAusruferReferenz() == null in farbeFuerSpielAbsicht() -> NullPointerException");
             return;
         }
-        rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
         System.out.println("Warte auf Farbe von Spieler " + rundeModel.gebeAusrufer());
+        rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
     }
 
     // Farbe ausgeben
     public void farbeFuerSpielAbsichtAufgerufen(Farbe farbe) {
+        System.out.println("DEBUG: Farbe ausgerufen: " + farbe);
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.spielArtEntschieden(rundeModel.gebeAusrufer(), farbe, rundeModel.gebeHoechsteSpielart());
         }

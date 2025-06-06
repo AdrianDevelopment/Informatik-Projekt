@@ -80,7 +80,6 @@ public class Bot extends Mitspieler {
     // Gibt die Farbe für die Spielabsicht entweder die Farbe für ein Solo oder die ausgerufene Sau.
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
-
         runde.farbeFuerSpielAbsichtAufgerufen(farbeFuerSpielAbsichtGewaehlt(spielArt));
     }
 
