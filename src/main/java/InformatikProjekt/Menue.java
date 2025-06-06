@@ -3,13 +3,13 @@ package InformatikProjekt;
 // Programmierer: Adrian
 
 public class Menue {
-    private final Spieler echterSpieler;
+    //private final Spieler echterSpieler;
 
     public Menue() {
 
         MenueGUI menueGUI = new MenueGUI(this);
         menueGUI.guiStart();
-        echterSpieler = new Spieler();
+        //echterSpieler = new Spieler();
     }
 
     public void setzeMenueAuswahl(int menueAuswahl) {
@@ -21,7 +21,7 @@ public class Menue {
             case 0:
                 break;
             case 1:
-                Tunier tunier = new Tunier(4, echterSpieler); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
+                Tunier tunier = new Tunier(4); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
                 break;
             case 2:
                 // Mehrspieler
