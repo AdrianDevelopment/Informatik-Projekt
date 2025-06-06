@@ -77,7 +77,7 @@ public class Runde {
         }
     }
 
-    // fragt den Ausrufer auf welche Sau er spielen möchte (von Spieler aufgerufen)
+    // fragt den Ausrufer, auf welche Sau er spielen möchte (von Spieler aufgerufen)
     public void farbeFuerSpielAbsicht() {
         rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
         System.out.println("Warte auf Farbe von Spieler " + rundeModel.gebeAusrufer());
@@ -88,8 +88,6 @@ public class Runde {
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.spielArtEntschieden(rundeModel.gebeAusrufer(), farbe, rundeModel.gebeHoechsteSpielart());
         }
-
-        stichSpielen(0);
     }
 
     // Runde spielen

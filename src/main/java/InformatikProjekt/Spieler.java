@@ -163,6 +163,60 @@ public class Spieler extends Mitspieler {
     }
 
     /**
+     * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
+     * Überprüfung, ob gewählte Farbe möglich → Rückgabe oder erneute GUI-Anfrage
+     */
+    @Override
+    public void farbeFuerSpielAbsicht(SpielArt spielArt) {
+        model.setzeDranFarbeSpielabsicht(true);
+        ArrayList<JButton> jButtons = gui.farbeFuerSpielabsicht();
+        jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
+        jButtons.get(1).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
+        jButtons.get(2).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
+    }
+
+    /**
+     * an Runde
+     */
+    public void farbeFeurSpielAbsichtGesagt(Farbe farbe) {
+        if (!model.gebeDranFarbeSpielabsicht()) { //Spieler soll nichts abgeben können, wenn nicht dran
+            return;
+        }
+        model.setzeDranFarbeSpielabsicht(false);
+        //Überprüfen, ob gewählte Farbe möglich
+        ArrayList<Farbe> f = sauZumAusrufen(model.gebeHandkarten());
+        for (int i = 0; i < f.size(); i++) {
+            if (farbe == f.get(i)) {
+                runde.farbeFuerSpielAbsichtAufgerufen(farbe); //Farbe darf gelegt werden und wir weitergegeben
+            }
+        }
+        System.out.println("Farbe darf nicht gelegt werden."); //TODO: nochmal aufrufen?
+    }
+
+    /**
+     * gibt Spielart, ausgerufenen spieler und Farbe an Model und GUI weiter
+     * spieler: int Wert, wie ihn die Runde speichert (braucht ihn dann wieder, deswegen Übergabe an Model)
+     * welcherSpieler: Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
+     */
+    @Override
+    public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
+        model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
+
+        JLabel jLabel = new JLabel();
+        String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
+        jLabel.setText(text);
+        gui.spielerHatAusgerufen(jLabel, text);
+        if (spielArt == SpielArt.KEINSPIEL) {
+            text += "Spiel abgebrochen wegen ungültiger Spielart";
+            jLabel.setText(text);
+            System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
+        }
+        model.gebeOkButton().addActionListener(e -> runde.stichSpielen(0));
+
+    }
+
+    /**
      * Aufforderung der Runde eine Karte zu legen
      * - im Model Übergabewerte setzen
      * - Buttons wieder drückbar machen
@@ -224,54 +278,9 @@ public class Spieler extends Mitspieler {
     }
 
 
-    /**
-     * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
-     * Überprüfung, ob gewählte Farbe möglich → Rückgabe oder erneute GUI-Anfrage
-     */
-    @Override
-    public void farbeFuerSpielAbsicht(SpielArt spielArt) {
-        model.setzeDranFarbeSpielabsicht(true);
-        ArrayList<JButton> jButtons = gui.farbeFuerSpielabsicht();
-        jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
-        jButtons.get(1).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
-        jButtons.get(2).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
-    }
-
-    public void farbeFeurSpielAbsichtGesagt(Farbe farbe) {
-        if (!model.gebeDranFarbeSpielabsicht()) { //Spieler soll nichts abgeben können, wenn nicht dran
-            return;
-        }
-        model.setzeDranFarbeSpielabsicht(false);
-        //Überprüfen, ob gewählte Farbe möglich
-        ArrayList<Farbe> f = sauZumAusrufen(model.gebeHandkarten());
-        for (int i = 0; i < f.size(); i++) {
-            if (farbe == f.get(i)) {
-                runde.farbeFuerSpielAbsichtAufgerufen(farbe); //Farbe darf gelegt werden und wir weitergegeben
-            }
-        }
-        System.out.println("Farbe darf nicht gelegt werden."); //TODO: nochmal aufrufen?
-    }
 
 
 
-    /**
-     * gibt Spielart, ausgerufenen spieler und Farbe an Model und GUI weiter
-     * spieler: int Wert, wie ihn die Runde speichert (braucht ihn dann wieder, deswegen Übergabe an Model)
-     * welcherSpieler: Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
-     */
-    @Override
-    public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
-
-        JLabel jLabel = new JLabel();
-        String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
-        jLabel.setText(text);
-        gui.spielerHatAusgerufen(jLabel, text);
-        /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
-            - am besten mit einem Ok Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
-         */
-    }
 
 
     /**
