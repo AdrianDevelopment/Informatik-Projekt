@@ -30,7 +30,7 @@ class SpielGUI {
     private JLabel spieler2MitteKarte;
     private JLabel spieler3MitteKarte;
     private JLabel spieler4MitteKarte;
-
+    private JLabel mitteTextLabel;
 
     ImageIcon kartenRuekseite;
 
@@ -264,6 +264,12 @@ class SpielGUI {
         mainFrame.add(sauButton);
         mainFrame.show();
         spielabsichtFrame = new JFrame();
+
+        mitteTextLabel = new JLabel();
+        mitteTextLabel.setFont(new Font("Arial", Font.BOLD, 50));
+        mitteTextLabel.setBounds(400, 150, 800, 200);
+        mitteTextLabel.setVisible(true);
+        mainFrame.add(mitteTextLabel);
     }
 
     public ArrayList<JButton> spieler1ButtonsErstellen(){
@@ -358,18 +364,8 @@ class SpielGUI {
         karteFuerDieMitte.setVisible(true);
 
     }
-    public void spielerHatAusgerufenHinzufuegen(JLabel mitteText){
-        mainFrame.add(mitteText);
-        mitteText.setFont(new Font("Arial", Font.BOLD, 50));
-        mitteText.setBounds(600, 150, 600, 200);
-        mitteText.setVisible(true);
-    }
-
-    public void spielerHatAusgerufen(JLabel mitteText, String text){
-        mitteText.setSize(600, 200);
-        mitteText.setText(text);
-        mitteText.setHorizontalTextPosition(JLabel.LEFT);
-        mitteText.setVerticalTextPosition(JLabel.CENTER);
+    public void spielerHatAusgerufenHinzufuegen(String text){
+        mitteTextLabel.setText(text);
     }
 
     public void spielerHatAusgerufenEntfernen(JLabel mitteText){

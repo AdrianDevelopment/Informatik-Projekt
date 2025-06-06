@@ -181,9 +181,8 @@ public class Spieler extends Mitspieler {
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
     public void spielerHatSpielabsichtGesagt2(int wiederholung, int vorhand, SpielArt spielAbsicht) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(vorhand);
-        JLabel jLabel = new JLabel();
         String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
-        gui.spielerHatAusgerufenHinzufuegen(jLabel); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
+        gui.spielerHatAusgerufenHinzufuegen(text);
         if (vorhand < 3) {
             vorhand++;
         } else {
@@ -204,7 +203,7 @@ public class Spieler extends Mitspieler {
     public void spielAbsichtAusgeben(int ausrufer, SpielArt hoechsteSpielart) {
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
         String text = ausgabeBeimAusrufen(hoechsteSpielart, welcherspieler, null);
-        gui.spielerHatAusgerufenHinzufuegen(new JLabel(text));
+        gui.spielerHatAusgerufenHinzufuegen(text);
         actionListenerLoeschen(gui.gebeOkButton());
         gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
 
@@ -254,8 +253,7 @@ public class Spieler extends Mitspieler {
 
         JLabel jLabel = new JLabel();
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
-        jLabel.setText(text);
-        gui.spielerHatAusgerufen(jLabel, text);
+        gui.spielerHatAusgerufenHinzufuegen(text);
         if (spielArt == SpielArt.KEINSPIEL) {
             text += "Spiel abgebrochen wegen ungültiger Spielart";
             jLabel.setText(text);
@@ -372,6 +370,7 @@ public class Spieler extends Mitspieler {
     /**
      * gibt Karte, die gelegt wurde mit dem Spieler der GUI weiter
      */
+    //Ich habe die Buttons in Labels geändert und das ganze in der GUI angepasst
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
@@ -398,10 +397,9 @@ public class Spieler extends Mitspieler {
     @Override
     public void stichGewonnen(int spieler) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        JLabel jLabel = new JLabel();
-        jLabel.setText(ausgabeBeimAusrufen(null, welcherSpieler, null) + " den Stich gewonnen.");
+        String text = ausgabeBeimAusrufen(null, welcherSpieler, null) + " den Stich gewonnen.";
 
-        gui.spielerHatAusgerufenHinzufuegen(jLabel);
+        gui.spielerHatAusgerufenHinzufuegen(text);
         /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
             - am besten mit einem weiter Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
          */
@@ -426,10 +424,8 @@ public class Spieler extends Mitspieler {
         punkte[1] = 120 - punkte[0];
         punkte[2] = uebergebenePunkte[model.gebeWelcherSpieler()];
         //Ausgabe
-        JLabel jLabel = new JLabel();
         String text = gewinner1.gebeName() + " und " + gewinner2.gebeName() + "haben gewonnen und " + punkte[0] + "Punkte gesammelt." + "Du hast " + punkte[2] + " Punkte gesammelt.";
-        jLabel.setText(text);
-        gui.spielerHatAusgerufenHinzufuegen(jLabel);
+        gui.spielerHatAusgerufenHinzufuegen(text);
         /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
             - am besten mit einem weiter Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
          */
