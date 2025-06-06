@@ -8,8 +8,12 @@ public class Bot extends Mitspieler {
     BotModel model;
     Runde runde;
 
-    public Bot(Runde runde) {
+    public Bot() {
         model = new BotModel();
+    }
+
+    @Override // Tom
+    public void setzeRunde(Runde runde) {
         this.runde = runde;
     }
 

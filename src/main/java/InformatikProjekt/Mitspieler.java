@@ -222,5 +222,6 @@ public abstract class Mitspieler {
     }
 
 
+    public abstract void setzeRunde(Runde runde); // Tom
 }
 

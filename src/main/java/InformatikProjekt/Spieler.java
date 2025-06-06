@@ -10,9 +10,13 @@ public class Spieler extends Mitspieler {
     private SpielGUI gui;
     private Runde runde;
 
-    public Spieler(Runde runde) {
+    public Spieler() {
         model = new SpielerModel();
         gui = new SpielGUI(this);
+    }
+
+    @Override
+    public void setzeRunde(Runde runde) {
         this.runde = runde;
     }
 
@@ -35,7 +39,7 @@ public class Spieler extends Mitspieler {
         ArrayList<JButton> handButtons = model.gebeHandButtons();
         ArrayList<Spielkarte> handKarten = model.gebeHandkarten();
         //Zuweisung von den passenden Bildern zu den Buttons
-        for (int i = 0; i < handButtons.size(); i++) {
+        for (int i = 0; i < handKarten.size(); i++) {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
             int finalI = i; //für Lambda Expression
             handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
@@ -151,9 +155,9 @@ public class Spieler extends Mitspieler {
      * Überprüfung, ob gewählte Farbe möglich → Rückgabe oder erneute GUI-Anfrage
      */
     @Override
-    public Farbe farbeFuerSpielAbsicht(SpielArt spielArt) {
+    public void farbeFuerSpielAbsicht(SpielArt spielArt) {
         Farbe spielasichtFarbe = null;
-        gui.farbeFuerSpielAbsicht();
+        gui.farbeFuerSpielAbsicht(); //TODO: bearbeiten und e setzen
         //wartet bis GUI Nutzereingabe dem Controller meldet
         int zaehler = 0;
         while (zaehler < 1000) {
@@ -164,13 +168,11 @@ public class Spieler extends Mitspieler {
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         for (int i = 0; i < farbe.size(); i++) {
             if (spielasichtFarbe == farbe.get(i)) {
-                return spielasichtFarbe; //Farbe ist erlaubt → Rückgabe
+                //return spielasichtFarbe; //Farbe ist erlaubt → Rückgabe
             }
         }
         gui.ungueltigeEingabe("Du kannst auf diese Sau nicht ausrufen.");
-        //"Rekursionsschritt"
-        model.setzeSpielabsichtFarbe(null); //Abbruchbedingung der while-Schleife zurücksetzen
-        return farbeFuerSpielAbsicht(spielArt);
+        //return farbeFuerSpielAbsicht(spielArt);
     }
 
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
@@ -181,7 +183,7 @@ public class Spieler extends Mitspieler {
         if (welcherSpieler == WelcherSpieler.NUTZER) {
             text += "Du hast";
         }
-        gui.spielerHatAusgerufen(jLabel);
+        gui.spielerHatAusgerufen(jLabel, ""); //TODO
     }
 
     /**
@@ -193,7 +195,7 @@ public class Spieler extends Mitspieler {
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
-        gui.spielArtEntschieden(welcherSpieler, spielArt, farbe);
+        gui.spielArtEntschieden(welcherSpieler, spielArt, farbe); //TODO: spielerhat ausgerufen
     }
 
 
@@ -260,8 +262,10 @@ public class Spieler extends Mitspieler {
         button.setIcon(gibBild(karte));
         gui.karteInDieMitte(button, welcherSpieler);
         model.setzeGelegteKarte(karte);
-
         //TODO: ab hier?
+
+
+
         //Tim
         //todo anpassen mit Solofarbe anstatt null
         //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
@@ -281,7 +285,7 @@ public class Spieler extends Mitspieler {
      * - in Model letzterStich Karten überschreiben + Stichkarten löschen
      */
     @Override
-    public void stichGewonnen(int spieler) {
+    public void stichGewonnen(int spieler) { //TODO
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         gui.stichGewonnen(welcherSpieler);
         model.stichBeendet();
@@ -304,13 +308,12 @@ public class Spieler extends Mitspieler {
         punkte[1] = 120 - punkte[0];
         punkte[2] = uebergebenePunkte[model.gebeWelcherSpieler()];
 
-        //TODO: wie soll das der GUI übergeben werden?
+        //TODO: wie soll das der GUI übergeben werden? -> ausruferMethode und JLabel
         gui.rundeGewonnen(punkte);
     }
 
     /**
      * gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
-     *
      * @param spieler: von Runde übergeben
      */
     public WelcherSpieler wieVielterSpieler(int spieler) {

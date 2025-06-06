@@ -6,9 +6,10 @@ public class Menue {
     private final Spieler echterSpieler;
 
     public Menue() {
-        echterSpieler = new Spieler();
+
         MenueGUI menueGUI = new MenueGUI(this);
         menueGUI.guiStart();
+        echterSpieler = new Spieler();
     }
 
     public void setzeMenueAuswahl(int menueAuswahl) {

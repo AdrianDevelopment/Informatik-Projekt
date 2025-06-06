@@ -15,7 +15,7 @@ public class Runde {
         this.speicherung = speicherung;
         this.tunier = tunier;
         rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden);
-        spieler.get(positionSpieler).setzeRundeReferenz(this);
+        //spieler.get(positionSpieler).setzeRundeReferenz(this);
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
@@ -31,6 +31,7 @@ public class Runde {
 
     // Spielabsicht fragen
     public void spielAbsichtFragenRunde(int wiederholung, int vorhand) {
+        spieler.get(vorhand).setzeRunde(this);
         spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
         System.out.println("Warte auf Spielabsicht von Spieler " + vorhand);
     }
@@ -112,7 +113,7 @@ public class Runde {
 
     // Stich spielen
     public void karteAbfragen(int wiederholung, int vorhand) {
-        spieler.get(vorhand).legeEineKarte(wiederholung);
+        spieler.get(vorhand).legeEineKarte(wiederholung, 0);
         System.out.println("Warte auf Spielabsicht von Spieler " + vorhand);
     }
 

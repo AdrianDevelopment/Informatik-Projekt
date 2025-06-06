@@ -31,6 +31,7 @@ public class SpielerModel {
 
     public SpielerModel() {
         handkarten = new ArrayList<Spielkarte>();
+        handButtons = new ArrayList<JButton>();
 
         spielArt = null;
         ausrufenderSpieler = null;
