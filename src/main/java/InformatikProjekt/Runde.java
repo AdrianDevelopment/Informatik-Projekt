@@ -14,7 +14,7 @@ public class Runde {
         this.spieler = spieler;
         this.speicherung = speicherung;
         this.turnier = turnier;
-        rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden, echterSpieler, spieler.getFirst());
+        rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden, echterSpieler, spieler.get(0));
         //spieler.get(positionSpieler).setzeRundeReferenz(this);
 
         for (int i = 0; i < 4; i++) {
