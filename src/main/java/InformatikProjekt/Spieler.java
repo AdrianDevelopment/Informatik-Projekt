@@ -184,9 +184,20 @@ public class Spieler extends Mitspieler {
 
     public void spielAbsichtAusgeben(int ausrufer, SpielArt hoechsteSpielart) {
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
-        String text = ausgabeBeimAusrufen(hoechsteSpielart, welcherspieler, null);
+        String text = "Alle haben ihre Spielabsicht gesagt. ";
         JLabel jLabel = model.gebeMitteText();
+        if (hoechsteSpielart != SpielArt.KEINSPIEL) {
+            text += "Die höchste Spielabsicht: ";
+            text += ausgabeBeimAusrufen(hoechsteSpielart, welcherspieler, null);
+        } else {
+            text += "Spiel abgebrochen wegen ungültiger Spielart";
+            gui.spielerHatAusgerufen(jLabel, text);
+            model.gebeOkButton(2).addActionListener(e -> System.out.println("Spiel abgebrochen wegen ungültiger Spielart"));
+        }
         gui.spielerHatAusgerufen(jLabel, text);
+        gui.setzeVisibleOkButton(false, 1);
+        gui.setzeVisibleOkButton(true, 2);
+        model.gebeOkButton(2).addActionListener(e -> runde.farbeFuerSpielAbsicht());
     }
 
     /**
@@ -234,13 +245,10 @@ public class Spieler extends Mitspieler {
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
         jLabel.setText(text);
         gui.spielerHatAusgerufen(jLabel, text);
-        if (spielArt == SpielArt.KEINSPIEL) {
-            text += "Spiel abgebrochen wegen ungültiger Spielart";
-            jLabel.setText(text);
-            System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
-        }
-        model.gebeOkButton(2).addActionListener(e -> runde.stichSpielen(0));
-        gui.setzeVisibleOkButton(true, 2);
+
+        gui.setzeVisibleOkButton(false, 2);
+        gui.setzeVisibleOkButton(true, 3);
+        model.gebeOkButton(3).addActionListener(e -> runde.stichSpielen(0));
     }
 
     /**
