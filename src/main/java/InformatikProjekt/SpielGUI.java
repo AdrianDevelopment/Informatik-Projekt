@@ -8,8 +8,8 @@ import java.util.ArrayList;
 class SpielGUI {
     private Spieler spieler;
 
-    JRadioButton weiterButton; //neu
-    JRadioButton sauButton;
+    JButton weiterButton; //neu
+    JButton sauButton;
 
     JRadioButton schellenButton;
     JRadioButton grasButton;
@@ -31,11 +31,13 @@ class SpielGUI {
         mainFrame.setVisible(true);
         mainFrame.setLayout(null);
 
-        weiterButton = new JRadioButton("Weiter");
+        weiterButton = new JButton("Weiter");
         weiterButton.setBounds(1000, 600, 100, 50);
+        weiterButton.setVisible(false);
 
-        sauButton = new JRadioButton("Sau");
+        sauButton = new JButton("Sau");
         sauButton.setBounds(1100, 600, 100, 50);
+        sauButton.setVisible(false);
 
         spieler1KartenArray = new ArrayList<JButton>();
         weiterSauButtons = new ArrayList<JButton>();
@@ -194,6 +196,8 @@ class SpielGUI {
 
         mainFrame.add(weiterButton);
         mainFrame.add(sauButton);
+
+        spielabsichtFrame = new JFrame();
     }
 
     public ArrayList<JButton> spieler1ButtonsErstellen(){
@@ -207,10 +211,12 @@ class SpielGUI {
 
 
     public ArrayList<JButton> spielabsichtFragen() {
-        JButton weiterButton = new JButton("Weiter");
+//        weiterButton = new JButton("Weiter");
         weiterSauButtons.add(weiterButton);
-        JButton sauButton = new JButton("Sau");
+        weiterButton.setVisible(true);
+  //      sauButton = new JButton("Sau");
         weiterSauButtons.add(sauButton);
+        sauButton.setVisible(true);
         return weiterSauButtons;
     }
 
@@ -275,7 +281,7 @@ class SpielGUI {
         karteFuerDieMitte.setVisible(true);
 
     }
-    public void spielerHatAusgerufenHinzufügen(JLabel mitteText){
+    public void spielerHatAusgerufenHinzufuegen(JLabel mitteText){
         mainFrame.add(mitteText);
         mitteText.setBounds(600, 300, 100, 100);
         mitteText.setVisible(true);
@@ -336,15 +342,11 @@ class SpielGUI {
     public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler){}
 
     public void ungueltigeEingabe(String konkretisierung){}
-    public void spielArtEntschieden(WelcherSpieler welcherSpieler, SpielArt spielArt, Farbe farbe) {}
     public Spielkarte legeKarte() {
         return null;
     }
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {}
-    public void stichGewonnen(WelcherSpieler spieler) {}
-    public void rundeGewonnen(int[] punkte) {}
 
-    public void farbeFuerSpielAbsicht() {}
     public void zeigeLetztenStich() {
         System.out.println(spieler.gebeLetztenStich());
     }

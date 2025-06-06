@@ -42,7 +42,9 @@ public class Spieler extends Mitspieler {
         for (int i = 0; i < handKarten.size(); i++) {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
             int finalI = i; //für Lambda Expression
-            handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
+            handButtons.get(i).addActionListener(e -> spielabsichtFragen(1, SpielArt.KEINSPIEL, 2)); //gibt Spielkarte weiter und Index für handButtons
+            //handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
+
         }
     }
 
@@ -94,28 +96,6 @@ public class Spieler extends Mitspieler {
         return new ImageIcon(dateiname);
     }
 
-    /**
-     * Aufforderung der Runde eine Karte zu legen
-     * - im Model Übergabewerte setzen
-     * - Buttons wieder drückbar machen
-     */
-    @Override
-    public void legeEineKarte(int wiederholung, int vorhand) {
-        model.setzeWiederholung(wiederholung);
-        model.setzeVorhand(vorhand);
-        model.setzeSpielerIstDran(true);
-    }
-
-    public void karteGelegt(Spielkarte spielkarte, int index) {
-        if (!model.gebeSpielerIstDran()) { //Spieler soll keine Karte legen → nichts soll passieren
-            return;
-        }
-        //TODO: Überprüfung Handkarte legen
-        model.setzeSpielerIstDran(false);
-        gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
-        model.gebeHandkarten().remove(spielkarte);
-        runde.karteAbfragenAufgerufen(model.gebeWiederholung(), spielkarte, model.gebeVorhand());
-    }
 
     /**
      * Aufforderung der Runde die Spielabsicht zu sagen
@@ -128,7 +108,7 @@ public class Spieler extends Mitspieler {
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         ArrayList<JButton> spielabsichtButtons = gui.spielabsichtFragen();
-        spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL));
+        spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL)); //TODO: funktioniert irgendwie nicht
         spielabsichtButtons.get(1).addActionListener(e -> spielabsichtGesagt(SpielArt.SAUSPIEL));
     }
 
@@ -140,6 +120,7 @@ public class Spieler extends Mitspieler {
      */
     public void spielabsichtGesagt(SpielArt spielabsicht) {
         SpielArt spielArt = spielabsicht;
+        System.out.println("Spielabsicht");
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
         ///Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
@@ -150,40 +131,96 @@ public class Spieler extends Mitspieler {
         runde.spielAbsichtFragenAufgerufen(model.gebeWiederholung(), spielArt, model.gebeVorhand());
     }
 
+
+    /**
+     * Aufforderung der Runde eine Karte zu legen
+     * - im Model Übergabewerte setzen
+     * - Buttons wieder drückbar machen
+     */
+    @Override
+    public void legeEineKarte(int wiederholung, int vorhand) {
+        model.setzeWiederholung(wiederholung);
+        model.setzeVorhand(vorhand);
+        model.setzeSpielerIstDran(true);
+    }
+
+    /**
+     * Überprüfungen
+     * - darf überhaupt was gerade gelegt werden?
+     * - weglaufen ja/nein
+     * - gelegte Karte passt mit erster Karte zusammen ja/nein?
+     * ja → Spielkarte entfernen und Runde geben
+     */
+    public void karteGelegt(Spielkarte spielkarte, int index) {
+        if (!model.gebeSpielerIstDran()) { //Spieler soll keine Karte legen → nichts soll passieren
+            return;
+        }
+        model.setzeSpielerIstDran(false);
+
+        //Überprüfung, ob Karte erlaubt ist
+        boolean erlaubt = false;
+        //Überprüfung, ob man weglaufen darf
+        int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
+        ArrayList<Spielkarte> erlaubteKarten;
+        if (anzahlSpielerSchonGelegt == 0) {
+            Spielkarte sau = new Spielkarte(model.gebeFarbe(), Werte.SAU);
+            erlaubteKarten = erlaubteKartenAusspielenBeiSauspiel(model.gebeHandkarten(), sau);
+            for (int i = 0; i < erlaubteKarten.size(); i++) {
+                if (spielkarte.equals(spielkarte)) {
+                    erlaubt = true;
+                    break;
+                }
+            }
+        }
+        //Überprüfung, welche Karte gelegt werden darf, wenn schon eine liegt
+        if (anzahlSpielerSchonGelegt != 0) {
+            erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt());
+            for (int i = 0; i < erlaubteKarten.size(); i++) {
+                if (spielkarte.equals(erlaubteKarten.get(i))) {
+                    erlaubt = true;
+                    break;
+                }
+            }
+        }
+        if (erlaubt) {
+            gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
+            model.gebeHandkarten().remove(spielkarte);
+            runde.karteAbfragenAufgerufen(model.gebeWiederholung(), spielkarte, model.gebeVorhand());
+        } else {
+            legeEineKarte(model.gebeWiederholung(), model.gebeVorhand());
+        }
+    }
+
+
     /**
      * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
      * Überprüfung, ob gewählte Farbe möglich → Rückgabe oder erneute GUI-Anfrage
      */
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
-        Farbe spielasichtFarbe = null;
-        gui.farbeFuerSpielAbsicht(); //TODO: bearbeiten und e setzen
-        //wartet bis GUI Nutzereingabe dem Controller meldet
-        int zaehler = 0;
-        while (zaehler < 1000) {
-            zaehler++;
-        }
+        ArrayList<JButton> jButtons = gui.farbeFuerSpielabsicht();
+        jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
+        jButtons.get(1).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
+        jButtons.get(2).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
+    }
 
+    public void farbeFeurSpielAbsichtGesagt(Farbe farbe) {
         //Überprüfen, ob gewählte Farbe möglich
-        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
-        for (int i = 0; i < farbe.size(); i++) {
-            if (spielasichtFarbe == farbe.get(i)) {
-                //return spielasichtFarbe; //Farbe ist erlaubt → Rückgabe
+        ArrayList<Farbe> f = sauZumAusrufen(model.gebeHandkarten());
+        for (int i = 0; i < f.size(); i++) {
+            if (farbe == f.get(i)) {
+                runde.farbeFuerSpielAbsichtAufgerufen(farbe); //Farbe darf gelegt werden und wir weitergegeben
             }
         }
-        gui.ungueltigeEingabe("Du kannst auf diese Sau nicht ausrufen.");
-        //return farbeFuerSpielAbsicht(spielArt);
+        System.out.println("Farbe darf nicht gelegt werden."); //TODO: nochmal aufrufen?
     }
 
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
     public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         JLabel jLabel = new JLabel();
-        String text = "";
-        if (welcherSpieler == WelcherSpieler.NUTZER) {
-            text += "Du hast";
-        }
-        gui.spielerHatAusgerufen(jLabel, ""); //TODO
+        String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
+        gui.spielerHatAusgerufenHinzufuegen(jLabel); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
     }
 
     /**
@@ -195,65 +232,55 @@ public class Spieler extends Mitspieler {
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
-        gui.spielArtEntschieden(welcherSpieler, spielArt, farbe); //TODO: spielerhat ausgerufen
+
+        JLabel jLabel = new JLabel();
+        String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
+        jLabel.setText(text);
+        gui.spielerHatAusgerufen(jLabel, text);
+        /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
+            - am besten mit einem weiter Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
+         */
     }
 
 
     /**
-     * → Aufruf an GUI, eine Karte zu legen
-     * - schauen, ob ich der erste in der Lege-/Stichrunde bin
-     * → keine Überprüfung, weil jede Karte gelegt werden kann
-     * - wenn ich nicht der erste in der Lege-/Stichrunde bin
-     * → model abfragen, welche Karte ich legen muss
-     * → überprüfen, ob ich Karte legen darf
-     * → überprüfen, ob ich andere Karte hätte legen müssen (ist in der vorherigen Überprüfung mit drin)
+     * gibt Ausgabetext zurück, der alle Übergabeparameter beachtet
      */
-    public Spielkarte legeEineKarte() {
-        int anzahlSpielerSchonGelegt = model.gebeAnzahlSpielerSchonGelegt();
-        ArrayList<Spielkarte> erlaubteKarten;
-        Spielkarte zuLegendeKarte = null;
-
-        gui.legeKarte();
-        //wartet bis GUI Nutzereingabe dem Controller meldet
-        while (zuLegendeKarte == null) {
-            zuLegendeKarte = model.gebeZuLegendeKarte();
+    public String ausgabeBeimAusrufen(SpielArt spielArt, WelcherSpieler welcherSpieler, Farbe farbe) {
+        String ausgabe = welcherSpieler.gebeName();
+        if (welcherSpieler == WelcherSpieler.NUTZER) {
+            ausgabe += " hast";
+        } else {
+            ausgabe += " hat";
         }
-        //Überprüfung, ob Karte erlaubt ist
-        //Überprüfung, ob man weglaufen darf
-        if (anzahlSpielerSchonGelegt == 0) {
-            Spielkarte sau = new Spielkarte(model.gebeFarbe(), Werte.SAU);
-            erlaubteKarten = erlaubteKartenAusspielenBeiSauspiel(model.gebeHandkarten(), sau);
-            for (Spielkarte spielkarte : erlaubteKarten) {
-                if (zuLegendeKarte.equals(spielkarte)) {
-                    return zuLegendeKarte; //Karte ist erlaubt und wird zurückgegeben
+        switch (spielArt) {
+            case KEINSPIEL -> ausgabe += " 'weiter' gesagt";
+            case SAUSPIEL -> {
+                ausgabe += " ein Sauspiel ";
+                switch (farbe) {
+                    case SCHELLEN:
+                        ausgabe += "auf die Bumbe ";
+                        break;
+                    case GRAS:
+                        ausgabe += "auf die Blaue ";
+                        break;
+                    case EICHEL:
+                        ausgabe += "auf die Alte ";
+                        break;
                 }
+                ausgabe += "ausgerufen";
             }
-        }
-        //Überprüfung, welche Karte gelegt werden darf, wenn schon eine liegt
-        if (anzahlSpielerSchonGelegt != 0) {
-            erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt());
-            for (int i = 0; i < erlaubteKarten.size(); i++) {
-                if (zuLegendeKarte.equals(erlaubteKarten.get(i))) {
-                    return zuLegendeKarte; //Karte ist erlaubt und wird zurückgegeben
-                }
+            case null -> {
+                break;
             }
+            default -> ausgabe += " eine ungültige Spielabsicht ausgerufen";
         }
-        //Karte war nicht erlaubt
-        gui.ungueltigeEingabe("Die Karte kann nicht gelegt werden.");
-        //"Rekursionsschritt"
-        model.setzeZuLegendeKarte(null); //Abbruchbedingung der while-Schleife zurücksetzen
-        return legeEineKarte();
+        return ausgabe;
     }
 
-    /*Methode wird von GUI aufgerufen und übergibt dem Model die zu legende Karte*/
-    public void legeEineKarteGUI(Spielkarte spielkarte) {
-        model.setzeZuLegendeKarte(spielkarte);
-    }
 
     /**
-     * - Überprüfung für Sau legen bzw. weglaufen
-     * - gibt die gelegte Karte und welcher Spieler diese gelegt hat zurück
-     * - Überprüfung, ob gesuchte Sau gelegt wurde → Model übergeben
+     * gibt Karte, die gelegt wurde mit dem Spieler der GUI weiter
      */
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt) {
@@ -262,17 +289,11 @@ public class Spieler extends Mitspieler {
         button.setIcon(gibBild(karte));
         gui.karteInDieMitte(button, welcherSpieler);
         model.setzeGelegteKarte(karte);
-        //TODO: ab hier?
-
-
-
-        //Tim
-        //todo anpassen mit Solofarbe anstatt null
+        //Tim Anfang //TODO: anpassen mit Solofarbe anstatt null @Tim
         //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
         if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
             model.setzteSauFarbeVorhandGespielt(true);
-        }
-        //Tim
+        } //Tim Ende
         //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
@@ -285,15 +306,22 @@ public class Spieler extends Mitspieler {
      * - in Model letzterStich Karten überschreiben + Stichkarten löschen
      */
     @Override
-    public void stichGewonnen(int spieler) { //TODO
+    public void stichGewonnen(int spieler) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
-        gui.stichGewonnen(welcherSpieler);
+        JLabel jLabel = new JLabel();
+        jLabel.setText(ausgabeBeimAusrufen(null, welcherSpieler, null) + " den Stich gewonnen.");
+
+        gui.spielerHatAusgerufenHinzufuegen(jLabel);
+        /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
+            - am besten mit einem weiter Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
+         */
+        gui.mitteAufrauemen();
         model.stichBeendet();
     }
 
 
     /**
-     * //TODO
+     * berechnet Gewinner und Punkte
      *
      * @param gewinner:          übergibt die int Werte, wo die Gewinner sitzen
      * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
@@ -307,13 +335,19 @@ public class Spieler extends Mitspieler {
         punkte[0] = uebergebenePunkte[gewinner[0]] + uebergebenePunkte[gewinner[1]];
         punkte[1] = 120 - punkte[0];
         punkte[2] = uebergebenePunkte[model.gebeWelcherSpieler()];
-
-        //TODO: wie soll das der GUI übergeben werden? -> ausruferMethode und JLabel
-        gui.rundeGewonnen(punkte);
+        //Ausgabe
+        JLabel jLabel = new JLabel();
+        String text = gewinner1.gebeName() + " und " + gewinner2.gebeName() + "haben gewonnen und " + punkte[0] + "Punkte gesammelt." + "Du hast " + punkte[2] + " Punkte gesammelt.";
+        jLabel.setText(text);
+        gui.spielerHatAusgerufenHinzufuegen(jLabel);
+        /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
+            - am besten mit einem weiter Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
+         */
     }
 
     /**
      * gibt den Spieler von unten (Nutzer) im Uhrzeigersinn aus
+     *
      * @param spieler: von Runde übergeben
      */
     public WelcherSpieler wieVielterSpieler(int spieler) {
@@ -335,10 +369,10 @@ public class Spieler extends Mitspieler {
 
     /*Methode, die GUI aufruft, wenn Spieler den letzten Stich sehen will*/
     public ArrayList<Spielkarte> gebeLetztenStich() {
-        return model.gebeLetzterStich(); //TODO: @Thiemo Rückgabewert abklären
+        return model.gebeLetzterStich(); //TODO: Rückgabewert bei Implementierung in GUI ändern
     }
 
-    /*Methode, die von Runde aufgerufen wird, um den Mitspieler raus zu bekommen*/
+    /*Methode, die von Runde aufgerufen wird, um den Mitspieler herauszubekommen*/
     public int gebeMitspieler() {
         return model.gebeMitspieler();
     }

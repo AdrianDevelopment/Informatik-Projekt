@@ -16,7 +16,7 @@ public class MenueGUI {
         this.menue = menue;
     }
 
-
+    //im Fenster wird dadurch alles angezeigt, ohne Vergrößerung
     public void guiStart() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
