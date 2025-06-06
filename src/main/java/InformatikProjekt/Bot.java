@@ -19,7 +19,7 @@ public class Bot extends Mitspieler {
 
     @Override
     public void spielabsichtFragen(int wiederholung, SpielArt hoechsteSpiel, int vorhand) {
-        runde.spielAbsichtFragenAufgerufen(wiederholung, spielAbsichtWaehlen(hoechsteSpiel), vorhand);
+        runde.spielabsichtFragenAufgerufen(wiederholung, vorhand, spielAbsichtWaehlen(hoechsteSpiel));
     }
 
     public SpielArt spielAbsichtWaehlen(SpielArt hoechsteSpiel) {

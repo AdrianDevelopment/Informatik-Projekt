@@ -8,7 +8,7 @@ import java.util.ArrayList;
 class SpielGUI {
     private Spieler spieler;
 
-    private JButton okButton;
+    private ArrayList<JButton> okButton;
     JButton weiterButton; //neu
     JButton sauButton;
 
@@ -38,10 +38,14 @@ class SpielGUI {
         mainFrame.setVisible(true);
         mainFrame.setLayout(null);
 
-        okButton = new JButton("OK");
-        okButton.setBounds(1000, 400, 100, 50);
-        okButton.setVisible(true);
-        mainFrame.add(okButton);
+        okButton = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            JButton jButton = new JButton("Ok");
+            jButton.setBounds(1000, 400, 100, 50);
+            jButton.setVisible(false);
+            mainFrame.add(jButton);
+            okButton.add(jButton);
+        }
 
         weiterButton = new JButton("Weiter");
         weiterButton.setBounds(1000, 600, 100, 50);
@@ -359,11 +363,14 @@ class SpielGUI {
         mainFrame.remove(mitteText);
     }
 
-    public JButton gebeOkButton() {
-        return okButton;
+    public JButton gebeOkButton(int i) {
+        return okButton.get(i);
     }
-    public void setzeVisibleOkButton(boolean b) {
-        okButton.setVisible(b);
+    public void setzeVisibleOkButton(boolean b, int i) {
+        okButton.get(i).setVisible(b);
+    }
+    public ArrayList<JButton> gebeListeOkButton() {
+        return okButton;
     }
 
 

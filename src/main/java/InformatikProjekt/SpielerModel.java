@@ -10,7 +10,7 @@ public class SpielerModel {
     private ArrayList<JButton> handButtons; //speichert Handkarten als Buttons mit richtigen Bildern
     private int[] andereSpielerKarten; //speichert Anzahl der Spielerkarten von den anderen Spielern
     private int welcherSpieler;
-    private JButton okButton;
+    private ArrayList<JButton> okButton;
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
     private WelcherSpieler ausrufenderSpieler;
@@ -43,6 +43,7 @@ public class SpielerModel {
 
         stich = new ArrayList<Spielkarte>();
         anzahlSpielerSchonGelegt = 0;
+
     }
 
     //handkarten
@@ -77,10 +78,15 @@ public class SpielerModel {
 
     //okButton
     public void setzeOkButton(JButton jButton) {
-        okButton = jButton;
+        okButton.add(jButton);
     }
-    public JButton gebeOkButton() {
-        return okButton;
+
+    public JButton gebeOkButton(int i) {
+        return okButton.get(i);
+    }
+
+    public void setzeListeOkButton(ArrayList<JButton> buttons) {
+        okButton = buttons;
     }
 
     /**
@@ -138,14 +144,16 @@ public class SpielerModel {
     public void setzeDranLegen(boolean dran) {
         dranLegen = dran;
     }
+
     public boolean gebeDranLegen() {
         return dranLegen;
     }
 
     //dranSpielabsicht
     public void setzeDranSpielabsicht(boolean dran) {
-       dranSpielabsicht = dran;
+        dranSpielabsicht = dran;
     }
+
     public boolean gebeDranSpielabsicht() {
         return dranSpielabsicht;
     }
@@ -154,16 +162,20 @@ public class SpielerModel {
     public void setzeDranFarbeSpielabsicht(boolean dran) {
         dranFarbeSpielabsicht = dran;
     }
+
     public boolean gebeDranFarbeSpielabsicht() {
         return dranFarbeSpielabsicht;
     }
 
 
-    /**Methoden für GUI-Rückgabe*/
+    /**
+     * Methoden für GUI-Rückgabe
+     */
     //zuLegendeFarbe
     public void setzeZuLegendeKarte(Spielkarte spielkarte) {
         zuLegeKarte = spielkarte;
     }
+
     public Spielkarte gebeZuLegendeKarte() {
         return zuLegeKarte;
     }
@@ -172,6 +184,7 @@ public class SpielerModel {
     public void setzteSauFarbeVorhandGespielt(boolean b) {
         sauFarbeVorhandGespielt = b;
     }
+
     public boolean gebeSauFarbeVorhandGespielt() {
         return sauFarbeVorhandGespielt;
     }
@@ -180,6 +193,7 @@ public class SpielerModel {
     public void setzeWiederholung(int wiederholung) {
         this.wiederholung = wiederholung;
     }
+
     public int gebeWiederholung() {
         return wiederholung;
     }
@@ -187,6 +201,7 @@ public class SpielerModel {
     public void setzeVorhand(int vorhand) {
         this.vorhand = vorhand;
     }
+
     public int gebeVorhand() {
         return vorhand;
     }

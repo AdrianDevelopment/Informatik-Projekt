@@ -53,7 +53,7 @@ public class Runde {
             rundeModel.setzeAusruferReferenz(spieler.get(vorhand));
             System.out.println("DEBUG: aktuell hoechste Spielart: " + rundeModel.gebeHoechsteSpielart());
         }
-        rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt2(wiederholung, vorhand, spielArt, rundeModel.gebeAusrufer());
+        rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt2(wiederholung, vorhand, spielArt);
     }
 
     // SAUSPIEL:
