@@ -50,7 +50,7 @@ public class MenueGUI {
 
         //Hier werden Buttons erstellt:
         JButton playButton = new JButton();
-        playButton.addActionListener(e -> menue.setzeMenueAuswahl(1));
+        playButton.addActionListener(e -> menue.starteGame(1));
         // playButton.addActionListener(e -> Menue.startMainGame());
         playButton.setBounds(344, 60, 200, 40);
         playButton.setText("SPIELEN");

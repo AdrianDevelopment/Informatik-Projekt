@@ -12,16 +12,12 @@ public class Menue {
         //echterSpieler = new Spieler();
     }
 
-    public void setzeMenueAuswahl(int menueAuswahl) {
-        starteGame(menueAuswahl);
-    }
-
     public void starteGame(int menueAuswahl) {
         switch (menueAuswahl) {
             case 0:
                 break;
             case 1:
-                Turnier turnier = new Turnier(4); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
+                new Turnier(4); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
                 break;
             case 2:
                 // Mehrspieler
