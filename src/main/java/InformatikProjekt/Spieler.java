@@ -154,11 +154,11 @@ public class Spieler extends Mitspieler {
         JLabel jLabel = new JLabel();
         String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
         gui.spielerHatAusgerufenHinzufuegen(jLabel); // @Thiemo kann ich auch nur die Methode aufrufen, statt spielerHatAusgerufen?
-        //model.gebeOkButton().addActionListener(e -> );
+        //model.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielabsicht());
     }
 
     @Override
-    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
+    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) { //TODO braucht es die?
 
     }
 
