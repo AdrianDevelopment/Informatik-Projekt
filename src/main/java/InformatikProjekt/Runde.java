@@ -18,11 +18,7 @@ public class Runde {
         //spieler.get(positionSpieler).setzeRundeReferenz(this);
 
         for (int i = 0; i < 4; i++) {
-            ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>();
-            for (int j = 0; j < 8; j++) {
-                spielKartenProSpieler.add(spielKarten.get(i + j));
-            }
-
+            ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>(spielKarten.subList(i*8, ((i+1)*8)));
             spieler.get(i).rundeStarten(spielKartenProSpieler, positionSpieler);
         }
 
