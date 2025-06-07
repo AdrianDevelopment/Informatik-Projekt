@@ -74,7 +74,7 @@ public class Runde {
 
     // Runde spielen
     public void stichSpielen(int wiederholungStiche, int wiederholung) {
-        if (rundeModel.gibStichWiederholung() < 8) {
+        if (rundeModel.gibStichWiederholung() < 7) {
             karteAbfragen(rundeModel.gibWiederholung(), rundeModel.gebeVorhand());
         }
         else {
