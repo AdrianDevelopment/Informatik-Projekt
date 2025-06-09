@@ -107,7 +107,7 @@ public class Bot extends Mitspieler {
      */
     @Override
     public void legeEineKarte(int wiederholung, int vorhand) {
-        runde.karteAbfragenAufgerufen(wiederholung, waehleEineKarte(), vorhand);
+        runde.karteAbfragenAufgerufen(waehleEineKarte());
     }
 
     public Spielkarte waehleEineKarte() {

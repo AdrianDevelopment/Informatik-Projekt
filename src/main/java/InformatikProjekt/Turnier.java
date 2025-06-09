@@ -11,6 +11,7 @@ public class Turnier {
     private final TunierModel tunierModel;
     private final ArrayList<Mitspieler> spieler;
     private final ArrayList<Spielkarte> spielKarten;
+    private SpielGUI gui;
 
     Turnier(int anzahlRunden) {
         speicherung = Speicherung.speicherungErstellen();
@@ -33,7 +34,8 @@ public class Turnier {
                 spieler.add(tunierModel.gebeEchterSpieler());
             }
         }
-        tunierModel.gebeEchterSpieler().spielGUIErstellen(this);
+        gui = new SpielGUI();
+        tunierModel.gebeEchterSpieler().spielGUIErstellen(gui);
     }
 
         // Spielkarten vorbereiten
@@ -59,6 +61,7 @@ public class Turnier {
                 speicherung.TurnierVerloren();
             }
             speicherung.DatenSpeichern();
+            gui.schliessen();
         }
     }
 

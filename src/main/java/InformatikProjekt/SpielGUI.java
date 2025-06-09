@@ -2,11 +2,12 @@ package InformatikProjekt;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 
 class SpielGUI {
-    private Spieler spieler;
+
 
 
     JButton weiterButton; //neu
@@ -37,8 +38,7 @@ class SpielGUI {
     private JFrame spielabsichtFrame;
     private final JFrame mainFrame;
 
-    public SpielGUI(Spieler spieler) {
-        this.spieler = spieler;
+    public SpielGUI( ) {
         mainFrame = new JFrame();
 
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
@@ -342,10 +342,10 @@ class SpielGUI {
     private JLabel[] mitteKarten;
     private void mitteKartenInitialisieren(){
         mitteKarten = new JLabel[4];
-        mitteKarten[0]=MitteKartePlatzErstellen(520, 250);
-        mitteKarten[1]=MitteKartePlatzErstellen(620, 250);
-        mitteKarten[2]=MitteKartePlatzErstellen(720, 250);
-        mitteKarten[3]=MitteKartePlatzErstellen(820, 250);
+        mitteKarten[0]=MitteKartePlatzErstellen(520, 350);
+        mitteKarten[1]=MitteKartePlatzErstellen(320, 250);
+        mitteKarten[2]=MitteKartePlatzErstellen(520, 80);
+        mitteKarten[3]=MitteKartePlatzErstellen(920, 250);
     }
     private JLabel MitteKartePlatzErstellen(int x, int y){
         JLabel jl = new JLabel();
@@ -386,7 +386,9 @@ class SpielGUI {
 
 
     public void mitteAufrauemen(){
-
+        for(JLabel label : mitteKarten){
+            label.setIcon(null);
+        }
 
     }
 
@@ -420,7 +422,7 @@ class SpielGUI {
     }
 
 
-    //jjjjjjjjjjjj
+
     public void zeigeHandkarten(ArrayList<Spielkarte> handKarten){
     }
 
@@ -432,8 +434,10 @@ class SpielGUI {
     }
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {}
 
-    public void zeigeLetztenStich() {
-        System.out.println(spieler.gebeLetztenStich());
+    public  void schliessen(){
+        mitteTextLabel.setText("Tunier Vorbei");
+        System.out.println("Tunier vorbei");
+        //mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING)); // schließt automatisch das Fenster
     }
 
 

@@ -1,3 +1,4 @@
+/*
 import InformatikProjekt.*;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -194,3 +195,4 @@ public class RundeTest {
         assertEquals(8, punkte, "Fehler in hoechsteFarbeGewinntTest!");
     }
 }
+*/

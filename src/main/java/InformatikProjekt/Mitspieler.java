@@ -122,7 +122,6 @@ public abstract class Mitspieler {
                     for (Spielkarte karte : hand) {
                         //Alle Karten der Farbe, von der Karte der Vorhand, dürfen gespielt werden.
                         if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
-
                                 gezwungeneKarten.add(karte);
                         }
                     }
@@ -155,10 +154,13 @@ public abstract class Mitspieler {
                 }
             }
         }
-
-        //Wenn mehr als 4 Karten der Farbe der Sau auf der Hand sind, die keine Trümpfe sind, kann davonggelaufen werden.
+        //Wenn Spieler die Sau nicht hat, darf er alles legen.
+        if(!hatSau){
+            return  hand;
+        }
+        //Wenn mehr als 4 Karten der Farbe der Sau auf der Hand sind, die keine Trümpfe sind, kann davongelaufen werden.
         for (Spielkarte karte : hand) {
-            if (hatSau && anzahlSauFarbeKarten >= 4) {
+            if (anzahlSauFarbeKarten >= 4) {
                 //Es kann davon gelaufen werden → alle Karten dürfen gelegt werden.
                 gezwungeneKarten.add(karte);
             } else if (karte.gebeFarbe() != sau.gebeFarbe() || karte.istTrumpf(SpielArt.SAUSPIEL, null) || karte.gebeWert() == Werte.SAU) {
@@ -187,29 +189,32 @@ public abstract class Mitspieler {
 
         //Bestimmung welche, Sauen und wie viele Karten der jeweiligen Farbe auf der Hand sind.
         for (Spielkarte karte : hand) {
-            switch (karte.gebeFarbe()) {
-                case SCHELLEN:
-                    anzahlSchellen++;
-                    if (karte.gebeWert() == Werte.SAU) {
-                        hatSchellenSau = true;
-                    }
-                    break;
-                case GRAS:
-                    anzahlGras++;
-                    if (karte.gebeWert() == Werte.SAU) {
-                        hatGrasau = true;
-                    }
-                    break;
-                case EICHEL:
-                    anzahlEichel++;
-                    if (karte.gebeWert() == Werte.SAU) {
-                        hatEichelSau = true;
-                    }
-                    break;
-                case HERZ:
+            if(!karte.istTrumpf(SpielArt.SAUSPIEL, null)){
+                switch (karte.gebeFarbe()) {
+                    case SCHELLEN:
+                        anzahlSchellen++;
+                        if (karte.gebeWert() == Werte.SAU) {
+                            hatSchellenSau = true;
+                        }
+                        break;
+                    case GRAS:
+                        anzahlGras++;
+                        if (karte.gebeWert() == Werte.SAU) {
+                            hatGrasau = true;
+                        }
+                        break;
+                    case EICHEL:
+                        anzahlEichel++;
+                        if (karte.gebeWert() == Werte.SAU) {
+                            hatEichelSau = true;
+                        }
+                        break;
+                    case HERZ:
 
-                    break;
+                        break;
+                }
             }
+
         }
         //Überprüft, ob eine Sau ausgerufen werden kann und sortiert sie in die Arraylist ein.
         ArrayList<Farbe> erlaubteFarben = new ArrayList<>();

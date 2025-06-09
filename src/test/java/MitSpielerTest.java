@@ -89,6 +89,21 @@ public class MitSpielerTest {
         ArrayList<Spielkarte> erlaubteKartenSauDarfNichtDavonlaufen = bot.erlaubteKartenAusspielenBeiSauspiel(hand2, new Spielkarte(Farbe.GRAS, Werte.SAU));
         assertEquals(6, erlaubteKartenSauDarfNichtDavonlaufen.size(), "Darf nicht Davonlaufen");
 
+        //neue Hand wird festgelegt
+        ArrayList<Spielkarte> hand3 = new ArrayList<>();
+        hand3.add(new Spielkarte(Farbe.SCHELLEN, Werte.SIEBENER));
+        hand3.add(new Spielkarte(Farbe.GRAS, Werte.KOENIG));
+        hand3.add(new Spielkarte(Farbe.GRAS, Werte.NEUNER));
+        hand3.add(new Spielkarte(Farbe.HERZ, Werte.SAU));
+        hand3.add(new Spielkarte(Farbe.GRAS, Werte.ZEHNER));
+        hand3.add(new Spielkarte(Farbe.SCHELLEN, Werte.KOENIG));
+        hand3.add(new Spielkarte(Farbe.EICHEL, Werte.SIEBENER));
+        hand3.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
+
+        //Methode die getestet werden soll wird aufgerufen
+        ArrayList<Spielkarte> darfAllesLegen = bot.erlaubteKartenAusspielenBeiSauspiel(hand3, new Spielkarte(Farbe.GRAS, Werte.SAU));
+        assertEquals(8, darfAllesLegen.size(), "Darf alles Legen");
+
     }
 
     /*
@@ -117,7 +132,7 @@ public class MitSpielerTest {
         bot.spielArtEntschieden(1, Farbe.EICHEL, SpielArt.SAUSPIEL);
 
         //Eine Vorhand Karte wird festgelegt, welche nicht erlaubt das die Sau, vor dem letzten Stich gelegt werden darf.
-        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.ACHTER), 1, wiederholung);
+        bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.ACHTER), 1, 0);
 
         bot.waehleEineKarte();
         bot.waehleEineKarte();
@@ -154,7 +169,7 @@ public class MitSpielerTest {
         richtig.add(Farbe.SCHELLEN);
         assertEquals(richtig, bot.sauZumAusrufen(hand), "Eine Sau durfte nicht Ausgerufen werden");
         //Schellen Sau aus Hand entfernen
-        hand.remove(2);
+        hand.remove(5);
         assertEquals(new ArrayList<Farbe>(), bot.sauZumAusrufen(hand), "Keine Sau darf ausgerufen werden");
     }
 }

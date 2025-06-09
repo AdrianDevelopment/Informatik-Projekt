@@ -15,11 +15,13 @@ public class Runde {
         this.speicherung = speicherung;
         this.turnier = turnier;
         rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden, echterSpieler, spieler.get(0));
+
+        rundeModel.setzeVorhand(wiederholungRunden%4);
         //spieler.get(positionSpieler).setzeRundeReferenz(this);
 
         for (int i = 0; i < 4; i++) {
-            ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>(spielKarten.subList(i*8, ((i+1)*8)));
-            spieler.get(i).rundeStarten(spielKartenProSpieler, positionSpieler);
+            ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>(spielKarten.subList(i*8, (i+1)*8));
+            spieler.get(i).rundeStarten(spielKartenProSpieler, i);
         }
 
         System.out.println("DEBUG: Karten wurden gesetz, jetzt hinlegen");
@@ -73,9 +75,9 @@ public class Runde {
     }
 
     // Runde spielen
-    public void stichSpielen(int wiederholungStiche, int wiederholung) {
-        if (rundeModel.gibStichWiederholung() < 7) {
-            karteAbfragen(rundeModel.gibWiederholung(), rundeModel.gebeVorhand());
+    public void stichSpielen() {
+        if (rundeModel.gibStichWiederholung() < 8) {
+            karteAbfragen();
         }
         else {
             rundeModel.setzeSiegerArray(rundenSiegerErmitteln());
@@ -97,30 +99,31 @@ public class Runde {
             speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
             speicherung.DatenSpeichern();
             turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
+
         }
     }
 
     // Stich spielen
-    public void karteAbfragen(int wiederholung, int vorhand) {
-        spieler.get(vorhand%4).legeEineKarte(rundeModel.gibWiederholung(), rundeModel.gebeVorhand());
+    public void karteAbfragen() {
+        spieler.get(rundeModel.gebeVorhand()).legeEineKarte(rundeModel.gibWiederholung(), rundeModel.gebeVorhand());
 
-        System.out.println("Warte auf Spielabsicht von Spieler " + vorhand);
+        System.out.println("Warte auf Spielabsicht von Spieler " + rundeModel.gebeVorhand());
     }
 
-    public void karteAbfragenAufgerufen(int wiederholung, Spielkarte karte, int vorhand) {
+    public void karteAbfragenAufgerufen( Spielkarte karte ) {
         rundeModel.setzeAktuellenStich(rundeModel.gibWiederholung(), karte);
 
         for (Mitspieler aktuellerSpieler : spieler) {
-            aktuellerSpieler.karteWurdeGelegt(karte, rundeModel.gebeVorhand()%3, rundeModel.gibWiederholung());
+            aktuellerSpieler.karteWurdeGelegt(karte, rundeModel.gebeVorhand(), rundeModel.gibWiederholung());
         }
 
     }
 
-    public void frageStichVorbei(int wiederholung, int vorhand){
+    public void frageStichVorbei(){
         if (rundeModel.gibWiederholung() < 3) {
-            rundeModel.setzeVorhand(rundeModel.gebeVorhand()+1);
+            rundeModel.setzeVorhand((rundeModel.gebeVorhand()+1)%4);
             rundeModel.setzteWiederholung(rundeModel.gibWiederholung()+1);
-            karteAbfragen( rundeModel.gibWiederholung(),  rundeModel.gebeVorhand());
+            karteAbfragen();
 
         }
         else {
@@ -130,8 +133,12 @@ public class Runde {
 
     public void auswertungStich() {
         int sieger = ermittleSieger(rundeModel.gebeAktuellerStichArray());
+
         rundeModel.setzeVorhand(sieger);
+        rundeModel.setzteWiederholung(0);
+        rundeModel.setzeStichWiederholung(rundeModel.gibStichWiederholung() + 1);
         rundeModel.kopiereInLetzerStich(rundeModel.gebeAktuellerStichArray());
+
         rundeModel.addierePunkte(sieger, ermittlePunkte(rundeModel.gebeAktuellerStichArray()));
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.stichGewonnen(sieger);
@@ -140,13 +147,137 @@ public class Runde {
         // Speicherung
         speicherung.KarteGespielt();
         speicherung.DatenSpeichern();
-        rundeModel.setzeVorhand(0);
-        rundeModel.setzteWiederholung(0);
-        rundeModel.setzeStichWiederholung(rundeModel.gibStichWiederholung() + 1);
+
     }
 
 
 
+
+
+    public int ermittleSieger(Spielkarte[] aktuellerStich) {
+        Spielkarte hoechsteKarte = aktuellerStich[0];
+        boolean trumpfImStich = istTrumpf(hoechsteKarte);
+        Farbe farbe = hoechsteKarte.gebeFarbe();
+        int sieger = 0;
+
+        for (int i = 1; i < 4; i++) {
+            // wenn im Stich bisher min. ein Trumpf ist, wird gecheckt, ob der aktuelle Trumpf höher ist
+            if (trumpfImStich && istTrumpf(aktuellerStich[i])) {
+                if (gebeTrumpfRang(aktuellerStich[i]) < gebeTrumpfRang(hoechsteKarte)) {
+                    hoechsteKarte = aktuellerStich[i];
+                    sieger = i;
+                }
+            }
+            // wenn im Stich bisher kein Trumpf ist und die aktuelle Karte ein Trumpf ist, gewinnt diese sofort
+            else if (!trumpfImStich && istTrumpf(aktuellerStich[i])) {
+                hoechsteKarte = aktuellerStich[i];
+                trumpfImStich = true;
+                sieger = i;
+            }
+            // wenn im Stich bisher kein Trumpf ist und die aktuelle Karte dieselbe Farbe hat, wie die erste Karte, gewinnt diese, wenn sie höher ist
+            else if (!trumpfImStich && !istTrumpf(aktuellerStich[i]) && aktuellerStich[i].gebeFarbe() == farbe) {
+                if (gebeFarbeRang(aktuellerStich[i]) < gebeFarbeRang(hoechsteKarte)) {
+                    hoechsteKarte = aktuellerStich[i];
+                    sieger = i;
+                }
+            }
+        }
+
+        return sieger;
+    }
+
+    public boolean istTrumpf(Spielkarte karte) {
+        return karte.gebeFarbe() == Farbe.HERZ || karte.gebeWert() == Werte.UNTER || karte.gebeWert() == Werte.OBER;
+    }
+
+    public int gebeTrumpfRang(Spielkarte karte) {
+        Farbe farbe = karte.gebeFarbe();
+        Werte wert = karte.gebeWert();
+
+        if (wert == Werte.OBER){
+            switch (farbe) {
+                case EICHEL: return 0;
+                case GRAS: return 1;
+                case HERZ: return 2;
+                case SCHELLEN: return 3;
+            }
+        }
+
+        else if (wert == Werte.UNTER){
+            switch (farbe) {
+                case EICHEL: return 4;
+                case GRAS: return 5;
+                case HERZ: return 6;
+                case SCHELLEN: return 7;
+            }
+        }
+
+        else {
+            switch (wert) {
+                case SAU: return 8;
+                case ZEHNER: return 9;
+                case KOENIG: return 10;
+                case NEUNER: return 11;
+                case ACHTER: return 12;
+                case SIEBENER: return 13;
+            }
+        }
+
+        System.out.println("ERROR: Fehler bei der Berechnung des Trumpf-Rangs");
+        return -1;
+    }
+
+    public int gebeFarbeRang(Spielkarte karte) {
+        Werte wert = karte.gebeWert();
+
+        switch (wert) {
+            case SAU: return 0;
+            case ZEHNER: return 1;
+            case KOENIG: return 2;
+            case NEUNER: return 3;
+            case ACHTER: return 4;
+            case SIEBENER: return 5;
+        }
+
+        System.out.println("ERROR: Fehler bei der Berechnung des Rangs einer Farbe");
+        return -1;
+    }
+
+    public int ermittlePunkte(Spielkarte[] aktuellerStich) {
+        int aktuellePunkte = 0;
+
+        for (int i = 0; i < 4; i++) {
+            aktuellePunkte += aktuellerStich[i].gebeWert().gebePunktzahl();
+        }
+
+        return aktuellePunkte;
+    }
+
+    public int[] rundenSiegerErmitteln() {
+
+        int mitspieler = spieler.get(rundeModel.gebePositionSpieler()).gebeMitspieler();
+        if (mitspieler == -1) System.out.println("ERROR: Position des echten Spielers ist falsch!");
+
+        int punkteSpieler = rundeModel.gebePunkte(rundeModel.gebeAusrufer()) + rundeModel.gebePunkte(mitspieler);
+        int[] gegenspieler = new int[2];
+        int position = 0;
+
+        if (punkteSpieler >= 60) {
+            return new int[] {rundeModel.gebeAusrufer(), mitspieler};
+        }
+        else {
+            for (int i = 0; i < 4; i++) {
+                if (i != rundeModel.gebeAusrufer() && i != mitspieler) {
+                    gegenspieler[position] = i;
+                    position++;
+                }
+            }
+            return gegenspieler;
+        }
+    }
+}
+
+//Alter Code?
 //    public int[] starteRunde(int vorhand) {
 //        SpielArt aktuellHoechstesSpiel;
 //        SpielArt hoechstesSpiel = SpielArt.KEINSPIEL;
@@ -256,125 +387,3 @@ public class Runde {
 //            spielSchleifeSau(anzahlKarten - 1, sieger); // Sieger wird neue Vorhand
 //        }
 //    }
-
-    public int ermittleSieger(Spielkarte[] aktuellerStich) {
-        Spielkarte hoechsteKarte = aktuellerStich[0];
-        boolean trumpfImStich = istTrumpf(hoechsteKarte);
-        Farbe farbe = hoechsteKarte.gebeFarbe();
-        int sieger = 0;
-
-        for (int i = 1; i < 4; i++) {
-            // wenn im Stich bisher min. ein Trumpf ist, wird gecheckt, ob der aktuelle Trumpf höher ist
-            if (trumpfImStich && istTrumpf(aktuellerStich[i])) {
-                if (gebeTrumpfRang(aktuellerStich[i]) < gebeTrumpfRang(hoechsteKarte)) {
-                    hoechsteKarte = aktuellerStich[i];
-                    sieger = i;
-                }
-            }
-            // wenn im Stich bisher kein Trumpf ist und die aktuelle Karte ein Trumpf ist, gewinnt diese sofort
-            else if (!trumpfImStich && istTrumpf(aktuellerStich[i])) {
-                hoechsteKarte = aktuellerStich[i];
-                trumpfImStich = true;
-                sieger = i;
-            }
-            // wenn im Stich bisher kein Trumpf ist und die aktuelle Karte dieselbe Farbe hat, wie die erste Karte, gewinnt diese, wenn sie höher ist
-            else if (!trumpfImStich && !istTrumpf(aktuellerStich[i]) && aktuellerStich[i].gebeFarbe() == farbe) {
-                if (gebeFarbeRang(aktuellerStich[i]) < gebeFarbeRang(hoechsteKarte)) {
-                    hoechsteKarte = aktuellerStich[i];
-                    sieger = i;
-                }
-            }
-        }
-
-        return sieger;
-    }
-
-    public boolean istTrumpf(Spielkarte karte) {
-        return karte.gebeFarbe() == Farbe.HERZ || karte.gebeWert() == Werte.UNTER || karte.gebeWert() == Werte.OBER;
-    }
-
-    public int gebeTrumpfRang(Spielkarte karte) {
-        Farbe farbe = karte.gebeFarbe();
-        Werte wert = karte.gebeWert();
-
-        if (wert == Werte.OBER){
-            switch (farbe) {
-                case EICHEL: return 0;
-                case GRAS: return 1;
-                case HERZ: return 2;
-                case SCHELLEN: return 3;
-            }
-        }
-
-        else if (wert == Werte.UNTER){
-            switch (farbe) {
-                case EICHEL: return 4;
-                case GRAS: return 5;
-                case HERZ: return 6;
-                case SCHELLEN: return 7;
-            }
-        }
-
-        else {
-            switch (wert) {
-                case SAU: return 8;
-                case ZEHNER: return 9;
-                case KOENIG: return 10;
-                case NEUNER: return 11;
-                case ACHTER: return 12;
-                case SIEBENER: return 13;
-            }
-        }
-
-        System.out.println("ERROR: Fehler bei der Berechnung des Trumpf-Rangs");
-        return -1;
-    }
-
-    public int gebeFarbeRang(Spielkarte karte) {
-        Werte wert = karte.gebeWert();
-
-        switch (wert) {
-            case SAU: return 0;
-            case ZEHNER: return 1;
-            case KOENIG: return 2;
-            case NEUNER: return 3;
-            case ACHTER: return 4;
-            case SIEBENER: return 5;
-        }
-
-        System.out.println("ERROR: Fehler bei der Berechnung des Rangs einer Farbe");
-        return -1;
-    }
-
-    public int ermittlePunkte(Spielkarte[] aktuellerStich) {
-        int aktuellePunkte = 0;
-
-        for (int i = 0; i < 4; i++) {
-            aktuellePunkte += aktuellerStich[i].gebeWert().gebePunktzahl();
-        }
-
-        return aktuellePunkte;
-    }
-
-    public int[] rundenSiegerErmitteln() {
-        int mitspieler = spieler.get(rundeModel.gebePositionSpieler()).gebeMitspieler();
-        if (mitspieler == -1) System.out.println("ERROR: Position des echten Spielers ist falsch!");
-
-        int punkteSpieler = rundeModel.gebePunkte(rundeModel.gebeAusrufer()) + rundeModel.gebePunkte(mitspieler);
-        int[] gegenspieler = new int[2];
-        int position = 0;
-
-        if (punkteSpieler >= 60) {
-            return new int[] {rundeModel.gebeAusrufer(), mitspieler};
-        }
-        else {
-            for (int i = 0; i < 4; i++) {
-                if (i != rundeModel.gebeAusrufer() && i != mitspieler) {
-                    gegenspieler[position] = i;
-                    position++;
-                }
-            }
-            return gegenspieler;
-        }
-    }
-}

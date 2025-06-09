@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class BotModel {
     private ArrayList<Spielkarte> hand; //Karten auf der Hand
     private Spielkarte sau; //Die ausgerufene Sau
-    private SpielArt spielArt; //Die Spielart der momentaten Runde
+    private SpielArt spielArt; //Die Spielart der moment Runde
     private Farbe soloFarbe; //Die Farbe des Solospieles;
     private ArrayList<Spielkarte> gelegteKarten; //Alle Karten die bisher gelegt wurden.
     private int spielerIndex; //Die einzigartige Spielernummer von diesem Bot.
@@ -14,7 +14,7 @@ public class BotModel {
     private BotMitspielerDatenModel[] mitspielerDaten; //Abspeicherung von Informationen über die Hand der anderen Spieler.
     private int spielerHatSauAusgerufen; //Spielernummer des Spielers der die Sau ausgerufen hat.
     private int teamSpieler;//Spielernummer des Mitspielers
-    private boolean sauFarbeVorhandGespielt; // Speicherung ob die Farbe der Ausgerufnene Sau schon gespielt wurde.
+    private boolean sauFarbeVorhandGespielt; // Speicherung, ob die Farbe der ausgerufenen Sau schon gespielt wurde.
 
     BotModel() {
         sau = new Spielkarte(Farbe.GRAS, Werte.SAU);
