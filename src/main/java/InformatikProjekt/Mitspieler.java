@@ -14,9 +14,6 @@ public abstract class Mitspieler {
     //Fragt die Farbe für das Spiel von dem Spieler, der das höchste Spiel angeboten hat ab. (Farbe bei Sau fürs Ausrufen, bei Solo für Trumpf)
     public abstract void farbeFuerSpielAbsicht(SpielArt spielArt);
 
-    //Nachricht an Mitspieler, nachdem ein Spieler eine Spielabsicht abgegeben hat.
-    public abstract void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler);
-
     //Fordert einen Mitspieler auf eine erlaubte Karte zu legen.
     public abstract void legeEineKarte(int wiederholung, int vorhand);
 

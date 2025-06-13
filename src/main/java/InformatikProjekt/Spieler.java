@@ -176,7 +176,7 @@ public class Spieler extends Mitspieler {
     }
 
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
-    public void spielerHatSpielabsichtGesagt2(int wiederholung, int vorhand, SpielArt spielAbsicht) {
+    public void spielerHatSpielabsichtGesagt(int wiederholung, int vorhand, SpielArt spielAbsicht) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(vorhand);
         String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
         gui.spielerHatAusgerufenHinzufuegen(text);
@@ -190,11 +190,6 @@ public class Spieler extends Mitspieler {
         gui.gebeOkButton().setVisible(false);
         gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
         gui.gebeOkButton().setVisible(true);
-    }
-
-    @Override
-    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) { //TODO braucht es die?
-
     }
 
     public void spielAbsichtAusgeben(int ausrufer, SpielArt hoechsteSpielart) {
@@ -218,6 +213,7 @@ public class Spieler extends Mitspieler {
         jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
         jButtons.get(1).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
         jButtons.get(2).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
+        gui.setzeSichtbarkeitFarbeFuerSpielabsicht(true);
     }
 
     /**
@@ -232,9 +228,11 @@ public class Spieler extends Mitspieler {
         ArrayList<Farbe> f = sauZumAusrufen(model.gebeHandkarten());
         for (int i = 0; i < f.size(); i++) {
             if (farbe == f.get(i)) {
+                gui.setzeSichtbarkeitFarbeFuerSpielabsicht(false);
                 runde.farbeFuerSpielAbsichtAufgerufen(farbe); //Farbe darf gelegt werden und wir weitergegeben
             }
         }
+        model.setzeDranFarbeSpielabsicht(true);
         System.out.println("Farbe darf nicht gelegt werden."); //TODO: nochmal aufrufen?
     }
 

@@ -232,12 +232,6 @@ public class Bot extends Mitspieler {
         model = new BotModel();
     }
 
-    //Kein Nutzen für Bot
-    @Override
-    public void spielerHatSpielabsichtGesagt(SpielArt spielAbsicht, int spieler) {
-
-    }
-
     //Hilfsmethoden
 
     /*
