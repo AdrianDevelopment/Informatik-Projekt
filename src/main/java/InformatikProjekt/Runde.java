@@ -158,7 +158,7 @@ public class Runde {
         Spielkarte hoechsteKarte = aktuellerStich[0];
         boolean trumpfImStich = istTrumpf(hoechsteKarte);
         Farbe farbe = hoechsteKarte.gebeFarbe();
-        int sieger = 0;
+        int sieger = 0; //nach Lege-Reihenfolge = int wiederholung
 
         for (int i = 1; i < 4; i++) {
             // wenn im Stich bisher min. ein Trumpf ist, wird gecheckt, ob der aktuelle Trumpf höher ist
@@ -182,8 +182,15 @@ public class Runde {
                 }
             }
         }
-
-        return sieger;
+        //Tom Anfang
+        //"Umwandlung": in wievielter von Beginner der (Ausrufe-)Runde ["von int wiederholung zu int vorhand"]
+        int vorhand = rundeModel.gebeVorhand() + 1; //dieser Spieler hat begonnen (in der Lege-Runde)
+        int rechnung = vorhand + sieger; //ausrechnen, welcher Spieler nach dem Beginner gewonnen hat
+        if (rechnung > 3) { //in Zahl von  0 bis 3 umformen
+            rechnung -= 4;
+        }
+        return rechnung; //nach Ausrufe-Reihenfolge
+        //Tom Ende
     }
 
     public boolean istTrumpf(Spielkarte karte) {

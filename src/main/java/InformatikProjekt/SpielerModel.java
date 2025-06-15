@@ -17,7 +17,6 @@ public class SpielerModel {
     private int[] spieler; //speichert wer ausruft und wer Mitspieler ist
     private Farbe farbe;
     //Attribute für Lege-/Stichrunden
-    private WelcherSpieler rundeErsterSpieler;
     private ArrayList<Spielkarte> stich; //speichert Karten eines Stichs
     private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs
     private int anzahlSpielerSchonGelegt; //gibt an, wie viele Spieler in der Lege-Runde dran waren
@@ -86,7 +85,6 @@ public class SpielerModel {
     }
 
 
-
     /**
      * setzt alle wichtigen Attribute für eine Runde nach dem Ausrufen
      */
@@ -104,6 +102,10 @@ public class SpielerModel {
     public Farbe gebeFarbe() {
         return farbe;
     }
+
+    /**
+     * Attribute für Lege-/Stichrunden
+     */
 
     public void setzeGelegteKarte(Spielkarte karte) {
         stich.add(karte);

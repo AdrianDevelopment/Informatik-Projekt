@@ -192,13 +192,18 @@ public class Spieler extends Mitspieler {
         gui.gebeOkButton().setVisible(true);
     }
 
-    public void spielAbsichtAusgeben(int ausrufer, SpielArt hoechsteSpielart) {
-        WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
-        String text = ausgabeBeimAusrufen(hoechsteSpielart, welcherspieler, null);
-        gui.spielerHatAusgerufenHinzufuegen(text);
+    public void spielAbsichtAusgeben(int ausrufer, SpielArt spielArt) {
         actionListenerLoeschen(gui.gebeOkButton());
-        gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
-
+        WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
+        String text = ausgabeBeimAusrufen(spielArt, welcherspieler, null);
+        if (spielArt == SpielArt.KEINSPIEL) {
+            text = "Spiel abgebrochen wegen ungültiger Spielart.";
+            System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
+            gui.gebeOkButton().addActionListener(e -> System.out.println("Das Spiel wurde wegen einer ungültigen Spielart abgebrochen. Bitte starte ein neues Spiel."));
+        } else {
+            gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
+        }
+        gui.spielerHatAusgerufenHinzufuegen(text);
     }
 
     /**
@@ -245,19 +250,13 @@ public class Spieler extends Mitspieler {
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
-
-        JLabel jLabel = new JLabel();
+        //Ausgabe in GUI
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
         gui.spielerHatAusgerufenHinzufuegen(text);
-        if (spielArt == SpielArt.KEINSPIEL) {
-            text += "Spiel abgebrochen wegen ungültiger Spielart";
-            jLabel.setText(text);
-            System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
-        }
+        //okButton
         actionListenerLoeschen(gui.gebeOkButton());
         gui.gebeOkButton().setVisible(true);
         gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
-        gui.gebeOkButton().setVisible(true);
     }
 
     /**
@@ -318,7 +317,6 @@ public class Spieler extends Mitspieler {
         }
         if (erlaubt) {
             System.out.println("Karte erlaubt");
-            //gui.handkartenAktualisieren(index); //damit wird der Button aus der GUI gelöscht
             buttonKartenZuorndenKeineReaktion();
             actionListenerLoeschen(model.gebeHandButtons().get(index));
             model.gebeHandButtons().get(index).setVisible(false);
@@ -326,7 +324,6 @@ public class Spieler extends Mitspieler {
             model.gebeHandkarten().remove(spielkarte);
             System.out.println(model.gebeHandkarten().size());
             runde.karteAbfragenAufgerufen(spielkarte);
-            gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
         }
     }
 
@@ -459,7 +456,7 @@ public class Spieler extends Mitspieler {
         } else if (rechnung == 3 || rechnung == -1) {
             spielerImUhrzeigersinn = WelcherSpieler.RECHTER; //rechter Spieler
         } else {
-            System.out.println("Fehler in Methode wieVielterSpieler" + spieler); //Test
+            System.out.println("ERROR: Methode wieVielterSpieler" + spieler); //Test
         }
         return spielerImUhrzeigersinn;
     }
