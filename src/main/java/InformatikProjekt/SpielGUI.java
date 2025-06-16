@@ -31,6 +31,7 @@ class SpielGUI {
     //private JLabel spieler3MitteKarte;
     //private JLabel spieler4MitteKarte;
     private JLabel mitteTextLabel;
+    private JLabel kleinMitteTextLabel;
 
     private ImageIcon kartenRuekseite;
 
@@ -270,6 +271,15 @@ class SpielGUI {
         mitteTextLabel.setBounds(170, 150, 1000, 200);
         mitteTextLabel.setVisible(true);
         mainFrame.add(mitteTextLabel);
+
+        kleinMitteTextLabel = new JLabel();
+        kleinMitteTextLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        kleinMitteTextLabel.setHorizontalAlignment(JLabel.CENTER);
+        kleinMitteTextLabel.setVerticalAlignment(JLabel.CENTER);
+        kleinMitteTextLabel.setBounds(170, 200, 1000, 200);
+        kleinMitteTextLabel.setVisible(true);
+        mainFrame.add(kleinMitteTextLabel);
+
         mitteKartenInitialisieren();
     }
 
@@ -437,7 +447,8 @@ class SpielGUI {
     public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler) {
     }
 
-    public void ungueltigeEingabe(String konkretisierung) {
+    public void hinweisAnNutzer(String text) {
+        kleinMitteTextLabel.setText(text);
     }
 
     public Spielkarte legeKarte() {

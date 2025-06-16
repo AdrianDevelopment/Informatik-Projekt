@@ -142,11 +142,20 @@ public class Spieler extends Mitspieler {
         model.setzeVorhand(vorhand);
         model.setzeDranSpielabsicht(true);
         ArrayList<JButton> spielabsichtButtons = gui.spielabsichtFragen();
+        spielabsichtButtons.get(1).setVisible(false);
         actionListenerLoeschen(gui.gebeOkButton());
         spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL));
         spielabsichtButtons.get(0).setVisible(true);
-        spielabsichtButtons.get(1).addActionListener(e -> spielabsichtGesagt(SpielArt.SAUSPIEL));
-        spielabsichtButtons.get(1).setVisible(true);
+        //Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
+        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
+        if (farbe.isEmpty()) {
+            gui.hinweisAnNutzer("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen.");
+        } else if (hoechstesSpiel == SpielArt.SAUSPIEL) {
+            gui.hinweisAnNutzer("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
+        } else {
+            spielabsichtButtons.get(1).addActionListener(e -> spielabsichtGesagt(SpielArt.SAUSPIEL));
+            spielabsichtButtons.get(1).setVisible(true);
+        }
     }
 
     /**
@@ -165,13 +174,8 @@ public class Spieler extends Mitspieler {
 
         SpielArt spielArt = spielabsicht;
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
+        gui.hinweisAnNutzer(""); //der Hinweistext ist nun nicht mehr sichtbar
         System.out.println("debug: Spielabsicht auf unsichtbar gesetzt");
-        ///Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
-        ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
-        if (farbe.isEmpty()) {
-            gui.ungueltigeEingabe("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen");
-            spielArt = SpielArt.KEINSPIEL;
-        }
         runde.spielabsichtFragenAufgerufen(model.gebeWiederholung(), model.gebeVorhand(), spielArt);
     }
 
@@ -230,15 +234,22 @@ public class Spieler extends Mitspieler {
         }
         model.setzeDranFarbeSpielabsicht(false);
         //Überprüfen, ob gewählte Farbe möglich
+        boolean moeglich = false;
         ArrayList<Farbe> f = sauZumAusrufen(model.gebeHandkarten());
         for (int i = 0; i < f.size(); i++) {
             if (farbe == f.get(i)) {
-                gui.setzeSichtbarkeitFarbeFuerSpielabsicht(false);
-                runde.farbeFuerSpielAbsichtAufgerufen(farbe); //Farbe darf gelegt werden und wir weitergegeben
+                moeglich = true;
             }
         }
-        model.setzeDranFarbeSpielabsicht(true);
-        System.out.println("Farbe darf nicht gelegt werden."); //TODO: nochmal aufrufen?
+        if (moeglich) {
+            gui.setzeSichtbarkeitFarbeFuerSpielabsicht(false);
+            gui.hinweisAnNutzer("");
+            runde.farbeFuerSpielAbsichtAufgerufen(farbe); //Farbe darf gelegt werden und wird weitergegeben
+        } else {
+            model.setzeDranFarbeSpielabsicht(true);
+            gui.hinweisAnNutzer("Auf diese Sau kann nicht ausgerufen werden. Wähle eine andere.");
+            System.out.println("Auf diese Sau kann nicht ausgerufen werden. Wähle eine andere.");
+        }
     }
 
     /**
@@ -405,9 +416,6 @@ public class Spieler extends Mitspieler {
         String text = ausgabeBeimAusrufen(null, welcherSpieler, null) + " den Stich gewonnen.";
 
         gui.spielerHatAusgerufenHinzufuegen(text);
-        /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
-            - am besten mit einem weiter Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
-         */
         gui.mitteAufrauemen();
         model.stichBeendet();
         actionListenerLoeschen(gui.gebeOkButton());
@@ -434,9 +442,6 @@ public class Spieler extends Mitspieler {
         //Ausgabe
         String text = gewinner1.gebeName() + " und " + gewinner2.gebeName() + "haben gewonnen und " + punkte[0] + "Punkte gesammelt." + "Du hast " + punkte[2] + " Punkte gesammelt.";
         gui.spielerHatAusgerufenHinzufuegen(text);
-        /*TODO: gui.spielerHatAusgerufenEntfernen() irgendwann aufrufen
-            - am besten mit einem weiter Button, der nach jedem Stich bzw. nach dem Ausrufen betätigt werden muss
-         */
     }
 
     /**
@@ -472,7 +477,6 @@ public class Spieler extends Mitspieler {
     }
 
     private void actionListenerLoeschen(JButton button) {
-
         for (ActionListener al : button.getActionListeners()) {
             button.removeActionListener(al);
         }
