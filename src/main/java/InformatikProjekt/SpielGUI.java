@@ -2,11 +2,10 @@ package InformatikProjekt;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 
-class SpielGUI {
+public class SpielGUI {
 
 
     private JButton weiterButton; //neu

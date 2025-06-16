@@ -7,7 +7,7 @@ import java.util.ArrayList;
 //Programmierer: Tom
 
 public class Spieler extends Mitspieler {
-    private SpielerModel model; //speichert Daten des Spielers
+    private final SpielerModel model; //speichert Daten des Spielers
     private SpielGUI gui;
     private Runde runde;
 
@@ -43,7 +43,6 @@ public class Spieler extends Mitspieler {
     }
 
     public void kartenHinlegen(int wiederholung, int vorhand) {
-        int[] i = new int[]{-1, -1};
         actionListenerLoeschen(gui.gebeOkButton());
         gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
         gui.gebeOkButton().setVisible(true);
@@ -71,11 +70,8 @@ public class Spieler extends Mitspieler {
         //Zuweisung von den passenden Bildern zu den Buttons
         for (int i = 0; i < handKarten.size(); i++) {
             handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
-            int finalI = i; //für Lambda Expression
             System.out.println(handKarten.get(i).gebeFarbe() + "|" + handKarten.get(i).gebeWert());
             actionListenerLoeschen(handButtons.get(i));
-
-
         }
     }
 
@@ -172,11 +168,10 @@ public class Spieler extends Mitspieler {
 
         System.out.println("debug: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
 
-        SpielArt spielArt = spielabsicht;
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
         gui.hinweisAnNutzer(""); //der Hinweistext ist nun nicht mehr sichtbar
         System.out.println("debug: Spielabsicht auf unsichtbar gesetzt");
-        runde.spielabsichtFragenAufgerufen(model.gebeWiederholung(), model.gebeVorhand(), spielArt);
+        runde.spielabsichtFragenAufgerufen(model.gebeWiederholung(), model.gebeVorhand(), spielabsicht);
     }
 
     /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
@@ -365,14 +360,19 @@ public class Spieler extends Mitspieler {
                             case EICHEL:
                                 ausgabe += "auf die Alte ";
                                 break;
+                            default:
+                                ausgabe += "auf eine ungültige Karte ";
+                                System.out.println("ERROR: Eine ungültige Farbe wurde beim Sauspiel ausgerufen.");
                         }
                     }
-                    ausgabe += "ausgerufen";
+                    ausgabe += "ausgerufen.";
                 }
-                default -> ausgabe += " eine ungültige Spielabsicht ausgerufen";
+                default -> {
+                    ausgabe += " eine ungültige Spielabsicht ausgerufen.";
+                    System.out.println("ERROR: Eine ungültige Spielabicht wurde ausgerufen.");
+                }
             }
         }
-
         return ausgabe;
     }
 

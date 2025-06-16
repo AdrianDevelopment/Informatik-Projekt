@@ -8,19 +8,16 @@ import java.util.ArrayList;
 public class SpielerModel {
     private ArrayList<Spielkarte> handkarten; //speichert eigene Handkarten
     private ArrayList<JButton> handButtons; //speichert Handkarten als Buttons mit richtigen Bildern
-    private int[] andereSpielerKarten; //speichert Anzahl der Spielerkarten von den anderen Spielern
     private int welcherSpieler;
-    private JButton okButton;
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
     private WelcherSpieler ausrufenderSpieler;
-    private int[] spieler; //speichert wer ausruft und wer Mitspieler ist
+    private int[] spieler; //speichert, wer ausruft und wer Mitspieler ist
     private Farbe farbe;
     //Attribute für Lege-/Stichrunden
     private ArrayList<Spielkarte> stich; //speichert Karten eines Stichs
     private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs
     private int anzahlSpielerSchonGelegt; //gibt an, wie viele Spieler in der Lege-Runde dran waren
-    private Spielkarte zuLegeKarte;
     private boolean dranLegen;
     private boolean dranSpielabsicht;
     private boolean dranFarbeSpielabsicht;
@@ -75,15 +72,6 @@ public class SpielerModel {
         return welcherSpieler;
     }
 
-    //okButton
-    public void setzeOkButton(JButton jButton) {
-        okButton.add(jButton);
-    }
-
-    public JButton gebeOkButton() {
-        return okButton;
-    }
-
 
     /**
      * setzt alle wichtigen Attribute für eine Runde nach dem Ausrufen
@@ -121,7 +109,7 @@ public class SpielerModel {
     }
 
     public Spielkarte gebeVorgegebeneKarte() {
-        return stich.get(0);
+        return stich.getFirst();
     }
 
     public void stichBeendet() {
@@ -167,18 +155,6 @@ public class SpielerModel {
         return dranFarbeSpielabsicht;
     }
 
-
-    /**
-     * Methoden für GUI-Rückgabe
-     */
-    //zuLegendeFarbe
-    public void setzeZuLegendeKarte(Spielkarte spielkarte) {
-        zuLegeKarte = spielkarte;
-    }
-
-    public Spielkarte gebeZuLegendeKarte() {
-        return zuLegeKarte;
-    }
 
     //Tim: benötigt um zu bestimmen, ob die gesuchte Sau gespielt werden darf.
     public void setzteSauFarbeVorhandGespielt(boolean b) {
