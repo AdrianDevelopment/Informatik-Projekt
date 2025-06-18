@@ -1,6 +1,9 @@
-package InformatikProjekt;
+package Controler;
 
 // Programmierer: Adrian
+
+import View.MenueGUI;
+import View.StatistikGUI;
 
 public class Menue {
     //private final Spieler echterSpieler;
@@ -20,7 +23,7 @@ public class Menue {
             case 0:
                 break;
             case 1:
-                Turnier tunier = new Turnier(1); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
+                Turnier tunier = new Turnier(4); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
                 tunier.rundeStarten(0, new int[]{-1, -1});
 
                 break;

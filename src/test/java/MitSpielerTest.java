@@ -1,6 +1,11 @@
 //Programmierer: Tim
 
-import InformatikProjekt.*;
+import Controler.Bot;
+import Controler.Mitspieler;
+import Model.Spielkarte;
+import Model.Farbe;
+import Model.SpielArt;
+import Model.Werte;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

@@ -1,4 +1,6 @@
-package InformatikProjekt;
+package Model;
+
+import Controler.Spieler;
 
 public class TunierModel {
     private int anzahlRunden;

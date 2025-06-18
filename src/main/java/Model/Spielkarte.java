@@ -1,4 +1,4 @@
-package InformatikProjekt;
+package Model;
 
 public class Spielkarte {
     private final Farbe farbe;

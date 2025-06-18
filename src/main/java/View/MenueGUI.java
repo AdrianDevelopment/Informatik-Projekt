@@ -1,4 +1,7 @@
-package InformatikProjekt;
+package View;
+
+import Controler.Menue;
+import Controler.Spieler;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -61,10 +64,10 @@ public class MenueGUI {
         frame.add(statistikButton);
 
     }
-    JButton gibPlayButton(){
+    public JButton gibPlayButton(){
         return  playButton;
     }
-    JButton gibStatistikButton(){
+    public JButton gibStatistikButton(){
         return  statistikButton;
     }
 

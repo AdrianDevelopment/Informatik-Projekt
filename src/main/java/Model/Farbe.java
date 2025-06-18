@@ -1,4 +1,4 @@
-package InformatikProjekt;
+package Model;
 
 public enum Farbe {
     SCHELLEN(0),
@@ -10,7 +10,7 @@ public enum Farbe {
     Farbe(int i){
         farbe = i;
     }
-    int gebeFarbeID(){
+    public int gebeFarbeID(){
         return farbe;
     }
 }

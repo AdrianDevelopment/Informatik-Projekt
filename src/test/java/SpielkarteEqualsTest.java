@@ -1,4 +1,8 @@
 package InformatikProjekt;
+import Model.Spielkarte;
+import Model.Farbe;
+import Model.Werte;
+
 import java.util.ArrayList;
 
 public class SpielkarteEqualsTest

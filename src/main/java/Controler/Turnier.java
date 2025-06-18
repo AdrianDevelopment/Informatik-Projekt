@@ -1,4 +1,10 @@
-package InformatikProjekt;
+package Controler;
+
+import Model.Farbe;
+import Model.Spielkarte;
+import Model.TunierModel;
+import Model.Werte;
+import View.SpielGUI;
 
 import java.util.ArrayList;
 import java.util.Random;

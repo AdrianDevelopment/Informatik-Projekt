@@ -1,4 +1,4 @@
-package InformatikProjekt;
+package Model;
 
 public enum SpielArt {
     KEINSPIEL(0),

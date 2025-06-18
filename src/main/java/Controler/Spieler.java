@@ -1,4 +1,7 @@
-package InformatikProjekt;
+package Controler;
+
+import Model.*;
+import View.SpielGUI;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

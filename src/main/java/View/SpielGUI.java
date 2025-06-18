@@ -1,4 +1,8 @@
-package InformatikProjekt;
+package View;
+
+import Model.Spielkarte;
+import Model.SpielArt;
+import Model.WelcherSpieler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -458,8 +462,8 @@ public class SpielGUI {
     }
 
     public void schliessen() {
-        mitteTextLabel.setText("Tunier Vorbei");
-        System.out.println("Tunier vorbei");
+        mitteTextLabel.setText("Turnier Vorbei");
+        System.out.println("Turnier vorbei");
         //mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING)); // schließt automatisch das Fenster
     }
 

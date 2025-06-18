@@ -1,5 +1,7 @@
 //Programmierer: Tim
-package InformatikProjekt;
+package Controler;
+
+import Model.*;
 
 import java.util.ArrayList;
 import java.util.Random;

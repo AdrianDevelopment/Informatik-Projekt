@@ -1,6 +1,6 @@
-import InformatikProjekt.Farbe;
-import InformatikProjekt.Spielkarte;
-import InformatikProjekt.Werte;
+import Model.Farbe;
+import Model.Spielkarte;
+import Model.Werte;
 
 import java.util.ArrayList;
 import java.util.Collections;

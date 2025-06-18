@@ -1,4 +1,6 @@
-package InformatikProjekt;
+package View;
+
+import Controler.Speicherung;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,5 +1,5 @@
 //Programmierer: Tim
-package InformatikProjekt;
+package Model;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,7 @@ public class BotModel {
     private int teamSpieler;//Spielernummer des Mitspielers
     private boolean sauFarbeVorhandGespielt; // Speicherung, ob die Farbe der ausgerufenen Sau schon gespielt wurde.
 
-    BotModel() {
+    public BotModel() {
         sau = new Spielkarte(Farbe.GRAS, Werte.SAU);
         spielzugReihenfolge = new ArrayList<Integer>();
         gelegteKarten = new ArrayList<Spielkarte>();

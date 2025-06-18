@@ -1,6 +1,8 @@
-package InformatikProjekt;
+package Controler;
 
 // Programmierer: Adrian
+
+import View.MenueGUI;
 
 import javax.swing.*;
 

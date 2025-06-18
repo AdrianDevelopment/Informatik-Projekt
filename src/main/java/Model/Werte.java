@@ -1,4 +1,4 @@
-package InformatikProjekt;
+package Model;
 
 public enum Werte {
     SAU((11<<16)|0),

@@ -1,5 +1,7 @@
-package InformatikProjekt;
+package Controler;
 // Speicherlogik von Robin
+
+import Model.SpielArt;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

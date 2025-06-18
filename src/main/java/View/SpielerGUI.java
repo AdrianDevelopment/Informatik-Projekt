@@ -1,4 +1,10 @@
-package InformatikProjekt;
+package View;
+
+import Controler.Spieler;
+import Model.Spielkarte;
+import Model.Farbe;
+import Model.SpielArt;
+import Model.WelcherSpieler;
 
 import java.util.ArrayList;
 import java.util.Scanner;

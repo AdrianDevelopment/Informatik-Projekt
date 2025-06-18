@@ -1,5 +1,10 @@
 //Programmierer: Tim
-package InformatikProjekt;
+package Controler;
+
+import Model.Farbe;
+import Model.SpielArt;
+import Model.Spielkarte;
+import Model.Werte;
 
 import java.util.ArrayList;
 
@@ -123,6 +128,9 @@ public abstract class Mitspieler {
                         }
                     }
                 }
+            default:
+                System.out.println("Unbekannte Spielart. Karten können nicht bestimmt werden für:" + spielArt);
+                break;
 
         }
         //Sofern keine Karte zwingend gespielt werden muss, dürfen alle Karten gespielt werden.

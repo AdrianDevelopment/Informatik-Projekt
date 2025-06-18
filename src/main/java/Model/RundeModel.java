@@ -1,6 +1,7 @@
-package InformatikProjekt;
+package Model;
 
-import java.util.ArrayList;
+import Controler.Mitspieler;
+import Controler.Spieler;
 
 public class RundeModel {
     private int[] punkte;

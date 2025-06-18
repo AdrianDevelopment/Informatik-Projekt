@@ -1,4 +1,6 @@
-package InformatikProjekt;
+package Controler;
+
+import Model.*;
 
 import java.util.ArrayList;
 

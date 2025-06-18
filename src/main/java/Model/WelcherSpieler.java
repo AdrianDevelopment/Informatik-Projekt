@@ -1,4 +1,4 @@
-package InformatikProjekt;
+package Model;
 
 //Programmierer: Tom
 
