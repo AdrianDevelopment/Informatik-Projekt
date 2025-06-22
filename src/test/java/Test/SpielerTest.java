@@ -1,3 +1,5 @@
+package Test;
+
 import Controler.Spieler;
 import org.junit.jupiter.api.Test;
 

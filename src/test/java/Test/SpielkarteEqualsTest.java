@@ -1,4 +1,4 @@
-package InformatikProjekt;
+package Test;
 import Model.Spielkarte;
 import Model.Farbe;
 import Model.Werte;

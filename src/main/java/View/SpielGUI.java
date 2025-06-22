@@ -464,6 +464,7 @@ public class SpielGUI {
     public void schliessen() {
         mitteTextLabel.setText("Turnier Vorbei");
         System.out.println("Turnier vorbei");
+        // TODO: Fenster schließen, wenn Button gedrückt wird
         //mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING)); // schließt automatisch das Fenster
     }
 

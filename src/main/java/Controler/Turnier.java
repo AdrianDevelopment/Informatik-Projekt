@@ -16,13 +16,11 @@ public class Turnier {
     private final Speicherung speicherung;
     private final TunierModel tunierModel;
     private final ArrayList<Mitspieler> spieler;
-    private final ArrayList<Spielkarte> spielKarten;
-    private SpielGUI gui;
+    private final SpielGUI gui;
 
-    Turnier(int anzahlRunden) {
+    public Turnier(int anzahlRunden) {
         speicherung = Speicherung.speicherungErstellen();
         spieler = new ArrayList<>(4);
-        spielKarten = new ArrayList<>();
         Spieler echterSpieler = new Spieler();
 
         tunierModel = new TunierModel(anzahlRunden, echterSpieler);
@@ -35,8 +33,7 @@ public class Turnier {
         for (int i = 0; i < 4; i++) {
             if (i != tunierModel.gebePositionSpieler()) {
                 spieler.add(new Bot());
-            }
-            else {
+            } else {
                 spieler.add(tunierModel.gebeEchterSpieler());
             }
         }
@@ -44,63 +41,29 @@ public class Turnier {
         tunierModel.gebeEchterSpieler().spielGUIErstellen(gui);
     }
 
-        // Spielkarten vorbereiten
-    public void spielKartenVorbereiten() {
+    // Spielkarten vorbereiten
+    public ArrayList<Spielkarte> spielKartenVorbereiten() {
+        ArrayList<Spielkarte> spielKarten = new ArrayList<>();
         for (Farbe farbe : Farbe.values()) {
             for (Werte wert : Werte.values()) {
                 spielKarten.add(new Spielkarte(farbe, wert));
             }
         }
         Collections.shuffle(spielKarten);
+        return spielKarten;
     }
 
     public void rundeStarten(int wiederholungRunden, int[] sieger) {
         if (wiederholungRunden < tunierModel.gebeAnzahlRunden()) {
-            spielKartenVorbereiten();
-            new Runde(spieler, spielKarten, tunierModel.gebePositionSpieler(), speicherung, 0, this, wiederholungRunden, tunierModel.gebeEchterSpieler());
-        }
-        else {
+            new Runde(spieler, spielKartenVorbereiten(), tunierModel.gebePositionSpieler(), speicherung, 0, this, wiederholungRunden, tunierModel.gebeEchterSpieler());
+        } else {
             if (sieger[0] == tunierModel.gebePositionSpieler() || sieger[1] == tunierModel.gebePositionSpieler()) {
                 speicherung.TurnierGewonnen();
-            }
-            else {
+            } else {
                 speicherung.TurnierVerloren();
             }
             speicherung.DatenSpeichern();
             gui.schliessen();
         }
     }
-
-//    public void tunierStarten() {
-//    Runden spielen
-//        for (int i = 0; i < tunierModel.gebeAnzahlRunden(); i++) {
-//            Runde runde = new Runde(spieler, tunierModel.gebeEchterSpieler(), spielKarten, positionSpieler, speicherung); // i: Vorhand (wird als erstes gefragt, legt erste Karte)
-//            int[] sieger = runde.starteRunde(vorhand);
-//            if (sieger != null) {
-//                tunierModel.erhoehePunkteTunierUmEins(sieger[0]);
-//                tunierModel.erhoehePunkteTunierUmEins(sieger[1]);
-//            }
-//
-//            vorhand = (vorhand == 3) ? 0 : vorhand + 1;
-//        }
-//        Runde runde = new Runde(spieler, tunierModel.gebeEchterSpieler(), spielKarten, positionSpieler, speicherung);
-
-        // Tunier auswerten
-//        int hoechsteTunierPunkte = -1;
-//        int tunierSieger = -1;
-//        for (int i = 0; i < 4; i++) {
-//            if (tunierModel.gebePunkteTunier(i) > hoechsteTunierPunkte) {
-//                hoechsteTunierPunkte = tunierModel.gebePunkteTunier(i);
-//                tunierSieger = i;
-//            }
-//            else if (tunierModel.gebePunkteTunier(i) == hoechsteTunierPunkte) {
-//                // Sonderfall, geht über Prototyp hinaus; Gewinner ist, wer als erstes die meisten Punkte hat
-//            }
-//        }
-//        if (tunierSieger == positionSpieler) {
-//            speicherung.TurnierGewonnen();
-//        }
-//        else {
-//            speicherung.TurnierVerloren();
-//        }
-    }
+}

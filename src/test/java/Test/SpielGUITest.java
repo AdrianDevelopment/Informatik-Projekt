@@ -1,6 +1,8 @@
+package Test;
+
 import javax.swing.*;
 
-public class LeckMich {
+public class SpielGUITest {
     public static void main(String[] args) {
         JFrame mainFrame = new JFrame();
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!

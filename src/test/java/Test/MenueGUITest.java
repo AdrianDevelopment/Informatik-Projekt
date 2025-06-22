@@ -1,3 +1,7 @@
+package Test;
+
+// Programmierer: Thiemo
+
 import javax.swing.*;
 
 public class MenueGUITest {

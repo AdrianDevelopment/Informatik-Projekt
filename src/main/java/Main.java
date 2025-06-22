@@ -1,10 +1,9 @@
-package Controler;
-
 // Programmierer: Adrian
 
+import Controler.Menue;
 import View.MenueGUI;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
