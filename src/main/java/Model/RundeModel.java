@@ -8,7 +8,7 @@ public class RundeModel {
     private int ausrufer;
     private int positionSpieler;
     private Spielkarte[] aktuellerStich;
-    private Spielkarte[] letzerStich;
+    private Spielkarte[] letzterStich;
     private SpielArt hoechsteSpielart;
     private Mitspieler ausruferReferenz;
     private int vorhand;
@@ -24,7 +24,7 @@ public class RundeModel {
         this.ausrufer = 0;
         this.positionSpieler = positionSpieler;
         this.aktuellerStich = new Spielkarte[4];
-        this.letzerStich = new Spielkarte[4];
+        this.letzterStich = new Spielkarte[4];
         this.hoechsteSpielart = SpielArt.KEINSPIEL;
         this.ausruferReferenz = ausruferReferenz;
         this.vorhand = vorhand;
@@ -32,8 +32,10 @@ public class RundeModel {
         this.wiederholungenRunden = wiederholungenRunden;
         this.echterSpieler = echterSpieler;
         this.aktuelleSpielArt = SpielArt.KEINSPIEL;
-        stichWiederholung = 0;
+        this.stichWiederholung = 0;
+        this.wiederholung = 0;
     }
+
 
     // Geber
     public int gebePunkte(int index) {
@@ -60,6 +62,10 @@ public class RundeModel {
         return aktuellerStich;
     }
 
+    public Spielkarte gebeLetzterStichArray(int index) {
+        return letzterStich[index];
+    }
+
     public SpielArt gebeHoechsteSpielart() {
         return hoechsteSpielart;
     }
@@ -70,10 +76,6 @@ public class RundeModel {
 
     public int gebeVorhand() {
         return vorhand;
-    }
-
-    public Spielkarte[] gebeLetzerStichArray() {
-        return letzerStich;
     }
 
     public int gebeSieger(int index) {
@@ -96,22 +98,26 @@ public class RundeModel {
         return aktuelleSpielArt;
     }
 
-    public int gibStichWiederholung(){
+    public int gebeStichWiederholung(){
         return  stichWiederholung;
     }
-    public int gibWiederholung(){
+
+    public int gebeWiederholung(){
         return  wiederholung;
     }
+
+
     // Setzer
-    public  void setzteWiederholung(int n){
-        wiederholung = n;
-    }
     public void setzePunkte(int index, int punktzahl) {
         this.punkte[index] = punktzahl;
     }
 
     public void addierePunkte(int index, int punktzahl) {
         this.punkte[index] += punktzahl;
+    }
+
+    public void setzePositionSpieler(int positionSpieler) {
+        this.positionSpieler = positionSpieler;
     }
 
     public void setzeAusrufer(int ausrufer) {
@@ -122,9 +128,10 @@ public class RundeModel {
         this.aktuellerStich[index] = spielkarte;
     }
 
-    public void setzeStichWiederholung(int n){
-         stichWiederholung = n;
+    public void setzeLetzterStich(Spielkarte[] aktuellerStich) {
+        this.letzterStich = aktuellerStich.clone();
     }
+
     public void setzeHoechsteSpielart(SpielArt hoechsteSpielart) {
         this.hoechsteSpielart = hoechsteSpielart;
     }
@@ -135,10 +142,6 @@ public class RundeModel {
 
     public void setzeVorhand(int vorhand) {
         this.vorhand = vorhand;
-    }
-
-    public void kopiereInLetzerStich(Spielkarte[] aktuellerStich) {
-        this.letzerStich = aktuellerStich.clone();
     }
 
     public void setzeSieger(int index, int sieger) {
@@ -159,5 +162,13 @@ public class RundeModel {
 
     public void setzeAktuelleSpielArt(SpielArt aktuelleSpielArt) {
         this.aktuelleSpielArt = aktuelleSpielArt;
+    }
+
+    public void setzeStichWiederholung(int n){
+         stichWiederholung = n;
+    }
+
+    public  void setzteWiederholung(int n){
+        wiederholung = n;
     }
 }

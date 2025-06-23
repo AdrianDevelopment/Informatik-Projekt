@@ -27,7 +27,6 @@ public class Turnier {
 
         Random random = new Random();
         tunierModel.setzePositionSpieler(random.nextInt(4));
-        int vorhand = 0;
 
         // Spieler-ArrayList vorbereiten
         for (int i = 0; i < 4; i++) {
@@ -55,7 +54,7 @@ public class Turnier {
 
     public void rundeStarten(int wiederholungRunden, int[] sieger) {
         if (wiederholungRunden < tunierModel.gebeAnzahlRunden()) {
-            new Runde(spieler, spielKartenVorbereiten(), tunierModel.gebePositionSpieler(), speicherung, 0, this, wiederholungRunden, tunierModel.gebeEchterSpieler());
+            new Runde(spieler, spielKartenVorbereiten(), tunierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, tunierModel.gebeEchterSpieler());
         } else {
             if (sieger[0] == tunierModel.gebePositionSpieler() || sieger[1] == tunierModel.gebePositionSpieler()) {
                 speicherung.TurnierGewonnen();

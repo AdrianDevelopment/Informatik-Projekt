@@ -467,6 +467,4 @@ public class SpielGUI {
         // TODO: Fenster schließen, wenn Button gedrückt wird
         //mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING)); // schließt automatisch das Fenster
     }
-
-
 }

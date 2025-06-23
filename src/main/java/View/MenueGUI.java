@@ -1,10 +1,6 @@
 package View;
 
-import Controler.Menue;
-import Controler.Spieler;
-
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class MenueGUI {
@@ -15,26 +11,18 @@ public class MenueGUI {
     JLabel label1;
     JFrame frame;
     JLabel lblHintergrund;
-    private Spieler spieler;
-    private Menue menue;
     private ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\hintergrundMenueGUI.png");
-
-
-
 
     public  MenueGUI() {
         frame = new JFrame();
         frame.setTitle("Startmenue");
         frame.setSize(889, 500); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         frame.setVisible(true);
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //frame.setBackground(Color.GREEN);
         lblHintergrund = new JLabel(imageIcon);
         lblHintergrund.setOpaque(false);
         frame.setContentPane(lblHintergrund);
-
-        Border border = BorderFactory.createLineBorder(Color.black);
-
 
         //Hier werden Labels erstellt:
         label1 = new JLabel();

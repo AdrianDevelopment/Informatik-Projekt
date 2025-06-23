@@ -24,7 +24,6 @@ public class RundeTest {
     private final ArrayList<Spielkarte> spielKarten;
     private final int positionSpieler;
     private final Speicherung speicherung;
-    private final int vorhand;
     private final Turnier turnier;
     private final int wiederholungenRunde;
     private final Spieler echterSpieler;
@@ -34,7 +33,6 @@ public class RundeTest {
         positionSpieler = 0;
         spielKarten = new ArrayList<>(32);
         speicherung = Speicherung.speicherungErstellen();
-        vorhand = 0;
         turnier = new Turnier(4);
         wiederholungenRunde = 8;
         echterSpieler = new Spieler();
@@ -57,7 +55,7 @@ public class RundeTest {
 
     @Test
     public void ermittleSiegerTesten() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.GRAS, Werte.SIEBENER);
@@ -73,7 +71,7 @@ public class RundeTest {
 
     @Test
     public void alleKartenGleicheFarbeTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.ACHTER);
         aktuellerStich[1] = new Spielkarte(Farbe.SCHELLEN, Werte.ZEHNER);
@@ -88,7 +86,7 @@ public class RundeTest {
 
     @Test
     public void trumpfKarteSchlaegtAndereTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.NEUNER);
         aktuellerStich[1] = new Spielkarte(Farbe.GRAS, Werte.KOENIG);
@@ -103,7 +101,7 @@ public class RundeTest {
 
     @Test
     public void hoechsteTrumpfKarteGewinntTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.UNTER);
         aktuellerStich[1] = new Spielkarte(Farbe.HERZ, Werte.OBER);
@@ -118,7 +116,7 @@ public class RundeTest {
 
     @Test
     public void farbMischungTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.EICHEL, Werte.SAU);
         aktuellerStich[1] = new Spielkarte(Farbe.GRAS, Werte.ZEHNER);
@@ -133,7 +131,7 @@ public class RundeTest {
 
     @Test
     public void mehrereHerzTruempfeTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.OBER);
         aktuellerStich[1] = new Spielkarte(Farbe.HERZ, Werte.UNTER);
@@ -148,7 +146,7 @@ public class RundeTest {
 
     @Test
     public void alleTruempfeTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.HERZ, Werte.SIEBENER);
         aktuellerStich[1] = new Spielkarte(Farbe.HERZ, Werte.SAU);
@@ -163,7 +161,7 @@ public class RundeTest {
 
     @Test
     public void keinTrumpfTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.GRAS, Werte.ZEHNER);
         aktuellerStich[1] = new Spielkarte(Farbe.SCHELLEN, Werte.SAU);
@@ -178,7 +176,7 @@ public class RundeTest {
 
     @Test
     public void ersteFarbeGewinntTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.EICHEL, Werte.ZEHNER);
@@ -194,7 +192,7 @@ public class RundeTest {
 
     @Test
     public void hoechteFarbeGewinntTest() {
-        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, vorhand, turnier, wiederholungenRunde, echterSpieler);
+        Runde runde = new Runde(spieler, spielKarten, positionSpieler, speicherung, turnier, wiederholungenRunde, echterSpieler);
 
         Spielkarte[] aktuellerStich = new Spielkarte[4];
         aktuellerStich[0] = new Spielkarte(Farbe.SCHELLEN, Werte.ACHTER);
