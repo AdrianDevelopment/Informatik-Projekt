@@ -28,8 +28,20 @@ public class BotModel {
         sauFarbeVorhandGespielt = false;
     }
 
+    public boolean hatAusgerufeneSau(){
+        for(Spielkarte karte : hand){
+            if (karte == sau){
+                return  true;
+            }
+        }
+        return  false;
+    }
+
     public int gibStichGelegteKartenAnzahl() {
         return spielzugReihenfolge.size();
+    }
+    public ArrayList<Integer> gibSpielerDieImStichGelegtHaben() {
+        return spielzugReihenfolge;
     }
 
     public ArrayList<Spielkarte> gibHand() {

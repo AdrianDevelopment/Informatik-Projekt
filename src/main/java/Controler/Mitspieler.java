@@ -146,6 +146,7 @@ public abstract class Mitspieler {
     /*
         Bestimmt welche Karten die Vorhand beim Sauspiel spielen darf.
      */
+    //todo fehlber behen bei 3 Grass grass sau durfte nicht davonlaufen`?
     public ArrayList<Spielkarte> erlaubteKartenAusspielenBeiSauspiel(ArrayList<Spielkarte> hand, Spielkarte sau) {
         ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<Spielkarte>();
         int anzahlSauFarbeKarten = 0;
@@ -182,6 +183,7 @@ public abstract class Mitspieler {
         Dabei ist die Sau mit dem wenigstens Karte, die die gleiche Farbe haben, auf der Hand bei Index 0.
         Dies ist hilfreich da der Bot dadurch einfach die beste Sau zum Ausrufen wählen kann.
      */
+
     public ArrayList<Farbe> sauZumAusrufen(ArrayList<Spielkarte> hand) {
 
         int anzahlEichel = 0;

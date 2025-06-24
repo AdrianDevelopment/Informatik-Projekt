@@ -106,26 +106,6 @@ public class Spielkarte {
         return false;
     }
 
-    //Int zum Vergleichen welche Karte welche Sticht bei ver. Spielarten
-    //Todo muss noch umgesetzt werden
-    public int vergleichsWert(SpielArt spielArt, Spielkarte vorgebeneKarte) {
-        //Todo Spielart und Vorgebene Karte 
-        int kartenStaerke = 0;
-        switch (spielArt) {
-            case KEINSPIEL:
-                break;
-            case SAUSPIEL:
-                //todo
-                break;
-            case WENZ:
-                break;
-            case SOLO:
-                break;
-        }
-        Werte[] werteReihenfolge = new Werte[8];
-        Farbe[] farbeReihenfolge = new Farbe[4];
 
-        return 0;
-    }
 }
 

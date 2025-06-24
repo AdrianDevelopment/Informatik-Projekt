@@ -176,5 +176,26 @@ public class MitSpielerTest {
         //Schellen Sau aus Hand entfernen
         hand.remove(5);
         assertEquals(new ArrayList<Farbe>(), bot.sauZumAusrufen(hand), "Keine Sau darf ausgerufen werden");
+
+
+        //Hand wird festgelegt
+        ArrayList<Spielkarte> hand2 = new ArrayList<>();
+        hand2.add(new Spielkarte(Farbe.HERZ, Werte.SAU));
+        hand2.add(new Spielkarte(Farbe.EICHEL, Werte.UNTER));
+        hand2.add(new Spielkarte(Farbe.SCHELLEN, Werte.OBER));
+        hand2.add(new Spielkarte(Farbe.HERZ, Werte.ZEHNER));
+        hand2.add(new Spielkarte(Farbe.GRAS, Werte.SAU));
+        hand2.add(new Spielkarte(Farbe.GRAS, Werte.KOENIG));
+        hand2.add(new Spielkarte(Farbe.GRAS, Werte.SIEBENER));
+        hand2.add(new Spielkarte(Farbe.GRAS, Werte.NEUNER));
+
+        //Nur die Schellen Sau darf ausgerufen werden.
+        ArrayList<Farbe> richtig2 = new ArrayList<Farbe>();
+        assertEquals(richtig2, bot.sauZumAusrufen(hand), "Keine Sau durfte Ausgerufen werden");
+
+
+
+
+
     }
 }
