@@ -143,7 +143,6 @@ public class Runde {
         rundeModel.setzeStichWiederholung(rundeModel.gebeStichWiederholung() + 1);
         rundeModel.setzeLetzterStich(rundeModel.gebeAktuellerStichArray());
 
-        // TODO: aktuell ist sieger abhängig vom aktuellen Stich, muss neu gedacht werden
         rundeModel.addierePunkte(sieger, ermittlePunkte(rundeModel.gebeAktuellerStichArray()));
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.stichGewonnen(sieger);
