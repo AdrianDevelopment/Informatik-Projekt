@@ -33,7 +33,6 @@ public class Spieler extends Mitspieler {
         this.gui = gui;
         JButton okButton = gui.gebeOkButton();
         okButton.setVisible(true);
-
     }
 
     @Override
@@ -181,7 +180,7 @@ public class Spieler extends Mitspieler {
     public void spielerHatSpielabsichtGesagt(int wiederholung, int vorhand, SpielArt spielAbsicht) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(vorhand);
         String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
-        gui.spielerHatAusgerufenHinzufuegen(text);
+        gui.textAusgeben(text);
         if (vorhand < 3) {
             vorhand++;
         } else {
@@ -205,7 +204,7 @@ public class Spieler extends Mitspieler {
         } else {
             gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
         }
-        gui.spielerHatAusgerufenHinzufuegen(text);
+        gui.textAusgeben(text);
     }
 
     /**
@@ -261,7 +260,7 @@ public class Spieler extends Mitspieler {
         model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
         //Ausgabe in GUI
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
-        gui.spielerHatAusgerufenHinzufuegen(text);
+        gui.textAusgeben(text);
         //okButton
         actionListenerLoeschen(gui.gebeOkButton());
         gui.gebeOkButton().setVisible(true);
@@ -418,7 +417,7 @@ public class Spieler extends Mitspieler {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         String text = ausgabeBeimAusrufen(null, welcherSpieler, null) + " den Stich gewonnen.";
 
-        gui.spielerHatAusgerufenHinzufuegen(text);
+        gui.textAusgeben(text);
         gui.mitteAufrauemen();
         model.stichBeendet();
         actionListenerLoeschen(gui.gebeOkButton());
@@ -443,8 +442,13 @@ public class Spieler extends Mitspieler {
         punkte[1] = 120 - punkte[0];
         punkte[2] = uebergebenePunkte[model.gebeWelcherSpieler()];
         //Ausgabe
-        String text = gewinner1.gebeName() + " und " + gewinner2.gebeName() + "haben gewonnen und " + punkte[0] + "Punkte gesammelt." + "Du hast " + punkte[2] + " Punkte gesammelt.";
-        gui.spielerHatAusgerufenHinzufuegen(text);
+        String text = "<html>" + gewinner1.gebeName() + " und " + gewinner2.gebeName() + " haben gewonnen und " + punkte[0] + " Punkte gesammelt. " + "Du hast " + punkte[2] + " Punkte gesammelt.<html>";
+        gui.textAusgeben(text);
+        gui.mitteAufrauemen();
+        actionListenerLoeschen(gui.gebeOkButton()); // TODO: der OK-Button ist auch nach anzeige des Textes noch vorhanden und muss erst angeklickt werden statt neue Runde
+        gui.gebeOkButton().setVisible(false);
+        gui.gebeNeueRundeButton().setVisible(true);
+        gui.gebeNeueRundeButton().addActionListener(e -> runde.neuRundeStarten());
     }
 
     /**

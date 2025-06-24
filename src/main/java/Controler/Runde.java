@@ -12,6 +12,9 @@ public class Runde {
     private RundeModel rundeModel;
     private Turnier turnier;
 
+    // debug hardcoded
+    boolean debug = true;
+
     public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung, Turnier turnier, int wiederholungRunden, Spieler echterSpieler) {
         this.spieler = spieler;
         this.speicherung = speicherung;
@@ -81,6 +84,9 @@ public class Runde {
         }
         else {
             rundeModel.setzeSiegerArray(rundenSiegerErmitteln());
+            for (Mitspieler mitspieler : spieler) {
+                mitspieler.rundeGewonnen(rundeModel.gebeSiegerArray(), rundeModel.gebePunkteArray());
+            }
             if (rundeModel.gebeSieger(0) == rundeModel.gebePositionSpieler() || rundeModel.gebeSieger(1) == rundeModel.gebePositionSpieler()) {
                 speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(rundeModel.gebeSieger(0)) + rundeModel.gebePunkte(rundeModel.gebeSieger(1))); // Speicherung der zusammengerechneten Punkte der Sieger
                 if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) + rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 120) {
@@ -99,7 +105,6 @@ public class Runde {
             speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
             speicherung.DatenSpeichern();
             turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
-
         }
     }
 
@@ -107,22 +112,21 @@ public class Runde {
     public void karteAbfragen() {
         spieler.get(rundeModel.gebeVorhand()).legeEineKarte(rundeModel.gebeWiederholung(), rundeModel.gebeVorhand());
 
-        System.out.println("Warte auf Spielabsicht von Spieler " + rundeModel.gebeVorhand());
+        if (debug) System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + rundeModel.gebeVorhand());
     }
 
     public void karteAbfragenAufgerufen( Spielkarte karte ) {
-        rundeModel.setzeAktuellenStich(rundeModel.gebeWiederholung(), karte);
+        rundeModel.setzeAktuellenStich(rundeModel.gebeVorhand(), karte);
 
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.karteWurdeGelegt(karte, rundeModel.gebeVorhand(), rundeModel.gebeWiederholung());
         }
-
     }
 
     public void frageStichVorbei(){
         if (rundeModel.gebeWiederholung() < 3) {
-            rundeModel.setzeVorhand((rundeModel.gebeVorhand()+1)%4);
-            rundeModel.setzteWiederholung(rundeModel.gebeWiederholung()+1);
+            rundeModel.setzeVorhand((rundeModel.gebeVorhand() + 1) % 4);
+            rundeModel.setzteWiederholung(rundeModel.gebeWiederholung() + 1);
             karteAbfragen();
 
         }
@@ -148,6 +152,10 @@ public class Runde {
         // Speicherung
         speicherung.KarteGespielt();
         speicherung.DatenSpeichern();
+    }
+
+    public void neuRundeStarten() {
+        turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
     }
 
     public int ermittleSieger(Spielkarte[] aktuellerStich) {
@@ -179,8 +187,9 @@ public class Runde {
             }
         }
         // sieger wird relativ zu der Reihenfolge des aktuellen Stiches ermittelt
-        int vorhand = rundeModel.gebeVorhand() + 1;
-        return (vorhand + sieger) % 4;
+//        int vorhand = rundeModel.gebeVorhand() + 1;
+//        return (vorhand + sieger) % 4;
+        return sieger;
     }
 
     public boolean istTrumpf(Spielkarte karte) {

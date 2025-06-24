@@ -19,6 +19,7 @@ public class SpielGUI {
     private JRadioButton grasButton;
     private JRadioButton eichelButton;
     private JButton okButton;
+    private JButton neueRundeButton;
 
     private ArrayList<JButton> spieler1KartenArray;
     private ArrayList<JButton> weiterSauButtons;
@@ -53,6 +54,10 @@ public class SpielGUI {
         okButton.setVisible(false);
         mainFrame.add(okButton);
 
+        neueRundeButton = new JButton("neue Runde");
+        neueRundeButton.setBounds(1000, 400, 100, 50);
+        neueRundeButton.setVisible(false);
+        mainFrame.add(neueRundeButton);
 
         weiterButton = new JButton("Weiter");
         weiterButton.setBounds(1000, 600, 100, 50);
@@ -395,18 +400,21 @@ public class SpielGUI {
         mitteKarten[adressat.ordinal()].setVisible(true);
     }
 
-    public void spielerHatAusgerufenHinzufuegen(String text) {
+    public void textAusgeben(String text) {
         mitteTextLabel.setText(text);
     }
 
-    public void spielerHatAusgerufenEntfernen(JLabel mitteText) {
-        mainFrame.remove(mitteText);
+    public void textEntfernen(JLabel mitteText) {
+        mainFrame.remove(mitteTextLabel);
     }
 
     public JButton gebeOkButton() {
         return okButton;
     }
 
+    public JButton gebeNeueRundeButton() {
+        return neueRundeButton;
+    }
 
     public void mitteAufrauemen() {
         for (JLabel label : mitteKarten) {
