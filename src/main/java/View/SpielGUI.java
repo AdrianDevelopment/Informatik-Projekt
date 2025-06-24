@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 public class SpielGUI {
 
+    private JLabel lblHintergrund;
+    private ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\hintergrundSpielGUI.png");
 
     private JButton weiterButton; //neu
     private JButton sauButton;
@@ -48,6 +50,11 @@ public class SpielGUI {
         mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
         mainFrame.setVisible(true);
         mainFrame.setLayout(null);
+
+        lblHintergrund = new JLabel(imageIcon);
+        lblHintergrund.setBounds(0, 0, 1400, 700);
+        lblHintergrund.setOpaque(false);
+        mainFrame.setContentPane(lblHintergrund);
 
         okButton = new JButton("Ok");
         okButton.setBounds(1000, 400, 100, 50);
