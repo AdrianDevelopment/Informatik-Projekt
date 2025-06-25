@@ -37,7 +37,7 @@ public class Runde {
     // Spielabsicht fragen
     public void spielAbsichtFragenRunde(int wiederholung, int vorhand) {
         if (wiederholung < 4) {
-            System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + vorhand);
+            if (debug) System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + vorhand);
             spieler.get(vorhand).setzeRunde(this);
             spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
         }
@@ -53,7 +53,7 @@ public class Runde {
             rundeModel.setzeHoechsteSpielart(spielArt);
             rundeModel.setzeAusrufer(vorhand);
             rundeModel.setzeAusruferReferenz(spieler.get(vorhand));
-            System.out.println("DEBUG: aktuell hoechste Spielart: " + rundeModel.gebeHoechsteSpielart());
+            if (debug) System.out.println("DEBUG: aktuell hoechste Spielart: " + rundeModel.gebeHoechsteSpielart());
         }
         rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung, vorhand, spielArt);
     }
@@ -62,16 +62,16 @@ public class Runde {
     // fragt den Ausrufer, auf welche Sau er spielen möchte (von Spieler aufgerufen)
     public void farbeFuerSpielAbsicht() {
         if (rundeModel.gebeAusruferReferenz() == null) {
-            System.out.println("DEBUG: rundeModel.gebeAusruferReferenz() == null in farbeFuerSpielAbsicht() -> NullPointerException");
+            if (debug) System.out.println("DEBUG: rundeModel.gebeAusruferReferenz() == null in farbeFuerSpielAbsicht() -> NullPointerException");
             return;
         }
-        System.out.println("Warte auf Farbe von Spieler " + rundeModel.gebeAusrufer());
+        if (debug) System.out.println("DEBUG: Warte auf Farbe von Spieler " + rundeModel.gebeAusrufer());
         rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
     }
 
     // Farbe ausgeben
     public void farbeFuerSpielAbsichtAufgerufen(Farbe farbe) {
-        System.out.println("DEBUG: Farbe ausgerufen: " + farbe);
+        if (debug) System.out.println("DEBUG: Farbe ausgerufen: " + farbe);
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.spielArtEntschieden(rundeModel.gebeAusrufer(), farbe, rundeModel.gebeHoechsteSpielart());
         }

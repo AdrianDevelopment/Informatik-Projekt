@@ -200,7 +200,7 @@ public class Spieler extends Mitspieler {
         if (spielArt == SpielArt.KEINSPIEL) {
             text = "Spiel abgebrochen wegen ungültiger Spielart.";
             System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
-            gui.gebeOkButton().addActionListener(e -> System.out.println("Das Spiel wurde wegen einer ungültigen Spielart abgebrochen. Bitte starte ein neues Spiel."));
+            gui.gebeOkButton().addActionListener(e -> runde.neuRundeStarten());
         } else {
             gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
         }
