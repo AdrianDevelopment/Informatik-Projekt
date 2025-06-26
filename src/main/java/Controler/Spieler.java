@@ -59,6 +59,7 @@ public class Spieler extends Mitspieler {
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranSpielabsicht(true);
+        gui.spielabsichtFragen();
         gui.spielAbsichtButtonsSichtbarkeitSetzen(false, 1);
 
 
@@ -248,8 +249,8 @@ public class Spieler extends Mitspieler {
         if (erlaubt) {
             System.out.println("DEBUG: Karte erlaubt");
             gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
-//            actionListenerLoeschen(model.gebeHandButtons().get(index));
-            model.gebeHandButtons().get(index).setVisible(false);
+//            actionListenerLoeschen(model.gebeHandButtons().get(index)); //TODO: klappt trotzdem?
+            gui.handkartenSichtbarkeitSetzen(false, index);
             model.gebeHandButtons().remove(index);
             model.gebeHandkarten().remove(spielkarte);
             System.out.println("DEBUG: " + model.gebeHandkarten().size());
