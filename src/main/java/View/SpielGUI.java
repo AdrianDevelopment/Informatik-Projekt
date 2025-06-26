@@ -567,7 +567,7 @@ public class SpielGUI {
     }
 
     public void handkartenSichtbarkeitSetzen(boolean sichtbarkeit, int i){
-        spieler1KartenArray.get(i).setVisible();
+        spieler1KartenArray.get(i).setVisible(sichtbarkeit);
     }
 
 
