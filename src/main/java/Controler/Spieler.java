@@ -166,9 +166,9 @@ public class Spieler extends Mitspieler {
         model.setzeDranSpielabsicht(false);
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
         gui.hinweisAnNutzer(""); //der Hinweistext ist nun nicht mehr sichtbar
-        System.out.println("debug: Spielabsicht auf unsichtbar gesetzt");
+        System.out.println("DEBUG: Spielabsicht auf unsichtbar gesetzt");
 
-        System.out.println("debug: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
+        System.out.println("DEBUG: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
 
         runde.spielabsichtFragenAufgerufen(model.gebeWiederholung(), model.gebeVorhand(), spielabsicht);
     }
@@ -217,6 +217,8 @@ public class Spieler extends Mitspieler {
         jButtons.get(1).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
         jButtons.get(2).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
         gui.setzeSichtbarkeitFarbeFuerSpielabsicht(true);
+        gui.okButtonSichtbarkeit(false);
+        gui.hinweisAnNutzer("Wähle die Sau-Farbe im Pop-up.");
     }
 
     /**
@@ -272,11 +274,12 @@ public class Spieler extends Mitspieler {
     @Override
     public void legeEineKarte(int wiederholung, int vorhand) {
         gui.okButtonActionListenerLoeschen();
+        gui.okButtonSichtbarkeit(false);
         buttonKartenZuornden();
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranLegen(true);
-        System.out.println("Lege eine Karte");
+        gui.hinweisAnNutzer("Lege eine Karte.");
     }
 
     /**
@@ -288,12 +291,13 @@ public class Spieler extends Mitspieler {
      * ja → Spielkarte entfernen und Runde geben
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
-        if (!model.gebeDranLegen() && index > model.gebeHandkarten().size()) { //Spieler soll keine Karte legen → nichts soll passieren
+        if (!model.gebeDranLegen() || index > model.gebeHandkarten().size()) { //Spieler soll keine Karte legen → nichts soll passieren
+            System.out.println("return");
+            model.setzeDranLegen(true);
             return;
         }
-        System.out.println("Karte gelegt");
         model.setzeDranLegen(false);
-        System.out.println("button handkarten geklickt");
+        System.out.println("DEBUG: button handkarten geklickt");
 
         //Überprüfung, ob Karte erlaubt ist
         boolean erlaubt = false;
@@ -321,14 +325,20 @@ public class Spieler extends Mitspieler {
             }
         }
         if (erlaubt) {
-            System.out.println("Karte erlaubt");
+            System.out.println("DEBUG: Karte erlaubt");
             buttonKartenZuorndenKeineReaktion();
             actionListenerLoeschen(model.gebeHandButtons().get(index));
             model.gebeHandButtons().get(index).setVisible(false);
             model.gebeHandButtons().remove(index);
             model.gebeHandkarten().remove(spielkarte);
-            System.out.println(model.gebeHandkarten().size());
+            System.out.println("DEBUG: " + model.gebeHandkarten().size());
+            gui.okButtonSichtbarkeit(true);
+            gui.hinweisAnNutzer("");
             runde.karteAbfragenAufgerufen(spielkarte);
+        } else {
+            System.out.println("DEBUG: Karte nicht erlaubt");
+            gui.hinweisAnNutzer("Diese Karte darf nicht gelegt werden. Lege eine andere.");
+            model.setzeDranLegen(true);
         }
     }
 

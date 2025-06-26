@@ -128,6 +128,7 @@ public abstract class Mitspieler {
                         }
                     }
                 }
+                break; //TOM
             default:
                 System.out.println("Unbekannte Spielart. Karten können nicht bestimmt werden für:" + spielArt);
                 break;

@@ -104,7 +104,7 @@ public class Runde {
             }
             speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
             speicherung.DatenSpeichern();
-            turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
+            //turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray()); //TOM Methode startet eine neue Runde, die die Karten anzeigt und den neuen okButton
         }
     }
 
