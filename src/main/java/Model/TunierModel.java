@@ -4,15 +4,16 @@ import Controler.Spieler;
 
 public class TunierModel {
     private int anzahlRunden;
-    private Spieler echteSpieler;
+    private Spieler echterSpieler;
     private int[] punkteTunier;
     private int positionSpieler;
 
     public TunierModel(int anzahlRunden, Spieler echterSpieler) {
         this.anzahlRunden = anzahlRunden;
-        this.echteSpieler = echterSpieler;
+        this.echterSpieler = echterSpieler;
         this.punkteTunier = new int[4];
     }
+
 
     // Geber
     public int gebeAnzahlRunden() {
@@ -20,7 +21,7 @@ public class TunierModel {
     }
 
     public Spieler gebeEchterSpieler() {
-        return echteSpieler;
+        return echterSpieler;
     }
 
     public int gebePunkteTunier(int index) {
@@ -31,7 +32,16 @@ public class TunierModel {
         return positionSpieler;
     }
 
+
     // Setzer
+    public void setzeAnzahlRunden(int anzahlRunden) {
+        this.anzahlRunden = anzahlRunden;
+    }
+
+    public void setzeEchterSpieler(Spieler echterSpieler) {
+        this.echterSpieler = echterSpieler;
+    }
+
     public void setzePunkteTunier(int index, int punkte) {
         punkteTunier[index] = punkte;
     }
