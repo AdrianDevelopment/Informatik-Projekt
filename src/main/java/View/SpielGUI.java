@@ -566,7 +566,9 @@ public class SpielGUI {
         return new ImageIcon(dateiname);
     }
 
-
+    public void handkartenSichtbarkeitSetzen(boolean sichtbarkeit, int i){
+        spieler1KartenArray.get(i).setVisible();
+    }
 
 
 
