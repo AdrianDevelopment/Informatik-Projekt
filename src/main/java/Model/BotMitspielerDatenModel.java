@@ -3,7 +3,7 @@ package Model;
 public class BotMitspielerDatenModel {
     /*
         Speicherung ob der Spieler noch Karten mit einem bestimmten Wert oder einer bestimmten Farbe hat.
-        Benötigt um Spielentscheidungen zu treffen.
+        Benötigt, um Spielentscheidungen zu treffen.
      */
     private boolean hatOber;
     private boolean hatUnter;
@@ -14,14 +14,13 @@ public class BotMitspielerDatenModel {
     private boolean hatGras;
 
     BotMitspielerDatenModel() {
+        //annahme am Anfang der Runde das alle Mitspieler diese Karten haben könnten.
         hatOber = true;
         hatUnter = true;
         hatHerz = true;
         hatSchellen = true;
         hatEichel = true;
         hatGras = true;
-
-
     }
 
     void setzteHatOber(boolean b) {
@@ -49,27 +48,30 @@ public class BotMitspielerDatenModel {
     }
 
 
-    boolean gebeHatOber() {
+    public boolean gebeHatOber() {
         return hatOber;
     }
 
-    boolean gebeHatUnter() {
+    public boolean gebeHatUnter() {
         return hatUnter;
     }
 
-    boolean gebetHerz() {
+    public boolean gebetHerz() {
         return hatHerz;
     }
 
-    boolean gebeHatSchellen() {
+    public boolean gebeHatSchellen() {
         return hatSchellen;
     }
 
-    boolean gebeHatEichel() {
+    public boolean gebeHatEichel() {
         return hatEichel;
     }
 
-    boolean gebeHatGras() {
+    public boolean gebeHatGras() {
         return hatGras;
+    }
+    public boolean gebeHatTrumpf() {
+        return hatGras || hatOber || hatUnter;
     }
 }

@@ -100,7 +100,18 @@ public class BotTest {
     @Test
     public void testErkenntMitspieler() {
         Bot bot = new Bot();
-        bot.rundeStarten(null, 0);
+        //Hand festlegen
+        ArrayList<Spielkarte> hand = new ArrayList<>();
+        hand.add(new Spielkarte(Farbe.HERZ, Werte.UNTER));
+        hand.add(new Spielkarte(Farbe.GRAS, Werte.UNTER));
+        hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.OBER));
+        hand.add(new Spielkarte(Farbe.HERZ, Werte.OBER));
+        hand.add(new Spielkarte(Farbe.GRAS, Werte.ZEHNER));
+        hand.add(new Spielkarte(Farbe.SCHELLEN, Werte.KOENIG));
+        hand.add(new Spielkarte(Farbe.EICHEL, Werte.SIEBENER));
+        hand.add(new Spielkarte(Farbe.HERZ, Werte.NEUNER));
+
+        bot.rundeStarten(hand   , 0);
         //bot der Sau ausgerufen hat findet Mitspieler der Sau gelegt hat.
         bot.spielArtEntschieden(0, Farbe.GRAS, SpielArt.SAUSPIEL);
         bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.SAU), 2, 0);
@@ -109,5 +120,12 @@ public class BotTest {
         bot.spielArtEntschieden(1, Farbe.GRAS, SpielArt.SAUSPIEL);
         bot.karteWurdeGelegt(new Spielkarte(Farbe.GRAS, Werte.SAU), 2, 0);
         assertEquals(3, bot.gibTeamSpieler(), "Der Mitspieler wurde nicht erkannt");
+    }
+    @Test
+    public void testKartenStaerkeBestimmen() {
+        Bot bot = new Bot();
+        assertEquals(180, bot.spielKartenStaerkeSauSpiel(new Spielkarte(Farbe.HERZ, Werte.ZEHNER)), "Die Stärke von der Karte Herz Zehn ist falsch");
+        assertEquals(45, bot.spielKartenStaerkeSauSpiel(new Spielkarte(Farbe.EICHEL, Werte.SIEBENER)), "Die Stärke von der Karte Herz Zehn ist falsch");
+        assertEquals(302, bot.spielKartenStaerkeSauSpiel(new Spielkarte(Farbe.SCHELLEN, Werte.OBER)), "Die Stärke von der Karte Herz Zehn ist falsch");
     }
 }

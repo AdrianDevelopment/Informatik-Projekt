@@ -96,6 +96,9 @@ public class Bot extends Mitspieler {
                 break;
             case SOLO:
                 return model.gibsoloFarbe();
+            default:
+                System.out.println("Spielart: "+ spielArt+"wird nicht behandelt");
+                break;
         }
         return null;
     }
@@ -130,6 +133,9 @@ public class Bot extends Mitspieler {
                 break;
             case SOLO:
                 break;
+            default:
+                System.out.println("Spielart: "+ model.gibSpielArt()+"wird nicht behandelt");
+                break;
         }
         //Gewählte Karte aus Hand entfernen und zurückgeben.
         model.entferneKarteAusHand(gewaelteKarte);
@@ -144,6 +150,7 @@ public class Bot extends Mitspieler {
         Random zufall = new Random();
         int zufaelligerIndex = zufall.nextInt(erlaubteKarten.size());
         //Legt die Farbe der gesuchten Sau auf Vorhand, sofern der Teamspieler unbekannt ist und man nicht der Ausrufer oder der Sau besitzer ist.
+        //Ziel ist es den Mitspieler zu finden, damit intelligenter gespielt werden kann(z.b. schmieren)
         if (model.gibStichGelegteKartenAnzahl() == 0){
             if(model.gibTeamSpieler() == -1 && model.gibSpielerHatSauAusgerufen() != model.gibSpielerIndex()){
                 Spielkarte niedrigsteKarteVonSauFarbe = null;
@@ -167,9 +174,40 @@ public class Bot extends Mitspieler {
         //todo zu lange?
         int kartenStaerkeVonStichGewinner = spielKartenStaerkeSauSpiel(model.gibAlleGelegteKarten().get(model.gibAlleGelegteKarten().size() - model.gibStichGelegteKartenAnzahl() + model.gibSpielerDieImStichGelegtHaben().indexOf(spielerGewinntStich)));
         int[] besondereKarten = wieVieleBesondereKarten();
-        if (spielerGewinntStich == model.gibTeamSpieler() && kartenStaerkeVonStichGewinner > 200) {//schmiert nur, wenn Teamspieler einen Unter oder Ober gelegt hat.
-           //todo schmiere
+
+        //model.gibAlleGelegteKarten().stream().filter(karte -> karte.gebeWert() == Werte.OBER).count();
+
+        //Entscheiden, ob Farbe oder Sau gespielt wird.
+        int mindesAnforderungFuerSchmieren = 0;
+        if(model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null)){
+            mindesAnforderungFuerSchmieren=200;
+        }else{
+            mindesAnforderungFuerSchmieren=80;
+        }
+
+        //Überprüft, ob es Sinn macht für den Mitspieler zu schmieren.
+
+
+        boolean mitspielerAlleinigTrumpf = false;
+        ArrayList<Integer> gegenSpielerIndex = new ArrayList<>();
+        if(model.gibTeamSpieler() !=-1){
+
+            gegenSpielerIndex.add(0);
+            gegenSpielerIndex.add(1);
+            gegenSpielerIndex.add(2);
+            gegenSpielerIndex.add(3);
+            for (int index: gegenSpielerIndex){
+                if (index == model.gibSpielerIndex() || index==model.gibTeamSpieler()){
+                    gegenSpielerIndex.remove(index);
+                }
+            }
+
+            mitspielerAlleinigTrumpf = model.gibMitspielerDaten(model.gibTeamSpieler()%3).gebeHatTrumpf() && !model.gibMitspielerDaten(gegenSpielerIndex.get(0)%3).gebeHatTrumpf() && !model.gibMitspielerDaten(gegenSpielerIndex.get(1)%3).gebeHatTrumpf();
+        }
+
+        if ((spielerGewinntStich == model.gibTeamSpieler() && kartenStaerkeVonStichGewinner > mindesAnforderungFuerSchmieren)|| mitspielerAlleinigTrumpf) {//schmiert nur, wenn Teamspieler einen Unter oder Ober gelegt hat.
             Spielkarte karteMitHoechsterPunktzahl = null;
+            //sucht die Karte mit der höchsten Punktzahl
             for(Spielkarte karte : erlaubteKarten){
                 if(karteMitHoechsterPunktzahl == null && karte.gebeWert().gebePunktzahl() > 0){
                     karteMitHoechsterPunktzahl = karte;
@@ -177,6 +215,7 @@ public class Bot extends Mitspieler {
                     karteMitHoechsterPunktzahl = karte;
                 }
             }
+            //Die Karte muss mehr als 3 Punkte wert sein
             if (karteMitHoechsterPunktzahl != null){
                 if(karteMitHoechsterPunktzahl.gebeWert().gebePunktzahl() > 3){
                     System.out.println("Der Bot hat geschmiert!");
@@ -185,30 +224,26 @@ public class Bot extends Mitspieler {
 
             }
         }
+        //versucht einen Stich zu gewinnen, wenn eine gewisse Anzahl von Punkten auf dem Tisch liegen
         if (gibWertFuerBisherGelegteKarten() > 13) {
-            //todo lege die höchste Karte
-
+            //Wenn möglich, legt die erste Karte die den Stich gewinnen kann
             for(Spielkarte karte : erlaubteKarten){
                 if(spielKartenStaerkeSauSpiel(karte) >kartenStaerkeVonStichGewinner){
                     System.out.println("Der Bot versucht den Stich zu gewinnen!");
                     return  karte;
                 }
             }
-
-
         }
-        if(spielerGewinntStich != model.gibTeamSpieler() && model.gibTeamSpieler() != -1){
-            //todo lege eine niedrige Karte
+        //Wenn die gegen Spieler den Stich gewinnen dann versucht er eine wertlose Karte zu legen, sofern die Karte, die den Stich gewinnt, mindestens eine Sau ist.
+        if(spielerGewinntStich != model.gibTeamSpieler() && model.gibTeamSpieler() != -1 && kartenStaerkeVonStichGewinner > 90){
             for(Spielkarte karte : erlaubteKarten){
                if(karte.gebeWert().gebePunktzahl() == 0){
                    System.out.println("Der Bot legt eine wertlose Karte!");
                    return  karte;
                }
             }
-
         }
         //Defaultcase legt eine zufällige Karte
-
         return erlaubteKarten.get(zufaelligerIndex);
 
 
@@ -263,11 +298,32 @@ public class Bot extends Mitspieler {
 
         //Todo abspeichern welche Karten die Mitspieler noch haben
         //Todo bei Spielart Unterscheiden --> in mehrere Methoden aufteilen
-        /*
-        if (model.gibErsteKarteAufTisch().gebeWert() != Werte.OBER) {
-            model.setzteMitspielerDaten(null, Werte.OBER, false, spielerHatGelegt);
+
+        //Überprüft ob Spieler keinen Trumpf mehr legen kann.
+        if (model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null) && !karte.istTrumpf(SpielArt.SAUSPIEL,null)) {
+            model.setzteMitspielerHatOber(spielerHatGelegt%3, false);
+            model.setzteMitspielerHatUnter(spielerHatGelegt%3, false);
+            model.setzteMitspielerHatHerz(spielerHatGelegt%3, false);
         }
-        */
+        if (!model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null) && karte.gebeFarbe() != model.gibErsteKarteAufTisch().gebeFarbe()) {
+            switch (model.gibErsteKarteAufTisch().gebeFarbe()){
+                case SCHELLEN -> {
+                    model.setzteMitspielerHatSchellen(spielerHatGelegt%3, false);
+                    break;
+                }
+                case GRAS -> {
+                    model.setzteMitspielerHatGras(spielerHatGelegt%3, false);
+                    break;
+                }
+                case EICHEL -> {
+                    model.setzteMitspielerHatEichel(spielerHatGelegt%3, false);
+                    break;
+                }
+                case HERZ -> {
+                    break;
+                }
+            }
+        }
 
 
     }
@@ -302,8 +358,10 @@ public class Bot extends Mitspieler {
         }
         return gesamtWert;
     }
+    /*
+        Bestimmt welcher Spieler den Stich momentan gewinnt.
+     */
     public int gibSpielerDerStichMomentanGewinnt(){
-
         int anzahlGelegterKarten = model.gibStichGelegteKartenAnzahl();
         int anzahlAllerGelegtenKarten  =model.gibAlleGelegteKarten().size();
         int indexDerHoechstenKarte = anzahlAllerGelegtenKarten - anzahlGelegterKarten;
@@ -313,8 +371,13 @@ public class Bot extends Mitspieler {
             }
         }
         return model.gibSpielerDieImStichGelegtHaben().get(indexDerHoechstenKarte -(anzahlAllerGelegtenKarten - anzahlGelegterKarten));
-
     }
+    /*
+        Gibt einen int Wert der genutzt werden kann um mit vergleichen zu Bestimmen welche Karte die andere Schlägt.
+        3 Stelle = Trumpf
+        2 Stelle = Sau bis 7
+        1 Stelle = Farbe
+     */
     public int spielKartenStaerkeSauSpiel(Spielkarte karte){
         int staerke = 0;
         switch (karte.gebeWert()){
@@ -365,6 +428,7 @@ public class Bot extends Mitspieler {
         return  staerke;
     }
 
+
     /*
         Bestimmt die Anzahl von Karten Typen die für Entscheidung über Spielzüge elementar sind.
         //todo Methode muss noch an Spielarten angepasst werden. (Bei Wenz ist der Ober eine Farbe)
@@ -409,52 +473,6 @@ public class Bot extends Mitspieler {
         return new int[]{anzahlOber, anzahlUnter, anzahlSau, anzahlHerz, anzahlGras, anzahlEichel, anzahlSchellen};
     }
 
-    /*
-        Methode um die Daten von der Arraylist mit BotMitspielerDatenModel zu verändern.
-        Benötigt um Informationen über die Hand der andern Spieler abzuspeichern.
-     */
-    public void setzteMitspielerDaten(Farbe farbe, Werte werte, boolean vorhanden, int spielerNr) {
-        // != null da auch null als Parameter übergeben werden kann. Da nur entweder bei einer Farbe oder einem Wert eine änderung vorgenommen werden soll.
-        if (farbe != null) {
-            switch (farbe) {
-                case SCHELLEN:
-                    model.setzteMitspielerHatSchellen(spielerNr % 3, vorhanden);
-                    break;
-                case HERZ:
-                    model.setzteMitspielerHatHerz(spielerNr % 3, vorhanden);
-                    break;
-                case GRAS:
-                    model.setzteMitspielerHatGras(spielerNr % 3, vorhanden);
-                    break;
-                case EICHEL:
-                    model.setzteMitspielerHatEichel(spielerNr % 3, vorhanden);
-                    break;
-            }
-        }
-        if (werte != null) {
-            switch (werte) {
-                case SAU:
-                    break;
-                case ZEHNER:
-                    break;
-                case KOENIG:
-                    break;
-                case OBER:
-                    model.setzteMitspielerHatOber(spielerNr % 3, vorhanden);
-                    break;
-                case UNTER:
-                    model.setzteMitspielerHatUnter(spielerNr % 3, vorhanden);
-                    break;
-                case NEUNER:
-                    break;
-                case ACHTER:
-                    break;
-                case SIEBENER:
-                    break;
-            }
-        }
-
-    }
 
     //Zugriff von Daten vom Model
     //benötigt zum Testen
