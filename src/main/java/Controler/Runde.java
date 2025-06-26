@@ -270,7 +270,7 @@ public class Runde {
         int[] gegenspieler = new int[2];
         int position = 0;
 
-        if (punkteSpieler >= 60) {
+        if (punkteSpieler > 60) {
             return new int[] {rundeModel.gebeAusrufer(), mitspieler};
         }
         else {

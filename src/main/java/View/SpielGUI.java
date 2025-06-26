@@ -597,6 +597,14 @@ public class SpielGUI {
         okButton.addActionListener(e -> runde.frageStichVorbei());
     }
 
+    public void neuRundeBuActLiSetzenNeueRundeStarten(Runde runde) {
+        neueRundeButton.addActionListener(e -> runde.neuRundeStarten());
+    }
+
+    public void neueRundeButtonSichtbarkeit(boolean sichtbarkeit) {
+        neueRundeButton.setVisible(sichtbarkeit);
+    }
+
     //NEU Ende
 
     public void hinweisAnNutzer(String text) {

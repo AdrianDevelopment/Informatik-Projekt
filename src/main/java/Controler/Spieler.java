@@ -3,8 +3,6 @@ package Controler;
 import Model.*;
 import View.SpielGUI;
 
-//import javax.swing.*; //TODO: löschen
-//import java.awt.event.ActionListener; //TODO: löschen
 import java.util.ArrayList;
 
 //Programmierer: Tom
@@ -40,6 +38,10 @@ public class Spieler extends Mitspieler {
         model.setzeWelcherSpieler(wieVielterSpieler);
         gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
         gui.handkartenAusteilen();
+        //für eine neue Runde wird alles zurückgesetzt
+        gui.neueRundeButtonSichtbarkeit(false);
+        gui.textAusgeben("");
+        gui.hinweisAnNutzer("");
     }
 
     public void kartenHinlegen(int wiederholung, int vorhand) {
@@ -138,6 +140,7 @@ public class Spieler extends Mitspieler {
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
         gui.okButtonActionListenerLoeschen();
         model.setzeDranFarbeSpielabsicht(true);
+        gui.farbeFuerSpielabsicht();
         gui.farbeFuerSpielabsichtButtonsActionListener(this);
         gui.setzeSichtbarkeitFarbeFuerSpielabsicht(true);
         gui.okButtonSichtbarkeit(false);
@@ -232,7 +235,7 @@ public class Spieler extends Mitspieler {
             Spielkarte sau = new Spielkarte(model.gebeFarbe(), Werte.SAU);
             erlaubteKarten = erlaubteKartenAusspielenBeiSauspiel(model.gebeHandkarten(), sau);
             for (int i = 0; i < erlaubteKarten.size(); i++) {
-                if (spielkarte.equals(spielkarte)) {
+                if (spielkarte.equals(erlaubteKarten.get(i))) {
                     erlaubt = true;
                     break;
                 }
@@ -251,10 +254,8 @@ public class Spieler extends Mitspieler {
         if (erlaubt) {
             System.out.println("DEBUG: Karte erlaubt");
             gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
-//            actionListenerLoeschen(model.gebeHandButtons().get(index)); //TODO: klappt trotzdem?
             gui.handkartenSichtbarkeitSetzen(false, index);
             gui.entferneIndexVonHandButtons(index);
-            //model.gebeHandButtons().remove(index);
             model.gebeHandkarten().remove(spielkarte);
             System.out.println("DEBUG: " + model.gebeHandkarten().size());
             gui.okButtonSichtbarkeit(true);
@@ -317,7 +318,6 @@ public class Spieler extends Mitspieler {
     //Ich habe die Buttons in Labels geändert und das ganze in der GUI angepasst
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
-        gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         gui.karteInDieMitte(karte, welcherSpieler);
         model.setzeGelegteKarte(karte);
@@ -378,11 +378,11 @@ public class Spieler extends Mitspieler {
         String text = "<html>" + gewinner1.gebeName() + " und " + gewinner2.gebeName() + " haben gewonnen und " + punkte[0] + " Punkte gesammelt. " + "Du hast " + punkte[2] + " Punkte gesammelt.<html>";
         gui.textAusgeben(text);
         gui.mitteAufrauemen();
-        gui.okButtonActionListenerLoeschen(); // TODO: der OK-Button ist auch nach anzeige des Textes noch vorhanden und muss erst angeklickt werden statt neue Runde
+        gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
-        gui.gebeNeueRundeButton().setVisible(true);
+        gui.neueRundeButtonSichtbarkeit(true);
 //alt gui.gebeNeueRundeButton().addActionListener(e -> runde.neuRundeStarten());
-        gui.okBuActLiSetzenNeueRundeStarten(runde);
+        gui.neuRundeBuActLiSetzenNeueRundeStarten(runde);
     }
 
     /**
@@ -407,21 +407,8 @@ public class Spieler extends Mitspieler {
         return spielerImUhrzeigersinn;
     }
 
-    /*Methode, die GUI aufruft, wenn Spieler den letzten Stich sehen will*/
-    public ArrayList<Spielkarte> gebeLetztenStich() {
-        return model.gebeLetzterStich(); //TODO: Rückgabewert bei Implementierung in GUI ändern
-    }
-
     /*Methode, die von Runde aufgerufen wird, um den Mitspieler herauszubekommen*/
     public int gebeMitspieler() {
         return model.gebeMitspieler();
     }
-
-
-//   private void actionListenerLoeschen(JButton button) { //TODO: Methode löschen
-//        for (ActionListener al : button.getActionListeners()) {
-//            button.removeActionListener(al);
-//        }
-//    }
-
 }

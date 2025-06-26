@@ -1,13 +1,11 @@
 package Model;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 //Programmierer: Tom
 
 public class SpielerModel {
     private ArrayList<Spielkarte> handkarten; //speichert eigene Handkarten
-    private ArrayList<JButton> handButtons; //speichert Handkarten als Buttons mit richtigen Bildern
     private int welcherSpieler;
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
@@ -30,7 +28,6 @@ public class SpielerModel {
 
     public SpielerModel() {
         handkarten = new ArrayList<Spielkarte>();
-        handButtons = new ArrayList<JButton>();
 
         spielArt = null;
         ausrufenderSpieler = null;
@@ -51,16 +48,6 @@ public class SpielerModel {
         for (int i = 0; i < neueKarten.size(); i++) {
             handkarten.add(i, neueKarten.get(i));
         }
-    }
-
-    public void setzeHandButtons(ArrayList<JButton> neueButtons) {
-        for (int i = 0; i < neueButtons.size(); i++) {
-            handButtons.add(i, neueButtons.get(i));
-        }
-    }
-
-    public ArrayList<JButton> gebeHandButtons() {
-        return handButtons;
     }
 
     //welcher Spieler
@@ -117,11 +104,6 @@ public class SpielerModel {
         stich.clear();
         anzahlSpielerSchonGelegt = 0;
     }
-
-    public ArrayList<Spielkarte> gebeLetzterStich() {
-        return letzterStich;
-    }
-
 
     //anzahlSpielerSchonGelegt
     public int gebeAnzahlSpielerSchonGelegt() {
@@ -181,5 +163,8 @@ public class SpielerModel {
     public int gebeVorhand() {
         return vorhand;
     }
+
+
+    //bisher unbenutzt, aber für zukünftige Features
 }
 
