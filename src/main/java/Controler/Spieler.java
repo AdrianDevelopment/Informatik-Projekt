@@ -248,7 +248,7 @@ public class Spieler extends Mitspieler {
         if (erlaubt) {
             System.out.println("DEBUG: Karte erlaubt");
             gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
-            actionListenerLoeschen(model.gebeHandButtons().get(index));
+//            actionListenerLoeschen(model.gebeHandButtons().get(index));
             model.gebeHandButtons().get(index).setVisible(false);
             model.gebeHandButtons().remove(index);
             model.gebeHandkarten().remove(spielkarte);
@@ -315,7 +315,7 @@ public class Spieler extends Mitspieler {
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
         gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
-        gui.karteInDieMitte(gibBild(karte), welcherSpieler);
+        gui.karteInDieMitte(karte, welcherSpieler);
         model.setzeGelegteKarte(karte);
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(spielerHatGelegt);

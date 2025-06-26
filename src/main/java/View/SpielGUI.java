@@ -418,7 +418,8 @@ public class SpielGUI {
         return mitteKarten;
     }
 
-    public void karteInDieMitte(ImageIcon bild, WelcherSpieler adressat) {
+    public void karteInDieMitte(Spielkarte karte, WelcherSpieler adressat) {
+        ImageIcon bild = gibBild(karte);
         mitteKarten[adressat.ordinal()].setIcon(bild);
         mitteKarten[adressat.ordinal()].setVisible(true);
     }
