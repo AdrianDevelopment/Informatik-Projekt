@@ -3,8 +3,8 @@ package Controler;
 import Model.*;
 import View.SpielGUI;
 
-import javax.swing.*; //TODO: löschen
-import java.awt.event.ActionListener; //TODO: löschen
+//import javax.swing.*; //TODO: löschen
+//import java.awt.event.ActionListener; //TODO: löschen
 import java.util.ArrayList;
 
 //Programmierer: Tom
@@ -38,8 +38,7 @@ public class Spieler extends Mitspieler {
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
         model.setzeWelcherSpieler(wieVielterSpieler);
-        model.setzeHandButtons(gui.spieler1ButtonsErstellen());
-        buttonKartenZuorndenKeineReaktion();
+        gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
         gui.handkartenAusteilen();
     }
 
@@ -47,83 +46,6 @@ public class Spieler extends Mitspieler {
         gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
         gui.okButtonSichtbarkeit(true);
     }
-
-    /*Buttons bekommen Icons zugewiesen*/
-    public void buttonKartenZuornden() {
-        System.out.println("Handkarten an");
-        ArrayList<JButton> handButtons = model.gebeHandButtons();
-        ArrayList<Spielkarte> handKarten = model.gebeHandkarten();
-        //Zuweisung von den passenden Bildern zu den Buttons
-        for (int i = 0; i < handKarten.size(); i++) {
-            handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
-            int finalI = i; //für Lambda Expression
-            actionListenerLoeschen(handButtons.get(i));
-            handButtons.get(i).addActionListener(e -> karteGelegt(handKarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
-
-        }
-    }
-
-    public void buttonKartenZuorndenKeineReaktion() {
-        System.out.println("Handkarten aus");
-        ArrayList<JButton> handButtons = model.gebeHandButtons();
-        ArrayList<Spielkarte> handKarten = model.gebeHandkarten();
-        //Zuweisung von den passenden Bildern zu den Buttons
-        for (int i = 0; i < handKarten.size(); i++) {
-            handButtons.get(i).setIcon(gibBild(handKarten.get(i)));
-            System.out.println(handKarten.get(i).gebeFarbe() + "|" + handKarten.get(i).gebeWert());
-            actionListenerLoeschen(handButtons.get(i));
-        }
-    }
-
-
-    /*gibt zu einer Karte das ImageIcon mit passendem Bild (Co-Programmierer: Tim)*/
-    private ImageIcon gibBild(Spielkarte karte) {
-        String dateiname = "src\\main\\resources\\Karten\\";
-        switch (karte.gebeFarbe()) {
-            case SCHELLEN:
-                dateiname += "Schelle";
-                break;
-            case HERZ:
-                dateiname += "Herz";
-                break;
-            case GRAS:
-                dateiname += "Grass";
-                break;
-            case EICHEL:
-                dateiname += "Eichel";
-                break;
-        }
-        dateiname += "_";
-        switch (karte.gebeWert()) {
-            case SAU:
-                dateiname += "Ass";
-                break;
-            case ZEHNER:
-                dateiname += "10";
-                break;
-            case KOENIG:
-                dateiname += "Koenig";
-                break;
-            case OBER:
-                dateiname += "Ober";
-                break;
-            case UNTER:
-                dateiname += "Unter";
-                break;
-            case NEUNER:
-                dateiname += "9";
-                break;
-            case ACHTER:
-                dateiname += "8";
-                break;
-            case SIEBENER:
-                dateiname += "7";
-                break;
-        }
-        dateiname += ".png";
-        return new ImageIcon(dateiname);
-    }
-
 
     /**
      * Aufforderung der Runde die Spielabsicht zu sagen
@@ -137,11 +59,13 @@ public class Spieler extends Mitspieler {
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranSpielabsicht(true);
-        ArrayList<JButton> spielabsichtButtons = gui.spielabsichtFragen();
-        spielabsichtButtons.get(1).setVisible(false);
+        gui.spielAbsichtButtonsSichtbarkeitSetzen(false, 1);
+
+
         gui.okButtonActionListenerLoeschen();
-        spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL));
-        spielabsichtButtons.get(0).setVisible(true);
+
+        gui.weiterButtonActionListener(this);
+        gui.spielAbsichtButtonsSichtbarkeitSetzen(true, 0);
         //Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         if (farbe.isEmpty()) {
@@ -149,8 +73,8 @@ public class Spieler extends Mitspieler {
         } else if (hoechstesSpiel == SpielArt.SAUSPIEL) {
             gui.hinweisAnNutzer("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
         } else {
-            spielabsichtButtons.get(1).addActionListener(e -> spielabsichtGesagt(SpielArt.SAUSPIEL));
-            spielabsichtButtons.get(1).setVisible(true);
+            gui.sauButtonActionListener(this);
+            gui.spielAbsichtButtonsSichtbarkeitSetzen(true, 1);
         }
     }
 
@@ -212,10 +136,7 @@ public class Spieler extends Mitspieler {
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
         gui.okButtonActionListenerLoeschen();
         model.setzeDranFarbeSpielabsicht(true);
-        ArrayList<JButton> jButtons = gui.farbeFuerSpielabsicht();
-        jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
-        jButtons.get(1).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
-        jButtons.get(2).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
+        gui.farbeFuerSpielabsichtButtonsActionListener(this);
         gui.setzeSichtbarkeitFarbeFuerSpielabsicht(true);
         gui.okButtonSichtbarkeit(false);
         gui.hinweisAnNutzer("Wähle die Sau-Farbe im Pop-up.");
@@ -275,7 +196,7 @@ public class Spieler extends Mitspieler {
     public void legeEineKarte(int wiederholung, int vorhand) {
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
-        buttonKartenZuornden();
+        gui.buttonKartenZuornden(this, model.gebeHandkarten());
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranLegen(true);
@@ -326,7 +247,7 @@ public class Spieler extends Mitspieler {
         }
         if (erlaubt) {
             System.out.println("DEBUG: Karte erlaubt");
-            buttonKartenZuorndenKeineReaktion();
+            gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
             actionListenerLoeschen(model.gebeHandButtons().get(index));
             model.gebeHandButtons().get(index).setVisible(false);
             model.gebeHandButtons().remove(index);
@@ -392,7 +313,7 @@ public class Spieler extends Mitspieler {
     //Ich habe die Buttons in Labels geändert und das ganze in der GUI angepasst
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
-        buttonKartenZuorndenKeineReaktion();
+        gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
         gui.karteInDieMitte(gibBild(karte), welcherSpieler);
         model.setzeGelegteKarte(karte);
@@ -490,10 +411,10 @@ public class Spieler extends Mitspieler {
     }
 
 
-    private void actionListenerLoeschen(JButton button) { //TODO: Methode löschen
-        for (ActionListener al : button.getActionListeners()) {
-            button.removeActionListener(al);
-        }
-    }
+//   private void actionListenerLoeschen(JButton button) { //TODO: Methode löschen
+//        for (ActionListener al : button.getActionListeners()) {
+//            button.removeActionListener(al);
+//        }
+//    }
 
 }

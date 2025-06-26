@@ -506,7 +506,7 @@ public class SpielGUI {
     }
 
 
-    public void buttonKartenZuorndenKeineReaktion(Spieler spieler, ArrayList<Spielkarte> handkarten) {
+    public void buttonKartenZuorndenKeineReaktion(ArrayList<Spielkarte> handkarten) {
         System.out.println("Handkarten an");
         ArrayList<JButton> handButtons = spieler1ButtonsErstellen();
         //Zuweisung von den passenden Bildern zu den Buttons
