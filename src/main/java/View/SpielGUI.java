@@ -64,7 +64,7 @@ public class SpielGUI {
 
         neueRundeButton = new JButton("neue Runde");
         neueRundeButton.setBounds(1000, 400, 101, 50);
-        neueRundeButton.setVisible(true);
+        neueRundeButton.setVisible(false);
         mainFrame.add(neueRundeButton);
 
         weiterButton = new JButton("Weiter");
