@@ -278,7 +278,7 @@ public class SpielGUI {
 
         mainFrame.add(weiterButton);
         mainFrame.add(sauButton);
-        mainFrame.show();
+        mainFrame.setVisible(true);
         spielabsichtFrame = new JFrame();
 
         mitteTextLabel = new JLabel();
