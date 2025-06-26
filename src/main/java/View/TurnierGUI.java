@@ -41,13 +41,12 @@ public class TurnierGUI {
         frame.setVisible(true);
     }
     private void kopf_gedrueckt(){
-        Integer i;
+        int anzahlRunden;
         try{
-            i = Integer.valueOf(eingabefeld.getText());
+            anzahlRunden = Integer.parseInt(eingabefeld.getText());
         }catch (NumberFormatException e){
             return;
         }
-        int anzahlRunden = i.intValue();
         if (anzahlRunden<1||anzahlRunden>16)return;
         menue.turnierStarten(anzahlRunden);
         frame.dispose();
