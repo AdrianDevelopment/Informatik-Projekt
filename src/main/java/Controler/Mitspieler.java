@@ -8,8 +8,6 @@ import Model.Werte;
 
 import java.util.ArrayList;
 
-
-
 public abstract class Mitspieler {
 
 
@@ -101,14 +99,14 @@ public abstract class Mitspieler {
 
                 //Gesuchte Sau darf nicht gelegt werden, wenn die Vorhand nicht die Farbe der Sau hat.
                 //Sonst darf Sau nur gelegt werden, nachdem die Farbe mindestens einmal in Vorhand gespielt wurde oder es der letzte Stich ist.
-                if (vorgegebeneKarte.gebeFarbe() != sau.gebeFarbe() && !sauFarbeVorhandGespielt && hand.size() > 1) {
+                if ((vorgegebeneKarte.gebeFarbe() != sau.gebeFarbe() && !sauFarbeVorhandGespielt && hand.size() > 1)|| vorgegebeneKarte.istTrumpf(SpielArt.SAUSPIEL,null) ) {
                     //Entfernt Sau von der Hand, damit sie nicht mehr gespielt werden kann.
                     hand.remove(sau); //Grund für das clonen von Hand
                 }
 
                 //Sofern die Farbe der Karte von der Vorhand und der Gesuchten sau gleich sind, darf nur die Sau gelegt werden.
                 for (Spielkarte karte : hand) {
-                    if (karte.gebeWert() == Werte.SAU && vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() && karte.gebeFarbe() == sau.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
+                    if (karte.gebeWert() == Werte.SAU && vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() && karte.gebeFarbe() == sau.gebeFarbe() && !karte.istTrumpf(SpielArt.SAUSPIEL, soloFarbe)) {
                         gezwungeneKarten.add(karte);
                         return gezwungeneKarten;
                     }
@@ -147,7 +145,7 @@ public abstract class Mitspieler {
     /*
         Bestimmt welche Karten die Vorhand beim Sauspiel spielen darf.
      */
-    //todo fehlber behen bei 3 Grass grass sau durfte nicht davonlaufen`?
+
     public ArrayList<Spielkarte> erlaubteKartenAusspielenBeiSauspiel(ArrayList<Spielkarte> hand, Spielkarte sau) {
         ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<Spielkarte>();
         int anzahlSauFarbeKarten = 0;
