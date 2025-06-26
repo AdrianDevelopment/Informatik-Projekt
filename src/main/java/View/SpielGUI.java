@@ -495,7 +495,7 @@ public class SpielGUI {
     }
 
     public void buttonKartenZuornden(Spieler spieler, ArrayList<Spielkarte> handkarten) {
-        System.out.println("Handkarten an");
+        System.out.println("DEBUG: Handkarten an mit Funktion");
         ArrayList<JButton> handButtons = spieler1ButtonsErstellen();
         //Zuweisung von den passenden Bildern zu den Buttons
         for (int i = 0; i < handkarten.size(); i++) {
@@ -508,8 +508,8 @@ public class SpielGUI {
 
 
     public void buttonKartenZuorndenKeineReaktion(ArrayList<Spielkarte> handkarten) {
-        System.out.println("Handkarten an");
-        ArrayList<JButton> handButtons = spieler1ButtonsErstellen();
+        System.out.println("DEBUG: Handkarten an ohne Funktion");
+        ArrayList<JButton> handButtons = spieler1ButtonsErstellen(); //spieler1
         //Zuweisung von den passenden Bildern zu den Buttons
         for (int i = 0; i < handkarten.size(); i++) {
             handButtons.get(i).setIcon(gibBild(handkarten.get(i)));
@@ -570,7 +570,34 @@ public class SpielGUI {
         spieler1KartenArray.get(i).setVisible(sichtbarkeit);
     }
 
+    public void entferneIndexVonHandButtons(int i) {
+        spieler1KartenArray.remove(i);
+    }
 
+
+    //NEU
+
+    public void okBuActLiSetzenSpielabsicht(Runde runde, int wiederholung, int vorhand) {
+        okButton.addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
+    }
+
+    public void okBuActLiSetzenNeueRundeStarten(Runde runde) {
+        okButton.addActionListener(e ->  runde.neuRundeStarten());
+    }
+
+    public void okBuActLiSetzenFarbeSpielabsicht(Runde runde) {
+        okButton.addActionListener(e -> runde.farbeFuerSpielAbsicht());
+    }
+
+    public void okBuActLiSetzenStichSpielen(Runde runde) {
+        okButton.addActionListener(e -> runde.stichSpielen());
+    }
+
+    public void okBuActLiSetzenFrageStichVorbei(Runde runde) {
+        okButton.addActionListener(e -> runde.frageStichVorbei());
+    }
+
+    //NEU Ende
 
     public void hinweisAnNutzer(String text) {
         kleinMitteTextLabel.setText(text);

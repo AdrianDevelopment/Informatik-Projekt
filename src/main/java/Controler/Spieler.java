@@ -43,7 +43,8 @@ public class Spieler extends Mitspieler {
     }
 
     public void kartenHinlegen(int wiederholung, int vorhand) {
-        gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
+//alt gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
+        gui.okBuActLiSetzenSpielabsicht(runde, wiederholung, vorhand); //NEU
         gui.okButtonSichtbarkeit(true);
     }
 
@@ -61,10 +62,7 @@ public class Spieler extends Mitspieler {
         model.setzeDranSpielabsicht(true);
         gui.spielabsichtFragen();
         gui.spielAbsichtButtonsSichtbarkeitSetzen(false, 1);
-
-
         gui.okButtonActionListenerLoeschen();
-
         gui.weiterButtonActionListener(this);
         gui.spielAbsichtButtonsSichtbarkeitSetzen(true, 0);
         //Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
@@ -111,7 +109,8 @@ public class Spieler extends Mitspieler {
         int finalI = vorhand;
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
-        gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
+//alt gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
+        gui.okBuActLiSetzenSpielabsicht(runde, wiederholung + 1, finalI); //NEU
         gui.okButtonSichtbarkeit(true);
     }
 
@@ -122,9 +121,11 @@ public class Spieler extends Mitspieler {
         if (spielArt == SpielArt.KEINSPIEL) {
             text = "Spiel abgebrochen wegen ungültiger Spielart.";
             System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
-            gui.gebeOkButton().addActionListener(e -> runde.neuRundeStarten());
+//alt gui.gebeOkButton().addActionListener(e -> runde.neuRundeStarten());
+            gui.okBuActLiSetzenNeueRundeStarten(runde); //NEU
         } else {
-            gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
+//alt gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
+            gui.okBuActLiSetzenFarbeSpielabsicht(runde); //NEU
         }
         gui.textAusgeben(text);
     }
@@ -185,7 +186,8 @@ public class Spieler extends Mitspieler {
         //okButton
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(true);
-        gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
+//alt gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
+        gui.okBuActLiSetzenStichSpielen(runde); //NEU
     }
 
     /**
@@ -251,7 +253,8 @@ public class Spieler extends Mitspieler {
             gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
 //            actionListenerLoeschen(model.gebeHandButtons().get(index)); //TODO: klappt trotzdem?
             gui.handkartenSichtbarkeitSetzen(false, index);
-            model.gebeHandButtons().remove(index);
+            gui.entferneIndexVonHandButtons(index);
+            //model.gebeHandButtons().remove(index);
             model.gebeHandkarten().remove(spielkarte);
             System.out.println("DEBUG: " + model.gebeHandkarten().size());
             gui.okButtonSichtbarkeit(true);
@@ -329,7 +332,8 @@ public class Spieler extends Mitspieler {
             model.setzeMitspieler(spielerHatGelegt);
         }
         gui.okButtonActionListenerLoeschen();
-        gui.gebeOkButton().addActionListener(e -> runde.frageStichVorbei());
+//alt gui.gebeOkButton().addActionListener(e -> runde.frageStichVorbei());
+        gui.okBuActLiSetzenFrageStichVorbei(runde); //NEU
     }
 
     /**
@@ -350,14 +354,15 @@ public class Spieler extends Mitspieler {
         model.stichBeendet();
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(true);
-        gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
+//alt gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
+        gui.okBuActLiSetzenStichSpielen(runde); //NEU
     }
 
 
     /**
      * berechnet Gewinner und Punkte
      *
-     * @param gewinner:          übergibt die int Werte, wo die Gewinner sitzen
+     * @param gewinner: übergibt die int Werte, wo die Gewinner sitzen
      * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
      */
     @Override
@@ -376,7 +381,8 @@ public class Spieler extends Mitspieler {
         gui.okButtonActionListenerLoeschen(); // TODO: der OK-Button ist auch nach anzeige des Textes noch vorhanden und muss erst angeklickt werden statt neue Runde
         gui.okButtonSichtbarkeit(false);
         gui.gebeNeueRundeButton().setVisible(true);
-        gui.gebeNeueRundeButton().addActionListener(e -> runde.neuRundeStarten());
+//alt gui.gebeNeueRundeButton().addActionListener(e -> runde.neuRundeStarten());
+        gui.okBuActLiSetzenNeueRundeStarten(runde);
     }
 
     /**
