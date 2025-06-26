@@ -6,11 +6,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TurnierGUI {
-    Menue menue;
-    JFrame frame;
-    JLabel label;
-    JTextField eingabefeld;
-    JButton knopf;
+    private Menue menue;
+    private JFrame frame;
+    private JLabel label;
+    private JTextField eingabefeld;
+    private JButton knopf;
     public TurnierGUI(Menue menue){
         this.menue = menue;
         frame = new JFrame("Turnier starten");
@@ -40,7 +40,7 @@ public class TurnierGUI {
         frame.add(knopf);
         frame.setVisible(true);
     }
-    void kopf_gedrueckt(){
+    private void kopf_gedrueckt(){
         Integer i;
         try{
             i = Integer.valueOf(eingabefeld.getText());
