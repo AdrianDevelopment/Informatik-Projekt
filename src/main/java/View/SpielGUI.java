@@ -1,5 +1,8 @@
 package View;
 
+import Controler.Runde;
+import Controler.Spieler;
+import Model.Farbe;
 import Model.Spielkarte;
 import Model.SpielArt;
 import Model.WelcherSpieler;
@@ -18,9 +21,6 @@ public class SpielGUI {
     private JButton weiterButton; //neu
     private JButton sauButton;
 
-    private JRadioButton schellenButton;
-    private JRadioButton grasButton;
-    private JRadioButton eichelButton;
     private JButton okButton;
     private JButton neueRundeButton;
 
@@ -89,10 +89,11 @@ public class SpielGUI {
         mainFrame.add(sauButton);
         //sauButton.setVisible(false);
 
-        //Bilder als Variablen festlegen
+        //Bilder als Variablen festlegen - nicht mehr in Benutzung
         ImageIcon playerIcon = new ImageIcon("src\\main\\resources\\spieler.png");
         ImageIcon botIcon = new ImageIcon("src\\main\\resources\\bot.png");
         kartenRuekseite = new ImageIcon("src\\main\\resources\\rueckseiteKarte.png");
+
         //Spieler1
         JLabel Spieler1 = new JLabel();
         Spieler1.setText("Spieler 1");
@@ -473,19 +474,103 @@ public class SpielGUI {
         }
     }
 
-
-    public void zeigeHandkarten(ArrayList<Spielkarte> handKarten) {
+    public void weiterButtonActionListener(Spieler spieler){
+        weiterSauButtons.get(0).addActionListener(e -> spieler.spielabsichtGesagt(SpielArt.KEINSPIEL));
     }
 
-    public void spielerHatSpielerabsichtGesagt(SpielArt spielAbsicht, WelcherSpieler welcherSpieler) {
+    public void sauButtonActionListener(Spieler spieler){
+        weiterSauButtons.get(1).addActionListener(e -> spieler.spielabsichtGesagt(SpielArt.SAUSPIEL));
     }
+
+    public void spielAbsichtButtonsSichtbarkeitSetzen(boolean sichtbarkeit, int i){
+        weiterSauButtons.get(i).setVisible(sichtbarkeit);
+    }
+
+    public void farbeFuerSpielabsichtButtonsActionListener(Spieler spieler){
+        farbauswahlButtons.get(0).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
+        farbauswahlButtons.get(1).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
+        farbauswahlButtons.get(2).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
+
+    }
+
+    public void buttonKartenZuornden(Spieler spieler, ArrayList<Spielkarte> handkarten) {
+        System.out.println("Handkarten an");
+        ArrayList<JButton> handButtons = spieler1ButtonsErstellen();
+        //Zuweisung von den passenden Bildern zu den Buttons
+        for (int i = 0; i < handkarten.size(); i++) {
+            handButtons.get(i).setIcon(gibBild(handkarten.get(i)));
+            int finalI = i; //für Lambda Expression
+            actionListenerLoeschen(handButtons.get(i));
+            handButtons.get(i).addActionListener(e -> spieler.karteGelegt(handkarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
+        }
+    }
+
+
+    public void buttonKartenZuorndenKeineReaktion(Spieler spieler, ArrayList<Spielkarte> handkarten) {
+        System.out.println("Handkarten an");
+        ArrayList<JButton> handButtons = spieler1ButtonsErstellen();
+        //Zuweisung von den passenden Bildern zu den Buttons
+        for (int i = 0; i < handkarten.size(); i++) {
+            handButtons.get(i).setIcon(gibBild(handkarten.get(i)));
+            actionListenerLoeschen(handButtons.get(i));
+        }
+    }
+
+
+    /*gibt zu einer Karte das ImageIcon mit passendem Bild (Co-Programmierer: Tim)*/
+    private ImageIcon gibBild(Spielkarte karte) {
+        String dateiname = "src\\main\\resources\\Karten\\";
+        switch (karte.gebeFarbe()) {
+            case SCHELLEN:
+                dateiname += "Schelle";
+                break;
+            case HERZ:
+                dateiname += "Herz";
+                break;
+            case GRAS:
+                dateiname += "Grass";
+                break;
+            case EICHEL:
+                dateiname += "Eichel";
+                break;
+        }
+        dateiname += "_";
+        switch (karte.gebeWert()) {
+            case SAU:
+                dateiname += "Ass";
+                break;
+            case ZEHNER:
+                dateiname += "10";
+                break;
+            case KOENIG:
+                dateiname += "Koenig";
+                break;
+            case OBER:
+                dateiname += "Ober";
+                break;
+            case UNTER:
+                dateiname += "Unter";
+                break;
+            case NEUNER:
+                dateiname += "9";
+                break;
+            case ACHTER:
+                dateiname += "8";
+                break;
+            case SIEBENER:
+                dateiname += "7";
+                break;
+        }
+        dateiname += ".png";
+        return new ImageIcon(dateiname);
+    }
+
+
+
+
 
     public void hinweisAnNutzer(String text) {
         kleinMitteTextLabel.setText(text);
-    }
-
-    public Spielkarte legeKarte() {
-        return null;
     }
 
     public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {
