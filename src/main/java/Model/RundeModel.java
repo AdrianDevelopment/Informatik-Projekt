@@ -54,16 +54,8 @@ public class RundeModel {
         return positionSpieler;
     }
 
-    public Spielkarte gebeAktuellerStich(int index) {
-        return aktuellerStich[index];
-    }
-
     public Spielkarte[] gebeAktuellerStichArray() {
         return aktuellerStich;
-    }
-
-    public Spielkarte gebeLetzterStichArray(int index) {
-        return letzterStich[index];
     }
 
     public SpielArt gebeHoechsteSpielart() {
@@ -94,10 +86,6 @@ public class RundeModel {
         return echterSpieler;
     }
 
-    public SpielArt gebeAktuelleSpielArt() {
-        return aktuelleSpielArt;
-    }
-
     public int gebeStichWiederholung(){
         return  stichWiederholung;
     }
@@ -108,16 +96,8 @@ public class RundeModel {
 
 
     // Setzer
-    public void setzePunkte(int index, int punktzahl) {
-        this.punkte[index] = punktzahl;
-    }
-
     public void addierePunkte(int index, int punktzahl) {
         this.punkte[index] += punktzahl;
-    }
-
-    public void setzePositionSpieler(int positionSpieler) {
-        this.positionSpieler = positionSpieler;
     }
 
     public void setzeAusrufer(int ausrufer) {
@@ -144,20 +124,8 @@ public class RundeModel {
         this.vorhand = vorhand;
     }
 
-    public void setzeSieger(int index, int sieger) {
-        this.sieger[index] = sieger;
-    }
-
     public void setzeSiegerArray(int[] sieger) {
         this.sieger = sieger;
-    }
-
-    public void setzeWiederholungenRunden(int wiederholungenRunden) {
-        this.wiederholungenRunden = wiederholungenRunden;
-    }
-
-    public void setzeEchterSpieler(Spieler echterSpieler) {
-        this.echterSpieler = echterSpieler;
     }
 
     public void setzeAktuelleSpielArt(SpielArt aktuelleSpielArt) {
@@ -170,5 +138,42 @@ public class RundeModel {
 
     public  void setzteWiederholung(int n){
         wiederholung = n;
+    }
+
+
+    // -------------------------------------------------------------------------------------------
+    // Geber, die aktuell nicht benutz werden
+    public Spielkarte gebeAktuellerStich(int index) {
+        return aktuellerStich[index];
+    }
+
+    public Spielkarte gebeLetzterStichArray(int index) {
+        return letzterStich[index];
+    }
+
+    public SpielArt gebeAktuelleSpielArt() {
+        return aktuelleSpielArt;
+    }
+
+
+    // Setzer, die aktuell nicht benutz werden
+    public void setzePunkte(int index, int punktzahl) {
+        this.punkte[index] = punktzahl;
+    }
+
+    public void setzePositionSpieler(int positionSpieler) {
+        this.positionSpieler = positionSpieler;
+    }
+
+    public void setzeSieger(int index, int sieger) {
+        this.sieger[index] = sieger;
+    }
+
+    public void setzeWiederholungenRunden(int wiederholungenRunden) {
+        this.wiederholungenRunden = wiederholungenRunden;
+    }
+
+    public void setzeEchterSpieler(Spieler echterSpieler) {
+        this.echterSpieler = echterSpieler;
     }
 }

@@ -4,6 +4,7 @@ package Controler;
 
 import View.MenueGUI;
 import View.StatistikGUI;
+import View.TurnierGUI;
 
 public class Menue {
     MenueGUI menueGUI;
@@ -12,22 +13,29 @@ public class Menue {
         this.menueGUI = menueGUI;
     }
 
-    public void uiIntialisieren(){
+    public void gUIIntialisieren(){
         menueGUI.gibStatistikButton().addActionListener(e -> new StatistikGUI());
-        menueGUI.gibPlayButton().addActionListener(e -> starteGame(1));
+        menueGUI.gibPlayButton().addActionListener(e -> menueGUIRueckgabe(1));
     }
 
-    public void starteGame(int menueAuswahl) {
+    public void menueGUIRueckgabe(int menueAuswahl) {
         switch (menueAuswahl) {
             case 0:
                 break;
             case 1:
-                Turnier tunier = new Turnier(4); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
-                tunier.rundeStarten(0, new int[]{-1, -1});
+                TurnierGUI tunierGUI = new TurnierGUI(this);
                 break;
             case 2:
                 // Mehrspieler
                 break;
+            default:
+                System.out.println("ERROR: Fehler bei MenueAuswahl");
+                break;
         }
+    }
+
+    public void turnierStarten(int anzahlRunden) {
+        Turnier tunier = new Turnier(anzahlRunden); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
+        tunier.rundeStarten(0, null);
     }
 }

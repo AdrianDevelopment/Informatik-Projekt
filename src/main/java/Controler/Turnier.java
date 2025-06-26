@@ -22,17 +22,15 @@ public class Turnier {
         speicherung = Speicherung.speicherungErstellen();
         spieler = new ArrayList<>(4);
         Spieler echterSpieler = new Spieler();
-
-        tunierModel = new TunierModel(anzahlRunden, echterSpieler);
-
         Random random = new Random();
-        tunierModel.setzePositionSpieler(random.nextInt(4));
+        tunierModel = new TunierModel(anzahlRunden, echterSpieler, random.nextInt(4));
 
         // Spieler-ArrayList vorbereiten
         for (int i = 0; i < 4; i++) {
             if (i != tunierModel.gebePositionSpieler()) {
                 spieler.add(new Bot());
-            } else {
+            }
+            else {
                 spieler.add(tunierModel.gebeEchterSpieler());
             }
         }
@@ -55,14 +53,20 @@ public class Turnier {
     public void rundeStarten(int wiederholungRunden, int[] sieger) {
         if (wiederholungRunden < tunierModel.gebeAnzahlRunden()) {
             new Runde(spieler, spielKartenVorbereiten(), tunierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, tunierModel.gebeEchterSpieler());
-        } else {
-            if (sieger[0] == tunierModel.gebePositionSpieler() || sieger[1] == tunierModel.gebePositionSpieler()) {
-                speicherung.TurnierGewonnen();
-            } else {
-                speicherung.TurnierVerloren();
+        }
+        else {
+            if (sieger != null) {
+                if (sieger[0] == tunierModel.gebePositionSpieler() || sieger[1] == tunierModel.gebePositionSpieler()) {
+                    speicherung.TurnierGewonnen();
+                } else {
+                    speicherung.TurnierVerloren();
+                }
+                speicherung.DatenSpeichern();
+                gui.schliessen();
             }
-            speicherung.DatenSpeichern();
-            gui.schliessen();
+            else {
+                System.out.println("ERROR: sieger ist null");
+            }
         }
     }
 }

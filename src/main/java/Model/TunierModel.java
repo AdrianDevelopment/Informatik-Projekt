@@ -8,10 +8,11 @@ public class TunierModel {
     private int[] punkteTunier;
     private int positionSpieler;
 
-    public TunierModel(int anzahlRunden, Spieler echterSpieler) {
+    public TunierModel(int anzahlRunden, Spieler echterSpieler, int positionSpieler) {
         this.anzahlRunden = anzahlRunden;
         this.echterSpieler = echterSpieler;
         this.punkteTunier = new int[4];
+        this.positionSpieler = positionSpieler;
     }
 
 
@@ -24,16 +25,22 @@ public class TunierModel {
         return echterSpieler;
     }
 
-    public int gebePunkteTunier(int index) {
-        return punkteTunier[index];
-    }
-
     public int gebePositionSpieler() {
         return positionSpieler;
     }
 
 
     // Setzer
+
+
+    // -------------------------------------------------------------------------------------------
+    // Geber, die aktuell nicht benutzt werden
+    public int gebePunkteTunier(int index) {
+        return punkteTunier[index];
+    }
+
+
+    // Setzer, die aktuell nicht benutzt werden
     public void setzeAnzahlRunden(int anzahlRunden) {
         this.anzahlRunden = anzahlRunden;
     }
