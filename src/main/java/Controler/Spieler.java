@@ -398,11 +398,10 @@ public class Spieler extends Mitspieler {
         model.setzeGelegteKarte(karte);
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(spielerHatGelegt);
-        //Tim Anfang //TODO: anpassen mit Solofarbe anstatt null @Tim
         //Nachdem die Farbe der gesuchten Sau gespielt wird, darf die gesuchte wie jede andere Karte einer Farbe frei gespielt werden.
         if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
             model.setzteSauFarbeVorhandGespielt(true);
-        } //Tim Ende
+        }
         //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
