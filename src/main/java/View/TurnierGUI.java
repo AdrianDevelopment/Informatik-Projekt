@@ -11,6 +11,7 @@ public class TurnierGUI {
     JLabel label;
     JTextField eingabefeld;
     JButton knopf;
+
     public TurnierGUI(Menue menue){
         this.menue = menue;
         frame = new JFrame("Turnier starten");
@@ -36,6 +37,7 @@ public class TurnierGUI {
         knopf.setHorizontalAlignment(JLabel.CENTER);
         knopf.addActionListener(e -> kopf_gedrueckt());
         frame.add(knopf);
+        frame.setVisible(true);
     }
     void kopf_gedrueckt(){
         Integer i;
@@ -44,6 +46,5 @@ public class TurnierGUI {
         }catch (NumberFormatException e){
             return;
         }
-        int anzahlRunden =
     }
 }

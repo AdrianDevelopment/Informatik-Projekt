@@ -7,10 +7,10 @@ import java.util.ArrayList;
 // Programmierer: Adrian
 
 public class Runde {
-    private ArrayList<Mitspieler> spieler;
-    private Speicherung speicherung;
-    private RundeModel rundeModel;
-    private Turnier turnier;
+    private final ArrayList<Mitspieler> spieler;
+    private final Speicherung speicherung;
+    private final RundeModel rundeModel;
+    private final Turnier turnier;
 
     // debug hardcoded
     boolean debug = true;
@@ -205,6 +205,7 @@ public class Runde {
                 case GRAS: return 1;
                 case HERZ: return 2;
                 case SCHELLEN: return 3;
+                default: System.out.println("ERROR: Fehler bei der Berechnung des Trumpf-Ranges");
             }
         }
 
@@ -214,6 +215,7 @@ public class Runde {
                 case GRAS: return 5;
                 case HERZ: return 6;
                 case SCHELLEN: return 7;
+                default: System.out.println("ERROR: Fehler bei der Berechnung des Trumpf-Ranges");
             }
         }
 
@@ -225,10 +227,11 @@ public class Runde {
                 case NEUNER: return 11;
                 case ACHTER: return 12;
                 case SIEBENER: return 13;
+                default: System.out.println("ERROR: Fehler bei der Berechnung des Trumpf-Ranges");
             }
         }
 
-        System.out.println("ERROR: Fehler bei der Berechnung des Trumpf-Rangs");
+        System.out.println("ERROR: Fehler bei der Berechnung des Trumpf-Ranges");
         return -1;
     }
 
@@ -244,9 +247,10 @@ public class Runde {
             case NEUNER: return 5;
             case ACHTER: return 6;
             case SIEBENER: return 7;
+            default: System.out.println("ERROR: Fehler bei der Berechnung des Farb-Ranges");
         }
 
-        System.out.println("ERROR: Fehler bei der Berechnung des Rangs einer Farbe");
+        System.out.println("ERROR: Fehler bei der Berechnung des Farb-Ranges");
         return -1;
     }
 

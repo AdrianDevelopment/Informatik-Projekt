@@ -7,7 +7,7 @@ import View.StatistikGUI;
 import View.TurnierGUI;
 
 public class Menue {
-    MenueGUI menueGUI;
+    private final MenueGUI menueGUI;
 
     public Menue(MenueGUI menueGUI) {
         this.menueGUI = menueGUI;
