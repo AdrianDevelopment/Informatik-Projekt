@@ -3,8 +3,8 @@ package Controler;
 import Model.*;
 import View.SpielGUI;
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
+import javax.swing.*; //TODO: löschen
+import java.awt.event.ActionListener; //TODO: löschen
 import java.util.ArrayList;
 
 //Programmierer: Tom
@@ -31,8 +31,7 @@ public class Spieler extends Mitspieler {
      */
     public void spielGUIErstellen(SpielGUI gui) {
         this.gui = gui;
-        JButton okButton = gui.gebeOkButton();
-        okButton.setVisible(true);
+        gui.okButtonSichtbarkeit(true);
     }
 
     @Override
@@ -45,9 +44,8 @@ public class Spieler extends Mitspieler {
     }
 
     public void kartenHinlegen(int wiederholung, int vorhand) {
-        actionListenerLoeschen(gui.gebeOkButton());
         gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
-        gui.gebeOkButton().setVisible(true);
+        gui.okButtonSichtbarkeit(true);
     }
 
     /*Buttons bekommen Icons zugewiesen*/
@@ -135,13 +133,13 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand) {
-        gui.gebeOkButton().setVisible(true);
+        gui.okButtonSichtbarkeit(true);
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranSpielabsicht(true);
         ArrayList<JButton> spielabsichtButtons = gui.spielabsichtFragen();
         spielabsichtButtons.get(1).setVisible(false);
-        actionListenerLoeschen(gui.gebeOkButton());
+        gui.okButtonActionListenerLoeschen();
         spielabsichtButtons.get(0).addActionListener(e -> spielabsichtGesagt(SpielArt.KEINSPIEL));
         spielabsichtButtons.get(0).setVisible(true);
         //Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
@@ -158,21 +156,20 @@ public class Spieler extends Mitspieler {
 
     /**
      * wird von spielabsichtButtons aufgerufen
-     * - setzt spielabsichtButtons
      *
-     * @param spielabsicht: wird überprüft, ob es überhaupt geht
+     * @param spielabsicht: übergibt das an runde
      */
     public void spielabsichtGesagt(SpielArt spielabsicht) {
         if (!model.gebeDranSpielabsicht()) { //Spieler soll keine Karte legen → nichts soll passieren
             return;
         }
         model.setzeDranSpielabsicht(false);
-
-        System.out.println("debug: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
-
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
         gui.hinweisAnNutzer(""); //der Hinweistext ist nun nicht mehr sichtbar
         System.out.println("debug: Spielabsicht auf unsichtbar gesetzt");
+
+        System.out.println("debug: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
+
         runde.spielabsichtFragenAufgerufen(model.gebeWiederholung(), model.gebeVorhand(), spielabsicht);
     }
 
@@ -187,14 +184,14 @@ public class Spieler extends Mitspieler {
             vorhand = 0;
         }
         int finalI = vorhand;
-        actionListenerLoeschen(gui.gebeOkButton());
-        gui.gebeOkButton().setVisible(false);
+        gui.okButtonActionListenerLoeschen();
+        gui.okButtonSichtbarkeit(false);
         gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
-        gui.gebeOkButton().setVisible(true);
+        gui.okButtonSichtbarkeit(true);
     }
 
     public void spielAbsichtAusgeben(int ausrufer, SpielArt spielArt) {
-        actionListenerLoeschen(gui.gebeOkButton());
+        gui.okButtonActionListenerLoeschen();
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
         String text = ausgabeBeimAusrufen(spielArt, welcherspieler, null);
         if (spielArt == SpielArt.KEINSPIEL) {
@@ -213,7 +210,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
-        actionListenerLoeschen(gui.gebeOkButton());
+        gui.okButtonActionListenerLoeschen();
         model.setzeDranFarbeSpielabsicht(true);
         ArrayList<JButton> jButtons = gui.farbeFuerSpielabsicht();
         jButtons.get(0).addActionListener(e -> farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
@@ -262,8 +259,8 @@ public class Spieler extends Mitspieler {
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
         gui.textAusgeben(text);
         //okButton
-        actionListenerLoeschen(gui.gebeOkButton());
-        gui.gebeOkButton().setVisible(true);
+        gui.okButtonActionListenerLoeschen();
+        gui.okButtonSichtbarkeit(true);
         gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
     }
 
@@ -274,7 +271,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void legeEineKarte(int wiederholung, int vorhand) {
-        actionListenerLoeschen(gui.gebeOkButton());
+        gui.okButtonActionListenerLoeschen();
         buttonKartenZuornden();
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
@@ -400,7 +397,7 @@ public class Spieler extends Mitspieler {
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
         }
-        actionListenerLoeschen(gui.gebeOkButton());
+        gui.okButtonActionListenerLoeschen();
         gui.gebeOkButton().addActionListener(e -> runde.frageStichVorbei());
     }
 
@@ -420,8 +417,8 @@ public class Spieler extends Mitspieler {
         gui.textAusgeben(text);
         gui.mitteAufrauemen();
         model.stichBeendet();
-        actionListenerLoeschen(gui.gebeOkButton());
-        gui.gebeOkButton().setVisible(true);
+        gui.okButtonActionListenerLoeschen();
+        gui.okButtonSichtbarkeit(true);
         gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
     }
 
@@ -445,8 +442,8 @@ public class Spieler extends Mitspieler {
         String text = "<html>" + gewinner1.gebeName() + " und " + gewinner2.gebeName() + " haben gewonnen und " + punkte[0] + " Punkte gesammelt. " + "Du hast " + punkte[2] + " Punkte gesammelt.<html>";
         gui.textAusgeben(text);
         gui.mitteAufrauemen();
-        actionListenerLoeschen(gui.gebeOkButton()); // TODO: der OK-Button ist auch nach anzeige des Textes noch vorhanden und muss erst angeklickt werden statt neue Runde
-        gui.gebeOkButton().setVisible(false);
+        gui.okButtonActionListenerLoeschen(); // TODO: der OK-Button ist auch nach anzeige des Textes noch vorhanden und muss erst angeklickt werden statt neue Runde
+        gui.okButtonSichtbarkeit(false);
         gui.gebeNeueRundeButton().setVisible(true);
         gui.gebeNeueRundeButton().addActionListener(e -> runde.neuRundeStarten());
     }
@@ -483,9 +480,11 @@ public class Spieler extends Mitspieler {
         return model.gebeMitspieler();
     }
 
-    private void actionListenerLoeschen(JButton button) {
+
+    private void actionListenerLoeschen(JButton button) { //TODO: Methode löschen
         for (ActionListener al : button.getActionListeners()) {
             button.removeActionListener(al);
         }
     }
+
 }

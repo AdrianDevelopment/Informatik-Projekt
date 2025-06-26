@@ -6,6 +6,7 @@ import Model.WelcherSpieler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
@@ -296,6 +297,20 @@ public class SpielGUI {
         mainFrame.add(kleinMitteTextLabel);
 
         mitteKartenInitialisieren();
+    }
+
+    public void okButtonSichtbarkeit(boolean sichtbarkeit) {
+        okButton.setVisible(sichtbarkeit);
+    }
+
+    public void okButtonActionListenerLoeschen() {
+        actionListenerLoeschen(okButton);
+    }
+
+    private void actionListenerLoeschen(JButton button) {
+        for (ActionListener al : button.getActionListeners()) {
+            button.removeActionListener(al);
+        }
     }
 
     public ArrayList<JButton> spieler1ButtonsErstellen() {
