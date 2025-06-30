@@ -45,7 +45,6 @@ public class Spieler extends Mitspieler {
     }
 
     public void kartenHinlegen(int wiederholung, int vorhand) {
-//alt gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
         gui.okBuActLiSetzenSpielabsicht(runde, wiederholung, vorhand); //NEU
         gui.okButtonSichtbarkeit(true);
     }
@@ -111,7 +110,6 @@ public class Spieler extends Mitspieler {
         int finalI = vorhand;
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
-//alt gui.gebeOkButton().addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung + 1, finalI));
         gui.okBuActLiSetzenSpielabsicht(runde, wiederholung + 1, finalI); //NEU
         gui.okButtonSichtbarkeit(true);
     }
@@ -123,10 +121,8 @@ public class Spieler extends Mitspieler {
         if (spielArt == SpielArt.KEINSPIEL) {
             text = "Spiel abgebrochen wegen ungültiger Spielart.";
             System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
-//alt gui.gebeOkButton().addActionListener(e -> runde.neuRundeStarten());
             gui.okBuActLiSetzenNeueRundeStarten(runde); //NEU
         } else {
-//alt gui.gebeOkButton().addActionListener(e -> runde.farbeFuerSpielAbsicht());
             gui.okBuActLiSetzenFarbeSpielabsicht(runde); //NEU
         }
         gui.textAusgeben(text);
@@ -189,7 +185,6 @@ public class Spieler extends Mitspieler {
         //okButton
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(true);
-//alt gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
         gui.okBuActLiSetzenStichSpielen(runde); //NEU
     }
 
@@ -332,7 +327,6 @@ public class Spieler extends Mitspieler {
             model.setzeMitspieler(spielerHatGelegt);
         }
         gui.okButtonActionListenerLoeschen();
-//alt gui.gebeOkButton().addActionListener(e -> runde.frageStichVorbei());
         gui.okBuActLiSetzenFrageStichVorbei(runde); //NEU
     }
 
@@ -354,7 +348,6 @@ public class Spieler extends Mitspieler {
         model.stichBeendet();
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(true);
-//alt gui.gebeOkButton().addActionListener(e -> runde.stichSpielen());
         gui.okBuActLiSetzenStichSpielen(runde); //NEU
     }
 
@@ -381,7 +374,6 @@ public class Spieler extends Mitspieler {
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
         gui.neueRundeButtonSichtbarkeit(true);
-//alt gui.gebeNeueRundeButton().addActionListener(e -> runde.neuRundeStarten());
         gui.neuRundeBuActLiSetzenNeueRundeStarten(runde);
     }
 
