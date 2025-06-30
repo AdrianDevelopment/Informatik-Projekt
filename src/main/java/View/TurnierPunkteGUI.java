@@ -17,7 +17,7 @@ public class TurnierPunkteGUI {
 
         frame.setTitle("Turnier-Punkte Übersicht");
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setSize(600, 300);
 

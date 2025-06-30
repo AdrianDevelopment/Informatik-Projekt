@@ -52,7 +52,7 @@ public class SpielGUI {
     public SpielGUI() {
         mainFrame = new JFrame();
 
-        mainFrame.setSize(1400, 700); //ersetzt duch frame.pack() !frame.pack() muss am ende stehen!
+        mainFrame.setSize(1400, 700);
         mainFrame.setVisible(true);
         mainFrame.setLayout(null);
 
@@ -67,7 +67,7 @@ public class SpielGUI {
         mainFrame.add(okButton);
 
         neueRundeButton = new JButton("neue Runde");
-        neueRundeButton.setBounds(1000, 400, 101, 50);
+        neueRundeButton.setBounds(1000, 400, 200, 50);
         neueRundeButton.setVisible(false);
         mainFrame.add(neueRundeButton);
 
@@ -620,14 +620,18 @@ public class SpielGUI {
 
 
         endTextArea = new JTextPane();
-        endTextArea.setBounds(50, 50, 300, 200);
+        endTextArea.setBounds(435, 200, 500, 250);
 
-        endTextArea.setText("Gewinner Team:\n" +gewinner1+ " & " + gewinner2+ " ("+gewinnerpunkte+")\n \n Verlierer Team:" +verlierer1+ " & " +verlierer2+ " ("+verliererpunkte+")");
+        endTextArea.setText("Gewinner Team:\n" +gewinner1+ " & " + gewinner2+ " ("+gewinnerpunkte+")\n \n Verlierer Team:\n" +verlierer1+ " & " +verlierer2+ " ("+verliererpunkte+")");
 
         StyledDocument doc = endTextArea.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        endTextArea.setEditable(false);
+        endTextArea.setFont(new Font("Arial", Font.PLAIN, 30));
+        endTextArea.setBackground(null);
+
         endTextArea.setVisible(true);
 
         mainFrame.add(endTextArea);
@@ -638,8 +642,16 @@ public class SpielGUI {
         endTextArea.setVisible(false);
     }
 
-    public void spielGUISchließen(){
-        mainFrame.dispose();
+    public void spielGUIUnsichtbar(){
+        mainFrame.setVisible(false);
+    }
+
+    public void spielGUISichtbar(){
+        mainFrame.setVisible(true);
+    }
+
+    public void neueRundeButtonText(String text){
+        neueRundeButton.setText(text);
     }
 
     public void schliessen() {
