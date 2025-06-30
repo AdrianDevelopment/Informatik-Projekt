@@ -97,7 +97,7 @@ public class Bot extends Mitspieler {
             case SOLO:
                 return model.gibsoloFarbe();
             default:
-                System.out.println("Spielart: "+ spielArt+"wird nicht behandelt");
+                System.out.println("DEBUG: Spielart: "+ spielArt+" wird nicht behandelt");
                 break;
         }
         return null;
@@ -134,7 +134,7 @@ public class Bot extends Mitspieler {
             case SOLO:
                 break;
             default:
-                System.out.println("Spielart: "+ model.gibSpielArt()+"wird nicht behandelt");
+                System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
         }
         //Gewählte Karte aus Hand entfernen und zurückgeben.
@@ -210,7 +210,7 @@ public class Bot extends Mitspieler {
             //Die Karte muss mehr als 3 Punkte wert sein
             if (karteMitHoechsterPunktzahl != null){
                 if(karteMitHoechsterPunktzahl.gebeWert().gebePunktzahl() > 3){
-                    System.out.println("Der Bot hat geschmiert!");
+                    System.out.println("DEBUG: Der Bot hat geschmiert!");
                     return  karteMitHoechsterPunktzahl;
                 }
 
@@ -221,7 +221,7 @@ public class Bot extends Mitspieler {
             //Wenn möglich, legt die erste Karte die den Stich gewinnen kann
             for(Spielkarte karte : erlaubteKarten){
                 if(spielKartenStaerkeSauSpiel(karte) >kartenStaerkeVonStichGewinner){
-                    System.out.println("Der Bot versucht den Stich zu gewinnen!");
+                    System.out.println("DEBUG: Der Bot versucht den Stich zu gewinnen!");
                     return  karte;
                 }
             }
@@ -230,7 +230,7 @@ public class Bot extends Mitspieler {
         if(spielerGewinntStich != model.gibTeamSpieler() && model.gibTeamSpieler() != -1 && kartenStaerkeVonStichGewinner > 90){
             for(Spielkarte karte : erlaubteKarten){
                if(karte.gebeWert().gebePunktzahl() == 0){
-                   System.out.println("Der Bot legt eine wertlose Karte!");
+                   System.out.println("DEBUG: Der Bot legt eine wertlose Karte!");
                    return  karte;
                }
             }

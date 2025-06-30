@@ -2,16 +2,16 @@ package Model;
 
 import Controler.Spieler;
 
-public class TunierModel {
+public class TurnierModel {
     private int anzahlRunden;
     private Spieler echterSpieler;
-    private int[] punkteTunier;
+    private int[] punkteTurnier;
     private int positionSpieler;
 
-    public TunierModel(int anzahlRunden, Spieler echterSpieler, int positionSpieler) {
+    public TurnierModel(int anzahlRunden, Spieler echterSpieler, int positionSpieler) {
         this.anzahlRunden = anzahlRunden;
         this.echterSpieler = echterSpieler;
-        this.punkteTunier = new int[4];
+        this.punkteTurnier = new int[4];
         this.positionSpieler = positionSpieler;
     }
 
@@ -25,18 +25,25 @@ public class TunierModel {
         return echterSpieler;
     }
 
+    public int[] gebePunkteTurnierArray() {
+        return punkteTurnier;
+    }
+
     public int gebePositionSpieler() {
         return positionSpieler;
     }
 
 
     // Setzer
+    public void erhoehePunkteTurnierUmEins(int index) {
+        punkteTurnier[index]++;
+    }
 
 
     // -------------------------------------------------------------------------------------------
     // Geber, die aktuell nicht benutzt werden
-    public int gebePunkteTunier(int index) {
-        return punkteTunier[index];
+    public int gebePunkteTurnier(int index) {
+        return punkteTurnier[index];
     }
 
 
@@ -49,12 +56,8 @@ public class TunierModel {
         this.echterSpieler = echterSpieler;
     }
 
-    public void setzePunkteTunier(int index, int punkte) {
-        punkteTunier[index] = punkte;
-    }
-
-    public void erhoehePunkteTunierUmEins(int index) {
-        punkteTunier[index]++;
+    public void setzePunkteTurnier(int index, int punkte) {
+        punkteTurnier[index] = punkte;
     }
 
     public void setzePositionSpieler(int positionSpieler) {

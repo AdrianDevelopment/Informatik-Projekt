@@ -8,7 +8,7 @@ public enum WelcherSpieler {
     OBERER("Der obere Spieler"),
     RECHTER("Der rechte Spieler");
 
-    private String name;
+    private final String name;
 
     WelcherSpieler(String name) {
         this.name = name;

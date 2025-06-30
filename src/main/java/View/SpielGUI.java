@@ -491,7 +491,6 @@ public class SpielGUI {
         farbauswahlButtons.get(0).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
         farbauswahlButtons.get(1).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
         farbauswahlButtons.get(2).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
-
     }
 
     public void buttonKartenZuornden(Spieler spieler, ArrayList<Spielkarte> handkarten) {

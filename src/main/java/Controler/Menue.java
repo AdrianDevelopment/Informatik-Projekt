@@ -23,7 +23,7 @@ public class Menue {
             case 0:
                 break;
             case 1:
-                TurnierGUI tunierGUI = new TurnierGUI(this);
+                new TurnierGUI(this);
                 break;
             case 2:
                 // Mehrspieler
@@ -36,6 +36,6 @@ public class Menue {
 
     public void turnierStarten(int anzahlRunden) {
         Turnier tunier = new Turnier(anzahlRunden); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
-        tunier.rundeStarten(0, null);
+        tunier.rundeStarten(null,0);
     }
 }

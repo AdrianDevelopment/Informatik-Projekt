@@ -154,7 +154,7 @@ public class Runde {
     }
 
     public void neuRundeStarten() {
-        turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
+        turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
     }
 
     public int ermittleSieger(Spielkarte[] aktuellerStich) {

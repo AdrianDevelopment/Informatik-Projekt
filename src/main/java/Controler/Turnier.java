@@ -1,10 +1,8 @@
 package Controler;
 
-import Model.Farbe;
-import Model.Spielkarte;
-import Model.TunierModel;
-import Model.Werte;
+import Model.*;
 import View.SpielGUI;
+import View.TurnierPunkteGUI;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,7 +12,7 @@ import java.util.Collections;
 
 public class Turnier {
     private final Speicherung speicherung;
-    private final TunierModel tunierModel;
+    private final TurnierModel turnierModel;
     private final ArrayList<Mitspieler> spieler;
     private final SpielGUI gui;
 
@@ -23,19 +21,19 @@ public class Turnier {
         spieler = new ArrayList<>(4);
         Spieler echterSpieler = new Spieler();
         Random random = new Random();
-        tunierModel = new TunierModel(anzahlRunden, echterSpieler, random.nextInt(4));
+        turnierModel = new TurnierModel(anzahlRunden, echterSpieler, random.nextInt(4));
 
         // Spieler-ArrayList vorbereiten
         for (int i = 0; i < 4; i++) {
-            if (i != tunierModel.gebePositionSpieler()) {
+            if (i != turnierModel.gebePositionSpieler()) {
                 spieler.add(new Bot());
             }
             else {
-                spieler.add(tunierModel.gebeEchterSpieler());
+                spieler.add(turnierModel.gebeEchterSpieler());
             }
         }
         gui = new SpielGUI();
-        tunierModel.gebeEchterSpieler().spielGUIErstellen(gui);
+        turnierModel.gebeEchterSpieler().spielGUIErstellen(gui);
     }
 
     // Spielkarten vorbereiten
@@ -50,13 +48,12 @@ public class Turnier {
         return spielKarten;
     }
 
-    public void rundeStarten(int wiederholungRunden, int[] sieger) {
-        if (wiederholungRunden < tunierModel.gebeAnzahlRunden()) {
-            new Runde(spieler, spielKartenVorbereiten(), tunierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, tunierModel.gebeEchterSpieler());
-        }
-        else {
+    public void turnierPunkteAnzeigen(int wiederholungRunden, int[] sieger) {
+        turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
+        turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
+        if (wiederholungRunden == turnierModel.gebeAnzahlRunden()) {
             if (sieger != null) {
-                if (sieger[0] == tunierModel.gebePositionSpieler() || sieger[1] == tunierModel.gebePositionSpieler()) {
+                if (sieger[0] == turnierModel.gebePositionSpieler() || sieger[1] == turnierModel.gebePositionSpieler()) {
                     speicherung.TurnierGewonnen();
                 } else {
                     speicherung.TurnierVerloren();
@@ -68,5 +65,32 @@ public class Turnier {
                 System.out.println("ERROR: sieger ist null");
             }
         }
+        new TurnierPunkteGUI(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
+    }
+
+    public void rundeStarten(TurnierPunkteGUI turnierPunkteGUI, int wiederholungRunden) {
+        if (turnierPunkteGUI != null) {
+            turnierPunkteGUI.turnierPunkteGUIZerstoeren();
+        }
+        if (wiederholungRunden < turnierModel.gebeAnzahlRunden()) {
+            new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, turnierModel.gebeEchterSpieler());
+        }
+    }
+
+    public WelcherSpieler wieVielterSpieler(int spieler) {
+        WelcherSpieler spielerImUhrzeigersinn = null;
+        int rechnung = spieler - turnierModel.gebePositionSpieler(); //positive Zahlen im Uhrzeigersinn; negative gegen den Uhrzeigersinn
+        if (rechnung == 0) {
+            spielerImUhrzeigersinn = WelcherSpieler.NUTZER; //Nutzer
+        } else if (rechnung == 1 || rechnung == -3) {
+            spielerImUhrzeigersinn = WelcherSpieler.LINKER; //linker Spieler
+        } else if (rechnung == 2 || rechnung == -2) {
+            spielerImUhrzeigersinn = WelcherSpieler.OBERER; //oberer Spieler
+        } else if (rechnung == 3 || rechnung == -1) {
+            spielerImUhrzeigersinn = WelcherSpieler.RECHTER; //rechter Spieler
+        } else {
+            System.out.println("ERROR: Methode wieVielterSpieler" + spieler); //Test
+        }
+        return spielerImUhrzeigersinn;
     }
 }
