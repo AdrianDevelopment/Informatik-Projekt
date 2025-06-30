@@ -15,15 +15,16 @@ public class Turnier {
     private final TurnierModel turnierModel;
     private final ArrayList<Mitspieler> spieler;
     private final SpielGUI gui;
+    private final Spieler echterSpieler;
     private final TurnierPunkteGUI turnierPunkteGUI;
 
     public Turnier(int anzahlRunden) {
-        turnierPunkteGUI = new TurnierPunkteGUI();
-        speicherung = Speicherung.speicherungErstellen();
-        spieler = new ArrayList<>(4);
-        Spieler echterSpieler = new Spieler();
         Random random = new Random();
-        turnierModel = new TurnierModel(anzahlRunden, echterSpieler, random.nextInt(4));
+        echterSpieler = new Spieler();
+        speicherung = Speicherung.speicherungErstellen();
+        turnierModel = new TurnierModel(anzahlRunden, random.nextInt(4));
+        spieler = new ArrayList<>(4);
+        turnierPunkteGUI = new TurnierPunkteGUI();
 
         // Spieler-ArrayList vorbereiten
         for (int i = 0; i < 4; i++) {
@@ -31,11 +32,11 @@ public class Turnier {
                 spieler.add(new Bot());
             }
             else {
-                spieler.add(turnierModel.gebeEchterSpieler());
+                spieler.add(echterSpieler);
             }
         }
         gui = new SpielGUI();
-        turnierModel.gebeEchterSpieler().spielGUIErstellen(gui);
+        echterSpieler.spielGUIErstellen(gui);
     }
 
     // Spielkarten vorbereiten
@@ -51,19 +52,24 @@ public class Turnier {
     }
 
     public void turnierPunkteAnzeigen(int wiederholungRunden, int[] sieger) {
-        if (wiederholungRunden == turnierModel.gebeAnzahlRunden()) {
-            if (sieger != null) {
-                if (sieger[0] == turnierModel.gebePositionSpieler() || sieger[1] == turnierModel.gebePositionSpieler()) {
-                    speicherung.TurnierGewonnen();
-                } else {
-                    speicherung.TurnierVerloren();
-                }
-                speicherung.DatenSpeichern();
-                gui.schliessen();
+        if (sieger == null) {
+            return;
+        }
+        if (echterSpieler.gebeKeinSpiel()) {
+            echterSpieler.setzeKeinSpiel(false);
+            rundeStarten(wiederholungRunden);
+            echterSpieler.okButtonActionListenerLoeschen();
+            return;
+        }
+        if (wiederholungRunden == turnierModel.gebeAnzahlRunden() - 1) {
+            if (sieger[0] == turnierModel.gebePositionSpieler() || sieger[1] == turnierModel.gebePositionSpieler()) {
+                speicherung.TurnierGewonnen();
+            } else {
+                speicherung.TurnierVerloren();
             }
-            else {
-                System.out.println("ERROR: sieger ist null");
-            }
+            speicherung.DatenSpeichern();
+            gui.schliessen();
+//            new turnierGewonnenGUI();
         }
         turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
         turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
@@ -71,16 +77,14 @@ public class Turnier {
         turnierPunkteGUI.ausfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
     }
 
-    public void rundeStarten(TurnierPunkteGUI turnierPunkteGUI, int wiederholungRunden) {
+    public void rundeStarten(int wiederholungRunden) {
         this.turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
-        if (turnierPunkteGUI != null) { //TODO
-            turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
-        }
         if (wiederholungRunden < turnierModel.gebeAnzahlRunden()) {
-            new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, turnierModel.gebeEchterSpieler());
+            new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, echterSpieler);
         }
     }
 
+    // Kopie aus Spieler (Tom)
     public WelcherSpieler wieVielterSpieler(int spieler) {
         WelcherSpieler spielerImUhrzeigersinn = null;
         int rechnung = spieler - turnierModel.gebePositionSpieler(); //positive Zahlen im Uhrzeigersinn; negative gegen den Uhrzeigersinn

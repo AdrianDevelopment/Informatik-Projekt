@@ -4,13 +4,11 @@ import Controler.Spieler;
 
 public class TurnierModel {
     private int anzahlRunden;
-    private Spieler echterSpieler;
     private int[] punkteTurnier;
     private int positionSpieler;
 
-    public TurnierModel(int anzahlRunden, Spieler echterSpieler, int positionSpieler) {
+    public TurnierModel(int anzahlRunden, int positionSpieler) {
         this.anzahlRunden = anzahlRunden;
-        this.echterSpieler = echterSpieler;
         this.punkteTurnier = new int[4];
         this.positionSpieler = positionSpieler;
     }
@@ -19,10 +17,6 @@ public class TurnierModel {
     // Geber
     public int gebeAnzahlRunden() {
         return anzahlRunden;
-    }
-
-    public Spieler gebeEchterSpieler() {
-        return echterSpieler;
     }
 
     public int[] gebePunkteTurnierArray() {
@@ -52,9 +46,6 @@ public class TurnierModel {
         this.anzahlRunden = anzahlRunden;
     }
 
-    public void setzeEchterSpieler(Spieler echterSpieler) {
-        this.echterSpieler = echterSpieler;
-    }
 
     public void setzePunkteTurnier(int index, int punkte) {
         punkteTurnier[index] = punkte;

@@ -65,7 +65,7 @@ public class Spieler extends Mitspieler {
         model.setzeDranSpielabsicht(true);
         gui.spielabsichtFragen();
         gui.spielAbsichtButtonsSichtbarkeitSetzen(false, 1);
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         gui.weiterButtonActionListener(this);
         gui.spielAbsichtButtonsSichtbarkeitSetzen(true, 0);
         //Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
@@ -110,17 +110,18 @@ public class Spieler extends Mitspieler {
             vorhand = 0;
         }
         int finalI = vorhand;
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
         gui.okBuActLiSetzenSpielabsicht(runde, wiederholung + 1, finalI);
         gui.okButtonSichtbarkeit(true);
     }
 
     public void spielAbsichtAusgeben(int ausrufer, SpielArt spielArt) {
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
         String text = ausgabeBeimAusrufen(spielArt, welcherspieler, null);
         if (spielArt == SpielArt.KEINSPIEL) {
+            model.setzeKeinSpiel(true);
             text = "Spiel abgebrochen wegen ungültiger Spielart.";
             System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
             gui.okBuActLiSetzenNeueRundeStarten(runde);
@@ -130,13 +131,21 @@ public class Spieler extends Mitspieler {
         gui.textAusgeben(text);
     }
 
+    public boolean gebeKeinSpiel() {
+        return model.gebeKeinSpiel();
+    }
+
+    public void setzeKeinSpiel(boolean b) {
+        model.setzeKeinSpiel(b);
+    }
+
     /**
      * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
      * Überprüfung, ob gewählte Farbe möglich → Rückgabe oder erneute GUI-Anfrage
      */
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         model.setzeDranFarbeSpielabsicht(true);
         gui.farbeFuerSpielabsicht();
         gui.farbeFuerSpielabsichtButtonsActionListener(this);
@@ -186,7 +195,7 @@ public class Spieler extends Mitspieler {
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
         gui.textAusgeben(text);
         //okButton
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(true);
         gui.okBuActLiSetzenStichSpielen(runde);
     }
@@ -198,7 +207,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void legeEineKarte(int wiederholung, int vorhand) {
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
         gui.buttonKartenZuornden(this, model.gebeHandkarten());
         model.setzeWiederholung(wiederholung);
@@ -329,7 +338,7 @@ public class Spieler extends Mitspieler {
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
         }
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         gui.okBuActLiSetzenFrageStichVorbei(runde);
     }
 
@@ -349,7 +358,7 @@ public class Spieler extends Mitspieler {
         gui.textAusgeben(text);
         gui.mitteAufrauemen();
         model.stichBeendet();
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(true);
         gui.okBuActLiSetzenStichSpielen(runde);
     }
@@ -386,7 +395,7 @@ public class Spieler extends Mitspieler {
         gui.textAusgeben("");
         gui.endtextAnzeigen(spieler, punkte);
         gui.mitteAufrauemen();
-        gui.okButtonActionListenerLoeschen();
+        okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
         gui.neueRundeButtonSichtbarkeit(true);
         gui.neueRundeButtonText("Statistik");
@@ -424,5 +433,9 @@ public class Spieler extends Mitspieler {
     /*Methode, die von Runde aufgerufen wird, um den Mitspieler herauszubekommen*/
     public int gebeMitspieler() {
         return model.gebeMitspieler();
+    }
+
+    public void okButtonActionListenerLoeschen() {
+        gui.okButtonActionListenerLoeschen();
     }
 }

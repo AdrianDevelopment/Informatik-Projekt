@@ -114,7 +114,7 @@ public class TurnierPunkteGUI {
 
 
         button1.setText("neue Runde");
-        button1.addActionListener(e -> turnier.rundeStarten(this, wiederholungRunden));
+        button1.addActionListener(e -> turnier.rundeStarten(wiederholungRunden));
 
         buttonPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
         buttonPanel.add(button1);
