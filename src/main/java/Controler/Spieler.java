@@ -361,7 +361,6 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void rundeGewonnen(int[] gewinner, int[] uebergebenePunkte) {
-        //TODO: Verlierer Array machen
         int[] verlierer = {-1, -1}; //speichert int der Verlierer zwischen; default auf -1
         int i = 0; //Zählvariable, um das Array zu füllen
         for (int j = 0; j < 4; j++) {
@@ -377,7 +376,7 @@ public class Spieler extends Mitspieler {
         spieler[1] = wieVielterSpieler(gewinner[1]);
         spieler[2] = wieVielterSpieler(verlierer[0]);
         spieler[3] = wieVielterSpieler(verlierer[1]);
-        //Punkte in ein Array sortieren //TODO: Punkte für Thiemo machen
+        //Punkte in ein Array sortieren
         int[] punkte = new int[2]; //richtig sortierte Punkte: gewinnerteamPunkte, verliererteamPunkte
         punkte[0] = uebergebenePunkte[gewinner[0]] + uebergebenePunkte[gewinner[1]];
         punkte[1] = 120 - punkte[0];
