@@ -314,6 +314,10 @@ public class SpielGUI {
         actionListenerLoeschen(okButton);
     }
 
+    public void neueRundeButtonActionListenerLoeschen() {
+        actionListenerLoeschen(neueRundeButton);
+    }
+
     private void actionListenerLoeschen(JButton button) {
         for (ActionListener al : button.getActionListeners()) {
             button.removeActionListener(al);

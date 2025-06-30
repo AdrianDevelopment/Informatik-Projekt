@@ -15,10 +15,10 @@ public class Turnier {
     private final TurnierModel turnierModel;
     private final ArrayList<Mitspieler> spieler;
     private final SpielGUI gui;
-    private final TurnierPunkteGUI tpg;
+    private final TurnierPunkteGUI turnierPunkteGUI;
 
     public Turnier(int anzahlRunden) {
-        tpg = new TurnierPunkteGUI();
+        turnierPunkteGUI = new TurnierPunkteGUI();
         speicherung = Speicherung.speicherungErstellen();
         spieler = new ArrayList<>(4);
         Spieler echterSpieler = new Spieler();
@@ -51,8 +51,6 @@ public class Turnier {
     }
 
     public void turnierPunkteAnzeigen(int wiederholungRunden, int[] sieger) {
-        turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
-        turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
         if (wiederholungRunden == turnierModel.gebeAnzahlRunden()) {
             if (sieger != null) {
                 if (sieger[0] == turnierModel.gebePositionSpieler() || sieger[1] == turnierModel.gebePositionSpieler()) {
@@ -67,12 +65,14 @@ public class Turnier {
                 System.out.println("ERROR: sieger ist null");
             }
         }
-        tpg.turnierPunkteGUISichtbarkeit(true);
-        tpg.ausfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
+        turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
+        turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
+        turnierPunkteGUI.turnierPunkteGUISichtbarkeit(true);
+        turnierPunkteGUI.ausfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
     }
 
     public void rundeStarten(TurnierPunkteGUI turnierPunkteGUI, int wiederholungRunden) {
-        tpg.turnierPunkteGUISichtbarkeit(false);
+        this.turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
         if (turnierPunkteGUI != null) { //TODO
             turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
         }

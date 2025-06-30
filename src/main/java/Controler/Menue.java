@@ -35,7 +35,7 @@ public class Menue {
     }
 
     public void turnierStarten(int anzahlRunden) {
-        Turnier tunier = new Turnier(anzahlRunden); // Anzahl der Runden hier hardcoded, kann in Zukunft erweitert werden
+        Turnier tunier = new Turnier(anzahlRunden);
         tunier.rundeStarten(null,0);
     }
 }

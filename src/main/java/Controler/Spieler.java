@@ -394,6 +394,7 @@ public class Spieler extends Mitspieler {
     }
 
     public void neueRundeStarten() {
+        gui.neueRundeButtonActionListenerLoeschen();
         gui.spielGUIUnsichtbar();
         runde.neueRundeStarten();
     }
