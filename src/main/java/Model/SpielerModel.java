@@ -9,12 +9,11 @@ public class SpielerModel {
     private int welcherSpieler;
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
-    private WelcherSpieler ausrufenderSpieler;
     private int[] spieler; //speichert, wer ausruft und wer Mitspieler ist
     private Farbe farbe;
     //Attribute für Lege-/Stichrunden
     private ArrayList<Spielkarte> stich; //speichert Karten eines Stichs
-    private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs
+    private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs (für zukünftige Versionen)
     private int anzahlSpielerSchonGelegt; //gibt an, wie viele Spieler in der Lege-Runde dran waren
     private boolean dranLegen;
     private boolean dranSpielabsicht;
@@ -30,7 +29,6 @@ public class SpielerModel {
         handkarten = new ArrayList<Spielkarte>();
 
         spielArt = null;
-        ausrufenderSpieler = null;
         spieler = new int[2];
         farbe = null;
 
@@ -65,7 +63,6 @@ public class SpielerModel {
      */
     public void setzeSpielArt(WelcherSpieler ausrufenderSpieler, SpielArt ausgerufeneSpielArt, Farbe ausgerufeneFarbe, int spieler) {
         spielArt = ausgerufeneSpielArt;
-        this.ausrufenderSpieler = ausrufenderSpieler;
         this.spieler[0] = spieler;
         farbe = ausgerufeneFarbe;
     }

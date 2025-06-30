@@ -381,6 +381,7 @@ public class Spieler extends Mitspieler {
         punkte[0] = uebergebenePunkte[gewinner[0]] + uebergebenePunkte[gewinner[1]];
         punkte[1] = 120 - punkte[0];
         //Ausgabe
+        gui.textAusgeben("");
         gui.endtextAnzeigen(spieler, punkte);
         gui.mitteAufrauemen();
         gui.okButtonActionListenerLoeschen();
