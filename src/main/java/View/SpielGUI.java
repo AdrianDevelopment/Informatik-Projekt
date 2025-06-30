@@ -8,6 +8,9 @@ import Model.SpielArt;
 import Model.WelcherSpieler;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -45,6 +48,7 @@ public class SpielGUI {
     private JFrame spielabsichtFrame;
     private final JFrame mainFrame;
 
+    private JTextPane endTextArea;
     public SpielGUI() {
         mainFrame = new JFrame();
 
@@ -573,9 +577,6 @@ public class SpielGUI {
         spieler1KartenArray.remove(i);
     }
 
-
-    //NEU
-
     public void okBuActLiSetzenSpielabsicht(Runde runde, int wiederholung, int vorhand) {
         okButton.addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
     }
@@ -604,13 +605,41 @@ public class SpielGUI {
         neueRundeButton.setVisible(sichtbarkeit);
     }
 
-    //NEU Ende
-
     public void hinweisAnNutzer(String text) {
         kleinMitteTextLabel.setText(text);
     }
 
-    public void zeigeGelegteKarte(Spielkarte karte, WelcherSpieler spielerHatGelegt) {
+    public void endtextAnzeigen(WelcherSpieler[] gewinner, int[] punkte){
+        String gewinner1 = gewinner[0].gebeName();
+        String gewinner2 = gewinner[1].gebeName();
+        String verlierer1 = gewinner[3].gebeName();
+        String verlierer2 = gewinner[4].gebeName();
+
+        int gewinnerpunkte = punkte[0];
+        int verliererpunkte = punkte[1];
+
+
+        endTextArea = new JTextPane();
+        endTextArea.setBounds(50, 50, 300, 200);
+
+        endTextArea.setText("Gewinner Team:\n" +gewinner1+ " & " + gewinner2+ " ("+gewinnerpunkte+")\n \n Verlierer Team:" +verlierer1+ " & " +verlierer2+ " ("+verliererpunkte+")");
+
+        StyledDocument doc = endTextArea.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        endTextArea.setVisible(true);
+
+        mainFrame.add(endTextArea);
+
+    }
+
+    public void endtextAusblenden(){
+        endTextArea.setVisible(false);
+    }
+
+    public void spielGUISchließen(){
+        mainFrame.dispose();
     }
 
     public void schliessen() {
