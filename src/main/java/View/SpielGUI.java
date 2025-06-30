@@ -612,8 +612,8 @@ public class SpielGUI {
     public void endtextAnzeigen(WelcherSpieler[] gewinner, int[] punkte){
         String gewinner1 = gewinner[0].gebeName();
         String gewinner2 = gewinner[1].gebeName();
-        String verlierer1 = gewinner[3].gebeName();
-        String verlierer2 = gewinner[4].gebeName();
+        String verlierer1 = gewinner[2].gebeName();
+        String verlierer2 = gewinner[3].gebeName();
 
         int gewinnerpunkte = punkte[0];
         int verliererpunkte = punkte[1];

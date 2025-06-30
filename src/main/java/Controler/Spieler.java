@@ -45,7 +45,7 @@ public class Spieler extends Mitspieler {
     }
 
     public void kartenHinlegen(int wiederholung, int vorhand) {
-        gui.okBuActLiSetzenSpielabsicht(runde, wiederholung, vorhand); //NEU
+        gui.okBuActLiSetzenSpielabsicht(runde, wiederholung, vorhand);
         gui.okButtonSichtbarkeit(true);
     }
 
@@ -110,7 +110,7 @@ public class Spieler extends Mitspieler {
         int finalI = vorhand;
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
-        gui.okBuActLiSetzenSpielabsicht(runde, wiederholung + 1, finalI); //NEU
+        gui.okBuActLiSetzenSpielabsicht(runde, wiederholung + 1, finalI);
         gui.okButtonSichtbarkeit(true);
     }
 
@@ -121,9 +121,9 @@ public class Spieler extends Mitspieler {
         if (spielArt == SpielArt.KEINSPIEL) {
             text = "Spiel abgebrochen wegen ungültiger Spielart.";
             System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
-            gui.okBuActLiSetzenNeueRundeStarten(runde); //NEU
+            gui.okBuActLiSetzenNeueRundeStarten(runde);
         } else {
-            gui.okBuActLiSetzenFarbeSpielabsicht(runde); //NEU
+            gui.okBuActLiSetzenFarbeSpielabsicht(runde);
         }
         gui.textAusgeben(text);
     }
@@ -157,6 +157,7 @@ public class Spieler extends Mitspieler {
         for (int i = 0; i < f.size(); i++) {
             if (farbe == f.get(i)) {
                 moeglich = true;
+                break;
             }
         }
         if (moeglich) {
@@ -185,7 +186,7 @@ public class Spieler extends Mitspieler {
         //okButton
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(true);
-        gui.okBuActLiSetzenStichSpielen(runde); //NEU
+        gui.okBuActLiSetzenStichSpielen(runde);
     }
 
     /**
@@ -327,7 +328,7 @@ public class Spieler extends Mitspieler {
             model.setzeMitspieler(spielerHatGelegt);
         }
         gui.okButtonActionListenerLoeschen();
-        gui.okBuActLiSetzenFrageStichVorbei(runde); //NEU
+        gui.okBuActLiSetzenFrageStichVorbei(runde);
     }
 
     /**
@@ -348,7 +349,7 @@ public class Spieler extends Mitspieler {
         model.stichBeendet();
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(true);
-        gui.okBuActLiSetzenStichSpielen(runde); //NEU
+        gui.okBuActLiSetzenStichSpielen(runde);
     }
 
 
@@ -360,16 +361,28 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void rundeGewonnen(int[] gewinner, int[] uebergebenePunkte) {
-        WelcherSpieler gewinner1 = wieVielterSpieler(gewinner[0]);
-        WelcherSpieler gewinner2 = wieVielterSpieler(gewinner[1]);
-        //Punkte in ein Array sortieren
-        int[] punkte = new int[3]; //richtig sortierte Punkte: gewinnerteamPunkte, verliererteamPunkte, spielerPunkte
+        //TODO: Verlierer Array machen
+        int[] verlierer = {-1, -1}; //speichert int der Verlierer zwischen; default auf -1
+        int i = 0; //Zählvariable, um das Array zu füllen
+        for (int j = 0; j < 4; j++) {
+            //Überprüft, ob int j schon im Gewinnerteam, sonst wird er gespeichert
+            if (gewinner[0] != j && gewinner[1] != j) {
+                verlierer[i] = j;
+                i++;
+            }
+        }
+        //Speicherung in WelcherSpieler-Werten
+        WelcherSpieler[] spieler = new WelcherSpieler[4]; //speichert erst die beiden Gewinner, dann die beiden Verlierer
+        spieler[0] = wieVielterSpieler(gewinner[0]);
+        spieler[1] = wieVielterSpieler(gewinner[1]);
+        spieler[2] = wieVielterSpieler(verlierer[0]);
+        spieler[3] = wieVielterSpieler(verlierer[1]);
+        //Punkte in ein Array sortieren //TODO: Punkte für Thiemo machen
+        int[] punkte = new int[2]; //richtig sortierte Punkte: gewinnerteamPunkte, verliererteamPunkte
         punkte[0] = uebergebenePunkte[gewinner[0]] + uebergebenePunkte[gewinner[1]];
         punkte[1] = 120 - punkte[0];
-        punkte[2] = uebergebenePunkte[model.gebeWelcherSpieler()];
         //Ausgabe
-        String text = "<html>" + gewinner1.gebeName() + " und " + gewinner2.gebeName() + " haben gewonnen und " + punkte[0] + " Punkte gesammelt. " + "Du hast " + punkte[2] + " Punkte gesammelt.<html>";
-        gui.textAusgeben(text);
+        gui.endtextAnzeigen(spieler, punkte);
         gui.mitteAufrauemen();
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
