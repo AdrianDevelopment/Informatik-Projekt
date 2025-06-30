@@ -15,8 +15,10 @@ public class Turnier {
     private final TurnierModel turnierModel;
     private final ArrayList<Mitspieler> spieler;
     private final SpielGUI gui;
+    private final TurnierPunkteGUI tpg;
 
-    public Turnier(int anzahlRunden) {
+    public Turnier(int anzahlRunden, TurnierPunkteGUI tpg) {
+        this.tpg = tpg;
         speicherung = Speicherung.speicherungErstellen();
         spieler = new ArrayList<>(4);
         Spieler echterSpieler = new Spieler();
@@ -69,6 +71,7 @@ public class Turnier {
     }
 
     public void rundeStarten(TurnierPunkteGUI turnierPunkteGUI, int wiederholungRunden) {
+        tpg.turnierPunkteGUIZerstoeren();
         if (turnierPunkteGUI != null) {
             turnierPunkteGUI.turnierPunkteGUIZerstoeren();
         }
