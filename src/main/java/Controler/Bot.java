@@ -188,13 +188,13 @@ public class Bot extends Mitspieler {
         //Überprüft, ob es Sinn macht für den Mitspieler zu schmieren.
         boolean mitspielerAlleinigTrumpf = false;
         ArrayList<Integer> gegenSpielerIndex = new ArrayList<>();
-        if(model.gibTeamSpieler() !=-1){
+        if(model.gibTeamSpieler() >= 0){
             gegenSpielerIndex.add(0);
             gegenSpielerIndex.add(1);
             gegenSpielerIndex.add(2);
             gegenSpielerIndex.add(3);
             gegenSpielerIndex.removeIf(n -> n == model.gibSpielerIndex() || n == model.gibTeamSpieler());
-            mitspielerAlleinigTrumpf = model.gibMitspielerDaten(model.gibTeamSpieler()%3).gebeHatTrumpf() && !model.gibMitspielerDaten(gegenSpielerIndex.get(0)%3).gebeHatTrumpf() && !model.gibMitspielerDaten(gegenSpielerIndex.get(1)%3).gebeHatTrumpf();
+            mitspielerAlleinigTrumpf = model.gibMitspielerDaten(model.gibTeamSpieler()).gebeHatTrumpf() && !model.gibMitspielerDaten(gegenSpielerIndex.get(0)).gebeHatTrumpf() && !model.gibMitspielerDaten(gegenSpielerIndex.get(1)).gebeHatTrumpf();
         }
 
         if ((spielerGewinntStich == model.gibTeamSpieler() && kartenStaerkeVonStichGewinner > mindesAnforderungFuerSchmieren)|| mitspielerAlleinigTrumpf) {//schmiert nur, wenn Teamspieler einen Unter oder Ober gelegt hat.
