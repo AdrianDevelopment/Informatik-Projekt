@@ -389,7 +389,7 @@ public class Spieler extends Mitspieler {
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
         gui.neueRundeButtonSichtbarkeit(true);
-        gui.neueRundeButtonText("Statistik");
+        gui.neueRundeButtonText("Turnier-Punkte Übersicht");
         gui.neuRundeBuActLiSetzenNeueRundeStarten(this);
     }
 

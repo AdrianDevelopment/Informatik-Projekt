@@ -10,7 +10,7 @@ public class SpielerModel {
     //Attribute für eine Runde nach dem Ausrufen
     private SpielArt spielArt;
     private int[] spieler; //speichert, wer ausruft und wer Mitspieler ist
-    private Farbe farbe;
+    private Farbe farbe; //speichert Farbe der ausgerufenen Sau
     //Attribute für Lege-/Stichrunden
     private ArrayList<Spielkarte> stich; //speichert Karten eines Stichs
     private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs (für zukünftige Versionen)
