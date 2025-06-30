@@ -20,6 +20,7 @@ public class SpielerModel {
     private boolean dranFarbeSpielabsicht;
     //temporäre Attribute für GUI-Übergabe
     private boolean sauFarbeVorhandGespielt; //Tim: Benötigt um zu überprüfen, ob die Sau gelegt werden darf.
+    private boolean keinSpiel;
 
     //Attribute für Runde
     private int wiederholung;
@@ -34,6 +35,7 @@ public class SpielerModel {
 
         stich = new ArrayList<Spielkarte>();
         anzahlSpielerSchonGelegt = 0;
+        keinSpiel = false;
 
     }
 
@@ -65,6 +67,10 @@ public class SpielerModel {
         spielArt = ausgerufeneSpielArt;
         this.spieler[0] = spieler;
         farbe = ausgerufeneFarbe;
+    }
+
+    public void setzeKeinSpiel(boolean b){
+        keinSpiel = b;
     }
 
     public SpielArt gebeSpielArt() {
@@ -159,6 +165,10 @@ public class SpielerModel {
 
     public int gebeVorhand() {
         return vorhand;
+    }
+
+    public boolean gebeKeinSpiel(){
+        return keinSpiel;
     }
 
 

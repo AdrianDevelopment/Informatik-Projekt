@@ -71,7 +71,7 @@ public class Bot extends Mitspieler {
             //Speichert die Sau die Ausgerufen werden soll im Model ab.
             //Die Methode farbenZumAusrufen gibt die beste Sau zum Ausrufen an Stelle 0 zurück.
             model.setzteSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
-            return SpielArt.SAUSPIEL;
+            return SpielArt.KEINSPIEL;
         }
 
         return SpielArt.KEINSPIEL;
