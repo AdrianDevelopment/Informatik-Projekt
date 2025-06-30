@@ -17,8 +17,8 @@ public class Turnier {
     private final SpielGUI gui;
     private final TurnierPunkteGUI tpg;
 
-    public Turnier(int anzahlRunden, TurnierPunkteGUI tpg) {
-        this.tpg = tpg;
+    public Turnier(int anzahlRunden) {
+        tpg = new TurnierPunkteGUI();
         speicherung = Speicherung.speicherungErstellen();
         spieler = new ArrayList<>(4);
         Spieler echterSpieler = new Spieler();
@@ -67,13 +67,14 @@ public class Turnier {
                 System.out.println("ERROR: sieger ist null");
             }
         }
-        new TurnierPunkteGUI(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
+        tpg.turnierPunkteGUISichtbarkeit(true);
+        tpg.ausfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
     }
 
     public void rundeStarten(TurnierPunkteGUI turnierPunkteGUI, int wiederholungRunden) {
-        tpg.turnierPunkteGUIZerstoeren();
-        if (turnierPunkteGUI != null) {
-            turnierPunkteGUI.turnierPunkteGUIZerstoeren();
+        tpg.turnierPunkteGUISichtbarkeit(false);
+        if (turnierPunkteGUI != null) { //TODO
+            turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
         }
         if (wiederholungRunden < turnierModel.gebeAnzahlRunden()) {
             new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, turnierModel.gebeEchterSpieler());
