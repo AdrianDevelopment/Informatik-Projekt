@@ -59,7 +59,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand) {
-        gui.okButtonSichtbarkeit(true);
+        gui.okButtonSichtbarkeit(false);
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranSpielabsicht(true);
@@ -121,9 +121,13 @@ public class Spieler extends Mitspieler {
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
         String text = ausgabeBeimAusrufen(spielArt, welcherspieler, null);
         if (spielArt == SpielArt.KEINSPIEL) {
-            text = "Spiel abgebrochen wegen ungültiger Spielart.";
-            System.out.println("Spiel abgebrochen wegen ungültiger Spielart");
-            gui.okBuActLiSetzenNeueRundeStarten(runde);
+            text = "Runde abgebrochen wegen ungültiger Spielart.";
+            System.out.println("Runde abgebrochen wegen ungültiger Spielart");
+            gui.okButtonActionListenerLoeschen();
+            gui.okButtonSichtbarkeit(false);
+            gui.neueRundeButtonSichtbarkeit(true);
+            gui.neueRundeButtonText("Turnier-Punkte Übersicht");
+            gui.neuRundeBuActLiSetzenNeueRundeStarten(this);
         } else {
             gui.okBuActLiSetzenFarbeSpielabsicht(runde);
         }
