@@ -55,12 +55,12 @@ public class Turnier {
         if (sieger == null) {
             return;
         }
-        if (echterSpieler.gebeKeinSpiel()) {
-            echterSpieler.setzeKeinSpiel(false);
-            rundeStarten(wiederholungRunden);
-            echterSpieler.okButtonActionListenerLoeschen();
-            return;
-        }
+//        if (echterSpieler.gebeKeinSpiel()) {
+//            echterSpieler.setzeKeinSpiel(false);
+//            //rundeStarten(wiederholungRunden);
+//            //echterSpieler.okButtonActionListenerLoeschen();
+//            return;
+//        }
         if (wiederholungRunden == turnierModel.gebeAnzahlRunden() - 1) {
             if (sieger[0] == turnierModel.gebePositionSpieler() || sieger[1] == turnierModel.gebePositionSpieler()) {
                 speicherung.TurnierGewonnen();
@@ -78,7 +78,7 @@ public class Turnier {
     }
 
     public void rundeStarten(int wiederholungRunden) {
-        this.turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
+        turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
         if (wiederholungRunden < turnierModel.gebeAnzahlRunden()) {
             new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, echterSpieler);
         }
