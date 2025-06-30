@@ -42,6 +42,8 @@ public class Spieler extends Mitspieler {
         gui.neueRundeButtonSichtbarkeit(false);
         gui.textAusgeben("");
         gui.hinweisAnNutzer("");
+        gui.endtextAusblenden();
+        gui.spielGUISichtbar();
     }
 
     public void kartenHinlegen(int wiederholung, int vorhand) {
@@ -387,7 +389,13 @@ public class Spieler extends Mitspieler {
         gui.okButtonActionListenerLoeschen();
         gui.okButtonSichtbarkeit(false);
         gui.neueRundeButtonSichtbarkeit(true);
-        gui.neuRundeBuActLiSetzenNeueRundeStarten(runde);
+        gui.neueRundeButtonText("Statistik");
+        gui.neuRundeBuActLiSetzenNeueRundeStarten(this);
+    }
+
+    public void neueRundeStarten() {
+        gui.spielGUIUnsichtbar();
+        runde.neueRundeStarten();
     }
 
     /**

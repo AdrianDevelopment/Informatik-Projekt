@@ -302,6 +302,8 @@ public class SpielGUI {
         mainFrame.add(kleinMitteTextLabel);
 
         mitteKartenInitialisieren();
+
+        endTextArea = new JTextPane();
     }
 
     public void okButtonSichtbarkeit(boolean sichtbarkeit) {
@@ -582,7 +584,7 @@ public class SpielGUI {
     }
 
     public void okBuActLiSetzenNeueRundeStarten(Runde runde) {
-        okButton.addActionListener(e ->  runde.neuRundeStarten());
+        okButton.addActionListener(e ->  runde.neueRundeStarten());
     }
 
     public void okBuActLiSetzenFarbeSpielabsicht(Runde runde) {
@@ -597,8 +599,8 @@ public class SpielGUI {
         okButton.addActionListener(e -> runde.frageStichVorbei());
     }
 
-    public void neuRundeBuActLiSetzenNeueRundeStarten(Runde runde) {
-        neueRundeButton.addActionListener(e -> runde.neuRundeStarten());
+    public void neuRundeBuActLiSetzenNeueRundeStarten(Spieler spieler) {
+        neueRundeButton.addActionListener(e -> spieler.neueRundeStarten());
     }
 
     public void neueRundeButtonSichtbarkeit(boolean sichtbarkeit) {
@@ -619,7 +621,6 @@ public class SpielGUI {
         int verliererpunkte = punkte[1];
 
 
-        endTextArea = new JTextPane();
         endTextArea.setBounds(435, 200, 500, 250);
 
         endTextArea.setText("Gewinner Team:\n" +gewinner1+ " & " + gewinner2+ " ("+gewinnerpunkte+")\n \n Verlierer Team:\n" +verlierer1+ " & " +verlierer2+ " ("+verliererpunkte+")");

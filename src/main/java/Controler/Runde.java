@@ -153,7 +153,7 @@ public class Runde {
         speicherung.DatenSpeichern();
     }
 
-    public void neuRundeStarten() {
+    public void neueRundeStarten() {
         turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray());
     }
 
