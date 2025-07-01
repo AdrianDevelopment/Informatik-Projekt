@@ -44,6 +44,7 @@ public class SpielerModel {
     }
 
     public void setzeHandkarten(ArrayList<Spielkarte> neueKarten) {
+        handkarten.clear(); //setzt Handkarten zurück (Bugfix, damit bei einer Runde nichts spielen nicht plötzlich handkarten 16 groß ist)
         for (int i = 0; i < neueKarten.size(); i++) {
             handkarten.add(i, neueKarten.get(i));
         }
