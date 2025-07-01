@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//Programmierer: Tom
+
 public class SpielerTest {
     @Test
     /*Test für aufgetretenes Problem*/

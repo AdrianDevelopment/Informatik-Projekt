@@ -315,7 +315,7 @@ public class Spieler extends Mitspieler {
                 }
                 default -> {
                     ausgabe += " eine ungültige Spielabsicht ausgerufen.";
-                    System.out.println("ERROR: Eine ungültige Spielabicht wurde ausgerufen.");
+                    System.out.println("ERROR: Eine ungültige Spielabsicht wurde ausgerufen.");
                 }
             }
         }
