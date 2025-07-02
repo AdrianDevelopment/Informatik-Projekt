@@ -51,30 +51,26 @@ public class Turnier {
         return spielKarten;
     }
 
-    public void turnierPunkteAnzeigen(int wiederholungRunden, int[] sieger) {
+    public void turnierPunkteAnzeigen(int wiederholungRunden, SpielArt spielArt, int[] sieger) {
         if (sieger == null) {
             return;
         }
-//        if (echterSpieler.gebeKeinSpiel()) {
-//            echterSpieler.setzeKeinSpiel(false);
-//            //rundeStarten(wiederholungRunden);
-//            //echterSpieler.okButtonActionListenerLoeschen();
+//        if (wiederholungRunden == turnierModel.gebeAnzahlRunden() - 1) {
+//            if (sieger[0] == turnierModel.gebePositionSpieler() || sieger[1] == turnierModel.gebePositionSpieler()) {
+//                speicherung.TurnierGewonnen();
+//            } else {
+//                speicherung.TurnierVerloren();
+//            }
+//            speicherung.DatenSpeichern();
+//            gui.schliessen();
 //            return;
 //        }
-        if (wiederholungRunden == turnierModel.gebeAnzahlRunden() - 1) {
-            if (sieger[0] == turnierModel.gebePositionSpieler() || sieger[1] == turnierModel.gebePositionSpieler()) {
-                speicherung.TurnierGewonnen();
-            } else {
-                speicherung.TurnierVerloren();
-            }
-            speicherung.DatenSpeichern();
-            gui.schliessen();
-//            new turnierGewonnenGUI();
+        if (spielArt != SpielArt.KEINSPIEL) {
+            turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
+            turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
         }
-        turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
-        turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
+        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
         turnierPunkteGUI.turnierPunkteGUISichtbarkeit(true);
-        turnierPunkteGUI.ausfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
     }
 
     public void rundeStarten(int wiederholungRunden) {
@@ -82,6 +78,17 @@ public class Turnier {
         if (wiederholungRunden < turnierModel.gebeAnzahlRunden()) {
             new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, echterSpieler);
         }
+    }
+
+    public void turnierBeenden() {
+        if (turnierModel.istTurnierSiegerEchterSpieler()) {
+            speicherung.TurnierGewonnen();
+        }
+        else {
+            speicherung.TurnierVerloren();
+        }
+        speicherung.DatenSpeichern();
+        gui.schliessen();
     }
 
     // Kopie aus Spieler (Tom)
@@ -97,8 +104,13 @@ public class Turnier {
         } else if (rechnung == 3 || rechnung == -1) {
             spielerImUhrzeigersinn = WelcherSpieler.RECHTER; //rechter Spieler
         } else {
-            System.out.println("ERROR: Methode wieVielterSpieler" + spieler); //Test
+            System.out.println("ERROR: Methode wieVielterSpieler " + spieler); //Test
         }
         return spielerImUhrzeigersinn;
+    }
+    // Kopie Ende
+
+    public int gebeAnzahlRunden() {
+        return turnierModel.gebeAnzahlRunden();
     }
 }

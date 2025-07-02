@@ -9,25 +9,26 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class TurnierPunkteGUI {
-    private JFrame frame;
+    private final JFrame frame;
     private JPanel gridPanel;
 
-    private JLabel label1;
-    private JLabel label2;
-    private JLabel label3;
-    private JLabel label4;
-    private JLabel label5;
-    private JLabel label6;
-    private JLabel label7;
-    private JLabel label8;
+    private final JLabel label1;
+    private final JLabel label2;
+    private final JLabel label3;
+    private final JLabel label4;
+    private final JLabel label5;
+    private final JLabel label6;
+    private final JLabel label7;
+    private final JLabel label8;
 
-    private JLabel labelPunkte1;
-    private JLabel labelPunkte2;
-    private JLabel labelPunkte3;
-    private JLabel labelPunkte4;
+    private final JLabel labelPunkte1;
+    private final JLabel labelPunkte2;
+    private final JLabel labelPunkte3;
+    private final JLabel labelPunkte4;
 
-    private JButton button1;
-    private JPanel buttonPanel;
+    private final JButton neueRundeButton;
+    private final JButton turnierBeendenButton;
+    private final JPanel buttonPanel;
 
 
     public TurnierPunkteGUI() {
@@ -58,9 +59,9 @@ public class TurnierPunkteGUI {
         label7 = new JLabel();
         label8 = new JLabel();
 
-        button1 = new JButton();
+        neueRundeButton = new JButton();
+        turnierBeendenButton = new JButton();
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
 
         gridPanel.add(label1);
         gridPanel.add(label2);
@@ -77,12 +78,15 @@ public class TurnierPunkteGUI {
         gridPanel.add(label7);
         gridPanel.add(label8);
 
+        buttonPanel.add(neueRundeButton);
+        buttonPanel.add(turnierBeendenButton);
+
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
         frame.setVisible(true);
     }
 
-    public void ausfuehren(Turnier turnier, int wiederholungRunden, int[] turnierPunkte) {
+    public void turnierPunkteGUIAusfuehren(Turnier turnier, int wiederholungRunden, int[] turnierPunkte) {
         label1.setText("<html>Punke: " + turnier.wieVielterSpieler(0).gebeName() + "<html>");
         label1.setFont(new Font("Arial", Font.BOLD, 16));
         label2.setText("<html>Punkte: " + turnier.wieVielterSpieler(1).gebeName() + "<html>");
@@ -113,11 +117,22 @@ public class TurnierPunkteGUI {
         labelPunkte4.setVerticalAlignment(SwingConstants.CENTER);
 
 
-        button1.setText("neue Runde");
-        button1.addActionListener(e -> turnier.rundeStarten(wiederholungRunden));
+        neueRundeButton.setText("neue Runde");
+        neueRundeButton.addActionListener(e -> turnier.rundeStarten(wiederholungRunden));
+
+        turnierBeendenButton.setText("Beenden");
+        turnierBeendenButton.addActionListener(e -> turnier.turnierBeenden());
 
         buttonPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
-        buttonPanel.add(button1);
+
+        if (wiederholungRunden != turnier.gebeAnzahlRunden() - 1) {
+            neueRundeButton.setVisible(true);
+            turnierBeendenButton.setVisible(false);
+        }
+        else {
+            neueRundeButton.setVisible(false);
+            turnierBeendenButton.setVisible(true);
+        }
     }
 
     public void turnierPunkteGUISichtbarkeit(boolean sichtbarkeit) {

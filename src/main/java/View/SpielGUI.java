@@ -587,10 +587,6 @@ public class SpielGUI {
         okButton.addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
     }
 
-    public void okBuActLiSetzenNeueRundeStarten(Runde runde) {
-        okButton.addActionListener(e ->  runde.neueRundeStarten());
-    }
-
     public void okBuActLiSetzenFarbeSpielabsicht(Runde runde) {
         okButton.addActionListener(e -> runde.farbeFuerSpielAbsicht());
     }
@@ -603,8 +599,8 @@ public class SpielGUI {
         okButton.addActionListener(e -> runde.frageStichVorbei());
     }
 
-    public void neuRundeBuActLiSetzenNeueRundeStarten(Spieler spieler) {
-        neueRundeButton.addActionListener(e -> spieler.neueRundeStarten());
+    public void neuRundeBuActLiSetzenNeueRundeStarten(Spieler spieler, SpielArt spielArt) {
+        neueRundeButton.addActionListener(e -> spieler.neueRundeStarten(spielArt));
     }
 
     public void neueRundeButtonSichtbarkeit(boolean sichtbarkeit) {

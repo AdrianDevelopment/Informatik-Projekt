@@ -1,6 +1,9 @@
 package Model;
 
-import Controler.Spieler;
+// Programmierer: Adrian
+
+import java.util.Arrays;
+import java.util.OptionalInt;
 
 public class TurnierModel {
     private int anzahlRunden;
@@ -25,6 +28,16 @@ public class TurnierModel {
 
     public int gebePositionSpieler() {
         return positionSpieler;
+    }
+
+    public boolean istTurnierSiegerEchterSpieler() {
+        int maxIndex = 0;
+        for (int i = 1; i < punkteTurnier.length; i++) {
+            if (punkteTurnier[i] > punkteTurnier[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+        return (maxIndex == positionSpieler);
     }
 
 

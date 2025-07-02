@@ -133,7 +133,7 @@ public class Spieler extends Mitspieler {
             gui.okButtonSichtbarkeit(false);
             gui.neueRundeButtonSichtbarkeit(true);
             gui.neueRundeButtonText("Turnier-Punkte Übersicht");
-            gui.neuRundeBuActLiSetzenNeueRundeStarten(this);
+            gui.neuRundeBuActLiSetzenNeueRundeStarten(this, spielArt);
         } else {
             gui.okBuActLiSetzenFarbeSpielabsicht(runde);
         }
@@ -402,13 +402,13 @@ public class Spieler extends Mitspieler {
         gui.okButtonSichtbarkeit(false);
         gui.neueRundeButtonSichtbarkeit(true);
         gui.neueRundeButtonText("Turnier-Punkte Übersicht");
-        gui.neuRundeBuActLiSetzenNeueRundeStarten(this);
+//        gui.neuRundeBuActLiSetzenNeueRundeStarten(this);
     }
 
-    public void neueRundeStarten() {
+    public void neueRundeStarten(SpielArt spielArt) {
         gui.neueRundeButtonActionListenerLoeschen();
         gui.spielGUIUnsichtbar();
-        runde.neueRundeStarten();
+        runde.neueRundeStarten(spielArt);
     }
 
     /**
