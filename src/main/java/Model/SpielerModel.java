@@ -23,7 +23,6 @@ public class SpielerModel {
     //Attribute für Runde
     private int wiederholung;
     private int vorhand;
-    private boolean keinSpiel;
 
     public SpielerModel() {
         handkarten = new ArrayList<Spielkarte>();
@@ -34,7 +33,6 @@ public class SpielerModel {
 
         stich = new ArrayList<Spielkarte>();
         anzahlSpielerSchonGelegt = 0;
-        keinSpiel = false;
 
     }
 
@@ -162,12 +160,4 @@ public class SpielerModel {
     public int gebeVorhand() {
         return vorhand;
     }
-
-//    public void setzeKeinSpiel(boolean b) {
-//        keinSpiel = b;
-//    }
-
-//    public boolean gebeKeinSpiel() {
-//        return keinSpiel;
-//    }
 }
