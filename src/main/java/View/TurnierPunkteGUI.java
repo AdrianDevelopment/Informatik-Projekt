@@ -125,7 +125,7 @@ public class TurnierPunkteGUI {
 
         buttonPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
 
-        if (wiederholungRunden != turnier.gebeAnzahlRunden() - 1) {
+        if (wiederholungRunden != turnier.gebeAnzahlRunden()) {
             neueRundeButton.setVisible(true);
             turnierBeendenButton.setVisible(false);
         }

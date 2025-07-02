@@ -402,7 +402,7 @@ public class Spieler extends Mitspieler {
         gui.okButtonSichtbarkeit(false);
         gui.neueRundeButtonSichtbarkeit(true);
         gui.neueRundeButtonText("Turnier-Punkte Übersicht");
-//        gui.neuRundeBuActLiSetzenNeueRundeStarten(this);
+        gui.neuRundeBuActLiSetzenNeueRundeStarten(this, model.gebeSpielArt());
     }
 
     public void neueRundeStarten(SpielArt spielArt) {

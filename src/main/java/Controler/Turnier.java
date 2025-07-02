@@ -55,16 +55,6 @@ public class Turnier {
         if (sieger == null) {
             return;
         }
-//        if (wiederholungRunden == turnierModel.gebeAnzahlRunden() - 1) {
-//            if (sieger[0] == turnierModel.gebePositionSpieler() || sieger[1] == turnierModel.gebePositionSpieler()) {
-//                speicherung.TurnierGewonnen();
-//            } else {
-//                speicherung.TurnierVerloren();
-//            }
-//            speicherung.DatenSpeichern();
-//            gui.schliessen();
-//            return;
-//        }
         if (spielArt != SpielArt.KEINSPIEL) {
             turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
             turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
@@ -88,6 +78,7 @@ public class Turnier {
             speicherung.TurnierVerloren();
         }
         speicherung.DatenSpeichern();
+        turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
         gui.schliessen();
     }
 
