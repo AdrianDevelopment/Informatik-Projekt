@@ -22,16 +22,17 @@ public class Spieler extends Mitspieler {
         this.runde = runde;
     }
 
-    /**
-     * Aufruf von Runde
-     * - im Model Übergabewerte setzen
-     * - Buttons Bilder zuordnen + GUI aufrufen (→ soll Handkarten anzeigen)
-     */
     public void spielGUIErstellen(SpielGUI gui) {
         this.gui = gui;
         gui.okButtonSichtbarkeit(true);
     }
 
+    /**
+     * Aufruf von Runde
+     * - im Model karten und Spieler-Nummer setzen
+     * - Buttons Bilder zuordnen + GUI aufrufen (→ soll Handkarten anzeigen)
+     * - GUI zurücksetzen
+     */
     @Override
     public void rundeStarten(ArrayList<Spielkarte> karten, int wieVielterSpieler) {
         model.setzeHandkarten(karten);
@@ -46,7 +47,7 @@ public class Spieler extends Mitspieler {
         gui.spielGUISichtbar();
     }
 
-    public void kartenHinlegen(int wiederholung, int vorhand) {
+    public void kartenHingelegt(int wiederholung, int vorhand) {
         gui.okBuActLiSetzenSpielabsicht(runde, wiederholung, vorhand);
         gui.okButtonSichtbarkeit(true);
     }
@@ -55,7 +56,7 @@ public class Spieler extends Mitspieler {
      * Aufforderung der Runde die Spielabsicht zu sagen
      * - im Model Übergabewerte setzen
      * - Buttons sichtbar und drückbar machen
-     * Überprüfung, ob Sauspiel möglich → Rückgabe + eventuell Ausgabe an User
+     * - Überprüfung, ob Sauspiel möglich → Ausgabe an Nutzer
      */
     @Override
     public void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand) {
@@ -76,30 +77,31 @@ public class Spieler extends Mitspieler {
             gui.hinweisAnNutzer("Es wurde schon ein Sauspiel ausgerufen. Du musst also weiter sagen.");
         } else {
             gui.sauButtonActionListener(this);
-            gui.spielAbsichtButtonsSichtbarkeitSetzen(true, 1);
+            gui.spielAbsichtButtonsSichtbarkeitSetzen(true, 1); //Saubutton wird angezeigt, weil es möglich ist, die Sau auszurufen
         }
     }
 
     /**
      * wird von spielabsichtButtons aufgerufen
      *
-     * @param spielabsicht: übergibt das an runde
+     * @param spielabsicht: übergibt das an Runde
      */
     public void spielabsichtGesagt(SpielArt spielabsicht) {
         if (!model.gebeDranSpielabsicht()) { //Spieler soll keine Karte legen → nichts soll passieren
             return;
         }
+        System.out.println("DEBUG: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
         model.setzeDranSpielabsicht(false);
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
-        gui.hinweisAnNutzer(""); //der Hinweistext ist nun nicht mehr sichtbar
         System.out.println("DEBUG: Spielabsicht auf unsichtbar gesetzt");
-
-        System.out.println("DEBUG: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
-
+        gui.hinweisAnNutzer(""); //der Hinweistext ist nun nicht mehr sichtbar
         runde.spielabsichtFragenAufgerufen(model.gebeWiederholung(), model.gebeVorhand(), spielabsicht);
     }
 
-    /*Nachricht für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss*/
+    /**
+     * Ausgabe für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss
+     * okButton ActionListener neu setzen lassen
+     */
     public void spielerHatSpielabsichtGesagt(int wiederholung, int vorhand, SpielArt spielAbsicht) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(vorhand);
         String text = ausgabeBeimAusrufen(spielAbsicht, welcherSpieler, null);
@@ -111,11 +113,15 @@ public class Spieler extends Mitspieler {
         }
         int finalI = vorhand;
         gui.okButtonActionListenerLoeschen();
-        gui.okButtonSichtbarkeit(false);
         gui.okBuActLiSetzenSpielabsicht(runde, wiederholung + 1, finalI);
         gui.okButtonSichtbarkeit(true);
     }
 
+    /**
+     * Ausgabe für GUI
+     * - entweder wurde kein Spiel ausgerufen und die Runde wird abgebrochen
+     * - oder der okButton wird so gesetzt, dass die Runde fortgesetzt werden kann
+     */
     public void spielAbsichtAusgeben(int ausrufer, SpielArt spielArt) {
         gui.okButtonActionListenerLoeschen();
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
@@ -135,8 +141,8 @@ public class Spieler extends Mitspieler {
     }
 
     /**
-     * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
-     * Überprüfung, ob gewählte Farbe möglich → Rückgabe oder erneute GUI-Anfrage
+     * Aufforderung von Runde, die Sau-Farbe zu sagen
+     * → Aufruf der GUI, damit Pop-Up angezeigt wird
      */
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
@@ -150,7 +156,8 @@ public class Spieler extends Mitspieler {
     }
 
     /**
-     * an Runde
+     * wird von farbauswahlButtons aufgerufen
+     * - Überprüfung, ob gewählte Farbe möglich → Aufruf der Runde oder erneute Aufforderung
      */
     public void farbeFeurSpielAbsichtGesagt(Farbe farbe) {
         if (!model.gebeDranFarbeSpielabsicht()) { //Spieler soll nichts abgeben können, wenn nicht dran
@@ -172,19 +179,20 @@ public class Spieler extends Mitspieler {
             runde.farbeFuerSpielAbsichtAufgerufen(farbe); //Farbe darf gelegt werden und wird weitergegeben
         } else {
             model.setzeDranFarbeSpielabsicht(true);
-            gui.hinweisAnNutzer("Auf diese Sau kann nicht ausgerufen werden. Wähle eine andere.");
-            System.out.println("Auf diese Sau kann nicht ausgerufen werden. Wähle eine andere.");
+            String text = "Auf diese Sau kann nicht ausgerufen werden. Wähle eine andere.";
+            gui.hinweisAnNutzer(text);
+            System.out.println(text);
         }
     }
 
     /**
-     * gibt Spielart, ausgerufenen spieler und Farbe an Model und GUI weiter
-     * spieler: int Wert, wie ihn die Runde speichert (braucht ihn dann wieder, deswegen Übergabe an Model)
-     * welcherSpieler: Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
+     * Aufruf von Runde, welche Spielart ausgerufen wurde
+     * - spieler: int Wert, wie die Runde ihn speichert (braucht ihn dann wieder, deswegen Übergabe an Model)
+     * - Ausgabe für GUI, wer und was ausgerufen wurde
      */
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler); //Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
         model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
         //Ausgabe in GUI
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
@@ -362,7 +370,7 @@ public class Spieler extends Mitspieler {
     /**
      * berechnet Gewinner und Punkte
      *
-     * @param gewinner: übergibt die int Werte, wo die Gewinner sitzen
+     * @param gewinner:          übergibt die int Werte, wo die Gewinner sitzen
      * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
      */
     @Override

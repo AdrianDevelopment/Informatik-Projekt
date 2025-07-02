@@ -31,7 +31,7 @@ public class Runde {
         for (Mitspieler mitspieler : spieler) {
             mitspieler.setzeRunde(this);
         }
-        rundeModel.gebeEchterSpieler().kartenHinlegen(0, vorhand);
+        rundeModel.gebeEchterSpieler().kartenHingelegt(0, vorhand);
     }
 
     // Spielabsicht fragen
