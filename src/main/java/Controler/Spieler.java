@@ -133,7 +133,7 @@ public class Spieler extends Mitspieler {
             gui.okButtonSichtbarkeit(false);
             gui.neueRundeButtonSichtbarkeit(true);
             gui.neueRundeButtonText("Turnier-Punkte Übersicht");
-            gui.neuRundeBuActLiSetzenNeueRundeStarten(this, spielArt);
+            gui.neueRundeBuActLiSetzenNeueRundeStarten(this, spielArt);
         } else {
             gui.okBuActLiSetzenFarbeSpielabsicht(runde);
         }
@@ -402,7 +402,7 @@ public class Spieler extends Mitspieler {
         gui.okButtonSichtbarkeit(false);
         gui.neueRundeButtonSichtbarkeit(true);
         gui.neueRundeButtonText("Turnier-Punkte Übersicht");
-        gui.neuRundeBuActLiSetzenNeueRundeStarten(this, model.gebeSpielArt());
+        gui.neueRundeBuActLiSetzenNeueRundeStarten(this, model.gebeSpielArt());
     }
 
     public void neueRundeStarten(SpielArt spielArt) {

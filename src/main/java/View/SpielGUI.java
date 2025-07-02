@@ -599,7 +599,7 @@ public class SpielGUI {
         okButton.addActionListener(e -> runde.frageStichVorbei());
     }
 
-    public void neuRundeBuActLiSetzenNeueRundeStarten(Spieler spieler, SpielArt spielArt) {
+    public void neueRundeBuActLiSetzenNeueRundeStarten(Spieler spieler, SpielArt spielArt) {
         neueRundeButton.addActionListener(e -> spieler.neueRundeStarten(spielArt));
     }
 
