@@ -121,7 +121,6 @@ public class Spieler extends Mitspieler {
         WelcherSpieler welcherspieler = wieVielterSpieler(ausrufer);
         String text = ausgabeBeimAusrufen(spielArt, welcherspieler, null);
         if (spielArt == SpielArt.KEINSPIEL) {
-            //model.setzeKeinSpiel(true);
             text = "Runde abgebrochen wegen ungültiger Spielart.";
             System.out.println(text);
             gui.okButtonActionListenerLoeschen();
@@ -134,14 +133,6 @@ public class Spieler extends Mitspieler {
         }
         gui.textAusgeben(text);
     }
-
-//    public boolean gebeKeinSpiel() {
-//        return model.gebeKeinSpiel();
-//    }
-
-//    public void setzeKeinSpiel(boolean b) {
-//        model.setzeKeinSpiel(b);
-//    }
 
     /**
      * Anfrage: an GUI für Farbe, nachdem man ausgerufen hat
