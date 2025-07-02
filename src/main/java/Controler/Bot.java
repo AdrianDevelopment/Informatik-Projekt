@@ -35,7 +35,7 @@ public class Bot extends Mitspieler {
 
     public SpielArt spielAbsichtWaehlen(SpielArt hoechsteSpiel) {
         //Bestimmt wieviele und welche Art von Karten auf der Hand sind.
-        //Todo besondereKarten objekt statt array
+
         int[] besondereKarten = wieVieleBesondereKarten();
         int anzahlOU = besondereKarten[0] + besondereKarten[1];
         int indexFarbeMitMeistenKarten = besondereKarten[3];
@@ -149,6 +149,9 @@ public class Bot extends Mitspieler {
     public Spielkarte sauSpielKarteWaehlen(ArrayList<Spielkarte> erlaubteKarten) {
         Random zufall = new Random();
         int zufaelligerIndex = zufall.nextInt(erlaubteKarten.size());
+        if(erlaubteKarten.size() == 1){
+            return  erlaubteKarten.get(0);
+        }
         //Legt die Farbe der gesuchten Sau auf Vorhand, sofern der Teamspieler unbekannt ist und man nicht der Ausrufer oder der Sau besitzer ist.
         //Ziel ist es den Mitspieler zu finden, damit intelligenter gespielt werden kann(z.b. schmieren)
         if (model.gibStichGelegteKartenAnzahl() == 0){
@@ -156,7 +159,7 @@ public class Bot extends Mitspieler {
                 Spielkarte niedrigsteKarteVonSauFarbe = null;
                 for(Spielkarte karte: erlaubteKarten){
                     if(karte.istTrumpf(SpielArt.SAUSPIEL, null)&&karte.gebeFarbe() == model.gibSau().gebeFarbe()){
-                        //todo möglicherweise ein problem get(-1)
+
                         if(niedrigsteKarteVonSauFarbe == null || karte.gebeWert().gebePunktzahl()< niedrigsteKarteVonSauFarbe.gebeWert().gebePunktzahl()){
                             niedrigsteKarteVonSauFarbe = karte;
                         }
@@ -171,9 +174,9 @@ public class Bot extends Mitspieler {
 
 
         int spielerGewinntStich = gibSpielerDerStichMomentanGewinnt();
-        //todo zu lange?
+
         int kartenStaerkeVonStichGewinner = spielKartenStaerkeSauSpiel(model.gibAlleGelegteKarten().get(model.gibAlleGelegteKarten().size() - model.gibStichGelegteKartenAnzahl() + model.gibSpielerDieImStichGelegtHaben().indexOf(spielerGewinntStich)));
-        int[] besondereKarten = wieVieleBesondereKarten();
+
 
         //model.gibAlleGelegteKarten().stream().filter(karte -> karte.gebeWert() == Werte.OBER).count();
 
@@ -196,14 +199,27 @@ public class Bot extends Mitspieler {
             gegenSpielerIndex.removeIf(n -> n == model.gibSpielerIndex() || n == model.gibTeamSpieler());
             mitspielerAlleinigTrumpf = model.gibMitspielerDaten(model.gibTeamSpieler()).gebeHatTrumpf() && !model.gibMitspielerDaten(gegenSpielerIndex.get(0)).gebeHatTrumpf() && !model.gibMitspielerDaten(gegenSpielerIndex.get(1)).gebeHatTrumpf();
         }
-
+        //wenn nach der Sau gesucht wird, soll versucht werden den Stich zu gewinnen(ein Trumpf legen)
+        if(model.gibErsteKarteAufTisch().gebeFarbe() == model.gibSau().gebeFarbe() && !model.gibSauFarbeVorhandGespielt()){
+            Spielkarte niedrigsterTrumpf = null;
+            //sucht den niedrigsten Trumpf
+            for(Spielkarte karte : erlaubteKarten){
+                if(niedrigsterTrumpf == null  && karte.istTrumpf(SpielArt.SAUSPIEL, null)){
+                    niedrigsterTrumpf = karte;
+                }else if( niedrigsterTrumpf != null && karte.istTrumpf(SpielArt.SAUSPIEL, null)&& spielKartenStaerkeSauSpiel(karte) < spielKartenStaerkeSauSpiel(niedrigsterTrumpf)){
+                    niedrigsterTrumpf = karte;
+                }
+            }
+            if (niedrigsterTrumpf != null){
+                System.out.println("DEBUG: Der Bot sticht die Ausgerufene Sau.");
+                return  niedrigsterTrumpf;
+            }
+        }
         if ((spielerGewinntStich == model.gibTeamSpieler() && kartenStaerkeVonStichGewinner > mindesAnforderungFuerSchmieren)|| mitspielerAlleinigTrumpf) {//schmiert nur, wenn Teamspieler einen Unter oder Ober gelegt hat.
-            Spielkarte karteMitHoechsterPunktzahl = null;
+            Spielkarte karteMitHoechsterPunktzahl = model.gibHand().get(0);
             //sucht die Karte mit der höchsten Punktzahl
             for(Spielkarte karte : erlaubteKarten){
-                if(karteMitHoechsterPunktzahl == null && karte.gebeWert().gebePunktzahl() > 0){
-                    karteMitHoechsterPunktzahl = karte;
-                }else if(karteMitHoechsterPunktzahl != null && karte.gebeWert().gebePunktzahl() > karteMitHoechsterPunktzahl.gebeWert().gebePunktzahl()){
+                 if( karte.gebeWert().gebePunktzahl() > karteMitHoechsterPunktzahl.gebeWert().gebePunktzahl()){
                     karteMitHoechsterPunktzahl = karte;
                 }
             }
@@ -217,7 +233,7 @@ public class Bot extends Mitspieler {
             }
         }
         //versucht einen Stich zu gewinnen, wenn eine gewisse Anzahl von Punkten auf dem Tisch liegen
-        if (gibWertFuerBisherGelegteKarten() > 13) {
+        if (gibWertFuerBisherGelegteKarten() > 10) {
             //Wenn möglich, legt die erste Karte die den Stich gewinnen kann
             for(Spielkarte karte : erlaubteKarten){
                 if(spielKartenStaerkeSauSpiel(karte) >kartenStaerkeVonStichGewinner){
@@ -267,7 +283,7 @@ public class Bot extends Mitspieler {
             wer in dem Stich eine Karte gelegt hat
             ob die Farbe der Gesuchten sau gespielt wurde
             sofern die gesuchte Sau gespielt, wird kann der Mitspieler abgespeichert werden.
-            //todo abspeichern von Informationen über die Art der Karten auf der Hand der anderen Spieler
+
      */
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
@@ -288,8 +304,6 @@ public class Bot extends Mitspieler {
             }
         }
 
-        //Todo abspeichern welche Karten die Mitspieler noch haben
-        //Todo bei Spielart Unterscheiden --> in mehrere Methoden aufteilen
 
         //Überprüft ob Spieler keinen Trumpf mehr legen kann.
         if (model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null) && !karte.istTrumpf(SpielArt.SAUSPIEL,null)) {
@@ -358,7 +372,7 @@ public class Bot extends Mitspieler {
         int anzahlAllerGelegtenKarten  =model.gibAlleGelegteKarten().size();
         int indexDerHoechstenKarte = anzahlAllerGelegtenKarten - anzahlGelegterKarten;
         for (int i = anzahlAllerGelegtenKarten - anzahlGelegterKarten; i < anzahlAllerGelegtenKarten; i++){
-            if(spielKartenStaerkeSauSpiel(model.gibAlleGelegteKarten().get(i))> spielKartenStaerkeSauSpiel(model.gibAlleGelegteKarten().get(indexDerHoechstenKarte)) ){ //todo entscheiden welche Karte welche schlägt
+            if(spielKartenStaerkeSauSpiel(model.gibAlleGelegteKarten().get(i))> spielKartenStaerkeSauSpiel(model.gibAlleGelegteKarten().get(indexDerHoechstenKarte)) ){ 
                 indexDerHoechstenKarte = i;
             }
         }
@@ -423,8 +437,7 @@ public class Bot extends Mitspieler {
 
     /*
         Bestimmt die Anzahl von Karten Typen die für Entscheidung über Spielzüge elementar sind.
-        //todo Methode muss noch an Spielarten angepasst werden. (Bei Wenz ist der Ober eine Farbe)
-        //todo Ein Object mit den jeweiligen Arten von Karten als Attributen, um die Nutzung der Daten zu erleichtern. (Anstatt Array position zu merken)
+
      */
     public int[] wieVieleBesondereKarten() {
         int anzahlOber = 0;
