@@ -36,10 +36,6 @@ public class SpielGUI {
     private ArrayList<JLabel> spieler3KartenLabels;
     private ArrayList<JLabel> spieler4KartenLabels;
 
-    //private JLabel spieler1MitteKarte;
-    //private JLabel spieler2MitteKarte;
-    //private JLabel spieler3MitteKarte;
-    //private JLabel spieler4MitteKarte;
     private JLabel mitteTextLabel;
     private JLabel kleinMitteTextLabel;
 
@@ -129,156 +125,49 @@ public class SpielGUI {
 
 
         //Umgedrehte Startkarten für Spieler 2 werden erstellt:
-        /*
-        for (int i = 0; i < 8; i++) {
-            int u = 0;
-            JLabel karte = new JLabel();
-            if (i % 2 == 0) {
-                karte.setBounds(60,140 + (i/2 * 100), 80, 100);
-            }
-            else {
-                karte.setBounds(0,40 + (i+1)/2, 80, 100);
-            }
-            karte.setIcon(kartenRuekseite);
-            spieler1KartenLabels.add(karte);
-        }
 
         for (int i = 0; i < 8; i++) {
-            int u = 0;
             JLabel karte = new JLabel();
             if (i % 2 == 0) {
                 karte.setBounds(60,140 + (i/2 * 100), 80, 100);
             }
             else {
-                karte.setBounds(0,40 + (i+1)/2, 80, 100);
+                karte.setBounds(0,40 + (((i+1)*100)/2), 80, 100);
             }
+            karte.setIcon(kartenRuekseite);
+            spieler2KartenLabels.add(karte);
+        }
+
+        //Spielerkarten für Spieler 3
+        for (int i = 0; i < 8; i++) {
+            JLabel karte = new JLabel();
+            karte.setBounds(400+(i*70), 20, 80, 95);
             karte.setIcon(kartenRuekseite);
             spieler3KartenLabels.add(karte);
         }
-
+        //Spielerkarten für Spieler 4
         for (int i = 0; i < 8; i++) {
-            int u = 0;
             JLabel karte = new JLabel();
             if (i % 2 == 0) {
-                karte.setBounds(60,140 + (i/2 * 100), 80, 100);
+                karte.setBounds(1250,140 + (i/2 * 100), 80, 100);
             }
             else {
-                karte.setBounds(0,40 + (i+1)/2, 80, 100);
+                karte.setBounds(1310,40 + (((i+1)*100)/2), 80, 100);
             }
             karte.setIcon(kartenRuekseite);
             spieler4KartenLabels.add(karte);
         }
-
-        */
-        JLabel ruekseitenKarte21 = new JLabel();
-        ruekseitenKarte21.setIcon(kartenRuekseite);
-        ruekseitenKarte21.setBounds(0, 140, 80, 100);
-        JLabel ruekseitenKarte22 = new JLabel();
-        ruekseitenKarte22.setIcon(kartenRuekseite);
-        ruekseitenKarte22.setBounds(60, 140, 80, 100);
-        JLabel ruekseitenKarte23 = new JLabel();
-        ruekseitenKarte23.setIcon(kartenRuekseite);
-        ruekseitenKarte23.setBounds(0, 240, 80, 100);
-        JLabel ruekseitenKarte24 = new JLabel();
-        ruekseitenKarte24.setIcon(kartenRuekseite);
-        ruekseitenKarte24.setBounds(60, 240, 80, 100);
-        JLabel ruekseitenKarte25 = new JLabel();
-        ruekseitenKarte25.setIcon(kartenRuekseite);
-        ruekseitenKarte25.setBounds(0, 340, 80, 100);
-        JLabel ruekseitenKarte26 = new JLabel();
-        ruekseitenKarte26.setIcon(kartenRuekseite);
-        ruekseitenKarte26.setBounds(60, 340, 80, 100);
-        JLabel ruekseitenKarte27 = new JLabel();
-        ruekseitenKarte27.setIcon(kartenRuekseite);
-        ruekseitenKarte27.setBounds(0, 440, 80, 100);
-        JLabel ruekseitenKarte28 = new JLabel();
-        ruekseitenKarte28.setIcon(kartenRuekseite);
-        ruekseitenKarte28.setBounds(60, 440, 80, 100);
-
-        //Umgedrehte Startkarten für Spieler 4 werden erstellt:
-        JLabel ruekseitenKarte41 = new JLabel();
-        ruekseitenKarte41.setIcon(kartenRuekseite);
-        ruekseitenKarte41.setBounds(1250, 140, 80, 100);
-        JLabel ruekseitenKarte42 = new JLabel();
-        ruekseitenKarte42.setIcon(kartenRuekseite);
-        ruekseitenKarte42.setBounds(1310, 140, 80, 100);
-        JLabel ruekseitenKarte43 = new JLabel();
-        ruekseitenKarte43.setIcon(kartenRuekseite);
-        ruekseitenKarte43.setBounds(1250, 240, 80, 100);
-        JLabel ruekseitenKarte44 = new JLabel();
-        ruekseitenKarte44.setIcon(kartenRuekseite);
-        ruekseitenKarte44.setBounds(1310, 240, 80, 100);
-        JLabel ruekseitenKarte45 = new JLabel();
-        ruekseitenKarte45.setIcon(kartenRuekseite);
-        ruekseitenKarte45.setBounds(1250, 340, 80, 100);
-        JLabel ruekseitenKarte46 = new JLabel();
-        ruekseitenKarte46.setIcon(kartenRuekseite);
-        ruekseitenKarte46.setBounds(1310, 340, 80, 100);
-        JLabel ruekseitenKarte47 = new JLabel();
-        ruekseitenKarte47.setIcon(kartenRuekseite);
-        ruekseitenKarte47.setBounds(1250, 440, 80, 100);
-        JLabel ruekseitenKarte48 = new JLabel();
-        ruekseitenKarte48.setIcon(kartenRuekseite);
-        ruekseitenKarte48.setBounds(1310, 440, 80, 100);
-
-        //Umgedrehte Startkarten für Spieler 3 werden erstellt:
-        JLabel ruekseitenKarte31 = new JLabel();
-        ruekseitenKarte31.setIcon(kartenRuekseite);
-        ruekseitenKarte31.setBounds(400, 20, 80, 95);
-        JLabel ruekseitenKarte32 = new JLabel();
-        ruekseitenKarte32.setIcon(kartenRuekseite);
-        ruekseitenKarte32.setBounds(470, 20, 80, 95);
-        JLabel ruekseitenKarte33 = new JLabel();
-        ruekseitenKarte33.setIcon(kartenRuekseite);
-        ruekseitenKarte33.setBounds(540, 20, 80, 95);
-        JLabel ruekseitenKarte34 = new JLabel();
-        ruekseitenKarte34.setIcon(kartenRuekseite);
-        ruekseitenKarte34.setBounds(610, 20, 80, 95);
-        JLabel ruekseitenKarte35 = new JLabel();
-        ruekseitenKarte35.setIcon(kartenRuekseite);
-        ruekseitenKarte35.setBounds(680, 20, 80, 95);
-        JLabel ruekseitenKarte36 = new JLabel();
-        ruekseitenKarte36.setIcon(kartenRuekseite);
-        ruekseitenKarte36.setBounds(750, 20, 80, 95);
-        JLabel ruekseitenKarte37 = new JLabel();
-        ruekseitenKarte37.setIcon(kartenRuekseite);
-        ruekseitenKarte37.setBounds(820, 20, 80, 95);
-        JLabel ruekseitenKarte38 = new JLabel();
-        ruekseitenKarte38.setIcon(kartenRuekseite);
-        ruekseitenKarte38.setBounds(890, 20, 80, 95);
-
         //Sachen zum Frame hinzufügen
         mainFrame.add(Spieler1);
         mainFrame.add(Spieler2);
         mainFrame.add(Spieler3);
         mainFrame.add(Spieler4);
 
-        mainFrame.add(ruekseitenKarte21);
-        mainFrame.add(ruekseitenKarte22);
-        mainFrame.add(ruekseitenKarte23);
-        mainFrame.add(ruekseitenKarte24);
-        mainFrame.add(ruekseitenKarte25);
-        mainFrame.add(ruekseitenKarte26);
-        mainFrame.add(ruekseitenKarte27);
-        mainFrame.add(ruekseitenKarte28);
-
-        mainFrame.add(ruekseitenKarte41);
-        mainFrame.add(ruekseitenKarte42);
-        mainFrame.add(ruekseitenKarte43);
-        mainFrame.add(ruekseitenKarte44);
-        mainFrame.add(ruekseitenKarte45);
-        mainFrame.add(ruekseitenKarte46);
-        mainFrame.add(ruekseitenKarte47);
-        mainFrame.add(ruekseitenKarte48);
-
-        mainFrame.add(ruekseitenKarte31);
-        mainFrame.add(ruekseitenKarte32);
-        mainFrame.add(ruekseitenKarte33);
-        mainFrame.add(ruekseitenKarte34);
-        mainFrame.add(ruekseitenKarte35);
-        mainFrame.add(ruekseitenKarte36);
-        mainFrame.add(ruekseitenKarte37);
-        mainFrame.add(ruekseitenKarte38);
+        for(int i = 0; i < 8; i++){
+            mainFrame.add(spieler2KartenLabels.get(i));
+            mainFrame.add(spieler3KartenLabels.get(i));
+            mainFrame.add(spieler4KartenLabels.get(i));
+        }
 
         mainFrame.add(weiterButton);
         mainFrame.add(sauButton);
