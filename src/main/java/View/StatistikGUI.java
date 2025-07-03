@@ -1,6 +1,6 @@
 package View;
 
-import Controler.Speicherung;
+import Model.Speicherung;
 
 import javax.swing.*;
 import java.awt.*;
