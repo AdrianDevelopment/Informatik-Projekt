@@ -540,10 +540,6 @@ public class SpielGUI {
         mainFrame.setVisible(true);
     }
 
-    public void neueRundeButtonText(String text){
-        neueRundeButton.setText(text);
-    }
-
     public void schliessen() {
         mitteTextLabel.setText("Turnier Vorbei");
         // TODO: Fenster schließen, wenn Button gedrückt wird
