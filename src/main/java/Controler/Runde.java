@@ -157,8 +157,21 @@ public class Runde {
         turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden() + 1, spielArt, rundeModel.gebeSiegerArray());
     }
 
-    public int ermittleSieger(Spielkarte[] aktuellerStich) {
-        Spielkarte hoechsteKarte = aktuellerStich[0];
+    public int ermittleSieger(Spielkarte[] aktuellerStich, int vorhand) {
+        if (debug) {
+            for (int i = 0; i < aktuellerStich.length; i++) {
+                if (aktuellerStich[i] == null) {
+                    System.out.println("ERROR: karte an Position " + i + " ist null");
+                    System.out.println("ERROR: Vorhand: " + rundeModel.gebeVorhand());
+                    for (Spielkarte karte : aktuellerStich) {
+                        System.out.println("ERROR: Karte " + karte);
+                    }
+                    exit(1);
+                }
+            }
+        }
+
+        Spielkarte hoechsteKarte = aktuellerStich[vorhand];
         boolean trumpfImStich = istTrumpf(hoechsteKarte);
         Farbe farbe = aktuellerStich[0].gebeFarbe();
         int sieger = 0;
