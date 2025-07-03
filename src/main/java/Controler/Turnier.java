@@ -71,6 +71,7 @@ public class Turnier {
     }
 
     public void turnierBeenden() {
+        speicherung.TurnierZuEnde(turnierModel.gebePunkteTurnier(turnierModel.gebePositionSpieler()), turnierModel.istTurnierSiegerEchterSpieler());
         if (turnierModel.istTurnierSiegerEchterSpieler()) {
             speicherung.TurnierGewonnen();
         }
