@@ -60,9 +60,6 @@ public class BotModel {
         return soloFarbe;
     }
 
-    public Spielkarte gibLetzteGelegteKarte() {
-        return gelegteKarten.get(gelegteKarten.size() - 1);
-    }
 
     public Spielkarte gibErsteKarteAufTisch() {
         return gelegteKarten.get(gelegteKarten.size() - spielzugReihenfolge.size());

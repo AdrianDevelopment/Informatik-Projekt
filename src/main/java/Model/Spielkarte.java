@@ -57,6 +57,8 @@ public class Spielkarte {
             case SCHELLEN:
                 ergebnis = "Schellen ";
                 break;
+            default:
+                System.out.println("Error: Unbekannte Farbe");
         }
         switch (wert){
             case SAU:
@@ -83,6 +85,8 @@ public class Spielkarte {
             case SIEBENER:
                 ergebnis += "7";
                 break;
+            default:
+                System.out.println("Error: Unbekannter Wert");
         }
         return  ergebnis;
     }
@@ -102,8 +106,11 @@ public class Spielkarte {
                 return (wert == Werte.UNTER);
             case SOLO:
                 return (wert == Werte.OBER || wert == Werte.UNTER || farbe == soloSpielFarbe);
+            default:
+                System.out.println("Error: Unbekannte Spielart");
         }
         return false;
+
     }
 
 
