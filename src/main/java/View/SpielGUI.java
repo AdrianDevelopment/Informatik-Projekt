@@ -51,29 +51,19 @@ public class SpielGUI {
         mainFrame.setSize(1400, 700);
         mainFrame.setVisible(true);
         mainFrame.setLayout(null);
+        //24.6.25
 
-        lblHintergrund = new JLabel(imageIcon);
-        lblHintergrund.setBounds(0, 0, 1400, 700);
-        lblHintergrund.setOpaque(false);
-        mainFrame.setContentPane(lblHintergrund);
-
-        okButton = new JButton("Ok");
-        okButton.setBounds(1000, 400, 100, 50);
-        okButton.setVisible(false);
+        okButton = erstelleSchoenenButton("Ok", 1000, 400, 100, 50);
         mainFrame.add(okButton);
 
-        neueRundeButton = new JButton("neue Runde");
-        neueRundeButton.setBounds(1000, 400, 200, 50);
-        neueRundeButton.setVisible(false);
+        neueRundeButton = erstelleSchoenenButton("Tunier-Punkte Übersicht", 1000, 400, 200, 50);
         mainFrame.add(neueRundeButton);
 
-        weiterButton = new JButton("Weiter");
-        weiterButton.setBounds(1000, 600, 100, 50);
-        weiterButton.setVisible(false);
+        weiterButton = erstelleSchoenenButton("Weiter", 970,600,100,50);
+        mainFrame.add(weiterButton);
 
-        sauButton = new JButton("Sau");
-        sauButton.setBounds(1100, 600, 100, 50);
-        sauButton.setVisible(false);
+        sauButton = erstelleSchoenenButton("SAU", 1100, 600, 100, 50);
+        mainFrame.add(sauButton);
 
         spieler1KartenArray = new ArrayList<JButton>();
         weiterSauButtons = new ArrayList<JButton>();
@@ -523,9 +513,7 @@ public class SpielGUI {
         endTextArea.setBackground(null);
 
         endTextArea.setVisible(true);
-
         mainFrame.add(endTextArea);
-
     }
 
     public void endtextAusblenden(){
@@ -539,6 +527,39 @@ public class SpielGUI {
     public void spielGUISichtbar(){
         mainFrame.setVisible(true);
     }
+
+    public JButton erstelleSchoenenButton(String text, int x, int y, int width, int height) {
+        JButton button = new JButton(text);
+        button.setBounds(x, y, width, height);
+
+        // Basis-Style
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(true);
+        button.setOpaque(true);
+        button.setBackground(new Color(25, 25, 112)); // MidnightBlue (dunkles Blau)
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Abgerundeter Border mit Innenabstand
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(0, 0, 139), 2, true), // DarkBlue Border
+                BorderFactory.createEmptyBorder(8, 20, 8, 20) // Padding innen
+        ));
+
+        // Hover-Effekt: etwas helleres dunkles Blau
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(0, 0, 205)); // MediumBlue
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(25, 25, 112)); // MidnightBlue (Original)
+            }
+        });
+
+        return button;
+    }
+
 
     public void schliessen() {
         mitteTextLabel.setText("Turnier Vorbei");
