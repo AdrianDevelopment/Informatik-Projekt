@@ -23,27 +23,27 @@ public class BotMitspielerDatenModel {
         hatGras = true;
     }
 
-    void setzteHatOber(boolean b) {
+    void setzeHatOber(boolean b) {
         hatOber = b;
     }
 
-    void setzteHatUnter(boolean b) {
+    void setzeHatUnter(boolean b) {
         hatUnter = b;
     }
 
-    void setzteHatHerz(boolean b) {
+    void setzeHatHerz(boolean b) {
         hatHerz = b;
     }
 
-    void setzteHatSchellen(boolean b) {
+    void setzeHatSchellen(boolean b) {
         hatSchellen = b;
     }
 
-    void setzteHatEichel(boolean b) {
+    void setzeHatEichel(boolean b) {
         hatEichel = b;
     }
 
-    void setzteHatGras(boolean b) {
+    void setzeHatGras(boolean b) {
         hatGras = b;
     }
 

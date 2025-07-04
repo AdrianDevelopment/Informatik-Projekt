@@ -20,6 +20,7 @@ public class Bot extends Mitspieler {
     @Override
     public void setzeRunde(Runde runde) {
         this.runde = runde;
+
     }
 
     /*
@@ -70,7 +71,7 @@ public class Bot extends Mitspieler {
         if (!farbenZumAusrufen.isEmpty() && anzahlOU + besondereKarten[4] >= 4 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SAUSPIEL.gebeSpielArtID()) {
             //Speichert die Sau die Ausgerufen werden soll im Model ab.
             //Die Methode farbenZumAusrufen gibt die beste Sau zum Ausrufen an Stelle 0 zurück.
-            model.setzteSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
+            model.setzeSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
             return SpielArt.SAUSPIEL;
         }
 
@@ -89,10 +90,12 @@ public class Bot extends Mitspieler {
 
         switch (spielArt) {
             case KEINSPIEL:
+                System.out.println("DEBUG: Spielart: "+ spielArt+" wird nicht behandelt");
                 break;
             case SAUSPIEL:
                 return model.gibSau().gebeFarbe();
             case WENZ:
+                System.out.println("DEBUG: Spielart: "+ spielArt+" wird nicht behandelt");
                 break;
             case SOLO:
                 return model.gibsoloFarbe();
@@ -114,8 +117,8 @@ public class Bot extends Mitspieler {
     }
 
     public Spielkarte waehleEineKarte() {
-        ArrayList<Spielkarte> moeglicheKarten = new ArrayList<>();
-        //Überprüfen, ob es der Beginn des Stiches ist und demanch erlaubte Karten bestimmen.
+        ArrayList<Spielkarte> moeglicheKarten;
+        //Überprüfen, ob es der Beginn des Stiches ist und demnach erlaubte Karten bestimmen.
         if (model.gibStichGelegteKartenAnzahl() == 0) {
             moeglicheKarten = erlaubteKartenAusspielenBeiSauspiel(model.gibHand(), model.gibSau());
         } else {
@@ -130,6 +133,7 @@ public class Bot extends Mitspieler {
                 break;
             case SAUSPIEL:
                 gewaelteKarte = sauSpielKarteWaehlen(moeglicheKarten);
+                break;
             case WENZ:
                 System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
@@ -266,7 +270,7 @@ public class Bot extends Mitspieler {
     //Speichern von Daten im Model.
     @Override
     public void rundeStarten(ArrayList<Spielkarte> karten, int spielerIndex) {
-        model.setzteHand(karten);
+        model.setzeHand(karten);
         model.setzeSpielerIndex(spielerIndex);
     }
 
@@ -274,12 +278,12 @@ public class Bot extends Mitspieler {
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         model.setzeSpielerHatSauAusgerufen(spieler);
-        model.setzteSau(new Spielkarte(farbe, Werte.SAU));
+        model.setzeSau(new Spielkarte(farbe, Werte.SAU));
         if (model.hatAusgerufeneSau()){
-            model.setzteTeamSpieler(spieler);
+            model.setzeTeamSpieler(spieler);
         }
-        model.setzteSpielArt(spielArt);
-        model.setzteSoloFarbe(farbe);
+        model.setzeSpielArt(spielArt);
+        model.setzeSoloFarbe(farbe);
     }
 
     /*
@@ -302,32 +306,32 @@ public class Bot extends Mitspieler {
         if (model.gibSau().equals(karte)) {
             if (model.gibSpielerHatSauAusgerufen() == model.gibSpielerIndex()) {
                 //Mitspieler ist der Spieler, er die Sau gelegt hat, sofern man selbst die Sau ausgerufen hat.
-                model.setzteTeamSpieler(spielerHatGelegt);
+                model.setzeTeamSpieler(spielerHatGelegt);
             } else {
                 //Mitspieler ist der Spieler der werder die Sau ausgerufen noch gelegt hat.
-                model.setzteTeamSpieler(6 - (spielerHatGelegt + model.gibSpielerHatSauAusgerufen() + model.gibSpielerIndex()));
+                model.setzeTeamSpieler(6 - (spielerHatGelegt + model.gibSpielerHatSauAusgerufen() + model.gibSpielerIndex()));
             }
         }
 
 
         //Überprüft ob Spieler keinen Trumpf mehr legen kann.
         if (model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null) && !karte.istTrumpf(SpielArt.SAUSPIEL,null)) {
-            model.setzteMitspielerHatOber(spielerHatGelegt%3, false);
-            model.setzteMitspielerHatUnter(spielerHatGelegt%3, false);
-            model.setzteMitspielerHatHerz(spielerHatGelegt%3, false);
+            model.setzeMitspielerHatOber(spielerHatGelegt%3, false);
+            model.setzeMitspielerHatUnter(spielerHatGelegt%3, false);
+            model.setzeMitspielerHatHerz(spielerHatGelegt%3, false);
         }
         if (!model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null) && karte.gebeFarbe() != model.gibErsteKarteAufTisch().gebeFarbe()) {
             switch (model.gibErsteKarteAufTisch().gebeFarbe()){
                 case SCHELLEN -> {
-                    model.setzteMitspielerHatSchellen(spielerHatGelegt%3, false);
+                    model.setzeMitspielerHatSchellen(spielerHatGelegt%3, false);
                     break;
                 }
                 case GRAS -> {
-                    model.setzteMitspielerHatGras(spielerHatGelegt%3, false);
+                    model.setzeMitspielerHatGras(spielerHatGelegt%3, false);
                     break;
                 }
                 case EICHEL -> {
-                    model.setzteMitspielerHatEichel(spielerHatGelegt%3, false);
+                    model.setzeMitspielerHatEichel(spielerHatGelegt%3, false);
                     break;
                 }
                 case HERZ -> {
