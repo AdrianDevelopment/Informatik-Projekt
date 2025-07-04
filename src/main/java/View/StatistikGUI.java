@@ -36,22 +36,24 @@ public class StatistikGUI {
         ueberschriftLabel.setFont(new Font("My Boli",Font.PLAIN, 40));
         ueberschriftLabel.setBounds(75,2,350,50);
 
-        JLabel[] alleLabels = new JLabel[14];
+        JLabel[] alleLabels = new JLabel[16];
 
         TextAnzeigen(alleLabels,0,"Spiele:");
         TextAnzeigen(alleLabels,1,"Gespielte Spiele: " + speicherung.gespielteSpieleGeben());
         TextAnzeigen(alleLabels,2,"Gewonnene Spiele: " + speicherung.gewonneneSpieleGeben());
         TextAnzeigen(alleLabels,3,"Verlorene Spiele: " + speicherung.verloreneSpieleGeben());
+        TextAnzeigen(alleLabels, 4, "Verlorene Spiele Schneider: " + speicherung.verloreneSpieleSchneiderGeben());
+        TextAnzeigen(alleLabels, 5, "Gewonnene Spiele Schneider: " + speicherung.gewonneneSpieleSchneiderGeben());
 
-        TextAnzeigen(alleLabels,5,"Turniere:");
-        TextAnzeigen(alleLabels,6,"Gespielte Turniere: " + speicherung.gespielteTurniereGeben());
-        TextAnzeigen(alleLabels,7,"Gewonnene Turniere: " + speicherung.gewonneneTurniereGeben());
-        TextAnzeigen(alleLabels,8,"Verlorene Turniere: " + speicherung.verloreneTurniereGeben());
+        TextAnzeigen(alleLabels,7,"Turniere:");
+        TextAnzeigen(alleLabels,8,"Gespielte Turniere: " + speicherung.gespielteTurniereGeben());
+        TextAnzeigen(alleLabels,9,"Gewonnene Turniere: " + speicherung.gewonneneTurniereGeben());
+        TextAnzeigen(alleLabels,10,"Verlorene Turniere: " + speicherung.verloreneTurniereGeben());
 
-        TextAnzeigen(alleLabels,10,"Sonstige:");
-        TextAnzeigen(alleLabels,11,"Gespielte Karten: " + speicherung.gespielteKartenGeben());
-        TextAnzeigen(alleLabels,12,"Höchste Punktzahl (Runde): " + speicherung.hoechstePunktzahlRundeGeben());
-        TextAnzeigen(alleLabels,13,"Gesamte Punktzahl: " + speicherung.gesamtePunkteGeben());
+        TextAnzeigen(alleLabels,12,"Sonstige:");
+        TextAnzeigen(alleLabels,13,"Gespielte Karten: " + speicherung.gespielteKartenGeben());
+        TextAnzeigen(alleLabels,14,"Höchste Punktzahl (Runde): " + speicherung.hoechstePunktzahlRundeGeben());
+        TextAnzeigen(alleLabels,15,"Gesamte Punktzahl: " + speicherung.gesamtePunkteGeben());
 
         /*JLabel spielerGesamtLabel = new JLabel();
         spielerGesamtLabel.setText("Gewonnene Spiele: " + speicherung.gewonneneSpieleGeben());
@@ -67,6 +69,13 @@ public class StatistikGUI {
                 Statistik.add(alleLabels[i]);
         }
 
+        JButton knopf = new JButton("Turnierhistorie anzeigen");
+        knopf.setBounds(75,50 + (17*29), 350, 29);
+        knopf.setFont(new Font("My Boli", Font.PLAIN, 20));
+        knopf.setHorizontalAlignment(JLabel.CENTER);
+        knopf.addActionListener(e -> TurnierHistorieGUI.TurnierStatistikAnzeigen());
+        knopf.setVisible(true);
+        Statistik.add(knopf);
     }
 
 
