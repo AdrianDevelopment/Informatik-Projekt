@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Menue menue = new Menue(new MenueGUI());
-            menue.gUIIntialisieren();
+            menue.menueGUIIntialisieren();
         });
     }
 }

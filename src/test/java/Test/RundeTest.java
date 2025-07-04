@@ -11,8 +11,8 @@ import Model.Farbe;
 import Model.Speicherung;
 import Model.Werte;
 import Model.Spielkarte;
-
 import View.SpielGUI;
+
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Collections;

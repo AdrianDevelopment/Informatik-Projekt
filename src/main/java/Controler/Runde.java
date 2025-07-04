@@ -1,5 +1,7 @@
 package Controler;
 
+// Programmierer: Adrian
+
 import Model.RundeModel;
 import Model.Speicherung;
 import Model.Spielkarte;
@@ -9,8 +11,6 @@ import Model.Werte;
 
 import java.util.ArrayList;
 import static java.lang.System.exit;
-
-// Programmierer: Adrian
 
 public class Runde {
     private final ArrayList<Mitspieler> spieler;
@@ -102,7 +102,7 @@ public class Runde {
                                                   rundeModel.gebePunkte(rundeModel.gebeSieger(1)));
                 if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) +
                     rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 90) {
-                    // Schneider
+                    speicherung.SpielGewonnenSchneider(SpielArt.SAUSPIEL);
                 }
                 // Gewonnene Runden bzw. verlorene werden immer gespeichert. Zusätzlich werden Niederlagen oder Siege
                 // mit Schneider gespeichert. Dabei schließt die Schneiderspeicherung die Runden speicherung nicht aus.
@@ -127,6 +127,7 @@ public class Runde {
         if (debug) System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + rundeModel.gebeVorhand());
     }
 
+    // wird von GUI über Spieler zurück aufgerufen
     public void karteAbfragenAufgerufen( Spielkarte karte ) {
         rundeModel.setzeAktuellenStich(rundeModel.gebeVorhand(), karte);
 
@@ -135,6 +136,7 @@ public class Runde {
         }
     }
 
+    // überprüft, ob der Stich vorbei ist, setz nötige Variablen und ruft karteAbfragen() in GUI über Spieler auf
     public void frageStichVorbei(){
         if (rundeModel.gebeWiederholung() < 3) {
             rundeModel.setzeVorhand((rundeModel.gebeVorhand() + 1) % 4);
@@ -155,8 +157,8 @@ public class Runde {
         rundeModel.setzteWiederholung(0);
         rundeModel.setzeStichWiederholung(rundeModel.gebeStichWiederholung() + 1);
         rundeModel.setzeLetzterStich(rundeModel.gebeAktuellerStichArray());
-
         rundeModel.addierePunkte(sieger, ermittlePunkte(rundeModel.gebeAktuellerStichArray()));
+
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.stichGewonnen(sieger);
         }
