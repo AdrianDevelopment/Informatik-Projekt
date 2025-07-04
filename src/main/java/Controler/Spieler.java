@@ -151,8 +151,8 @@ public class Spieler extends Mitspieler {
         gui.farbeFuerSpielabsichtButtonsActionListener(this);
         gui.okButtonSichtbarkeit(false);
         gui.hinweisAnNutzer("Wähle die Sau-Farbe im Pop-up.");
+        gui.aktualisieren();
     }
-
     /**
      * wird von farbauswahlButtons aufgerufen
      * - Überprüfung, ob gewählte Farbe möglich → Aufruf der Runde oder erneute Aufforderung

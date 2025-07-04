@@ -514,7 +514,6 @@ public class SpielGUI {
         JButton button = new JButton(text);
         button.setBounds(x, y, width, height);
 
-        // Basis-Style
         button.setFocusPainted(false);
         button.setContentAreaFilled(true);
         button.setOpaque(true);
@@ -522,7 +521,6 @@ public class SpielGUI {
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
 
-        // Abgerundeter Border mit Innenabstand
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 0, 139), 2, true), // DarkBlue Border
                 BorderFactory.createEmptyBorder(8, 20, 8, 20) // Padding innen
@@ -544,5 +542,8 @@ public class SpielGUI {
         }
 
         return button;
+    }
+    public void aktualisieren(){ //Zeichnet einfach das Fenster neu um den Hover-Bug zu beheben
+        mainFrame.repaint();
     }
 }
