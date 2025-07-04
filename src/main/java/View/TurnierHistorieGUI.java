@@ -11,7 +11,6 @@ import Model.TurnierStatistik;
 public class TurnierHistorieGUI {
     public static void TurnierStatistikAnzeigen(){
         JFrame frame = new JFrame("Turnierhistorie");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(500,500);
         ArrayList<TurnierStatistik> statistiken =
                 Model.Speicherung.speicherungErstellen().gebeAlteTurnierstatistiken();
