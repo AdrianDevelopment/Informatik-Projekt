@@ -59,6 +59,7 @@ public class Turnier {
 
     // Werte für TurnierPunkteGUI werden gesetzt und die GUI wird aufgerufen
     public void turnierPunkteAnzeigen(int wiederholungRunden, SpielArt spielArt, int[] sieger) {
+        turnierModel.setzeVergangeneRunden(wiederholungRunden);
         if (sieger == null) {
             return;
         }
@@ -66,14 +67,14 @@ public class Turnier {
             turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
             turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
         }
-        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, wiederholungRunden + 1, turnierModel.gebePunkteTurnierArray());
+        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
         turnierPunkteGUI.turnierPunkteGUISichtbarkeit(true);
     }
 
-    public void rundeStarten(int wiederholungRunden) {
+    public void rundeStarten() {
         turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
-        if (wiederholungRunden < turnierModel.gebeAnzahlRunden()) {
-            new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, wiederholungRunden, echterSpieler);
+        if (turnierModel.gebeVergangeneRunden() < turnierModel.gebeAnzahlRunden()) {
+            new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, turnierModel.gebeVergangeneRunden(), echterSpieler);
         }
     }
 

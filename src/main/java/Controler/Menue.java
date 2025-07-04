@@ -36,6 +36,6 @@ public class Menue {
 
     public void turnierStarten(int anzahlRunden) {
         Turnier tunier = new Turnier(anzahlRunden);
-        tunier.rundeStarten(0);
+        tunier.rundeStarten();
     }
 }

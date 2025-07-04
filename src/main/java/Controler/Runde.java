@@ -44,7 +44,7 @@ public class Runde {
     public void spielAbsichtFragenRunde(int wiederholung, int vorhand) {
         if (wiederholung < 4) {
             if (debug) System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + vorhand);
-            spieler.get(vorhand).setzeRunde(this);
+
             spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
         }
         else {
@@ -169,7 +169,7 @@ public class Runde {
     }
 
     public void neueRundeStarten(SpielArt spielArt) {
-        turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden(), spielArt, rundeModel.gebeSiegerArray());
+        turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden()+1, spielArt, rundeModel.gebeSiegerArray());
     }
 
     public int ermittleSieger(Spielkarte[] aktuellerStich) {

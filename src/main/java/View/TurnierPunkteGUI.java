@@ -117,11 +117,15 @@ public class TurnierPunkteGUI {
         labelPunkte4.setVerticalAlignment(SwingConstants.CENTER);
 
 
-        neueRundeButton.setText("neue Runde");
-        neueRundeButton.addActionListener(e -> turnier.rundeStarten(wiederholungRunden));
 
+        neueRundeButton.setText("neue Runde");
+        neueRundeButton.addActionListener(e -> turnier.rundeStarten());
         turnierBeendenButton.setText("Beenden");
         turnierBeendenButton.addActionListener(e -> turnier.turnierBeenden());
+
+
+
+
 
         buttonPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
 

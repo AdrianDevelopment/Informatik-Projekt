@@ -9,6 +9,7 @@ public class TurnierModel {
     private int anzahlRunden;
     private int[] punkteTurnier;
     private int positionSpieler;
+    private int vergangeneRunden;
 
     public TurnierModel(int anzahlRunden, int positionSpieler) {
         this.anzahlRunden = anzahlRunden;
@@ -46,14 +47,19 @@ public class TurnierModel {
         punkteTurnier[index]++;
     }
 
+    public void setzeVergangeneRunden(int n) {
+        vergangeneRunden=n;
+    }
+
 
     // -------------------------------------------------------------------------------------------
     // Geber, die aktuell nicht benutzt werden
     public int gebePunkteTurnier(int index) {
         return punkteTurnier[index];
     }
-
-
+    public int gebeVergangeneRunden() {
+        return vergangeneRunden;
+    }
     // Setzer, die aktuell nicht benutzt werden
     public void setzeAnzahlRunden(int anzahlRunden) {
         this.anzahlRunden = anzahlRunden;
