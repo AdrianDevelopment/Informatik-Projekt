@@ -13,7 +13,7 @@ public class Menue {
         this.menueGUI = menueGUI;
     }
 
-    public void gUIIntialisieren(){
+    public void menueGUIIntialisieren() {
         menueGUI.gibStatistikButton().addActionListener(e -> new StatistikGUI());
         menueGUI.gibPlayButton().addActionListener(e -> menueGUIRueckgabe(1));
     }
@@ -29,7 +29,7 @@ public class Menue {
                 // Mehrspieler
                 break;
             default:
-                System.out.println("ERROR: Fehler bei MenueAuswahl");
+                System.out.println("ERROR: Fehler bei der Menü-Auswahl");
                 break;
         }
     }

@@ -1,14 +1,20 @@
 package Controler;
 
-import Model.*;
+// Programmierer: Adrian
+
+import Model.Farbe;
+import Model.Speicherung;
+import Model.SpielArt;
+import Model.Spielkarte;
+import Model.TurnierModel;
+import Model.WelcherSpieler;
+import Model.Werte;
 import View.SpielGUI;
 import View.TurnierPunkteGUI;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Collections;
-
-// Programmierer: Adrian
 
 public class Turnier {
     private final Speicherung speicherung;
@@ -51,6 +57,7 @@ public class Turnier {
         return spielKarten;
     }
 
+    // Werte für TurnierPunkteGUI werden gesetzt und die GUI wird aufgerufen
     public void turnierPunkteAnzeigen(int wiederholungRunden, SpielArt spielArt, int[] sieger) {
         if (sieger == null) {
             return;
@@ -59,7 +66,7 @@ public class Turnier {
             turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
             turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
         }
-        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
+        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, wiederholungRunden + 1, turnierModel.gebePunkteTurnierArray());
         turnierPunkteGUI.turnierPunkteGUISichtbarkeit(true);
     }
 
@@ -71,6 +78,7 @@ public class Turnier {
     }
 
     public void turnierBeenden() {
+        speicherung.TurnierZuEnde(turnierModel.gebePunkteTurnier(turnierModel.gebePositionSpieler()), turnierModel.istTurnierSiegerEchterSpieler());
         if (turnierModel.istTurnierSiegerEchterSpieler()) {
             speicherung.TurnierGewonnen();
         }
@@ -79,7 +87,6 @@ public class Turnier {
         }
         speicherung.DatenSpeichern();
         turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
-        gui.schliessen();
     }
 
     // Kopie aus Spieler (Tom)

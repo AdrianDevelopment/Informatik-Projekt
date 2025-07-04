@@ -5,6 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class Speicherung {
     /**
      *
@@ -30,6 +35,10 @@ public class Speicherung {
     private int verloreneTurniere;
     private int hoechstePunktzahlRunde;
     private boolean datenGeaendert;
+    private ArrayList<TurnierStatistik> alteTurniere;
+    private int gewonneneSpieleSchneider;
+    private int[] gewonneneModiSchneider;
+
 
     public void KarteGespielt(){gespielteKarten++;}
     public void gesamtePunkteErhoehen(int punkte){gesamtePunkte += punkte;}
@@ -43,6 +52,11 @@ public class Speicherung {
         gespielteTurniere++;
         datenGeaendert = true;
     }
+    
+    public void TurnierZuEnde(int punkte, boolean gewonnen){
+        alteTurniere.add(new TurnierStatistik(punkte,gewonnen));
+    }
+    
     public void RundePunktzahlMelden(int punkte){
         if (punkte>hoechstePunktzahlRunde){
             hoechstePunktzahlRunde=punkte;
@@ -68,6 +82,14 @@ public class Speicherung {
         verloreneModiSchneider[art.gebeSpielArtID() - 1]++;
         datenGeaendert = true;
     }
+    public void SpielGewonnenSchneider(SpielArt art){
+        gewonneneSpieleSchneider++;
+        gewonneneModiSchneider[art.gebeSpielArtID() - 1]++;
+        datenGeaendert = true;
+    }
+    public ArrayList<TurnierStatistik> gebeAlteTurnierstatistiken(){
+        return alteTurniere;
+    }
     public int modusSpielzahlGeben(SpielArt art){
         return gespielteModi[art.gebeSpielArtID() - 1];
     }
@@ -80,6 +102,7 @@ public class Speicherung {
     public int modusNiederlagenSchneiderGeben(SpielArt art){
         return verloreneModiSchneider[art.gebeSpielArtID() - 1];
     }
+    public int modusGewinneSchneiderGeben(SpielArt art){ return gewonneneModiSchneider[art.gebeSpielArtID() - 1];}
     public int gespielteKartenGeben(){
         return gespielteKarten;
     }
@@ -88,6 +111,9 @@ public class Speicherung {
     }
     public int gespielteSpieleGeben(){
         return gespielteSpiele;
+    }
+    public int gewonneneSpieleSchneiderGeben(){
+        return gewonneneSpieleSchneider;
     }
     public int verloreneSpieleSchneiderGeben(){
         return verloreneSpieleSchneider;
@@ -115,6 +141,8 @@ public class Speicherung {
         gewonneneModi = new int[3];
         verloreneModi = new int [3];
         verloreneModiSchneider = new int [3];
+        alteTurniere = new ArrayList<TurnierStatistik>();
+        gewonneneModiSchneider = new int[3];
     }
     private static void ArraySetzenAuf(int array[], int zahl){
         for (int i=0;i<array.length;++i){
@@ -137,6 +165,9 @@ public class Speicherung {
         ArraySetzenAuf(gewonneneModi,0);
         ArraySetzenAuf(verloreneModi,0);
         ArraySetzenAuf(verloreneModiSchneider,0);
+        alteTurniere = new ArrayList<TurnierStatistik>();
+        ArraySetzenAuf(gewonneneModiSchneider,0);
+        gewonneneSpieleSchneider = 0;
         datenGeaendert = true;
     }
     private int zahlLesenMindestVersion(FileInputStream fis,
@@ -203,7 +234,24 @@ public class Speicherung {
             zahlArrayLesen(fis, gewonneneModi);
             zahlArrayLesen(fis, verloreneModi);
             zahlArrayLesen(fis, verloreneModiSchneider);
-            if (version==0)datenGeaendert = false;
+            if (version>=1){
+                int anzalTurniere = zahlLesen(fis);
+                alteTurniere.ensureCapacity(anzalTurniere);
+                for (int i=0;i<anzalTurniere;++i){
+                    alteTurniere.add(new TurnierStatistik(
+                            zahlLesen(fis),
+                            fis.read() == 1,
+                            zahlLesen(fis),
+                            fis.read(),
+                            fis.read(),
+                            fis.read(),
+                            fis.read()
+                    ));
+                }
+            }
+            zahlArrayLesenMindestVersion(fis,version,2,gewonneneModiSchneider,0);
+            gewonneneSpieleSchneider = zahlLesenMindestVersion(fis,version,2,0);
+            if (version==2)datenGeaendert = false;
             else datenGeaendert = true; // Version muss aktualisiert werden
         } catch (IOException e) {
             zurücksetzen();
@@ -229,7 +277,7 @@ public class Speicherung {
             return;
         }
         try{
-            zahlSchreiben(fos, 0); // Dateiversion
+            zahlSchreiben(fos, 2); // Dateiversion
             zahlSchreiben(fos, gewonneneSpiele); // Spiele: Tunier -> Runden sollten auch gespeichert werden
             zahlSchreiben(fos, gespielteSpiele);
             zahlSchreiben(fos, verloreneSpiele);
@@ -244,6 +292,23 @@ public class Speicherung {
             zahlArraySchreiben(fos, gewonneneModi);
             zahlArraySchreiben(fos, verloreneModi);
             zahlArraySchreiben(fos, verloreneModiSchneider);
+            zahlSchreiben(fos, alteTurniere.size());
+            for (int i=0;i<alteTurniere.size();++i){
+                TurnierStatistik aktuellesTurnier = alteTurniere.get(i);
+                zahlSchreiben(fos,aktuellesTurnier.punkteGeben());
+                if (aktuellesTurnier.wurdeGewonnen()){
+                    fos.write(1);
+                }else{
+                    fos.write(0);
+                }
+                LocalDate datum = aktuellesTurnier.DatumGeben();
+                zahlSchreiben(fos,datum.getYear());
+                fos.write(datum.getMonthValue());
+                fos.write(datum.getDayOfMonth());
+                LocalTime zeit = aktuellesTurnier.ZeitGeben();
+                fos.write(zeit.getHour());
+                fos.write(zeit.getMinute());
+            }
             datenGeaendert = false;
         }catch (IOException e){
             

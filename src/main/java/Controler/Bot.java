@@ -122,16 +122,19 @@ public class Bot extends Mitspieler {
             moeglicheKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gibHand().clone(), model.gibSpielArt(), model.gibSau(), model.gibErsteKarteAufTisch(), model.gibsoloFarbe(), model.gibSauFarbeVorhandGespielt());
 
         }
-        Spielkarte gewaelteKarte = null;
+        Spielkarte gewaelteKarte = moeglicheKarten.get(0);
         //Wahl der Karte nach Spielart unterscheiden.
         switch (model.gibSpielArt()) {
             case KEINSPIEL:
+                System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
             case SAUSPIEL:
                 gewaelteKarte = sauSpielKarteWaehlen(moeglicheKarten);
             case WENZ:
+                System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
             case SOLO:
+                System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
             default:
                 System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
@@ -238,7 +241,9 @@ public class Bot extends Mitspieler {
             for(Spielkarte karte : erlaubteKarten){
                 if(spielKartenStaerkeSauSpiel(karte) >kartenStaerkeVonStichGewinner){
                     System.out.println("DEBUG: Der Bot versucht den Stich zu gewinnen!");
-                    return  karte;
+                        return  karte;
+
+
                 }
             }
         }
@@ -328,6 +333,7 @@ public class Bot extends Mitspieler {
                 case HERZ -> {
                     break;
                 }
+                default -> System.out.println("ERROR: Unbekannte Farbe");
             }
         }
 
@@ -411,6 +417,7 @@ public class Bot extends Mitspieler {
             case SIEBENER -> {
                 staerke += 40;
             }
+            default -> System.out.println("ERROR: Unbekannter Wert");
         }
         switch (karte.gebeFarbe()){
             case HERZ -> {
@@ -430,6 +437,7 @@ public class Bot extends Mitspieler {
             case EICHEL -> {
                 staerke += 5;
             }
+            default -> System.out.println("ERROR: Unbekannte Farbe");
         }
         return  staerke;
     }
@@ -470,6 +478,9 @@ public class Bot extends Mitspieler {
                     case EICHEL:
                         anzahlEichel++;
                         break;
+                    default:
+                        System.out.println("Error: Unbekannte Farbe");
+
                 }
             }
 

@@ -1,10 +1,16 @@
 package Controler;
 
-import Model.*;
+// Programmierer: Adrian
+
+import Model.RundeModel;
+import Model.Speicherung;
+import Model.Spielkarte;
+import Model.SpielArt;
+import Model.Farbe;
+import Model.Werte;
 
 import java.util.ArrayList;
-
-// Programmierer: Adrian
+import static java.lang.System.exit;
 
 public class Runde {
     private final ArrayList<Mitspieler> spieler;
@@ -84,27 +90,33 @@ public class Runde {
         }
         else {
             rundeModel.setzeSiegerArray(rundenSiegerErmitteln());
+
             for (Mitspieler mitspieler : spieler) {
                 mitspieler.rundeGewonnen(rundeModel.gebeSiegerArray(), rundeModel.gebePunkteArray());
             }
-            if (rundeModel.gebeSieger(0) == rundeModel.gebePositionSpieler() || rundeModel.gebeSieger(1) == rundeModel.gebePositionSpieler()) {
-                speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(rundeModel.gebeSieger(0)) + rundeModel.gebePunkte(rundeModel.gebeSieger(1))); // Speicherung der zusammengerechneten Punkte der Sieger
-                if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) + rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 120) {
-                    // Methode SpielGewonnen Schneider noch nicht vorhanden
+
+            if (rundeModel.gebeSieger(0) == rundeModel.gebePositionSpieler() ||
+                rundeModel.gebeSieger(1) == rundeModel.gebePositionSpieler()) {
+                // Speicherung der zusammengerechneten Punkte der Sieger
+                speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(rundeModel.gebeSieger(0)) +
+                                                  rundeModel.gebePunkte(rundeModel.gebeSieger(1)));
+                if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) +
+                    rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 90) {
+                    speicherung.SpielGewonnenSchneider(SpielArt.SAUSPIEL);
                 }
-                else {
-                    speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
-                }
-            }
-            else if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) + rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 90) { // unter 30 Punkte ist man Schneider
-                speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
+                // Gewonnene Runden bzw. verlorene werden immer gespeichert. Zusätzlich werden Niederlagen oder Siege
+                // mit Schneider gespeichert. Dabei schließt die Schneiderspeicherung die Runden speicherung nicht aus.
+                speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
             }
             else {
+                if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) +
+                    rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 90) { // unter 30 Punkte ist man Schneider
+                    speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
+                }
                 speicherung.SpielVerloren(SpielArt.SAUSPIEL);
             }
             speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
             speicherung.DatenSpeichern();
-            //turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray()); //TOM Methode startet eine neue Runde, die die Karten anzeigt und den neuen okButton
         }
     }
 
@@ -115,6 +127,7 @@ public class Runde {
         if (debug) System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + rundeModel.gebeVorhand());
     }
 
+    // wird von GUI über Spieler zurück aufgerufen
     public void karteAbfragenAufgerufen( Spielkarte karte ) {
         rundeModel.setzeAktuellenStich(rundeModel.gebeVorhand(), karte);
 
@@ -123,6 +136,7 @@ public class Runde {
         }
     }
 
+    // überprüft, ob der Stich vorbei ist, setz nötige Variablen und ruft karteAbfragen() in GUI über Spieler auf
     public void frageStichVorbei(){
         if (rundeModel.gebeWiederholung() < 3) {
             rundeModel.setzeVorhand((rundeModel.gebeVorhand() + 1) % 4);
@@ -132,6 +146,7 @@ public class Runde {
         }
         else {
             auswertungStich();
+            rundeModel.setzeAktuellenStichNull();
         }
     }
 
@@ -142,8 +157,8 @@ public class Runde {
         rundeModel.setzteWiederholung(0);
         rundeModel.setzeStichWiederholung(rundeModel.gebeStichWiederholung() + 1);
         rundeModel.setzeLetzterStich(rundeModel.gebeAktuellerStichArray());
-
         rundeModel.addierePunkte(sieger, ermittlePunkte(rundeModel.gebeAktuellerStichArray()));
+
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.stichGewonnen(sieger);
         }
@@ -154,7 +169,7 @@ public class Runde {
     }
 
     public void neueRundeStarten(SpielArt spielArt) {
-        turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden() + 1, spielArt, rundeModel.gebeSiegerArray());
+        turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden(), spielArt, rundeModel.gebeSiegerArray());
     }
 
     public int ermittleSieger(Spielkarte[] aktuellerStich) {
@@ -162,6 +177,19 @@ public class Runde {
         boolean trumpfImStich = istTrumpf(hoechsteKarte);
         Farbe farbe = aktuellerStich[0].gebeFarbe();
         int sieger = 0;
+
+        if (debug) {
+            for (int i = 0; i < aktuellerStich.length; i++) {
+                if (aktuellerStich[i] == null) {
+                    System.out.println("ERROR: karte an Position " + i + " ist null");
+                    System.out.println("ERROR: Vorhand: " + rundeModel.gebeVorhand());
+                    for (Spielkarte karte : aktuellerStich) {
+                        System.out.println("ERROR: Karte " + karte);
+                    }
+                    exit(1);
+                }
+            }
+        }
 
         for (int i = 1; i < 4; i++) {
             // wenn im Stich bisher min. ein Trumpf ist, wird gecheckt, ob der aktuelle Trumpf höher ist
@@ -186,8 +214,6 @@ public class Runde {
             }
         }
         // sieger wird relativ zu der Reihenfolge des aktuellen Stiches ermittelt
-//        int vorhand = rundeModel.gebeVorhand() + 1;
-//        return (vorhand + sieger) % 4;
         return sieger;
     }
 

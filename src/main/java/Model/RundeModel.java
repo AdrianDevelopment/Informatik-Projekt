@@ -3,6 +3,8 @@ package Model;
 import Controler.Mitspieler;
 import Controler.Spieler;
 
+import java.util.Arrays;
+
 public class RundeModel {
     private int[] punkte;
     private int ausrufer;
@@ -106,6 +108,10 @@ public class RundeModel {
 
     public void setzeAktuellenStich(int index, Spielkarte spielkarte) {
         this.aktuellerStich[index] = spielkarte;
+    }
+
+    public void setzeAktuellenStichNull() {
+        Arrays.fill(aktuellerStich, null);
     }
 
     public void setzeLetzterStich(Spielkarte[] aktuellerStich) {

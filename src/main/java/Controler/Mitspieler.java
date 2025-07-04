@@ -218,6 +218,8 @@ public abstract class Mitspieler {
                     case HERZ:
 
                         break;
+                    default:
+                        System.out.println("Error: Unbekannte Farbe");
                 }
             }
 
