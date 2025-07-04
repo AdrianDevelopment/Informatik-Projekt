@@ -499,11 +499,11 @@ public class SpielGUI {
         ));
 
         button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
+            public void mausDrueber(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(0, 0, 205));
             }
 
-            public void mouseExited(java.awt.event.MouseEvent evt) {
+            public void mausAussen(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(25, 25, 112));
             }
         });
