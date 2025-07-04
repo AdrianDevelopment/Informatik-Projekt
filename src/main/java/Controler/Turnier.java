@@ -87,7 +87,6 @@ public class Turnier {
         }
         speicherung.DatenSpeichern();
         turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
-        gui.schliessen();
     }
 
     // Kopie aus Spieler (Tom)

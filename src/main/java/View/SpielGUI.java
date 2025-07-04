@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 public class SpielGUI {
 
-    private JLabel lblHintergrund;
     private ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\hintergrundSpielGUI.png");
 
     private JButton weiterButton; //neu
@@ -36,8 +35,12 @@ public class SpielGUI {
     private ArrayList<JLabel> spieler3KartenLabels;
     private ArrayList<JLabel> spieler4KartenLabels;
 
-    private JLabel mitteTextLabel;
-    private JLabel kleinMitteTextLabel;
+    final private JLabel mitteTextLabel;
+    final private JLabel kleinMitteTextLabel;
+
+    private JButton schellenSauButton;
+    private JButton eichelSauButton;
+    private JButton grasSauButton;
 
     private ImageIcon kartenRuekseite;
 
@@ -226,45 +229,24 @@ public class SpielGUI {
         return weiterSauButtons;
     }
 
-    public ArrayList<JButton> farbeFuerSpielabsicht() {
-        spielabsichtFrame = new JFrame("Auswahl: Spielabsicht");
-        spielabsichtFrame.setSize(120, 285);
-        spielabsichtFrame.setLayout(null);
+    public void farbeFuerSpielabsichtAnzeigen() {
+        schellenSauButton = erstelleSchoenenButton("Sau",1000, 400, 100, 50);
+        mainFrame.add(schellenSauButton);
+        schellenSauButton.setVisible(true);
 
-        JLabel text1 = new JLabel("Auf welche Sau");
-        text1.setBounds(10, 10, 100, 25);
-        text1.setVisible(true);
-        spielabsichtFrame.add(text1);
+        grasSauButton = erstelleSchoenenButton("gras",1000, 470, 100, 50);
+        mainFrame.add(grasSauButton);
+        grasSauButton.setVisible(true);
 
-        JLabel text2 = new JLabel("rufst Du aus?");
-        text2.setBounds(10, 25, 100, 25);
-        text2.setVisible(true);
-        spielabsichtFrame.add(text2);
-
-        //Schellen, Gras und Eichel
-        JButton schellenButton = new JButton("Schellen");
-        schellenButton.setBounds(10, 65, 100, 50);
-        schellenButton.setVisible(true);
-        farbauswahlButtons.add(schellenButton);
-
-        JButton grasButton = new JButton("Gras");
-        grasButton.setBounds(10, 120, 100, 50);
-        grasButton.setVisible(true);
-        farbauswahlButtons.add(grasButton);
-        JButton eichelButton = new JButton("Eichel");
-        eichelButton.setBounds(10, 175, 100, 50);
-        eichelButton.setVisible(true);
-        farbauswahlButtons.add(eichelButton);
-
-        spielabsichtFrame.add(schellenButton);
-        spielabsichtFrame.add(grasButton);
-        spielabsichtFrame.add(eichelButton);
-
-        return farbauswahlButtons;
+        eichelSauButton = erstelleSchoenenButton("eichel",1000, 550, 100, 50);
+        mainFrame.add(eichelSauButton);
+        eichelSauButton.setVisible(true);
     }
 
-    public void setzeSichtbarkeitFarbeFuerSpielabsicht(boolean b) {
-        spielabsichtFrame.setVisible(b);
+    public void farbeFuerSpielabsichtAusblenden() {
+        schellenSauButton.setVisible(false);
+        eichelSauButton.setVisible(false);
+        grasSauButton.setVisible(false);
     }
 
     public void setzeSpielabsichtUnsichtbar() {
@@ -377,9 +359,9 @@ public class SpielGUI {
     }
 
     public void farbeFuerSpielabsichtButtonsActionListener(Spieler spieler){
-        farbauswahlButtons.get(0).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
-        farbauswahlButtons.get(1).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
-        farbauswahlButtons.get(2).addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
+        schellenSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
+        grasSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
+        eichelSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
     }
 
     public void buttonKartenZuornden(Spieler spieler, ArrayList<Spielkarte> handkarten) {
@@ -532,7 +514,6 @@ public class SpielGUI {
         JButton button = new JButton(text);
         button.setBounds(x, y, width, height);
 
-        // Basis-Style
         button.setFocusPainted(false);
         button.setContentAreaFilled(true);
         button.setOpaque(true);
@@ -540,7 +521,6 @@ public class SpielGUI {
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
 
-        // Abgerundeter Border mit Innenabstand
         button.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(0, 0, 139), 2, true), // DarkBlue Border
                 BorderFactory.createEmptyBorder(8, 20, 8, 20) // Padding innen
@@ -557,13 +537,13 @@ public class SpielGUI {
             }
         });
 
+        if (text == "SAU" || text == "Weiter"){
+            button.setVisible(false);
+        }
+
         return button;
     }
-
-
-    public void schliessen() {
-        mitteTextLabel.setText("Turnier Vorbei");
-        // TODO: Fenster schließen, wenn Button gedrückt wird
-        //mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING)); // schließt automatisch das Fenster
+    public void aktualisieren(){ //Zeichnet einfach das Fenster neu um den Hover-Bug zu beheben
+        mainFrame.repaint();
     }
 }
