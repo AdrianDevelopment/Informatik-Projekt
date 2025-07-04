@@ -90,27 +90,33 @@ public class Runde {
         }
         else {
             rundeModel.setzeSiegerArray(rundenSiegerErmitteln());
+
             for (Mitspieler mitspieler : spieler) {
                 mitspieler.rundeGewonnen(rundeModel.gebeSiegerArray(), rundeModel.gebePunkteArray());
             }
-            if (rundeModel.gebeSieger(0) == rundeModel.gebePositionSpieler() || rundeModel.gebeSieger(1) == rundeModel.gebePositionSpieler()) {
-                speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(rundeModel.gebeSieger(0)) + rundeModel.gebePunkte(rundeModel.gebeSieger(1))); // Speicherung der zusammengerechneten Punkte der Sieger
-                if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) + rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 120) {
-                    // Methode SpielGewonnen Schneider noch nicht vorhanden
+
+            if (rundeModel.gebeSieger(0) == rundeModel.gebePositionSpieler() ||
+                rundeModel.gebeSieger(1) == rundeModel.gebePositionSpieler()) {
+                // Speicherung der zusammengerechneten Punkte der Sieger
+                speicherung.gesamtePunkteErhoehen(rundeModel.gebePunkte(rundeModel.gebeSieger(0)) +
+                                                  rundeModel.gebePunkte(rundeModel.gebeSieger(1)));
+                if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) +
+                    rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 90) {
+                    // Schneider
                 }
-                else {
-                    speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
-                }
-            }
-            else if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) + rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 90) { // unter 30 Punkte ist man Schneider
-                speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
+                // Gewonnene Runden bzw. verlorene werden immer gespeichert. Zusätzlich werden Niederlagen oder Siege
+                // mit Schneider gespeichert. Dabei schließt die Schneiderspeicherung die Runden speicherung nicht aus.
+                speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
             }
             else {
+                if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) +
+                    rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 90) { // unter 30 Punkte ist man Schneider
+                    speicherung.SpielVerlorenSchneider(SpielArt.SAUSPIEL);
+                }
                 speicherung.SpielVerloren(SpielArt.SAUSPIEL);
             }
             speicherung.RundePunktzahlMelden(rundeModel.gebePunkte(rundeModel.gebePositionSpieler()));
             speicherung.DatenSpeichern();
-            //turnier.rundeStarten(rundeModel.gebeWiederholungenRunden() + 1, rundeModel.gebeSiegerArray()); //TOM Methode startet eine neue Runde, die die Karten anzeigt und den neuen okButton
         }
     }
 
@@ -138,6 +144,7 @@ public class Runde {
         }
         else {
             auswertungStich();
+            rundeModel.setzeAktuellenStichNull();
         }
     }
 
