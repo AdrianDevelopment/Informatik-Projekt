@@ -60,12 +60,6 @@ public class StatistikGUI {
         TextAnzeigen(alleLabels,14,"Höchste Punktzahl (Runde): " + speicherung.hoechstePunktzahlRundeGeben());
         TextAnzeigen(alleLabels,15,"Gesamte Punktzahl: " + speicherung.gesamtePunkteGeben());
 
-        /*JLabel spielerGesamtLabel = new JLabel();
-        spielerGesamtLabel.setText("Gewonnene Spiele: " + speicherung.gewonneneSpieleGeben());
-        spielerGesamtLabel.setBounds(75, 75, 350, 50);
-        spielerGesamtLabel.setHorizontalAlignment(JLabel.CENTER);
-        spielerGesamtLabel.setFont(new Font("My Boli", Font.PLAIN, 20));*/
-
         //Frame
         Statistik.add(ueberschriftLabel);
         //Statistik.add(spielerGesamtLabel);
