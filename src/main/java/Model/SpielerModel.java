@@ -79,7 +79,7 @@ public class SpielerModel {
     }
 
     public Spielkarte gebeVorgegebeneKarte() {
-        return stich.getFirst();
+        return stich.get(0);
     }
 
     public void stichBeendet() {
