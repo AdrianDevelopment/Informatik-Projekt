@@ -147,9 +147,8 @@ public class Spieler extends Mitspieler {
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
         gui.okButtonActionListenerLoeschen();
         model.setzeDranFarbeSpielabsicht(true);
-        gui.farbeFuerSpielabsicht();
+        gui.farbeFuerSpielabsichtAnzeigen();
         gui.farbeFuerSpielabsichtButtonsActionListener(this);
-        gui.setzeSichtbarkeitFarbeFuerSpielabsicht(true);
         gui.okButtonSichtbarkeit(false);
         gui.hinweisAnNutzer("Wähle die Sau-Farbe im Pop-up.");
     }
@@ -173,7 +172,7 @@ public class Spieler extends Mitspieler {
             }
         }
         if (moeglich) {
-            gui.setzeSichtbarkeitFarbeFuerSpielabsicht(false);
+            gui.farbeFuerSpielabsichtAusblenden();
             gui.hinweisAnNutzer("");
             runde.farbeFuerSpielAbsichtAufgerufen(farbe); //Farbe darf gelegt werden und wird weitergegeben
         } else {
