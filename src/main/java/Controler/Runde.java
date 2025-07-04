@@ -26,7 +26,7 @@ public class Runde {
         this.speicherung = speicherung;
         this.turnier = turnier;
         int vorhand = wiederholungRunden % 4;
-        rundeModel = new RundeModel(positionSpieler, vorhand, wiederholungRunden, echterSpieler, spieler.get(0));
+        rundeModel = new RundeModel(positionSpieler, vorhand, echterSpieler, spieler.get(0));
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>(spielKarten.subList(i * 8, (i + 1) * 8));
@@ -168,7 +168,7 @@ public class Runde {
     }
 
     public void neueRundeStarten(SpielArt spielArt) {
-        turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden(), spielArt, rundeModel.gebeSiegerArray());
+        turnier.turnierPunkteAnzeigen( spielArt, rundeModel.gebeSiegerArray());
     }
 
     public int ermittleSieger(Spielkarte[] aktuellerStich) {
