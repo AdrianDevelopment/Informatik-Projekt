@@ -19,15 +19,15 @@ import java.util.ArrayList;
 public class SpielGUI {
 
     //möglicher Hintergrund für den MainFrame -Abgelehnt von Tom wegen zu dominante Farben
-    private ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\hintergrundSpielGUI.png");
-    private ImageIcon kartenRuekseite;
+    final private ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\hintergrundSpielGUI.png");
+    final private ImageIcon kartenRuekseite;
 
     //Variablen für Knöpfe(Buttons) und Texte(Labels) werden erstellt
-    private JButton weiterButton; //neu
-    private JButton sauButton;
+    final private JButton weiterButton; //neu
+    final private JButton sauButton;
 
-    private JButton okButton;
-    private JButton neueRundeButton;
+    final private JButton okButton;
+    final private JButton neueRundeButton;
 
     private JButton schellenSauButton;
     private JButton eichelSauButton;
@@ -37,17 +37,16 @@ public class SpielGUI {
     final private JLabel kleinMitteTextLabel;
 
     //JTextPane ist einfach nur weil ich einen Mehrzeiler gebraucht habe
-    private JTextPane endTextArea;
+    final private JTextPane endTextArea;
 
     //Arraylists, die Objekte von JButtons und JLabels speichern können, werden deklariert
-    private ArrayList<JButton> spieler1KartenArray;
-    private ArrayList<JButton> weiterSauButtons;
-    private ArrayList<JButton> farbauswahlButtons;
+    final private ArrayList<JButton> spieler1KartenArray;
+    final private ArrayList<JButton> weiterSauButtons;
 
-    private ArrayList<JLabel> spieler1KartenLabels;
-    private ArrayList<JLabel> spieler2KartenLabels;
-    private ArrayList<JLabel> spieler3KartenLabels;
-    private ArrayList<JLabel> spieler4KartenLabels;
+    final private ArrayList<JLabel> spieler1KartenLabels;
+    final private ArrayList<JLabel> spieler2KartenLabels;
+    final private ArrayList<JLabel> spieler3KartenLabels;
+    final private ArrayList<JLabel> spieler4KartenLabels;
 
     private JLabel[] mitteKarten;
 
@@ -101,7 +100,6 @@ public class SpielGUI {
 
         //Die Arraylists werden initialisiert
         spieler1KartenArray = new ArrayList<JButton>();
-        farbauswahlButtons = new ArrayList<JButton>();
 
         spieler1KartenLabels = new ArrayList<JLabel>();
         spieler2KartenLabels = new ArrayList<JLabel>();
@@ -262,15 +260,15 @@ public class SpielGUI {
 
     //Erstellt 3 Buttons für jeweils jede Sau, die man zur Auswahl hat
     public void farbeFuerSpielabsichtAnzeigen() {
-        schellenSauButton = erstelleSchoenenButton("Schellen",1000, 450, 100, 50);
+        schellenSauButton = erstelleSchoenenButton("Schellen",1000, 450, 120, 50);
         mainFrame.add(schellenSauButton);
         schellenSauButton.setVisible(true);
 
-        grasSauButton = erstelleSchoenenButton("Gras",1000, 500, 100, 50);
+        grasSauButton = erstelleSchoenenButton("Gras",1000, 520, 120, 50);
         mainFrame.add(grasSauButton);
         grasSauButton.setVisible(true);
 
-        eichelSauButton = erstelleSchoenenButton("Eichel",1000, 550, 100, 50);
+        eichelSauButton = erstelleSchoenenButton("Eichel",1000, 590, 120, 50);
         mainFrame.add(eichelSauButton);
         eichelSauButton.setVisible(true);
     }
