@@ -10,16 +10,12 @@ import Model.Farbe;
 import Model.Werte;
 
 import java.util.ArrayList;
-import static java.lang.System.exit;
 
 public class Runde {
     private final ArrayList<Mitspieler> spieler;
     private final Speicherung speicherung;
     private final RundeModel rundeModel;
     private final Turnier turnier;
-
-    // debug hardcoded
-    boolean debug = true;
 
     public Runde(ArrayList<Mitspieler> spieler, ArrayList<Spielkarte> spielKarten, int positionSpieler, Speicherung speicherung, Turnier turnier, int wiederholungRunden, Spieler echterSpieler) {
         this.spieler = spieler;
@@ -33,7 +29,6 @@ public class Runde {
             spieler.get(i).rundeStarten(spielKartenProSpieler, i);
         }
 
-        System.out.println("DEBUG: Karten wurden gesetz, jetzt hinlegen");
         for (Mitspieler mitspieler : spieler) {
             mitspieler.setzeRunde(this);
         }
@@ -43,7 +38,6 @@ public class Runde {
     // Spielabsicht fragen
     public void spielAbsichtFragenRunde(int wiederholung, int vorhand) {
         if (wiederholung < 4) {
-            if (debug) System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + vorhand);
             spieler.get(vorhand).spielabsichtFragen(wiederholung, rundeModel.gebeHoechsteSpielart(), vorhand);
         }
         else {
@@ -58,7 +52,6 @@ public class Runde {
             rundeModel.setzeHoechsteSpielart(spielArt);
             rundeModel.setzeAusrufer(vorhand);
             rundeModel.setzeAusruferReferenz(spieler.get(vorhand));
-            if (debug) System.out.println("DEBUG: aktuell hoechste Spielart: " + rundeModel.gebeHoechsteSpielart());
         }
         rundeModel.gebeEchterSpieler().spielerHatSpielabsichtGesagt(wiederholung, vorhand, spielArt);
     }
@@ -66,17 +59,11 @@ public class Runde {
     // SAUSPIEL:
     // fragt den Ausrufer, auf welche Sau er spielen möchte (von Spieler aufgerufen)
     public void farbeFuerSpielAbsicht() {
-        if (rundeModel.gebeAusruferReferenz() == null) {
-            if (debug) System.out.println("DEBUG: rundeModel.gebeAusruferReferenz() == null in farbeFuerSpielAbsicht() -> NullPointerException");
-            return;
-        }
-        if (debug) System.out.println("DEBUG: Warte auf Farbe von Spieler " + rundeModel.gebeAusrufer());
         rundeModel.gebeAusruferReferenz().farbeFuerSpielAbsicht(rundeModel.gebeHoechsteSpielart());
     }
 
     // Farbe ausgeben
     public void farbeFuerSpielAbsichtAufgerufen(Farbe farbe) {
-        if (debug) System.out.println("DEBUG: Farbe ausgerufen: " + farbe);
         for (Mitspieler aktuellerSpieler : spieler) {
             aktuellerSpieler.spielArtEntschieden(rundeModel.gebeAusrufer(), farbe, rundeModel.gebeHoechsteSpielart());
         }
@@ -104,7 +91,7 @@ public class Runde {
                     speicherung.SpielGewonnenSchneider(SpielArt.SAUSPIEL);
                 }
                 // Gewonnene Runden bzw. verlorene werden immer gespeichert. Zusätzlich werden Niederlagen oder Siege
-                // mit Schneider gespeichert. Dabei schließt die Schneiderspeicherung die Runden speicherung nicht aus.
+                // mit Schneider gespeichert. Dabei schließt die Schneiderspeicherung die Runde Speicherung nicht aus.
                 speicherung.SpielGewonnen(SpielArt.SAUSPIEL);
             }
             else {
@@ -122,11 +109,9 @@ public class Runde {
     // Stich spielen
     public void karteAbfragen() {
         spieler.get(rundeModel.gebeVorhand()).legeEineKarte(rundeModel.gebeWiederholung(), rundeModel.gebeVorhand());
-
-        if (debug) System.out.println("DEBUG: Warte auf Spielabsicht von Spieler " + rundeModel.gebeVorhand());
     }
 
-    // wird von GUI über Spieler zurück aufgerufen
+    // wird von GUI über Spieler zurückaufgerufen
     public void karteAbfragenAufgerufen( Spielkarte karte ) {
         rundeModel.setzeAktuellenStich(rundeModel.gebeVorhand(), karte);
 
@@ -135,7 +120,7 @@ public class Runde {
         }
     }
 
-    // überprüft, ob der Stich vorbei ist, setz nötige Variablen und ruft karteAbfragen() in GUI über Spieler auf
+    // überprüft, ob der Stich vorbei ist, setzt nötige Variablen und ruft karteAbfragen() in GUI über Spieler auf
     public void frageStichVorbei(){
         if (rundeModel.gebeWiederholung() < 3) {
             rundeModel.setzeVorhand((rundeModel.gebeVorhand() + 1) % 4);
@@ -176,19 +161,6 @@ public class Runde {
         boolean trumpfImStich = istTrumpf(hoechsteKarte);
         Farbe farbe = aktuellerStich[0].gebeFarbe();
         int sieger = 0;
-
-        if (debug) {
-            for (int i = 0; i < aktuellerStich.length; i++) {
-                if (aktuellerStich[i] == null) {
-                    System.out.println("ERROR: karte an Position " + i + " ist null");
-                    System.out.println("ERROR: Vorhand: " + rundeModel.gebeVorhand());
-                    for (Spielkarte karte : aktuellerStich) {
-                        System.out.println("ERROR: Karte " + karte);
-                    }
-                    exit(1);
-                }
-            }
-        }
 
         for (int i = 1; i < 4; i++) {
             // wenn im Stich bisher min. ein Trumpf ist, wird gecheckt, ob der aktuelle Trumpf höher ist

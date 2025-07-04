@@ -20,7 +20,6 @@ public class Turnier {
     private final Speicherung speicherung;
     private final TurnierModel turnierModel;
     private final ArrayList<Mitspieler> spieler;
-    private final SpielGUI gui;
     private final Spieler echterSpieler;
     private final TurnierPunkteGUI turnierPunkteGUI;
 
@@ -41,8 +40,7 @@ public class Turnier {
                 spieler.add(echterSpieler);
             }
         }
-        gui = new SpielGUI();
-        echterSpieler.spielGUIErstellen(gui);
+        echterSpieler.spielGUIErstellen(new SpielGUI());
     }
 
     // Spielkarten vorbereiten

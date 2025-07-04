@@ -2,9 +2,6 @@ package Model;
 
 // Programmierer: Adrian
 
-import java.util.Arrays;
-import java.util.OptionalInt;
-
 public class TurnierModel {
     private int anzahlRunden;
     private int[] punkteTurnier;
@@ -21,6 +18,10 @@ public class TurnierModel {
     // Geber
     public int gebeAnzahlRunden() {
         return anzahlRunden;
+    }
+
+    public int gebePunkteTurnier(int index) {
+        return punkteTurnier[index];
     }
 
     public int[] gebePunkteTurnierArray() {
@@ -45,26 +46,22 @@ public class TurnierModel {
         return vergangeneRunden;
     }
 
+
     // Setzer
     public void erhoehePunkteTurnierUmEins(int index) {
         punkteTurnier[index]++;
     }
 
-    public void setzeVergangeneRunden(int n) {
-        vergangeneRunden = n;
+    public void setzeVergangeneRunden(int vergangeneRunden) {
+        this.vergangeneRunden = vergangeneRunden;
     }
 
 
     // -------------------------------------------------------------------------------------------
-    // Geber, die aktuell nicht benutzt werden
-    public int gebePunkteTurnier(int index) {
-        return punkteTurnier[index];
-    }
     // Setzer, die aktuell nicht benutzt werden
     public void setzeAnzahlRunden(int anzahlRunden) {
         this.anzahlRunden = anzahlRunden;
     }
-
 
     public void setzePunkteTurnier(int index, int punkte) {
         punkteTurnier[index] = punkte;

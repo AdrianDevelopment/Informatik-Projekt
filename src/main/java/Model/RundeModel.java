@@ -15,7 +15,6 @@ public class RundeModel {
     private Mitspieler ausruferReferenz;
     private int vorhand;
     private int[] sieger;
-
     private Spieler echterSpieler;
     private SpielArt aktuelleSpielArt;
     private int stichWiederholung;
@@ -79,7 +78,6 @@ public class RundeModel {
         return sieger;
     }
 
-
     public Spieler gebeEchterSpieler() {
         return echterSpieler;
     }
@@ -134,12 +132,12 @@ public class RundeModel {
         this.aktuelleSpielArt = aktuelleSpielArt;
     }
 
-    public void setzeStichWiederholung(int n){
-         stichWiederholung = n;
+    public void setzeStichWiederholung(int stichWiederholung){
+         this.stichWiederholung = stichWiederholung;
     }
 
-    public  void setzteWiederholung(int n){
-        wiederholung = n;
+    public  void setzteWiederholung(int wiederholung){
+        this.wiederholung = wiederholung;
     }
 
 
@@ -170,8 +168,6 @@ public class RundeModel {
     public void setzeSieger(int index, int sieger) {
         this.sieger[index] = sieger;
     }
-
-
 
     public void setzeEchterSpieler(Spieler echterSpieler) {
         this.echterSpieler = echterSpieler;
