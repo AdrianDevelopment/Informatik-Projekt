@@ -1,5 +1,7 @@
 package View;
 
+// Code von Robin
+
 import Model.Speicherung;
 
 import javax.swing.*;
@@ -10,6 +12,7 @@ public class StatistikGUI {
     private Speicherung speicherung;
 
     private void TextAnzeigen(JLabel[] labels, int index, String text){
+        // Bereitet ein JLabel an einer grid-Position auf das Anzeigen von Text vor
         JLabel neuesLabel=new JLabel();
         neuesLabel.setText(text);
         neuesLabel.setBounds(75,50+(index*29),350,29);
@@ -21,6 +24,7 @@ public class StatistikGUI {
     public StatistikGUI() {
         speicherung = Speicherung.speicherungErstellen();
 
+        // Erstellen des Hauptfensters
         JFrame Statistik = new JFrame("Statistiken");
         Statistik.setSize(500, 625);
         Statistik.setVisible(true);
@@ -28,7 +32,7 @@ public class StatistikGUI {
         Statistik.setResizable(false);
         Statistik.setLayout(null);
 
-        //Labels
+        // Überschrift-Label seperat erstellen
         JLabel ueberschriftLabel = new JLabel();
         ueberschriftLabel.setText("Statistiken");
         ueberschriftLabel.setVerticalAlignment(JLabel.TOP);
@@ -38,6 +42,7 @@ public class StatistikGUI {
 
         JLabel[] alleLabels = new JLabel[16];
 
+        // Statistiken anzeigen mit TextAnzeigen
         TextAnzeigen(alleLabels,0,"Spiele:");
         TextAnzeigen(alleLabels,1,"Gespielte Spiele: " + speicherung.gespielteSpieleGeben());
         TextAnzeigen(alleLabels,2,"Gewonnene Spiele: " + speicherung.gewonneneSpieleGeben());
@@ -69,6 +74,7 @@ public class StatistikGUI {
                 Statistik.add(alleLabels[i]);
         }
 
+        // JButton für Anzeigen von Turnierhistorie
         JButton knopf = new JButton("Turnierhistorie anzeigen");
         knopf.setBounds(75,50 + (17*29), 350, 50);
         knopf.setFont(new Font("My Boli", Font.PLAIN, 20));
