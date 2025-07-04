@@ -1,8 +1,14 @@
 package Controler;
 
-import Model.*;
+import Model.RundeModel;
+import Model.Speicherung;
+import Model.Spielkarte;
+import Model.SpielArt;
+import Model.Farbe;
+import Model.Werte;
 
 import java.util.ArrayList;
+import static java.lang.System.exit;
 
 // Programmierer: Adrian
 
@@ -157,7 +163,12 @@ public class Runde {
         turnier.turnierPunkteAnzeigen(rundeModel.gebeWiederholungenRunden() + 1, spielArt, rundeModel.gebeSiegerArray());
     }
 
-    public int ermittleSieger(Spielkarte[] aktuellerStich, int vorhand) {
+    public int ermittleSieger(Spielkarte[] aktuellerStich) {
+        Spielkarte hoechsteKarte = aktuellerStich[0];
+        boolean trumpfImStich = istTrumpf(hoechsteKarte);
+        Farbe farbe = aktuellerStich[0].gebeFarbe();
+        int sieger = 0;
+
         if (debug) {
             for (int i = 0; i < aktuellerStich.length; i++) {
                 if (aktuellerStich[i] == null) {
@@ -170,11 +181,6 @@ public class Runde {
                 }
             }
         }
-
-        Spielkarte hoechsteKarte = aktuellerStich[vorhand];
-        boolean trumpfImStich = istTrumpf(hoechsteKarte);
-        Farbe farbe = aktuellerStich[0].gebeFarbe();
-        int sieger = 0;
 
         for (int i = 1; i < 4; i++) {
             // wenn im Stich bisher min. ein Trumpf ist, wird gecheckt, ob der aktuelle Trumpf höher ist
@@ -199,8 +205,6 @@ public class Runde {
             }
         }
         // sieger wird relativ zu der Reihenfolge des aktuellen Stiches ermittelt
-//        int vorhand = rundeModel.gebeVorhand() + 1;
-//        return (vorhand + sieger) % 4;
         return sieger;
     }
 

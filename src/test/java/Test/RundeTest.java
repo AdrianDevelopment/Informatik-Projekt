@@ -4,11 +4,11 @@ package Test;
 
 import Controler.Turnier;
 import Controler.Runde;
-import Controler.Speicherung;
 import Controler.Mitspieler;
 import Controler.Spieler;
 import Controler.Bot;
 import Model.Farbe;
+import Model.Speicherung;
 import Model.Werte;
 import Model.Spielkarte;
 
