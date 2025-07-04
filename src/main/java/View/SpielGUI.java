@@ -539,13 +539,10 @@ public class SpielGUI {
             }
         });
 
+        if (text == "SAU" || text == "Weiter"){
+            button.setVisible(false);
+        }
+
         return button;
-    }
-
-
-    public void schliessen() {
-        mitteTextLabel.setText("Turnier Vorbei");
-        // TODO: Fenster schließen, wenn Button gedrückt wird
-        //mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING)); // schließt automatisch das Fenster
     }
 }
