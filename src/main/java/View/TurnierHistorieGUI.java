@@ -3,7 +3,6 @@ package View;
 // Code von Robin
 
 import javax.swing.*;
-import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ public class TurnierHistorieGUI {
         frame.setSize(500,500);
         // Turniere aus Statistiken lesen
         ArrayList<TurnierStatistik> statistiken =
-                Model.Speicherung.speicherungErstellen().gebeAlteTurnierstatistiken();
+                Speicherung.speicherungErstellen().gebeAlteTurnierstatistiken();
         String[] turniereTexte = new String[statistiken.size()];
         for (int i=0;i<turniereTexte.length;++i){
             // Text aus TurnierStatistik-Objekt erstellen
