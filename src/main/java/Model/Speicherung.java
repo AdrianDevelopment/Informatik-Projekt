@@ -309,6 +309,8 @@ public class Speicherung {
                 fos.write(zeit.getHour());
                 fos.write(zeit.getMinute());
             }
+            zahlArraySchreiben(fos,gewonneneModiSchneider);
+            zahlSchreiben(fos,gewonneneSpieleSchneider);
             datenGeaendert = false;
         }catch (IOException e){
             
