@@ -168,7 +168,7 @@ public class Runde {
     }
 
     public void neueRundeStarten(SpielArt spielArt) {
-        turnier.turnierPunkteAnzeigen( spielArt, rundeModel.gebeSiegerArray());
+        turnier.turnierPunkteAnzeigen(spielArt, rundeModel.gebeSiegerArray());
     }
 
     public int ermittleSieger(Spielkarte[] aktuellerStich) {

@@ -41,6 +41,9 @@ public class TurnierModel {
         return (maxIndex == positionSpieler);
     }
 
+    public int gebeVergangeneRunden() {
+        return vergangeneRunden;
+    }
 
     // Setzer
     public void erhoehePunkteTurnierUmEins(int index) {
@@ -48,7 +51,7 @@ public class TurnierModel {
     }
 
     public void setzeVergangeneRunden(int n) {
-        vergangeneRunden=n;
+        vergangeneRunden = n;
     }
 
 
@@ -56,9 +59,6 @@ public class TurnierModel {
     // Geber, die aktuell nicht benutzt werden
     public int gebePunkteTurnier(int index) {
         return punkteTurnier[index];
-    }
-    public int gebeVergangeneRunden() {
-        return vergangeneRunden;
     }
     // Setzer, die aktuell nicht benutzt werden
     public void setzeAnzahlRunden(int anzahlRunden) {

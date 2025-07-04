@@ -58,8 +58,8 @@ public class Turnier {
     }
 
     // Werte für TurnierPunkteGUI werden gesetzt und die GUI wird aufgerufen
-    public void turnierPunkteAnzeigen( SpielArt spielArt, int[] sieger) {
-        turnierModel.setzeVergangeneRunden(  turnierModel.gebeVergangeneRunden() +1);
+    public void turnierPunkteAnzeigen(SpielArt spielArt, int[] sieger) {
+        turnierModel.setzeVergangeneRunden(turnierModel.gebeVergangeneRunden() + 1);
         if (sieger == null) {
             return;
         }
@@ -67,7 +67,7 @@ public class Turnier {
             turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
             turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
         }
-        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this,turnierModel.gebeVergangeneRunden() ,turnierModel.gebePunkteTurnierArray());
+        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, turnierModel.gebeVergangeneRunden(), turnierModel.gebePunkteTurnierArray());
         turnierPunkteGUI.turnierPunkteGUISichtbarkeit(true);
     }
 
