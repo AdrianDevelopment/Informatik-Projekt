@@ -151,7 +151,7 @@ public class Spieler extends Mitspieler {
         gui.farbeFuerSpielabsichtButtonsActionListener(this);
         gui.setzeSichtbarkeitFarbeFuerSpielabsicht(true);
         gui.okButtonSichtbarkeit(false);
-        gui.hinweisAnNutzer("Wähle die Sau-Farbe im Pop-up.");
+        gui.hinweisAnNutzer("Auf welche Sau rufst du aus?");
     }
 
     /**
@@ -227,14 +227,12 @@ public class Spieler extends Mitspieler {
      * ja → Spielkarte entfernen und Runde geben
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
+        System.out.println("DEBUG: button handkarten geklickt");
         if (!model.gebeDranLegen() || index > model.gebeHandkarten().size()) { //Spieler soll keine Karte legen → nichts soll passieren
-            System.out.println("return");
             model.setzeDranLegen(true);
             return;
         }
         model.setzeDranLegen(false);
-        System.out.println("DEBUG: button handkarten geklickt");
-
         //Überprüfung, ob Karte erlaubt ist
         boolean erlaubt = false;
         //Überprüfung, ob man weglaufen darf
@@ -351,6 +349,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void stichGewonnen(int spieler) {
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------");
 
         model.setzeWiederholung(0);
         model.setzeVorhand(0);
