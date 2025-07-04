@@ -36,6 +36,9 @@ public class Speicherung {
     private int hoechstePunktzahlRunde;
     private boolean datenGeaendert;
     private ArrayList<TurnierStatistik> alteTurniere;
+    private int gewonneneSpieleSchneider;
+    private int[] gewonneneModiSchneider;
+
 
     public void KarteGespielt(){gespielteKarten++;}
     public void gesamtePunkteErhoehen(int punkte){gesamtePunkte += punkte;}
@@ -79,6 +82,11 @@ public class Speicherung {
         verloreneModiSchneider[art.gebeSpielArtID() - 1]++;
         datenGeaendert = true;
     }
+    public void SpielGewonnenSchneider(SpielArt art){
+        gewonneneSpieleSchneider++;
+        gewonneneModiSchneider[art.gebeSpielArtID() - 1]++;
+        datenGeaendert = true;
+    }
     public ArrayList<TurnierStatistik> gebeAlteTurnierstatistiken(){
         return alteTurniere;
     }
@@ -94,6 +102,7 @@ public class Speicherung {
     public int modusNiederlagenSchneiderGeben(SpielArt art){
         return verloreneModiSchneider[art.gebeSpielArtID() - 1];
     }
+    public int modusGewinneSchneiderGeben(SpielArt art){ return gewonneneModiSchneider[art.gebeSpielArtID() - 1];}
     public int gespielteKartenGeben(){
         return gespielteKarten;
     }
@@ -102,6 +111,9 @@ public class Speicherung {
     }
     public int gespielteSpieleGeben(){
         return gespielteSpiele;
+    }
+    public int gewonneneSpieleSchneiderGeben(){
+        return gewonneneSpieleSchneider;
     }
     public int verloreneSpieleSchneiderGeben(){
         return verloreneSpieleSchneider;
@@ -130,6 +142,7 @@ public class Speicherung {
         verloreneModi = new int [3];
         verloreneModiSchneider = new int [3];
         alteTurniere = new ArrayList<TurnierStatistik>();
+        gewonneneModiSchneider = new int[3];
     }
     private static void ArraySetzenAuf(int array[], int zahl){
         for (int i=0;i<array.length;++i){
@@ -153,6 +166,8 @@ public class Speicherung {
         ArraySetzenAuf(verloreneModi,0);
         ArraySetzenAuf(verloreneModiSchneider,0);
         alteTurniere = new ArrayList<TurnierStatistik>();
+        ArraySetzenAuf(gewonneneModiSchneider,0);
+        gewonneneSpieleSchneider = 0;
         datenGeaendert = true;
     }
     private int zahlLesenMindestVersion(FileInputStream fis,
@@ -234,7 +249,8 @@ public class Speicherung {
                     ));
                 }
             }
-            if (version==1)datenGeaendert = false;
+            zahlArrayLesenMindestVersion(fis,version,2,gewonneneModiSchneider,0);
+            if (version==2)datenGeaendert = false;
             else datenGeaendert = true; // Version muss aktualisiert werden
         } catch (IOException e) {
             zurücksetzen();
@@ -260,7 +276,7 @@ public class Speicherung {
             return;
         }
         try{
-            zahlSchreiben(fos, 1); // Dateiversion
+            zahlSchreiben(fos, 2); // Dateiversion
             zahlSchreiben(fos, gewonneneSpiele); // Spiele: Tunier -> Runden sollten auch gespeichert werden
             zahlSchreiben(fos, gespielteSpiele);
             zahlSchreiben(fos, verloreneSpiele);
