@@ -66,7 +66,7 @@ public class Turnier {
             turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
             turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
         }
-        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, wiederholungRunden, turnierModel.gebePunkteTurnierArray());
+        turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, wiederholungRunden + 1, turnierModel.gebePunkteTurnierArray());
         turnierPunkteGUI.turnierPunkteGUISichtbarkeit(true);
     }
 
