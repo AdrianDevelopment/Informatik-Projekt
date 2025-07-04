@@ -64,8 +64,6 @@ public class Spieler extends Mitspieler {
         model.setzeWiederholung(wiederholung);
         model.setzeVorhand(vorhand);
         model.setzeDranSpielabsicht(true);
-        gui.spielabsichtFragen();
-        gui.spielAbsichtButtonsSichtbarkeitSetzen(false, 1);
         gui.okButtonActionListenerLoeschen();
         gui.weiterButtonActionListener(this);
         gui.spielAbsichtButtonsSichtbarkeitSetzen(true, 0);
@@ -190,7 +188,7 @@ public class Spieler extends Mitspieler {
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler); //Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
-        model.setzeSpielArt(welcherSpieler, spielArt, farbe, spieler);
+        model.setzeSpielArt(spielArt, farbe, spieler);
         //Ausgabe in GUI
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
         gui.textAusgeben(text);
@@ -343,12 +341,10 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void stichGewonnen(int spieler) {
-
         model.setzeWiederholung(0);
         model.setzeVorhand(0);
         WelcherSpieler welcherSpieler = wieVielterSpieler(spieler);
         String text = ausgabeBeimAusrufen(null, welcherSpieler, null) + " den Stich gewonnen.";
-
         gui.textAusgeben(text);
         gui.mitteAufrauemen();
         model.stichBeendet();
@@ -357,9 +353,8 @@ public class Spieler extends Mitspieler {
         gui.okBuActLiSetzenStichSpielen(runde);
     }
 
-
     /**
-     * berechnet Gewinner und Punkte
+     * berechnet Gewinner, Verlierer und deren Punkte und übergibt diese an die GUI
      *
      * @param gewinner: übergibt die int Werte, wo die Gewinner sitzen
      * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
@@ -395,6 +390,9 @@ public class Spieler extends Mitspieler {
         gui.neueRundeBuActLiSetzenNeueRundeStarten(this, model.gebeSpielArt());
     }
 
+    /**
+     * startet eine neue Runde und macht SpielGUI unsichtbar
+     */
     public void neueRundeStarten(SpielArt spielArt) {
         gui.neueRundeButtonActionListenerLoeschen();
         gui.spielGUIUnsichtbar();

@@ -24,16 +24,14 @@ public class SpielerModel {
     private int wiederholung;
     private int vorhand;
 
-    public SpielerModel() {
-        handkarten = new ArrayList<Spielkarte>();
 
+    public SpielerModel() {
+        handkarten = new ArrayList<>();
         spielArt = null;
         spieler = new int[2];
         farbe = null;
-
-        stich = new ArrayList<Spielkarte>();
+        stich = new ArrayList<>();
         anzahlSpielerSchonGelegt = 0;
-
     }
 
     //handkarten
@@ -42,7 +40,7 @@ public class SpielerModel {
     }
 
     public void setzeHandkarten(ArrayList<Spielkarte> neueKarten) {
-        handkarten.clear(); //setzt Handkarten zurück (Bugfix, damit bei einer Runde nichts spielen nicht plötzlich handkarten 16 groß ist)
+        handkarten.clear(); //setzt Handkarten zurück (Bugfix, damit nach einer Runde nichts spielen nicht plötzlich handkarten 16 groß ist)
         for (int i = 0; i < neueKarten.size(); i++) {
             handkarten.add(i, neueKarten.get(i));
         }
@@ -57,11 +55,9 @@ public class SpielerModel {
         return welcherSpieler;
     }
 
+    /* Attribute für eine Runde nach dem Ausrufen*/
 
-    /**
-     * setzt alle wichtigen Attribute für eine Runde nach dem Ausrufen
-     */
-    public void setzeSpielArt(WelcherSpieler ausrufenderSpieler, SpielArt ausgerufeneSpielArt, Farbe ausgerufeneFarbe, int spieler) {
+    public void setzeSpielArt(SpielArt ausgerufeneSpielArt, Farbe ausgerufeneFarbe, int spieler) {
         spielArt = ausgerufeneSpielArt;
         this.spieler[0] = spieler;
         farbe = ausgerufeneFarbe;
@@ -75,21 +71,11 @@ public class SpielerModel {
         return farbe;
     }
 
-    /**
-     * Attribute für Lege-/Stichrunden
-     */
+    /*Attribute für Lege-/Stichrunden*/
 
     public void setzeGelegteKarte(Spielkarte karte) {
         stich.add(karte);
         anzahlSpielerSchonGelegt++;
-    }
-
-    public void setzeMitspieler(int spielerHatGelegt) {
-        spieler[1] = spielerHatGelegt; //Mitspieler (der Sau hat) wird gesetzt
-    }
-
-    public int gebeMitspieler() {
-        return spieler[1];
     }
 
     public Spielkarte gebeVorgegebeneKarte() {
@@ -159,5 +145,13 @@ public class SpielerModel {
 
     public int gebeVorhand() {
         return vorhand;
+    }
+
+    public int gebeMitspieler() {
+        return spieler[1];
+    }
+
+    public void setzeMitspieler(int spielerHatGelegt) {
+        spieler[1] = spielerHatGelegt; //Mitspieler (der Sau hat) wird gesetzt
     }
 }
