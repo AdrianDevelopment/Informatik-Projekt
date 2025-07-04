@@ -95,47 +95,47 @@ public class BotModel {
         sauFarbeVorhandGespielt = b;
     }
 
-    public void setzteMitspielerHatOber(int spielerNummer, boolean istVorhanden) {
-        mitspielerDaten[spielerNummer].setzteHatOber(istVorhanden);
+    public void setzeMitspielerHatOber(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzeHatOber(istVorhanden);
     }
 
-    public void setzteMitspielerHatUnter(int spielerNummer, boolean istVorhanden) {
-        mitspielerDaten[spielerNummer].setzteHatUnter(istVorhanden);
+    public void setzeMitspielerHatUnter(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzeHatUnter(istVorhanden);
     }
 
-    public void setzteMitspielerHatSchellen(int spielerNummer, boolean istVorhanden) {
-        mitspielerDaten[spielerNummer].setzteHatSchellen(istVorhanden);
+    public void setzeMitspielerHatSchellen(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzeHatSchellen(istVorhanden);
     }
 
-    public void setzteMitspielerHatHerz(int spielerNummer, boolean istVorhanden) {
-        mitspielerDaten[spielerNummer].setzteHatHerz(istVorhanden);
+    public void setzeMitspielerHatHerz(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzeHatHerz(istVorhanden);
     }
 
-    public void setzteMitspielerHatEichel(int spielerNummer, boolean istVorhanden) {
-        mitspielerDaten[spielerNummer].setzteHatEichel(istVorhanden);
+    public void setzeMitspielerHatEichel(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzeHatEichel(istVorhanden);
     }
 
-    public void setzteMitspielerHatGras(int spielerNummer, boolean istVorhanden) {
-        mitspielerDaten[spielerNummer].setzteHatGras(istVorhanden);
+    public void setzeMitspielerHatGras(int spielerNummer, boolean istVorhanden) {
+        mitspielerDaten[spielerNummer].setzeHatGras(istVorhanden);
     }
 
-    public void setzteTeamSpieler(int nSpielerNummer) {
+    public void setzeTeamSpieler(int nSpielerNummer) {
         teamSpieler = nSpielerNummer;
     }
 
-    public void setzteSau(Spielkarte nSau) {
+    public void setzeSau(Spielkarte nSau) {
         sau = nSau;
     }
 
-    public void setzteSpielArt(SpielArt nSpielArt) {
+    public void setzeSpielArt(SpielArt nSpielArt) {
         spielArt = nSpielArt;
     }
 
-    public void setzteSoloFarbe(Farbe nSoloFarbe) {
+    public void setzeSoloFarbe(Farbe nSoloFarbe) {
         soloFarbe = nSoloFarbe;
     }
 
-    public void setzteHand(ArrayList<Spielkarte> nHand) {
+    public void setzeHand(ArrayList<Spielkarte> nHand) {
         hand = nHand;
     }
 
