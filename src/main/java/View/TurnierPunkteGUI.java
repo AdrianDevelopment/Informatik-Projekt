@@ -10,16 +10,12 @@ import javax.swing.border.*;
 
 public class TurnierPunkteGUI {
     private final JFrame frame;
-    private JPanel gridPanel;
+    private final JPanel gridPanel;
 
     private final JLabel label1;
     private final JLabel label2;
     private final JLabel label3;
     private final JLabel label4;
-    private final JLabel label5;
-    private final JLabel label6;
-    private final JLabel label7;
-    private final JLabel label8;
 
     private final JLabel labelPunkte1;
     private final JLabel labelPunkte2;
@@ -33,11 +29,10 @@ public class TurnierPunkteGUI {
 
     public TurnierPunkteGUI() {
         frame = new JFrame();
-        gridPanel = new JPanel(new GridLayout(3, 4, 20, 20));
+        gridPanel = new JPanel(new GridLayout(2, 4, 20, 20));
 
         frame.setTitle("Turnier-Punkte Übersicht");
         frame.setLocationRelativeTo(null);
-        //frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
         frame.setSize(600, 300);
 
@@ -54,13 +49,8 @@ public class TurnierPunkteGUI {
         labelPunkte3 = new JLabel();
         labelPunkte4 = new JLabel();
 
-        label5 = new JLabel();
-        label6 = new JLabel();
-        label7 = new JLabel();
-        label8 = new JLabel();
-
-        neueRundeButton = new JButton();
-        turnierBeendenButton = new JButton();
+        neueRundeButton = erstelleSchoenenButton("Neue Runde", 100, 200, 100, 50);
+        turnierBeendenButton = erstelleSchoenenButton("Turnier Beenden", 250, 200, 100, 50);
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         gridPanel.add(label1);
@@ -72,11 +62,6 @@ public class TurnierPunkteGUI {
         gridPanel.add(labelPunkte2);
         gridPanel.add(labelPunkte3);
         gridPanel.add(labelPunkte4);
-
-        gridPanel.add(label5);
-        gridPanel.add(label6);
-        gridPanel.add(label7);
-        gridPanel.add(label8);
 
         buttonPanel.add(neueRundeButton);
         buttonPanel.add(turnierBeendenButton);
@@ -116,16 +101,10 @@ public class TurnierPunkteGUI {
         labelPunkte4.setHorizontalAlignment(SwingConstants.CENTER);
         labelPunkte4.setVerticalAlignment(SwingConstants.CENTER);
 
-
-
         neueRundeButton.setText("neue Runde");
         neueRundeButton.addActionListener(e -> turnier.rundeStarten());
         turnierBeendenButton.setText("Beenden");
         turnierBeendenButton.addActionListener(e -> turnier.turnierBeenden());
-
-
-
-
 
         buttonPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
 
@@ -142,4 +121,35 @@ public class TurnierPunkteGUI {
     public void turnierPunkteGUISichtbarkeit(boolean sichtbarkeit) {
         frame.setVisible(sichtbarkeit);
     }
+
+    // Kopie SpielGUI (Thiemo)
+    public JButton erstelleSchoenenButton(String text, int x, int y, int width, int height) {
+        JButton button = new JButton(text);
+        button.setBounds(x, y, width, height);
+
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(true);
+        button.setOpaque(true);
+        button.setBackground(new Color(25, 25, 112));
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 16));
+
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(0, 0, 139), 2, true),
+                BorderFactory.createEmptyBorder(8, 20, 8, 20)
+        ));
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(0, 0, 205));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(25, 25, 112));
+            }
+        });
+
+        return button;
+    }
+    // Kopie Ende
 }
