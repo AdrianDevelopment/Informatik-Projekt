@@ -22,7 +22,7 @@ public class StatistikGUI {
         speicherung = Speicherung.speicherungErstellen();
 
         JFrame Statistik = new JFrame("Statistiken");
-        Statistik.setSize(500, 500);
+        Statistik.setSize(500, 625);
         Statistik.setVisible(true);
         //Statistik.setDefaultCloseOperation(Statistik.EXIT_ON_CLOSE);
         Statistik.setResizable(false);
@@ -70,7 +70,7 @@ public class StatistikGUI {
         }
 
         JButton knopf = new JButton("Turnierhistorie anzeigen");
-        knopf.setBounds(75,50 + (17*29), 350, 29);
+        knopf.setBounds(75,50 + (17*29), 350, 50);
         knopf.setFont(new Font("My Boli", Font.PLAIN, 20));
         knopf.setHorizontalAlignment(JLabel.CENTER);
         knopf.addActionListener(e -> TurnierHistorieGUI.TurnierStatistikAnzeigen());
