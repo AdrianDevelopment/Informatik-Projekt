@@ -124,7 +124,6 @@ public class Spieler extends Mitspieler {
         String text = ausgabeBeimAusrufen(spielArt, welcherspieler, null);
         if (spielArt == SpielArt.KEINSPIEL) {
             text = "Runde abgebrochen wegen ungültiger Spielart.";
-            System.out.println("DEBUG: " + text);
             gui.okButtonActionListenerLoeschen();
             gui.okButtonSichtbarkeit(false);
             gui.neueRundeButtonSichtbarkeit(true);
@@ -176,7 +175,6 @@ public class Spieler extends Mitspieler {
             model.setzeDranFarbeSpielabsicht(true);
             String text = "Auf diese Sau kann nicht ausgerufen werden. Wähle eine andere.";
             gui.hinweisAnNutzer(text);
-            System.out.println("DEBUG: " + text);
         }
     }
 
@@ -262,7 +260,6 @@ public class Spieler extends Mitspieler {
             gui.hinweisAnNutzer("");
             runde.karteAbfragenAufgerufen(spielkarte);
         } else {
-            System.out.println("DEBUG: Karte nicht erlaubt");
             gui.hinweisAnNutzer("Diese Karte darf nicht gelegt werden. Lege eine andere.");
             model.setzeDranLegen(true);
         }
