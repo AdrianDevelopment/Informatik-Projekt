@@ -262,15 +262,15 @@ public class SpielGUI {
 
     //Erstellt 3 Buttons für jeweils jede Sau, die man zur Auswahl hat
     public void farbeFuerSpielabsichtAnzeigen() {
-        schellenSauButton = erstelleSchoenenButton("Sau",1000, 400, 100, 50);
+        schellenSauButton = erstelleSchoenenButton("Schellen",1000, 450, 100, 50);
         mainFrame.add(schellenSauButton);
         schellenSauButton.setVisible(true);
 
-        grasSauButton = erstelleSchoenenButton("gras",1000, 470, 100, 50);
+        grasSauButton = erstelleSchoenenButton("Gras",1000, 500, 100, 50);
         mainFrame.add(grasSauButton);
         grasSauButton.setVisible(true);
 
-        eichelSauButton = erstelleSchoenenButton("eichel",1000, 550, 100, 50);
+        eichelSauButton = erstelleSchoenenButton("Eichel",1000, 550, 100, 50);
         mainFrame.add(eichelSauButton);
         eichelSauButton.setVisible(true);
     }
