@@ -102,7 +102,7 @@ public class Runde {
                                                   rundeModel.gebePunkte(rundeModel.gebeSieger(1)));
                 if (rundeModel.gebePunkte(rundeModel.gebeSieger(0)) +
                     rundeModel.gebePunkte(rundeModel.gebeSieger(1)) > 90) {
-                    // Schneider
+                    speicherung.SpielGewonnenSchneider(SpielArt.SAUSPIEL);
                 }
                 // Gewonnene Runden bzw. verlorene werden immer gespeichert. Zusätzlich werden Niederlagen oder Siege
                 // mit Schneider gespeichert. Dabei schließt die Schneiderspeicherung die Runden speicherung nicht aus.
