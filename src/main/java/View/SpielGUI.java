@@ -66,7 +66,7 @@ public class SpielGUI {
         okButton = erstelleSchoenenButton("Ok", 1000, 400, 100, 50);
         mainFrame.add(okButton);
 
-        neueRundeButton = erstelleSchoenenButton("Tunier-Punkte Übersicht", 1000, 400, 200, 50);
+        neueRundeButton = erstelleSchoenenButton("Tunier-Punkte Übersicht", 900, 400, 250, 50);
         mainFrame.add(neueRundeButton);
 
         //Array wird schon vor den anderen benötigt
@@ -322,7 +322,6 @@ public class SpielGUI {
 
 
     public void buttonKartenZuornden(Spieler spieler, ArrayList<Spielkarte> handkarten) {
-        System.out.println("DEBUG: Handkarten an mit Funktion");
         ArrayList<JButton> handButtons = spieler1ButtonsErstellen();
         //Zuweisung von den passenden Bildern zu den Buttons
         for (int i = 0; i < handkarten.size(); i++) {
@@ -335,7 +334,6 @@ public class SpielGUI {
 
 
     public void buttonKartenZuorndenKeineReaktion(ArrayList<Spielkarte> handkarten) {
-        System.out.println("DEBUG: Handkarten an ohne Funktion");
         ArrayList<JButton> handButtons = spieler1ButtonsErstellen(); //spieler1
         //Zuweisung von den passenden Bildern zu den Buttons
         for (int i = 0; i < handkarten.size(); i++) {
