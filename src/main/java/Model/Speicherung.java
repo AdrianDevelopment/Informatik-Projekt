@@ -250,6 +250,7 @@ public class Speicherung {
                 }
             }
             zahlArrayLesenMindestVersion(fis,version,2,gewonneneModiSchneider,0);
+            gewonneneSpieleSchneider = zahlLesenMindestVersion(fis,version,2,0);
             if (version==2)datenGeaendert = false;
             else datenGeaendert = true; // Version muss aktualisiert werden
         } catch (IOException e) {
