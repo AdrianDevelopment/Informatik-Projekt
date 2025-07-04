@@ -90,17 +90,17 @@ public class Bot extends Mitspieler {
 
         switch (spielArt) {
             case KEINSPIEL:
-                System.out.println("DEBUG: Spielart: "+ spielArt+" wird nicht behandelt");
+                System.out.println("ERROR: Spielart: "+ spielArt+" wird nicht behandelt");
                 break;
             case SAUSPIEL:
                 return model.gibSau().gebeFarbe();
             case WENZ:
-                System.out.println("DEBUG: Spielart: "+ spielArt+" wird nicht behandelt");
+                System.out.println("ERROR: Spielart: "+ spielArt+" wird nicht behandelt");
                 break;
             case SOLO:
                 return model.gibsoloFarbe();
             default:
-                System.out.println("DEBUG: Spielart: "+ spielArt+" wird nicht behandelt");
+                System.out.println("ERROR: Spielart: "+ spielArt+" wird nicht behandelt");
                 break;
         }
         return null;
@@ -129,19 +129,19 @@ public class Bot extends Mitspieler {
         //Wahl der Karte nach Spielart unterscheiden.
         switch (model.gibSpielArt()) {
             case KEINSPIEL:
-                System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
+                System.out.println("ERROR: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
             case SAUSPIEL:
                 gewaelteKarte = sauSpielKarteWaehlen(moeglicheKarten);
                 break;
             case WENZ:
-                System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
+                System.out.println("ERROR: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
             case SOLO:
-                System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
+                System.out.println("ERROR: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
             default:
-                System.out.println("DEBUG: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
+                System.out.println("ERROR: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
                 break;
         }
         //Gewählte Karte aus Hand entfernen und zurückgeben.
@@ -246,8 +246,6 @@ public class Bot extends Mitspieler {
                 if(spielKartenStaerkeSauSpiel(karte) >kartenStaerkeVonStichGewinner){
                     System.out.println("DEBUG: Der Bot versucht den Stich zu gewinnen!");
                         return  karte;
-
-
                 }
             }
         }
@@ -483,7 +481,7 @@ public class Bot extends Mitspieler {
                         anzahlEichel++;
                         break;
                     default:
-                        System.out.println("Error: Unbekannte Farbe");
+                        System.out.println("ERROR: Unbekannte Farbe");
 
                 }
             }
