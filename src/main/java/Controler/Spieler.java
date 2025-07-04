@@ -90,10 +90,8 @@ public class Spieler extends Mitspieler {
         if (!model.gebeDranSpielabsicht()) { //Spieler soll keine Karte legen → nichts soll passieren
             return;
         }
-        System.out.println("DEBUG: Button Spielabsicht mit " + spielabsicht.gebeSpielArtID() + " gedrückt");
         model.setzeDranSpielabsicht(false);
         gui.setzeSpielabsichtUnsichtbar(); //setzt die spielabsichtButtons auf nicht visible
-        System.out.println("DEBUG: Spielabsicht auf unsichtbar gesetzt");
         gui.hinweisAnNutzer(""); //der Hinweistext ist nun nicht mehr sichtbar
         runde.spielabsichtFragenAufgerufen(model.gebeWiederholung(), model.gebeVorhand(), spielabsicht);
     }
@@ -128,7 +126,7 @@ public class Spieler extends Mitspieler {
         String text = ausgabeBeimAusrufen(spielArt, welcherspieler, null);
         if (spielArt == SpielArt.KEINSPIEL) {
             text = "Runde abgebrochen wegen ungültiger Spielart.";
-            System.out.println(text);
+            System.out.println("DEBUG: " + text);
             gui.okButtonActionListenerLoeschen();
             gui.okButtonSichtbarkeit(false);
             gui.neueRundeButtonSichtbarkeit(true);
@@ -150,9 +148,10 @@ public class Spieler extends Mitspieler {
         gui.farbeFuerSpielabsichtAnzeigen();
         gui.farbeFuerSpielabsichtButtonsActionListener(this);
         gui.okButtonSichtbarkeit(false);
-        gui.hinweisAnNutzer("Wähle die Sau-Farbe im Pop-up.");
+        gui.hinweisAnNutzer("Auf welche Sau rufst du aus?");
         gui.aktualisieren();
     }
+
     /**
      * wird von farbauswahlButtons aufgerufen
      * - Überprüfung, ob gewählte Farbe möglich → Aufruf der Runde oder erneute Aufforderung
@@ -179,7 +178,7 @@ public class Spieler extends Mitspieler {
             model.setzeDranFarbeSpielabsicht(true);
             String text = "Auf diese Sau kann nicht ausgerufen werden. Wähle eine andere.";
             gui.hinweisAnNutzer(text);
-            System.out.println(text);
+            System.out.println("DEBUG: " + text);
         }
     }
 
@@ -227,13 +226,10 @@ public class Spieler extends Mitspieler {
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
         if (!model.gebeDranLegen() || index > model.gebeHandkarten().size()) { //Spieler soll keine Karte legen → nichts soll passieren
-            System.out.println("return");
             model.setzeDranLegen(true);
             return;
         }
         model.setzeDranLegen(false);
-        System.out.println("DEBUG: button handkarten geklickt");
-
         //Überprüfung, ob Karte erlaubt ist
         boolean erlaubt = false;
         //Überprüfung, ob man weglaufen darf
@@ -260,12 +256,10 @@ public class Spieler extends Mitspieler {
             }
         }
         if (erlaubt) {
-            System.out.println("DEBUG: Karte erlaubt");
             gui.buttonKartenZuorndenKeineReaktion(model.gebeHandkarten());
             gui.handkartenSichtbarkeitSetzen(false, index);
             gui.entferneIndexVonHandButtons(index);
             model.gebeHandkarten().remove(spielkarte);
-            System.out.println("DEBUG: " + model.gebeHandkarten().size());
             gui.okButtonSichtbarkeit(true);
             gui.hinweisAnNutzer("");
             runde.karteAbfragenAufgerufen(spielkarte);
@@ -323,7 +317,6 @@ public class Spieler extends Mitspieler {
     /**
      * gibt Karte, die gelegt wurde mit dem Spieler der GUI weiter
      */
-    //Ich habe die Buttons in Labels geändert und das ganze in der GUI angepasst
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
         WelcherSpieler welcherSpieler = wieVielterSpieler(spielerHatGelegt);
@@ -368,7 +361,7 @@ public class Spieler extends Mitspieler {
     /**
      * berechnet Gewinner und Punkte
      *
-     * @param gewinner:          übergibt die int Werte, wo die Gewinner sitzen
+     * @param gewinner: übergibt die int Werte, wo die Gewinner sitzen
      * @param uebergebenePunkte: übergibt die int Werte, nach Sitzreihenfolge (von 0 bis 3)
      */
     @Override
