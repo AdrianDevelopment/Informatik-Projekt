@@ -16,11 +16,13 @@ public class Menue {
     public void menueGUIIntialisieren() {
         menueGUI.gibStatistikButton().addActionListener(e -> new StatistikGUI());
         menueGUI.gibPlayButton().addActionListener(e -> menueGUIRueckgabe(1));
+        menueGUI.gibBeendenButton().addActionListener(e -> menueGUIRueckgabe(0));
     }
 
     public void menueGUIRueckgabe(int menueAuswahl) {
         switch (menueAuswahl) {
             case 0:
+                System.exit(0);
                 break;
             case 1:
                 new TurnierGUI(this);

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class SpielGUI {
 
     //möglicher Hintergrund für den MainFrame -Abgelehnt von Tom wegen zu dominante Farben
-    final private ImageIcon imageIcon = new ImageIcon("src\\main\\resources\\hintergrundSpielGUI.png");
+    final private ImageIcon imageIcon = new ImageIcon(getClass().getResource("/HintergrundSpielGUI2.png"));
     final private ImageIcon kartenRuekseite;
 
     //Variablen für Knöpfe(Buttons) und Texte(Labels) werden erstellt
@@ -107,9 +107,9 @@ public class SpielGUI {
         spieler4KartenLabels = new ArrayList<JLabel>();
 
         //Ein Bild wird erstellt(ImageIcon) und einer Variable zugewiesen
-        ImageIcon playerIcon = new ImageIcon("src\\main\\resources\\spieler.png");
-        ImageIcon botIcon = new ImageIcon("src\\main\\resources\\bot.png");
-        kartenRuekseite = new ImageIcon("src\\main\\resources\\rueckseiteKarte.png");
+        ImageIcon playerIcon = new ImageIcon(getClass().getResource("/spieler.png"));
+        ImageIcon botIcon = new ImageIcon(getClass().getResource("/bot.png"));
+        kartenRuekseite = new ImageIcon(getClass().getResource("/rueckseiteKarte.png"));
 
         //Bildchen für Spieler1 wird erstellt
         JLabel Spieler1 = new JLabel();
@@ -345,7 +345,7 @@ public class SpielGUI {
 
     /*gibt zu einer Karte das ImageIcon mit passendem Bild (Co-Programmierer: Tim)*/
     private ImageIcon gibBild(Spielkarte karte) {
-        String dateiname = "src\\main\\resources\\Karten\\";
+        String dateiname = "/Karten/";
         switch (karte.gebeFarbe()) {
             case SCHELLEN:
                 dateiname += "Schelle";
@@ -388,7 +388,7 @@ public class SpielGUI {
                 break;
         }
         dateiname += ".png";
-        return new ImageIcon(dateiname);
+        return new ImageIcon(getClass().getResource(dateiname));
     }
 
     //setzt eine eigene Karte unsichtbar
