@@ -5,6 +5,7 @@ package View;
 import Controler.Turnier;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -118,8 +119,17 @@ public class TurnierPunkteGUI {
         }
     }
 
-    public void turnierPunkteGUISichtbarkeit(boolean sichtbarkeit) {
-        frame.setVisible(sichtbarkeit);
+    public void turnierPunkteGUIEntferneActionListener() {
+        for (ActionListener actionListener : turnierBeendenButton.getActionListeners()) {
+            turnierBeendenButton.removeActionListener(actionListener);
+        }
+        for (ActionListener actionListener : neueRundeButton.getActionListeners()) {
+            neueRundeButton.removeActionListener(actionListener);
+        }
+    }
+
+    public void turnierPunkteGUIBeenden() {
+        frame.dispose();
     }
 
     // Kopie SpielGUI (Thiemo)

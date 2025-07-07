@@ -46,6 +46,13 @@ public class TurnierModel {
         return vergangeneRunden;
     }
 
+    public boolean gebeTurnierNurKeinspiel() {
+        for (int punkte : punkteTurnier) {
+            if (punkte != 0) return false;
+        }
+        return true;
+    }
+
 
     // Setzer
     public void erhoehePunkteTurnierUmEins(int index) {

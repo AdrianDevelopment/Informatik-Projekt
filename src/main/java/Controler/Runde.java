@@ -81,6 +81,10 @@ public class Runde {
                 mitspieler.rundeGewonnen(rundeModel.gebeSiegerArray(), rundeModel.gebePunkteArray());
             }
 
+            if (rundeModel.gebeHoechsteSpielart() == SpielArt.KEINSPIEL) {
+                return;
+            }
+
             if (rundeModel.gebeSieger(0) == rundeModel.gebePositionSpieler() ||
                 rundeModel.gebeSieger(1) == rundeModel.gebePositionSpieler()) {
                 // Speicherung der zusammengerechneten Punkte der Sieger

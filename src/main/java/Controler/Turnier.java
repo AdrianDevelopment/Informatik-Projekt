@@ -2,26 +2,20 @@ package Controler;
 
 // Programmierer: Adrian
 
-import Model.Farbe;
-import Model.Speicherung;
-import Model.SpielArt;
-import Model.Spielkarte;
-import Model.TurnierModel;
-import Model.WelcherSpieler;
-import Model.Werte;
+import Model.*;
 import View.SpielGUI;
 import View.TurnierPunkteGUI;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Collections;
+import java.util.Random;
 
 public class Turnier {
     private final Speicherung speicherung;
     private final TurnierModel turnierModel;
     private final ArrayList<Mitspieler> spieler;
     private final Spieler echterSpieler;
-    private final TurnierPunkteGUI turnierPunkteGUI;
+    private TurnierPunkteGUI turnierPunkteGUI;
 
     public Turnier(int anzahlRunden) {
         Random random = new Random();
@@ -29,14 +23,12 @@ public class Turnier {
         speicherung = Speicherung.speicherungErstellen();
         turnierModel = new TurnierModel(anzahlRunden, random.nextInt(4));
         spieler = new ArrayList<>(4);
-        turnierPunkteGUI = new TurnierPunkteGUI();
 
         // Spieler-ArrayList vorbereiten
         for (int i = 0; i < 4; i++) {
             if (i != turnierModel.gebePositionSpieler()) {
                 spieler.add(new Bot());
-            }
-            else {
+            } else {
                 spieler.add(echterSpieler);
             }
         }
@@ -65,27 +57,32 @@ public class Turnier {
             turnierModel.erhoehePunkteTurnierUmEins(sieger[0]);
             turnierModel.erhoehePunkteTurnierUmEins(sieger[1]);
         }
+        turnierPunkteGUI = new TurnierPunkteGUI();
         turnierPunkteGUI.turnierPunkteGUIAusfuehren(this, turnierModel.gebeVergangeneRunden(), turnierModel.gebePunkteTurnierArray());
-        turnierPunkteGUI.turnierPunkteGUISichtbarkeit(true);
     }
 
     public void rundeStarten() {
-        turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
+        if (turnierPunkteGUI != null) {
+            turnierPunkteGUI.turnierPunkteGUIEntferneActionListener();
+            turnierPunkteGUI.turnierPunkteGUIBeenden();
+        }
         if (turnierModel.gebeVergangeneRunden() < turnierModel.gebeAnzahlRunden()) {
             new Runde(spieler, spielKartenVorbereiten(), turnierModel.gebePositionSpieler(), speicherung, this, turnierModel.gebeVergangeneRunden(), echterSpieler);
         }
     }
 
     public void turnierBeenden() {
-        speicherung.TurnierZuEnde(turnierModel.gebePunkteTurnier(turnierModel.gebePositionSpieler()), turnierModel.istTurnierSiegerEchterSpieler());
-        if (turnierModel.istTurnierSiegerEchterSpieler()) {
-            speicherung.TurnierGewonnen();
+        turnierPunkteGUI.turnierPunkteGUIEntferneActionListener();
+        turnierPunkteGUI.turnierPunkteGUIBeenden();
+        if (!turnierModel.gebeTurnierNurKeinspiel()) {
+            speicherung.TurnierZuEnde(turnierModel.gebePunkteTurnier(turnierModel.gebePositionSpieler()), turnierModel.istTurnierSiegerEchterSpieler());
+            if (turnierModel.istTurnierSiegerEchterSpieler()) {
+                speicherung.TurnierGewonnen();
+            } else {
+                speicherung.TurnierVerloren();
+            }
+            speicherung.DatenSpeichern();
         }
-        else {
-            speicherung.TurnierVerloren();
-        }
-        speicherung.DatenSpeichern();
-        turnierPunkteGUI.turnierPunkteGUISichtbarkeit(false);
     }
 
     // Kopie aus Spieler (Tom)
