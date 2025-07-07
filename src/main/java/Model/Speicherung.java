@@ -8,14 +8,14 @@ import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Speicherung {
     /**
      *
-     * @return
      */
-    // Speichert ein globales Speicherung-Objekt zwischen ==> Singleton
-    // Mehrfaches erstellen führt zu Problemen beim Zugriff auf die Datei
+    // Speichert ein globales Speicherung-Objekt zwischen =⇒ Singleton.
+    // Mehrfach erstellen führt zu Problemen beim Zugriff auf die Datei
     private static Speicherung speicherung = null;
     public static Speicherung speicherungErstellen(){
         if (speicherung==null)speicherung = new Speicherung();
@@ -42,7 +42,7 @@ public class Speicherung {
     private int gewonneneSpieleSchneider;
     private int[] gewonneneModiSchneider;
 
-    // Setter setzen datenGeaendert auf true um DatenSpeichern zu informieren
+    // Setter setzen datenGeaendert auf true, um DatenSpeicher zu informieren
     public void KarteGespielt(){
         gespielteKarten++;
         datenGeaendert = true;
@@ -63,6 +63,10 @@ public class Speicherung {
     }
     
     public void TurnierZuEnde(int punkte, boolean gewonnen){
+        // Wenn mehr als 100 Turniere gespeichert sind, wird das Älteste entfernt
+        if (alteTurniere.size() >= 100){
+            alteTurniere.removeFirst();
+        }
         alteTurniere.add(new TurnierStatistik(punkte,gewonnen));
         datenGeaendert = true;
     }
@@ -147,22 +151,20 @@ public class Speicherung {
         return  hoechstePunktzahlRunde;
     }
     private void zahlenArraysInitialisieren(){
-        // Initialisiert Arrays sodass keine NullPointerException beim Zugriff entsteht
+        // Initialisiert Arrays, sodass keine NullPointerException beim Zugriff entsteht
         gespielteModi = new int[3];
         gewonneneModi = new int[3];
         verloreneModi = new int [3];
         verloreneModiSchneider = new int [3];
-        alteTurniere = new ArrayList<TurnierStatistik>();
+        alteTurniere = new ArrayList<>();
         gewonneneModiSchneider = new int[3];
     }
-    private static void ArraySetzenAuf(int array[], int zahl){
-        // Füllt ein Array array mit dem Wert zahl
-        for (int i=0;i<array.length;++i){
-            array[i]=zahl;
-        }
+    private static void ArraySetzenAuf(int[] array){
+        // Füllt ein Array mit dem Wert Zahl
+        Arrays.fill(array, 0);
     }
-    private void zurücksetzen(){
-        // Setzt alle Werte auf Standardwerte wenn das Laden fehlschlägt oder die Datei nicht vorhanden ist
+    private void zuruecksetzen(){
+        // Setzt alle Werte auf Standardwerte, wenn das Laden fehlschlägt oder die Datei nicht vorhanden ist
         gewonneneSpiele = 0;
         gespielteSpiele = 0;
         verloreneSpiele = 0;
@@ -174,30 +176,26 @@ public class Speicherung {
         gespielteTurniere = 0;
         hoechstePunktzahlRunde = 0;
         zahlenArraysInitialisieren();
-        ArraySetzenAuf(gespielteModi,0);
-        ArraySetzenAuf(gewonneneModi,0);
-        ArraySetzenAuf(verloreneModi,0);
-        ArraySetzenAuf(verloreneModiSchneider,0);
-        alteTurniere = new ArrayList<TurnierStatistik>();
-        ArraySetzenAuf(gewonneneModiSchneider,0);
+        ArraySetzenAuf(gespielteModi);
+        ArraySetzenAuf(gewonneneModi);
+        ArraySetzenAuf(verloreneModi);
+        ArraySetzenAuf(verloreneModiSchneider);
+        alteTurniere = new ArrayList<>();
+        ArraySetzenAuf(gewonneneModiSchneider);
         gewonneneSpieleSchneider = 0;
         datenGeaendert = true;
     }
     private int zahlLesenMindestVersion(FileInputStream fis,
-                                       int versionAktuell,
-                                       int versionMindestens,
-                                       int standard) throws IOException{
-        // Liest eine Zahl wenn die Dateiversion mindestens versionMindestens ist oder gibt standard zurück
-        return (versionAktuell>=versionMindestens?zahlLesen(fis):standard);
+                                       int versionAktuell) throws IOException{
+        // Liest eine Zahl, wenn die Dateiversion mindestens versionMindestens ist, oder gibt Standard zurück
+        return (versionAktuell>= 2 ?zahlLesen(fis): 0);
     }
     private void zahlArrayLesenMindestVersion(FileInputStream fis,
                                               int versionAktuell,
-                                              int versionMindestens,
-                                              int[] array,
-                                              int standard) throws IOException{
-        // Liest ein Array wenn die Dateiversion versionMindestens ist oder setzt alle Einträge auf standard
-        if (versionAktuell>=versionMindestens)zahlArrayLesen(fis,array);
-        else ArraySetzenAuf(array,standard);
+                                              int[] array) throws IOException{
+        // Liest ein Array, wenn die Dateiversion versionMindestens ist, oder setzt alle Einträge auf Standard
+        if (versionAktuell>= 2)zahlArrayLesen(fis,array);
+        else ArraySetzenAuf(array);
     }
     private int zahlLesen(FileInputStream fis) throws IOException {
         // liest einen int als 4 bytes
@@ -207,42 +205,42 @@ public class Speicherung {
             int b4 = fis.read();
             return (b4 << 24) | (b3 << 16) | (b2 << 8) | b1;
     }
-    private void zahlArrayLesen(FileInputStream fis, int array[]) 
+    private void zahlArrayLesen(FileInputStream fis, int[] array)
         throws IOException{
-        // liest einen vorher erstellten array von zahlen mit array.length
+        // liest einen vorher erstellten Array von Zahlen mit array.length
         for (int i=0;i<array.length;++i){
             array[i] = zahlLesen(fis);
         }
     }
     private void zahlSchreiben(FileOutputStream fos, int zahl) throws IOException{
-        // schreibt eine 4-byte Zahl die von zahlLesen gelesen wird
+        // schreibt eine 4-byte Zahl, die von zahlLesen gelesen wird
         fos.write(zahl & 0xFF);
         fos.write((zahl >> 8) & 0xFF);
         fos.write((zahl >> 16) & 0xFF);
         fos.write((zahl >> 24) & 0xFF);
     }
-    private void zahlArraySchreiben(FileOutputStream fos, int zahlen[])
+    private void zahlArraySchreiben(FileOutputStream fos, int[] zahlen)
         throws IOException{
-        // schreibt ein Zahlenarray das von zahlArrayLesen gelesen wird
-        // zahlen muss beim schreiben dieselbe Länge haben wie array beim lesen
-        for (int i=0;i<zahlen.length;++i){
-            zahlSchreiben(fos, zahlen[i]);
+        // schreibt ein Zahlenarray, das von zahlArrayLesen gelesen wird,
+        // Zahlen müssen beim Schreiben dieselbe Länge haben wie Array beim Lesen
+        for (int j : zahlen) {
+            zahlSchreiben(fos, j);
         }
     }
     private Speicherung() {
-        // privater Konstruktor, der die Daten beim erstellen einliest oder auf Standardwerte setzt.
+        // ein privater Konstruktor, der die Daten beim Erstellen einliest oder auf Standardwerte setzt.
         // wird von SpeicherungErstellen aufgerufen
         FileInputStream fis;
         try {
             fis = new FileInputStream("statistiken.dat");
         } catch (FileNotFoundException e) {
-            zurücksetzen();
+            zuruecksetzen();
             return;
         }
         try {
-            // Dateiversionen ermöglichen das laden von Spielständen aus vorherigen Spielversionen
-            // Dateien sind sowohl aufwärts- als auch abwärtskompatibel :
-            // Felder neuerer Versionen stehen am Dateiende und werden ignoriert
+            // Dateiversionen ermöglichen das Laden von Spielständen aus vorherigen Spielversionen.
+            // Dateien sind sowohl aufwärts- als auch abwärtskompatibel:
+            // Felder neuerer Versionen stehen am Dateiende und werden ignoriert.
             // Durch alte Versionen fehlende Felder werden mit Standardwerten initialisiert
             int version = zahlLesen(fis);
             gewonneneSpiele = zahlLesen(fis);
@@ -276,27 +274,27 @@ public class Speicherung {
                     ));
                 }
             }
-            zahlArrayLesenMindestVersion(fis,version,2,gewonneneModiSchneider,0);
-            gewonneneSpieleSchneider = zahlLesenMindestVersion(fis,version,2,0);
-            if (version==2)datenGeaendert = false;
-            else datenGeaendert = true; // Version muss aktualisiert werden
+            zahlArrayLesenMindestVersion(fis,version, gewonneneModiSchneider);
+            gewonneneSpieleSchneider = zahlLesenMindestVersion(fis,version);
+            // Version muss aktualisiert werden
+            datenGeaendert = version != 2;
         } catch (IOException e) {
-            zurücksetzen();
+            zuruecksetzen();
             try {
                 fis.close();
-            } catch (IOException e2) {
+            } catch (IOException _) {
 
             }
             return;
         }
         try {
             fis.close();
-        } catch (IOException e) {
+        } catch (IOException _) {
 
         }
     }
     public void DatenSpeichern(){
-        if (!datenGeaendert)return; // kein Speichervorgang nötig wenn es keine Änderungen gibt
+        if (!datenGeaendert)return; // kein Speichervorgang nötig, wenn es keine Änderungen gibt
         FileOutputStream fos;
         try{
             fos = new FileOutputStream("statistiken.dat");
@@ -305,7 +303,7 @@ public class Speicherung {
         }
         try{
             zahlSchreiben(fos, 2); // Dateiversion
-            // Siehe Kommentar in Konstruktor
+            // Siehe Kommentar in Konstruktoren
             zahlSchreiben(fos, gewonneneSpiele);
             zahlSchreiben(fos, gespielteSpiele);
             zahlSchreiben(fos, verloreneSpiele);
@@ -321,17 +319,16 @@ public class Speicherung {
             zahlArraySchreiben(fos, verloreneModi);
             zahlArraySchreiben(fos, verloreneModiSchneider);
             zahlSchreiben(fos, alteTurniere.size());
-            for (int i=0;i<alteTurniere.size();++i){
-                // Turniere speichern : punkte, gewonnen, jahr, monat, tag, stunde, minute
-                TurnierStatistik aktuellesTurnier = alteTurniere.get(i);
-                zahlSchreiben(fos,aktuellesTurnier.punkteGeben());
-                if (aktuellesTurnier.wurdeGewonnen()){
+            for (TurnierStatistik aktuellesTurnier : alteTurniere) {
+                // Turniere speichern: Punkte, gewonnen, Jahr, Monat, Tag, Stunde, Minute
+                zahlSchreiben(fos, aktuellesTurnier.punkteGeben());
+                if (aktuellesTurnier.wurdeGewonnen()) {
                     fos.write(1);
-                }else{
+                } else {
                     fos.write(0);
                 }
                 LocalDate datum = aktuellesTurnier.DatumGeben();
-                zahlSchreiben(fos,datum.getYear());
+                zahlSchreiben(fos, datum.getYear());
                 fos.write(datum.getMonthValue());
                 fos.write(datum.getDayOfMonth());
                 LocalTime zeit = aktuellesTurnier.ZeitGeben();
@@ -341,19 +338,14 @@ public class Speicherung {
             zahlArraySchreiben(fos,gewonneneModiSchneider);
             zahlSchreiben(fos,gewonneneSpieleSchneider);
             datenGeaendert = false;
-        }catch (IOException e){
+        }catch (IOException _){
             
         }
         try{
             fos.close();
-        }catch(IOException e){
+        }catch(IOException _){
             
         }
     }
-    @Override
-    protected void finalize() throws Throwable{
-        // wird beim Zerstören aufgerufen
-        DatenSpeichern();
-        super.finalize();
-    }
+    
 }

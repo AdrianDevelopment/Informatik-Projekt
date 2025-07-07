@@ -6,21 +6,21 @@ import java.util.ArrayList;
 public class BotModel {
     private ArrayList<Spielkarte> hand; //Karten auf der Hand
     private Spielkarte sau; //Die ausgerufene Sau
-    private SpielArt spielArt; //Die Spielart der moment Runde
+    private SpielArt spielArt; //Die Spielart der Moment-Runde
     private Farbe soloFarbe; //Die Farbe des Solospieles;
-    private ArrayList<Spielkarte> gelegteKarten; //Alle Karten die bisher gelegt wurden.
+    private final ArrayList<Spielkarte> gelegteKarten; //Alle Karten, die bisher gelegt wurden.
     private int spielerIndex; //Die einzigartige Spielernummer von diesem Bot.
-    private ArrayList<Integer> spielzugReihenfolge; //Die Reihenfolge der Spieler, anhand ihrer Spielernummer, die in dem Stich Karten gelegt haben.
-    private BotMitspielerDatenModel[] mitspielerDaten; //Abspeicherung von Informationen über die Hand der anderen Spieler.
-    private int spielerHatSauAusgerufen; //Spielernummer des Spielers der die Sau ausgerufen hat.
+    private final ArrayList<Integer> spielzugReihenfolge; //Die Reihenfolge der Spieler, anhand ihrer Spielernummer, die in den Stich Karten gelegt haben.
+    private final BotMitspielerDatenModel[] mitspielerDaten; //Abspeicherung von Informationen über die Hand der anderen Spieler.
+    private int spielerHatSauAusgerufen; //Spielernummer des Spielers, der die Sau ausgerufen hat.
     private int teamSpieler;//Spielernummer des Mitspielers
     private boolean sauFarbeVorhandGespielt; // Speicherung, ob die Farbe der ausgerufenen Sau schon gespielt wurde.
 
     public BotModel() {
         sau = new Spielkarte(Farbe.GRAS, Werte.SAU);
-        spielzugReihenfolge = new ArrayList<Integer>();
-        gelegteKarten = new ArrayList<Spielkarte>();
-        teamSpieler = -1; // -1 steht dafür das der Mitspieler noch nicht bekannt ist
+        spielzugReihenfolge = new ArrayList<>();
+        gelegteKarten = new ArrayList<>();
+        teamSpieler = -1; // -1 steht dafür, das der Mitspieler noch nicht bekannt ist
         mitspielerDaten = new BotMitspielerDatenModel[3];
         mitspielerDaten[0] = new BotMitspielerDatenModel();
         mitspielerDaten[1] = new BotMitspielerDatenModel();

@@ -22,7 +22,7 @@ public class Runde {
         this.speicherung = speicherung;
         this.turnier = turnier;
         int vorhand = wiederholungRunden % 4;
-        rundeModel = new RundeModel(positionSpieler, vorhand, echterSpieler, spieler.get(0));
+        rundeModel = new RundeModel(positionSpieler, vorhand, echterSpieler, spieler.getFirst());
 
         for (int i = 0; i < 4; i++) {
             ArrayList<Spielkarte> spielKartenProSpieler = new ArrayList<>(spielKarten.subList(i * 8, (i + 1) * 8));

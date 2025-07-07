@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class TurnierStatistik {
-    private LocalDate datum;
-    private LocalTime zeit;
-    private int punkte;
-    private boolean wurdeGewonnen;
+    private final LocalDate datum;
+    private final LocalTime zeit;
+    private final int punkte;
+    private final boolean wurdeGewonnen;
     public TurnierStatistik(int punkte, boolean wurdeGewonnen){
         this.punkte = punkte;
         this.wurdeGewonnen = wurdeGewonnen;

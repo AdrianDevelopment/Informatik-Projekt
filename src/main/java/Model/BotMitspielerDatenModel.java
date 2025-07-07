@@ -2,7 +2,7 @@ package Model;
 
 public class BotMitspielerDatenModel {
     /*
-        Speicherung ob der Spieler noch Karten mit einem bestimmten Wert oder einer bestimmten Farbe hat.
+        Speicherung, ob der Spieler noch Karten mit einem bestimmten Wert oder einer bestimmten Farbe hat.
         Benötigt, um Spielentscheidungen zu treffen.
      */
     private boolean hatOber;
@@ -14,7 +14,7 @@ public class BotMitspielerDatenModel {
     private boolean hatGras;
 
     BotMitspielerDatenModel() {
-        //annahme am Anfang der Runde das alle Mitspieler diese Karten haben könnten.
+        //annahme am Anfang der Runde, das alle Mitspieler diese Karten haben könnten.
         hatOber = true;
         hatUnter = true;
         hatHerz = true;

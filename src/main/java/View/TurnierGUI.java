@@ -21,6 +21,7 @@ public class TurnierGUI {
         frame = new JFrame("Turnier starten");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
+        frame.getContentPane().setBackground(new Color(245, 245, 220));
         GridBagConstraints gbc = new GridBagConstraints();
 
         // UI-Komponenten erstellen
@@ -31,8 +32,8 @@ public class TurnierGUI {
         eingabefeld.setFont(new Font("My Boli", Font.PLAIN, 18));
         eingabefeld.setHorizontalAlignment(JTextField.CENTER);
 
-        JButton knopf = erstelleSchoenenButton("Turnier starten");
-        knopf.addActionListener(e -> kopfGedrueckt());
+        JButton knopf = erstelleSchoenenButton();
+        knopf.addActionListener(_ -> kopfGedrueckt());
 
         // Komponenten zum Frame hinzufügen
         gbc.insets = new Insets(10, 10, 5, 10);
@@ -78,29 +79,45 @@ public class TurnierGUI {
     }
 
     // Kopie SpielGUI (Thiemo)
-    private JButton erstelleSchoenenButton(String text) {
-        JButton button = new JButton(text);
+    private JButton erstelleSchoenenButton() {
+        JButton button = new JButton("Turnier starten") {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                Color bgColor;
+                if (getModel().isPressed()) {
+                    bgColor = new Color(105, 106, 108).darker();
+                } else if (getModel().isRollover()) {
+                    bgColor = new Color(105, 106, 108);
+                } else {
+                    bgColor = new Color(57, 57, 59);
+                }
+
+                g2.setColor(bgColor);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+
+                super.paintComponent(g);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(43, 43, 44));
+                g2.setStroke(new java.awt.BasicStroke(2));
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+                g2.dispose();
+            }
+        };
+
         button.setFocusPainted(false);
-        button.setContentAreaFilled(true);
-        button.setOpaque(true);
-        button.setBackground(new Color(25, 25, 112));
+        button.setContentAreaFilled(false);
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
-
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(0, 0, 139), 2, true),
-                BorderFactory.createEmptyBorder(8, 20, 8, 20)
-        ));
-
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(0, 0, 205));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(25, 25, 112));
-            }
-        });
+        button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
 
         return button;
     }

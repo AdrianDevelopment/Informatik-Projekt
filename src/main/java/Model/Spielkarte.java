@@ -36,10 +36,6 @@ public class Spielkarte {
         return (this.gebeFarbe().gebeFarbeID() << 16) | (this.gebeWert().gebeIndex());
     }
 
-    public int gibKartenID() {
-        return hashCode();
-    }
-
     @Override
     public String toString(){
         // Wird verwendet, wenn mit dem "+"-Operator ein String mit einer Spielkarte verbunden wird
@@ -92,7 +88,7 @@ public class Spielkarte {
     }
 
     /* Programmierer Tim
-            Gibt je nach Spielart zurück, ob eine Karte ein Trumpf ist.
+            gibt je nach Spielart zurück, ob eine Karte ein Trumpf ist.
             Nutzbar in mehreren Klassen.
      */
     public boolean istTrumpf(SpielArt spielArt, Farbe soloSpielFarbe) {

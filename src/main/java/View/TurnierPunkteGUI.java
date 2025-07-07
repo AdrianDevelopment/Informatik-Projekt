@@ -11,7 +11,6 @@ import javax.swing.border.*;
 
 public class TurnierPunkteGUI {
     private final JFrame frame;
-    private final JPanel gridPanel;
 
     private final JLabel label1;
     private final JLabel label2;
@@ -30,14 +29,16 @@ public class TurnierPunkteGUI {
 
     public TurnierPunkteGUI() {
         frame = new JFrame();
-        gridPanel = new JPanel(new GridLayout(2, 4, 20, 20));
+        JPanel gridPanel = new JPanel(new GridLayout(2, 4, 20, 20));
 
         frame.setTitle("Turnier-Punkte Übersicht");
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
         frame.setSize(600, 300);
+        frame.getContentPane().setBackground(new Color(245, 245, 220));
 
         gridPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        gridPanel.setOpaque(false);
         frame.add(gridPanel, BorderLayout.CENTER);
 
         label1 = new JLabel();
@@ -50,9 +51,10 @@ public class TurnierPunkteGUI {
         labelPunkte3 = new JLabel();
         labelPunkte4 = new JLabel();
 
-        neueRundeButton = erstelleSchoenenButton("Neue Runde", 100, 200, 100, 50);
-        turnierBeendenButton = erstelleSchoenenButton("Turnier Beenden", 250, 200, 100, 50);
+        neueRundeButton = erstelleSchoenenButton("Neue Runde");
+        turnierBeendenButton = erstelleSchoenenButton("Turnier Beenden");
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setOpaque(false);
 
         gridPanel.add(label1);
         gridPanel.add(label2);
@@ -103,9 +105,9 @@ public class TurnierPunkteGUI {
         labelPunkte4.setVerticalAlignment(SwingConstants.CENTER);
 
         neueRundeButton.setText("neue Runde");
-        neueRundeButton.addActionListener(e -> turnier.rundeStarten());
+        neueRundeButton.addActionListener(_ -> turnier.rundeStarten());
         turnierBeendenButton.setText("Beenden");
-        turnierBeendenButton.addActionListener(e -> turnier.turnierBeenden());
+        turnierBeendenButton.addActionListener(_ -> turnier.turnierBeenden());
 
         buttonPanel.setBorder(new EmptyBorder(10, 0, 10, 0));
 
@@ -133,31 +135,45 @@ public class TurnierPunkteGUI {
     }
 
     // Kopie SpielGUI (Thiemo)
-    public JButton erstelleSchoenenButton(String text, int x, int y, int width, int height) {
-        JButton button = new JButton(text);
-        button.setBounds(x, y, width, height);
+    public JButton erstelleSchoenenButton(String text) {
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                Color bgColor;
+                if (getModel().isPressed()) {
+                    bgColor = new Color(105, 106, 108).darker();
+                } else if (getModel().isRollover()) {
+                    bgColor = new Color(105, 106, 108);
+                } else {
+                    bgColor = new Color(57, 57, 59);
+                }
+
+                g2.setColor(bgColor);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+
+                super.paintComponent(g);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(43, 43, 44));
+                g2.setStroke(new java.awt.BasicStroke(2));
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+                g2.dispose();
+            }
+        };
 
         button.setFocusPainted(false);
-        button.setContentAreaFilled(true);
-        button.setOpaque(true);
-        button.setBackground(new Color(25, 25, 112));
+        button.setContentAreaFilled(false);
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
-
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(0, 0, 139), 2, true),
-                BorderFactory.createEmptyBorder(8, 20, 8, 20)
-        ));
-
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(0, 0, 205));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(25, 25, 112));
-            }
-        });
+        button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
 
         return button;
     }

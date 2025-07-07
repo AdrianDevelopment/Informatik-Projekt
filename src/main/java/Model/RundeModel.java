@@ -6,10 +6,10 @@ import Controler.Spieler;
 import java.util.Arrays;
 
 public class RundeModel {
-    private int[] punkte;
+    private final int[] punkte;
     private int ausrufer;
     private int positionSpieler;
-    private Spielkarte[] aktuellerStich;
+    private final Spielkarte[] aktuellerStich;
     private Spielkarte[] letzterStich;
     private SpielArt hoechsteSpielart;
     private Mitspieler ausruferReferenz;

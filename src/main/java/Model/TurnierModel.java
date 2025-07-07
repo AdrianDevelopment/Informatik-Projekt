@@ -4,7 +4,7 @@ package Model;
 
 public class TurnierModel {
     private int anzahlRunden;
-    private int[] punkteTurnier;
+    private final int[] punkteTurnier;
     private int positionSpieler;
     private int vergangeneRunden;
 

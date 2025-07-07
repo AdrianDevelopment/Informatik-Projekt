@@ -17,7 +17,7 @@ public class StatistikGUI {
         JFrame frame = new JFrame("Statistiken");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
-        frame.getContentPane().setBackground(new Color(240, 240, 240)); // Heller Hintergrund
+        frame.getContentPane().setBackground(new Color(245, 245, 220)); // Beiger Hintergrund
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
@@ -61,15 +61,24 @@ public class StatistikGUI {
                 "Gesamte Punktzahl: " + speicherung.gesamtePunkteGeben()
         }, yPos);
 
-        // Button für Turnierhistorie
-        JButton knopf = erstelleSchoenenButton("Turnierhistorie anzeigen");
-        knopf.addActionListener(e -> TurnierHistorieGUI.TurnierStatistikAnzeigen());
+        // Button-Panel erstellen
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setBackground(frame.getContentPane().getBackground()); // Hintergrund anpassen
+
+        JButton historieButton = erstelleSchoenenButton("Turnierhistorie anzeigen");
+        historieButton.addActionListener(_ -> TurnierHistorieGUI.TurnierStatistikAnzeigen());
+        buttonPanel.add(historieButton);
+
+        JButton schliessenButton = erstelleSchoenenButton("Schließen");
+        schliessenButton.addActionListener(_ -> frame.dispose());
+        buttonPanel.add(schliessenButton);
+
         gbc.gridy = yPos;
         gbc.gridx = 0;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(20, 10, 10, 10);
-        frame.add(knopf, gbc);
+        frame.add(buttonPanel, gbc);
 
         // Frame-Konfiguration
         frame.pack();
@@ -101,28 +110,44 @@ public class StatistikGUI {
     }
 
     private JButton erstelleSchoenenButton(String text) {
-        JButton button = new JButton(text);
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                Color bgColor;
+                if (getModel().isPressed()) {
+                    bgColor = new Color(105, 106, 108).darker();
+                } else if (getModel().isRollover()) {
+                    bgColor = new Color(105, 106, 108);
+                } else {
+                    bgColor = new Color(57, 57, 59);
+                }
+
+                g2.setColor(bgColor);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+
+                super.paintComponent(g);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(43, 43, 44));
+                g2.setStroke(new java.awt.BasicStroke(2));
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+                g2.dispose();
+            }
+        };
+
         button.setFocusPainted(false);
-        button.setContentAreaFilled(true);
-        button.setOpaque(true);
-        button.setBackground(new Color(25, 25, 112));
+        button.setContentAreaFilled(false);
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
-
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(0, 0, 139), 2, true),
-                BorderFactory.createEmptyBorder(8, 20, 8, 20)
-        ));
-
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(0, 0, 205));
-            }
-
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(25, 25, 112));
-            }
-        });
+        button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
 
         return button;
     }

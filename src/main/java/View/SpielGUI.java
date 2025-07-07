@@ -14,13 +14,10 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class SpielGUI {
-
-    //möglicher Hintergrund für den MainFrame -Abgelehnt von Tom wegen zu dominante Farben
-    final private ImageIcon imageIcon = new ImageIcon(getClass().getResource("/HintergrundSpielGUI2.png"));
-    final private ImageIcon kartenRuekseite;
 
     //Variablen für Knöpfe(Buttons) und Texte(Labels) werden erstellt
     final private JButton weiterButton; //neu
@@ -36,17 +33,12 @@ public class SpielGUI {
     final private JLabel mitteTextLabel;
     final private JLabel kleinMitteTextLabel;
 
-    //JTextPane ist einfach nur weil ich einen Mehrzeiler gebraucht habe
+    //JTextPane ist einfach nur, weil ich einen Mehrzeiler gebraucht habe
     final private JTextPane endTextArea;
 
     //Arraylists, die Objekte von JButtons und JLabels speichern können, werden deklariert
     final private ArrayList<JButton> spieler1KartenArray;
     final private ArrayList<JButton> weiterSauButtons;
-
-    final private ArrayList<JLabel> spieler1KartenLabels;
-    final private ArrayList<JLabel> spieler2KartenLabels;
-    final private ArrayList<JLabel> spieler3KartenLabels;
-    final private ArrayList<JLabel> spieler4KartenLabels;
 
     private JLabel[] mitteKarten;
 
@@ -57,10 +49,20 @@ public class SpielGUI {
     public SpielGUI() {
         //Hauptfenster wird erzeugt und angepasst
         mainFrame = new JFrame();
-
+        mainFrame.setResizable(false);
         mainFrame.setSize(1400, 700);
-        mainFrame.setVisible(true);
+
+        // Hintergrundbild laden, skalieren und setzt
+        // möglichen Hintergrund für den MainFrame -Abgelehnt von Tom wegen zu dominanter Farben
+        ImageIcon imageIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/HintergrundSpielGUI2.png")));
+        Image img = imageIcon.getImage();
+        Image scaledImg = img.getScaledInstance(mainFrame.getWidth(), mainFrame.getHeight(), Image.SCALE_SMOOTH);
+        JLabel backgroundLabel = new JLabel(new ImageIcon(scaledImg));
+
+        mainFrame.setContentPane(backgroundLabel);
         mainFrame.setLayout(null);
+
+        mainFrame.setVisible(true);
 
         //Buttons werden initialisiert und jeweils zum Hauptfenster hinzugefügt
         okButton = erstelleSchoenenButton("Ok", 1000, 400, 100, 50);
@@ -70,7 +72,7 @@ public class SpielGUI {
         mainFrame.add(neueRundeButton);
 
         //Array wird schon vor den anderen benötigt
-        weiterSauButtons = new ArrayList<JButton>();
+        weiterSauButtons = new ArrayList<>();
 
         weiterButton = erstelleSchoenenButton("Weiter", 970,600,100,50);
         mainFrame.add(weiterButton);
@@ -80,7 +82,7 @@ public class SpielGUI {
         mainFrame.add(sauButton);
         weiterSauButtons.add(sauButton);
 
-        //Textfelder aus in der Mitte werden erstellt und gezeichnet
+        //Textfelder aus der Mitte werden erstellt und gezeichnet
         mitteTextLabel = new JLabel();
         mitteTextLabel.setFont(new Font("Arial", Font.BOLD, 30));
         mitteTextLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -99,17 +101,16 @@ public class SpielGUI {
         mainFrame.add(kleinMitteTextLabel);
 
         //Die Arraylists werden initialisiert
-        spieler1KartenArray = new ArrayList<JButton>();
+        spieler1KartenArray = new ArrayList<>();
 
-        spieler1KartenLabels = new ArrayList<JLabel>();
-        spieler2KartenLabels = new ArrayList<JLabel>();
-        spieler3KartenLabels = new ArrayList<JLabel>();
-        spieler4KartenLabels = new ArrayList<JLabel>();
+        ArrayList<JLabel> spieler2KartenLabels = new ArrayList<>();
+        ArrayList<JLabel> spieler3KartenLabels = new ArrayList<>();
+        ArrayList<JLabel> spieler4KartenLabels = new ArrayList<>();
 
         //Ein Bild wird erstellt(ImageIcon) und einer Variable zugewiesen
-        ImageIcon playerIcon = new ImageIcon(getClass().getResource("/spieler.png"));
-        ImageIcon botIcon = new ImageIcon(getClass().getResource("/bot.png"));
-        kartenRuekseite = new ImageIcon(getClass().getResource("/rueckseiteKarte.png"));
+        ImageIcon playerIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/spieler.png")));
+        ImageIcon botIcon = new ImageIcon(Objects.requireNonNull(getClass().getResource("/bot.png")));
+        ImageIcon kartenRuekseite = new ImageIcon(Objects.requireNonNull(getClass().getResource("/rueckseiteKarte.png")));
 
         //Bildchen für Spieler1 wird erstellt
         JLabel Spieler1 = new JLabel();
@@ -162,7 +163,7 @@ public class SpielGUI {
         //Umgedrehte Startkarten für Spieler 3 werden erstellt:
         for (int i = 0; i < 8; i++) {
             JLabel karte = new JLabel();
-            karte.setBounds(400+(i*70), 20, 80, 95);
+            karte.setBounds(400+(i*70), 40, 80, 95);
             karte.setIcon(kartenRuekseite);
             spieler3KartenLabels.add(karte);
         }
@@ -273,14 +274,14 @@ public class SpielGUI {
         eichelSauButton.setVisible(true);
     }
 
-    //Blendet die 3 Sau Buttons wieder aus
+    //Blendet die 3-Säue-Buttons wieder aus
     public void farbeFuerSpielabsichtAusblenden() {
         schellenSauButton.setVisible(false);
         eichelSauButton.setVisible(false);
         grasSauButton.setVisible(false);
     }
 
-    //Setzt Weiter und Sau unsichtbar
+    //Setzt Weiten und Sau unsichtbar
     public void setzeSpielabsichtUnsichtbar() {
         sauButton.setVisible(false);
         weiterButton.setVisible(false);
@@ -298,14 +299,14 @@ public class SpielGUI {
         }
     }
 
-    //Wenn der Weiterbutton gedrückt wird, wird eine Methode in Spieler aufgerufen
+    //Wenn der Weiterbutton gedrückt wird, wird eine Methode in einem Spieler aufgerufen
     public void weiterButtonActionListener(Spieler spieler){
-        weiterSauButtons.get(0).addActionListener(e -> spieler.spielabsichtGesagt(SpielArt.KEINSPIEL));
+        weiterSauButtons.getFirst().addActionListener(_ -> spieler.spielabsichtGesagt(SpielArt.KEINSPIEL));
     }
 
     //Wenn der Saubutton gedrückt wird, wird eine Methode in Spieler aufgerufen
     public void sauButtonActionListener(Spieler spieler){
-        weiterSauButtons.get(1).addActionListener(e -> spieler.spielabsichtGesagt(SpielArt.SAUSPIEL));
+        weiterSauButtons.get(1).addActionListener(_ -> spieler.spielabsichtGesagt(SpielArt.SAUSPIEL));
     }
 
     // Der Weiter-Button und/oder der Sau-Button werden unsichtbar gemacht
@@ -315,9 +316,9 @@ public class SpielGUI {
 
     //Action Listener werden den einzelnen Sau-Auswahlmöglichkeiten zugewiesen
     public void farbeFuerSpielabsichtButtonsActionListener(Spieler spieler){
-        schellenSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
-        grasSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
-        eichelSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
+        schellenSauButton.addActionListener(_ -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
+        grasSauButton.addActionListener(_ -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
+        eichelSauButton.addActionListener(_ -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
     }
 
 
@@ -328,7 +329,7 @@ public class SpielGUI {
             handButtons.get(i).setIcon(gibBild(handkarten.get(i)));
             int finalI = i; //für Lambda Expression
             actionListenerLoeschen(handButtons.get(i));
-            handButtons.get(i).addActionListener(e -> spieler.karteGelegt(handkarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
+            handButtons.get(i).addActionListener(_ -> spieler.karteGelegt(handkarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
         }
     }
 
@@ -388,7 +389,7 @@ public class SpielGUI {
                 break;
         }
         dateiname += ".png";
-        return new ImageIcon(getClass().getResource(dateiname));
+        return new ImageIcon(Objects.requireNonNull(getClass().getResource(dateiname)));
     }
 
     //setzt eine eigene Karte unsichtbar
@@ -403,23 +404,23 @@ public class SpielGUI {
 
     //Bu="Button, ActLi="ActionListener", Eigentlich Selbsterklärend
     public void okBuActLiSetzenSpielabsicht(Runde runde, int wiederholung, int vorhand) {
-        okButton.addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
+        okButton.addActionListener(_ -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
     }
 
     public void okBuActLiSetzenFarbeSpielabsicht(Runde runde) {
-        okButton.addActionListener(e -> runde.farbeFuerSpielAbsicht());
+        okButton.addActionListener(_ -> runde.farbeFuerSpielAbsicht());
     }
 
     public void okBuActLiSetzenStichSpielen(Runde runde) {
-        okButton.addActionListener(e -> runde.stichSpielen());
+        okButton.addActionListener(_ -> runde.stichSpielen());
     }
 
     public void okBuActLiSetzenFrageStichVorbei(Runde runde) {
-        okButton.addActionListener(e -> runde.frageStichVorbei());
+        okButton.addActionListener(_ -> runde.frageStichVorbei());
     }
 
     public void neueRundeBuActLiSetzenNeueRundeStarten(Spieler spieler, SpielArt spielArt) {
-        neueRundeButton.addActionListener(e -> spieler.neueRundeStarten(spielArt));
+        neueRundeButton.addActionListener(_ -> spieler.neueRundeStarten(spielArt));
     }
 
     //selbsterklärend
@@ -453,7 +454,8 @@ public class SpielGUI {
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         endTextArea.setEditable(false);
         endTextArea.setFont(new Font("Arial", Font.PLAIN, 30));
-        endTextArea.setBackground(null);
+        endTextArea.setOpaque(false);
+        endTextArea.setBackground(new Color(0,0,0,0));
 
         endTextArea.setVisible(true);
         mainFrame.add(endTextArea);
@@ -475,45 +477,62 @@ public class SpielGUI {
     }
 
     /*
-    In dieser Methode wird grundsätzlich ein neuer Button erstellt und am Ende zurückgegeben
-    Die Methode fügt den mit ihr erstellten Buttons einen Effekt hinzu, bei dem dich die Farbe durch das
-    über den Button fahren ändert
+    In dieser Methode wird grundsätzlich ein neuer Button erstellt und am Ende zurückgegeben.
+    Die Methode fügt den mit ihr erstellten Buttons einen Effekt hinzu, bei dem sich die Farbe durch das
+    über den Button Fahren ändert.
     Falls jemand die Farben ändern will: https://rgbcolorpicker.com/
      */
     public JButton erstelleSchoenenButton(String text, int x, int y, int width, int height) {
-        JButton button = new JButton(text);
-        button.setBounds(x, y, width, height);
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+                Color bgColor;
+                if (getModel().isPressed()) {
+                    bgColor = new Color(105, 106, 108).darker();
+                } else if (getModel().isRollover()) {
+                    bgColor = new Color(105, 106, 108);
+                } else {
+                    bgColor = new Color(57, 57, 59);
+                }
+
+                g2.setColor(bgColor);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+
+                // Wichtig, damit der Text des Buttons gezeichnet wird
+                super.paintComponent(g);
+                g2.dispose();
+            }
+
+            @Override
+            protected void paintBorder(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(new Color(43, 43, 44));
+                g2.setStroke(new java.awt.BasicStroke(2));
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 20, 20);
+                g2.dispose();
+            }
+        };
+
+        button.setBounds(x, y, width, height);
         button.setFocusPainted(false);
-        button.setContentAreaFilled(true);
-        button.setOpaque(true);
-        button.setBackground(new Color(25, 25, 112));
+        button.setContentAreaFilled(false); // Wichtig für Custom Painting
         button.setForeground(Color.WHITE);
         button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
 
-        button.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(0, 0, 139), 2, true),
-                BorderFactory.createEmptyBorder(8, 20, 8, 20)
-        ));
 
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mausDrueber(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(0, 0, 205));
-            }
-
-            public void mausAussen(java.awt.event.MouseEvent evt) {
-                button.setBackground(new Color(25, 25, 112));
-            }
-        });
-
-        if (text == "SAU" || text == "Weiter"){
+        if ("SAU".equals(text) || "Weiter".equals(text)){
             button.setVisible(false);
         }
 
         return button;
     }
 
-    //Zeichnet einfach das Fenster neu um den Hover-Bug zu beheben
+    //Zeichnet einfach das Fenster neu, um den Hover-Bug zu beheben
     public void aktualisieren(){
         mainFrame.repaint();
     }

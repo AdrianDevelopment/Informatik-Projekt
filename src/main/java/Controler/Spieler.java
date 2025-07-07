@@ -29,7 +29,7 @@ public class Spieler extends Mitspieler {
 
     /**
      * Aufruf von Runde
-     * - im Model karten und Spieler-Nummer setzen
+     * - im Model Karten und Spieler-Nummer setzen
      * - Buttons Bilder zuordnen + GUI aufrufen (→ soll Handkarten anzeigen)
      * - GUI zurücksetzen
      */
@@ -56,7 +56,7 @@ public class Spieler extends Mitspieler {
      * Aufforderung der Runde die Spielabsicht zu sagen
      * - im Model Übergabewerte setzen
      * - Buttons sichtbar und drückbar machen
-     * - Überprüfung, ob Sauspiel möglich → Ausgabe an Nutzer
+     * - Überprüfung, ob Sauspiel möglich ist → Ausgabe an Nutzer
      */
     @Override
     public void spielabsichtFragen(int wiederholung, SpielArt hoechstesSpiel, int vorhand) {
@@ -67,7 +67,7 @@ public class Spieler extends Mitspieler {
         gui.okButtonActionListenerLoeschen();
         gui.weiterButtonActionListener(this);
         gui.spielAbsichtButtonsSichtbarkeitSetzen(true, 0);
-        //Überprüfen, ob überhaupt möglich: kann auf eine Sau ausgerufen werden?
+        //Überprüfen, ob überhaupt möglich: Kann eine Sau ausgerufen werden?
         ArrayList<Farbe> farbe = sauZumAusrufen(model.gebeHandkarten());
         if (farbe.isEmpty()) {
             gui.hinweisAnNutzer("Du kannst auf keine Sau ausrufen. Du musst also weiter sagen.");
@@ -95,7 +95,7 @@ public class Spieler extends Mitspieler {
     }
 
     /**
-     * Ausgabe für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss
+     * Ausgabe für GUI, nachdem ein Spieler eine Spielabsicht abgegeben, die an GUI zur Anzeige übergeben werden muss,
      * okButton ActionListener neu setzen lassen
      */
     public void spielerHatSpielabsichtGesagt(int wiederholung, int vorhand, SpielArt spielAbsicht) {
@@ -136,7 +136,7 @@ public class Spieler extends Mitspieler {
 
     /**
      * Aufforderung von Runde, die Sau-Farbe zu sagen
-     * → Aufruf der GUI, damit Pop-Up angezeigt wird
+     * → Aufruf der GUI, damit Pop-up angezeigt wird
      */
     @Override
     public void farbeFuerSpielAbsicht(SpielArt spielArt) {
@@ -158,11 +158,11 @@ public class Spieler extends Mitspieler {
             return;
         }
         model.setzeDranFarbeSpielabsicht(false);
-        //Überprüfen, ob gewählte Farbe möglich
+        //Überprüfen, ob die gewählte Farbe möglich ist
         boolean moeglich = false;
         ArrayList<Farbe> f = sauZumAusrufen(model.gebeHandkarten());
-        for (int i = 0; i < f.size(); i++) {
-            if (farbe == f.get(i)) {
+        for (Farbe value : f) {
+            if (farbe == value) {
                 moeglich = true;
                 break;
             }
@@ -185,7 +185,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler); //Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler); //Wert, wie ihn Spieler-Klassen, z. B. GUI, nutzen
         model.setzeSpielArt(spielArt, farbe, spieler);
         //Ausgabe in GUI
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
@@ -217,7 +217,7 @@ public class Spieler extends Mitspieler {
      * Überprüfungen
      * - darf überhaupt was gerade gelegt werden?
      * - weglaufen ja/nein
-     * - gelegte Karte passt mit erster Karte zusammen ja/nein?
+     * - gelegte Karte passt mit erster Karte zusammen ja/, nein?
      * ja → Spielkarte entfernen und Runde geben
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
@@ -234,8 +234,8 @@ public class Spieler extends Mitspieler {
         if (anzahlSpielerSchonGelegt == 0) {
             Spielkarte sau = new Spielkarte(model.gebeFarbe(), Werte.SAU);
             erlaubteKarten = erlaubteKartenAusspielenBeiSauspiel(model.gebeHandkarten(), sau);
-            for (int i = 0; i < erlaubteKarten.size(); i++) {
-                if (spielkarte.equals(erlaubteKarten.get(i))) {
+            for (Spielkarte value : erlaubteKarten) {
+                if (spielkarte.equals(value)) {
                     erlaubt = true;
                     break;
                 }
@@ -243,9 +243,10 @@ public class Spieler extends Mitspieler {
         }
         //Überprüfung, welche Karte gelegt werden darf, wenn schon eine liegt
         if (anzahlSpielerSchonGelegt != 0) {
+            //noinspection unchecked
             erlaubteKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gebeHandkarten().clone(), model.gebeSpielArt(), new Spielkarte(model.gebeFarbe(), Werte.SAU), model.gebeVorgegebeneKarte(), model.gebeFarbe(), model.gebeSauFarbeVorhandGespielt());
-            for (int i = 0; i < erlaubteKarten.size(); i++) {
-                if (spielkarte.equals(erlaubteKarten.get(i))) {
+            for (Spielkarte value : erlaubteKarten) {
+                if (spielkarte.equals(value)) {
                     erlaubt = true;
                     break;
                 }
@@ -310,7 +311,7 @@ public class Spieler extends Mitspieler {
 
 
     /**
-     * gibt Karte, die gelegt wurde mit dem Spieler der GUI weiter
+     * gibt eine Karte, die gelegt mit dem Spieler der GUI wird, weiter
      */
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
@@ -323,7 +324,7 @@ public class Spieler extends Mitspieler {
         if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
             model.setzteSauFarbeVorhandGespielt(true);
         }
-        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
+        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, speichern, wer Mitspieler ist
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
         }
@@ -418,7 +419,7 @@ public class Spieler extends Mitspieler {
         return spielerImUhrzeigersinn;
     }
 
-    /*Methode, die von Runde aufgerufen wird, um den Mitspieler herauszubekommen*/
+    /*Methode, die von der Runde aufgerufen wird, um den Mitspieler herauszubekommen*/
     public int gebeMitspieler() {
         return model.gebeMitspieler();
     }

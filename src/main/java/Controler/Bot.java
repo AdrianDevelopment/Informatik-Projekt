@@ -25,8 +25,8 @@ public class Bot extends Mitspieler {
 
     /*
          Bestimmt, ob es sich lohnt ein Spiel auszurufen oder nicht.
-         Betrachtet wie viele Trümpfe und Karten einer Farbe auf der Hand sind.
-         Wenn eine bestimmte Anzahl von Trümpfen auf der Hand sind, wird ein Spiel ausgerufen.
+         Betrachtet, wie viele Trümpfe und Karten einer Farbe auf der Hand sind.
+         Wenn eine bestimmte Anzahl von Trümpfen auf der Hand ist, wird ein Spiel ausgerufen.
          Sonst wird kein Spiel zurückgegeben.
     */
     @Override
@@ -35,7 +35,7 @@ public class Bot extends Mitspieler {
     }
 
     public SpielArt spielAbsichtWaehlen(SpielArt hoechsteSpiel) {
-        //Bestimmt wieviele und welche Art von Karten auf der Hand sind.
+        //Bestimmt, wieviele und welche Art von Karten auf der Hand sind.
 
         int[] besondereKarten = wieVieleBesondereKarten();
         int anzahlOU = besondereKarten[0] + besondereKarten[1];
@@ -48,7 +48,7 @@ public class Bot extends Mitspieler {
         }
         //Außerhalb des Zieles des Prototypes
         /*
-        //Solospiel wenn mindestens mehr als 4 Truempfe und mindestendes 2 Karten einer Farbe(keine Truempfe).
+        //Solospiel wenn mindestens mehr als 4 Trümpfe und mindestendes 2 Karten einer Farbe(keine Truempfe).
         if (anzahlOU >= 4 &&besondereKarten[indexFarbeMitMeistenKarten] >= 2 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SOLO.gebeSpielArtID()){
             Farbe[] farben = new Farbe[4];
             farben[0] = Farbe.HERZ;
@@ -61,18 +61,17 @@ public class Bot extends Mitspieler {
 
         //Wenz wenn mindestens 3 Unter und 2 Asse
         if (besondereKarten[1] >=3 && besondereKarten[2] >=2 && hoechsteSpiel.gebeSpielArtID() < SpielArt.WENZ.gebeSpielArtID()){
-            return SpielArt.WENZ;
-        }
+            return SpielArt.WENZ;}
         */
 
         //Bestimmung welche Sau farben ausgerufen werden können.
         ArrayList<Farbe> farbenZumAusrufen = sauZumAusrufen(model.gibHand());
         //Sauspiel, wenn eine Sau ausgerufen werden kann und mindestens 4 Trümpfe auf der Hand sind.
         if (!farbenZumAusrufen.isEmpty() && anzahlOU + besondereKarten[4] >= 4 && hoechsteSpiel.gebeSpielArtID() < SpielArt.SAUSPIEL.gebeSpielArtID()) {
-            //Speichert die Sau die Ausgerufen werden soll im Model ab.
+            //Speichert die Sau, die ausgerufen werden soll, im Model ab.
             //Die Methode farbenZumAusrufen gibt die beste Sau zum Ausrufen an Stelle 0 zurück.
-            model.setzeSau(new Spielkarte(farbenZumAusrufen.get(0), Werte.SAU));
-            return SpielArt.KEINSPIEL;
+            model.setzeSau(new Spielkarte(farbenZumAusrufen.getFirst(), Werte.SAU));
+            return SpielArt.SAUSPIEL;
         }
 
         return SpielArt.KEINSPIEL;
@@ -90,17 +89,17 @@ public class Bot extends Mitspieler {
 
         switch (spielArt) {
             case KEINSPIEL:
-                System.out.println("ERROR: Spielart: "+ spielArt+" wird nicht behandelt");
+                System.out.println("ERROR: Keinspiel ist noch nicht implementiert.");
                 break;
             case SAUSPIEL:
                 return model.gibSau().gebeFarbe();
             case WENZ:
-                System.out.println("ERROR: Spielart: "+ spielArt+" wird nicht behandelt");
+                System.out.println("ERROR: Wenz ist noch nicht implementiert.");
                 break;
             case SOLO:
                 return model.gibsoloFarbe();
             default:
-                System.out.println("ERROR: Spielart: "+ spielArt+" wird nicht behandelt");
+                System.out.println("ERROR: Fehler bei Spielauswahl.");
                 break;
         }
         return null;
@@ -118,30 +117,31 @@ public class Bot extends Mitspieler {
 
     public Spielkarte waehleEineKarte() {
         ArrayList<Spielkarte> moeglicheKarten;
-        //Überprüfen, ob es der Beginn des Stiches ist und demnach erlaubte Karten bestimmen.
+        //Überprüfen, ob es der Beginn des Stiches ist, und demnach erlaubte Karten bestimmen.
         if (model.gibStichGelegteKartenAnzahl() == 0) {
             moeglicheKarten = erlaubteKartenAusspielenBeiSauspiel(model.gibHand(), model.gibSau());
         } else {
+            //noinspection unchecked
             moeglicheKarten = gibErlaubteKarten((ArrayList<Spielkarte>) model.gibHand().clone(), model.gibSpielArt(), model.gibSau(), model.gibErsteKarteAufTisch(), model.gibsoloFarbe(), model.gibSauFarbeVorhandGespielt());
 
         }
-        Spielkarte gewaelteKarte = moeglicheKarten.get(0);
+        Spielkarte gewaelteKarte = moeglicheKarten.getFirst();
         //Wahl der Karte nach Spielart unterscheiden.
         switch (model.gibSpielArt()) {
             case KEINSPIEL:
-                System.out.println("ERROR: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
+                System.out.println("ERROR: Keinspiel ist noch nicht implementiert.");
                 break;
             case SAUSPIEL:
                 gewaelteKarte = sauSpielKarteWaehlen(moeglicheKarten);
                 break;
             case WENZ:
-                System.out.println("ERROR: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
+                System.out.println("ERROR: Wenz ist noch nicht implementiert.");
                 break;
             case SOLO:
-                System.out.println("ERROR: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
+                System.out.println("ERROR: Solo ist noch nicht implementiert.");
                 break;
             default:
-                System.out.println("ERROR: Spielart: "+ model.gibSpielArt()+" wird nicht behandelt");
+                System.out.println("ERROR: Fehler bei Spielauswahl");
                 break;
         }
         //Gewählte Karte aus Hand entfernen und zurückgeben.
@@ -150,17 +150,17 @@ public class Bot extends Mitspieler {
     }
 
     /*
-        System zur Bestimmung welche Karte bei einem Sauspiel gelegt werden soll.
+        System zur Bestimmung, welche Karte bei einem Sauspiel gelegt werden soll.
         Für den Protypen wird eine zufällige Karte ausgewaählt.
      */
     public Spielkarte sauSpielKarteWaehlen(ArrayList<Spielkarte> erlaubteKarten) {
         Random zufall = new Random();
         int zufaelligerIndex = zufall.nextInt(erlaubteKarten.size());
         if(erlaubteKarten.size() == 1){
-            return  erlaubteKarten.get(0);
+            return  erlaubteKarten.getFirst();
         }
-        //Legt die Farbe der gesuchten Sau auf Vorhand, sofern der Teamspieler unbekannt ist und man nicht der Ausrufer oder der Sau besitzer ist.
-        //Ziel ist es den Mitspieler zu finden, damit intelligenter gespielt werden kann(z.b. schmieren)
+        //Legt die Farbe der gesuchten Sau auf Vorhand, sofern der Teamspieler unbekannt ist und man nicht der Ausrufer oder der Sau Besitzer ist.
+        //Ziel ist es, den Mitspieler zu finden, damit intelligenter gespielt werden kann(z.b. schmieren)
         if (model.gibStichGelegteKartenAnzahl() == 0){
             if(model.gibTeamSpieler() == -1 && model.gibSpielerHatSauAusgerufen() != model.gibSpielerIndex()){
                 Spielkarte niedrigsteKarteVonSauFarbe = null;
@@ -188,14 +188,14 @@ public class Bot extends Mitspieler {
         //model.gibAlleGelegteKarten().stream().filter(karte -> karte.gebeWert() == Werte.OBER).count();
 
         //Entscheiden, ob Farbe oder Sau gespielt wird.
-        int mindesAnforderungFuerSchmieren = 0;
+        int mindesAnforderungFuerSchmieren;
         if(model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null)){
             mindesAnforderungFuerSchmieren=200;
         }else{
             mindesAnforderungFuerSchmieren=80;
         }
 
-        //Überprüft, ob es Sinn macht für den Mitspieler zu schmieren.
+        //Überprüft, ob es Sinn ergibt, für den Mitspieler zu schmieren.
         boolean mitspielerAlleinigTrumpf = false;
         ArrayList<Integer> gegenSpielerIndex = new ArrayList<>();
         if(model.gibTeamSpieler() >= 0){
@@ -222,8 +222,8 @@ public class Bot extends Mitspieler {
                 return  niedrigsterTrumpf;
             }
         }
-        if ((spielerGewinntStich == model.gibTeamSpieler() && kartenStaerkeVonStichGewinner > mindesAnforderungFuerSchmieren)|| mitspielerAlleinigTrumpf) {//schmiert nur, wenn Teamspieler einen Unter oder Ober gelegt hat.
-            Spielkarte karteMitHoechsterPunktzahl = model.gibHand().get(0);
+        if ((spielerGewinntStich == model.gibTeamSpieler() && kartenStaerkeVonStichGewinner > mindesAnforderungFuerSchmieren)|| mitspielerAlleinigTrumpf) {//schmiert nur, wenn ein Teamspieler ein Unter oder Ober gelegt hat.
+            Spielkarte karteMitHoechsterPunktzahl = model.gibHand().getFirst();
             //sucht die Karte mit der höchsten Punktzahl
             for(Spielkarte karte : erlaubteKarten){
                  if( karte.gebeWert().gebePunktzahl() > karteMitHoechsterPunktzahl.gebeWert().gebePunktzahl()){
@@ -239,9 +239,9 @@ public class Bot extends Mitspieler {
 
             }
         }
-        //versucht einen Stich zu gewinnen, wenn eine gewisse Anzahl von Punkten auf dem Tisch liegen
+        //versucht es, einen Stich zu gewinnen, wenn eine gewisse Anzahl von Punkten auf dem Tisch liegen
         if (gibWertFuerBisherGelegteKarten() > 10) {
-            //Wenn möglich, legt die erste Karte die den Stich gewinnen kann
+            //Wenn möglich, legt die erste Karte ab, die den Stich gewinnen kann
             for(Spielkarte karte : erlaubteKarten){
                 if(spielKartenStaerkeSauSpiel(karte) >kartenStaerkeVonStichGewinner){
                     System.out.println("DEBUG: Der Bot versucht den Stich zu gewinnen!");
@@ -249,7 +249,7 @@ public class Bot extends Mitspieler {
                 }
             }
         }
-        //Wenn die gegen Spieler den Stich gewinnen dann versucht er eine wertlose Karte zu legen, sofern die Karte, die den Stich gewinnt, mindestens eine Sau ist.
+        //Wenn die Spieler den Stich gewinnen, versucht er eine wertlose Karte zu legen, sofern die Karte, die den Stich gewinnt, mindestens eine Sau ist.
         if(spielerGewinntStich != model.gibTeamSpieler() && model.gibTeamSpieler() != -1 && kartenStaerkeVonStichGewinner > 90){
             for(Spielkarte karte : erlaubteKarten){
                if(karte.gebeWert().gebePunktzahl() == 0){
@@ -286,10 +286,10 @@ public class Bot extends Mitspieler {
 
     /*
         Mit dieser Methode werden folgende Daten abgespeichert:
-            Welche Karten gelegt wurden
-            wer in dem Stich eine Karte gelegt hat
-            ob die Farbe der Gesuchten sau gespielt wurde
-            sofern die gesuchte Sau gespielt, wird kann der Mitspieler abgespeichert werden.
+            Welche Karten gelegt wurden,
+            wer in den Stich eine Karte gelegt hat,
+            ob die Farbe der gesuchten Sau gespielt wurde,
+            sofern die gesuchte Sau gespielt, wird, kann der Mitspieler abgespeichert werden.
 
      */
     @Override
@@ -303,16 +303,16 @@ public class Bot extends Mitspieler {
         //Legt Mitspieler fest, wenn die gesuchte Sau ausgerufen wird.
         if (model.gibSau().equals(karte)) {
             if (model.gibSpielerHatSauAusgerufen() == model.gibSpielerIndex()) {
-                //Mitspieler ist der Spieler, er die Sau gelegt hat, sofern man selbst die Sau ausgerufen hat.
+                //Mitspieler ist der Spieler, der die Sau gelegt hat, sofern man selbst die Sau ausgerufen hat.
                 model.setzeTeamSpieler(spielerHatGelegt);
             } else {
-                //Mitspieler ist der Spieler der werder die Sau ausgerufen noch gelegt hat.
+                //Mitspieler ist der Spieler, der werder die Sau ausgerufen noch gelegt hat.
                 model.setzeTeamSpieler(6 - (spielerHatGelegt + model.gibSpielerHatSauAusgerufen() + model.gibSpielerIndex()));
             }
         }
 
 
-        //Überprüft ob Spieler keinen Trumpf mehr legen kann.
+        //Überprüft, ob Spieler keinen Trumpf mehr legen können.
         if (model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null) && !karte.istTrumpf(SpielArt.SAUSPIEL,null)) {
             model.setzeMitspielerHatOber(spielerHatGelegt%3, false);
             model.setzeMitspielerHatUnter(spielerHatGelegt%3, false);
@@ -320,20 +320,10 @@ public class Bot extends Mitspieler {
         }
         if (!model.gibErsteKarteAufTisch().istTrumpf(SpielArt.SAUSPIEL,null) && karte.gebeFarbe() != model.gibErsteKarteAufTisch().gebeFarbe()) {
             switch (model.gibErsteKarteAufTisch().gebeFarbe()){
-                case SCHELLEN -> {
-                    model.setzeMitspielerHatSchellen(spielerHatGelegt%3, false);
-                    break;
-                }
-                case GRAS -> {
-                    model.setzeMitspielerHatGras(spielerHatGelegt%3, false);
-                    break;
-                }
-                case EICHEL -> {
-                    model.setzeMitspielerHatEichel(spielerHatGelegt%3, false);
-                    break;
-                }
+                case SCHELLEN -> model.setzeMitspielerHatSchellen(spielerHatGelegt%3, false);
+                case GRAS -> model.setzeMitspielerHatGras(spielerHatGelegt%3, false);
+                case EICHEL -> model.setzeMitspielerHatEichel(spielerHatGelegt%3, false);
                 case HERZ -> {
-                    break;
                 }
                 default -> System.out.println("ERROR: Unbekannte Farbe");
             }
@@ -363,7 +353,7 @@ public class Bot extends Mitspieler {
     //Hilfsmethoden
 
     /*
-        Berechnet den Punktewert der Karten, die bisher in dem Stich gelegt wurden.
+        Berechnet den Punktewert der Karten, die bisher in den Stich gelegt wurden.
      */
     public int gibWertFuerBisherGelegteKarten() {
         int gesamtWert = 0;
@@ -373,7 +363,7 @@ public class Bot extends Mitspieler {
         return gesamtWert;
     }
     /*
-        Bestimmt welcher Spieler den Stich momentan gewinnt.
+        Bestimmt, welcher Spieler den Stich momentan gewinnt.
      */
     public int gibSpielerDerStichMomentanGewinnt(){
         int anzahlGelegterKarten = model.gibStichGelegteKartenAnzahl();
@@ -387,38 +377,22 @@ public class Bot extends Mitspieler {
         return model.gibSpielerDieImStichGelegtHaben().get(indexDerHoechstenKarte -(anzahlAllerGelegtenKarten - anzahlGelegterKarten));
     }
     /*
-        Gibt einen int Wert der genutzt werden kann um mit vergleichen zu Bestimmen welche Karte die andere Schlägt.
-        3 Stelle = Trumpf
-        2 Stelle = Sau bis 7
+        Gibt einen int Wert, der genutzt werden kann, um mit Vergleichen zu bestimmen, welche Karte die andere schlägt.
+        3 Stellen = Trumpf
+        2 Stellen = Sau bis 7
         1 Stelle = Farbe
      */
     public int spielKartenStaerkeSauSpiel(Spielkarte karte){
         int staerke = 0;
         switch (karte.gebeWert()){
-            case SAU -> {
-                staerke += 90;
-            }
-            case ZEHNER -> {
-                staerke += 80;
-            }
-            case KOENIG -> {
-                staerke += 70;
-            }
-            case OBER -> {
-                staerke += 300;
-            }
-            case UNTER -> {
-                staerke += 200;
-            }
-            case NEUNER -> {
-                staerke += 60;
-            }
-            case ACHTER -> {
-                staerke += 50;
-            }
-            case SIEBENER -> {
-                staerke += 40;
-            }
+            case SAU -> staerke += 90;
+            case ZEHNER -> staerke += 80;
+            case KOENIG -> staerke += 70;
+            case OBER -> staerke += 300;
+            case UNTER -> staerke += 200;
+            case NEUNER -> staerke += 60;
+            case ACHTER -> staerke += 50;
+            case SIEBENER -> staerke += 40;
             default -> System.out.println("ERROR: Unbekannter Wert");
         }
         switch (karte.gebeFarbe()){
@@ -429,16 +403,10 @@ public class Bot extends Mitspieler {
                     staerke += 100;
                 }
             }
-            case SCHELLEN -> {
-                staerke += 2;
-            }
+            case SCHELLEN -> staerke += 2;
 
-            case GRAS -> {
-                staerke += 4;
-            }
-            case EICHEL -> {
-                staerke += 5;
-            }
+            case GRAS -> staerke += 4;
+            case EICHEL -> staerke += 5;
             default -> System.out.println("ERROR: Unbekannte Farbe");
         }
         return  staerke;
@@ -446,7 +414,7 @@ public class Bot extends Mitspieler {
 
 
     /*
-        Bestimmt die Anzahl von Karten Typen die für Entscheidung über Spielzüge elementar sind.
+        Bestimmt die Anzahl von Kartentypen für die Entscheidung über Spielzüge elementar sind.
 
      */
     public int[] wieVieleBesondereKarten() {
