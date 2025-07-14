@@ -52,7 +52,7 @@ public class TurnierHistorieGUI {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 10));
         buttonPanel.setOpaque(false);
         JButton schliessenButton = erstelleSchoenenButton();
-        schliessenButton.addActionListener(_ -> frame.dispose());
+        schliessenButton.addActionListener(e ->  frame.dispose());
         buttonPanel.add(schliessenButton);
 
         frame.add(buttonPanel, BorderLayout.SOUTH);

@@ -14,9 +14,9 @@ public class Menue {
     }
 
     public void menueGUIIntialisieren() {
-        menueGUI.gibStatistikButton().addActionListener(_ -> new StatistikGUI());
-        menueGUI.gibPlayButton().addActionListener(_ -> menueGUIRueckgabe(1));
-        menueGUI.gibBeendenButton().addActionListener(_ -> menueGUIRueckgabe(0));
+        menueGUI.gibStatistikButton().addActionListener(e -> new StatistikGUI());
+        menueGUI.gibPlayButton().addActionListener(e -> menueGUIRueckgabe(1));
+        menueGUI.gibBeendenButton().addActionListener(e -> menueGUIRueckgabe(0));
     }
 
     public void menueGUIRueckgabe(int menueAuswahl) {

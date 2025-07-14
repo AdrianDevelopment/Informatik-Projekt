@@ -66,11 +66,11 @@ public class StatistikGUI {
         buttonPanel.setBackground(frame.getContentPane().getBackground()); // Hintergrund anpassen
 
         JButton historieButton = erstelleSchoenenButton("Turnierhistorie anzeigen");
-        historieButton.addActionListener(_ -> TurnierHistorieGUI.TurnierStatistikAnzeigen());
+        historieButton.addActionListener(e ->  TurnierHistorieGUI.TurnierStatistikAnzeigen());
         buttonPanel.add(historieButton);
 
         JButton schliessenButton = erstelleSchoenenButton("Schließen");
-        schliessenButton.addActionListener(_ -> frame.dispose());
+        schliessenButton.addActionListener(e ->  frame.dispose());
         buttonPanel.add(schliessenButton);
 
         gbc.gridy = yPos;

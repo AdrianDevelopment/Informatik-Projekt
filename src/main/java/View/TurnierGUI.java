@@ -33,7 +33,7 @@ public class TurnierGUI {
         eingabefeld.setHorizontalAlignment(JTextField.CENTER);
 
         JButton knopf = erstelleSchoenenButton();
-        knopf.addActionListener(_ -> kopfGedrueckt());
+        knopf.addActionListener(e ->  kopfGedrueckt());
 
         // Komponenten zum Frame hinzufügen
         gbc.insets = new Insets(10, 10, 5, 10);

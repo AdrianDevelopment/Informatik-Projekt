@@ -282,14 +282,14 @@ public class Speicherung {
             zuruecksetzen();
             try {
                 fis.close();
-            } catch (IOException _) {
+            } catch (IOException f) {
 
             }
             return;
         }
         try {
             fis.close();
-        } catch (IOException _) {
+        } catch (IOException e) {
 
         }
     }
@@ -338,12 +338,12 @@ public class Speicherung {
             zahlArraySchreiben(fos,gewonneneModiSchneider);
             zahlSchreiben(fos,gewonneneSpieleSchneider);
             datenGeaendert = false;
-        }catch (IOException _){
+        }catch (IOException e){
             
         }
         try{
             fos.close();
-        }catch(IOException _){
+        }catch(IOException e){
             
         }
     }

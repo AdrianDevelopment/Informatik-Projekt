@@ -301,12 +301,12 @@ public class SpielGUI {
 
     //Wenn der Weiterbutton gedrückt wird, wird eine Methode in einem Spieler aufgerufen
     public void weiterButtonActionListener(Spieler spieler){
-        weiterSauButtons.getFirst().addActionListener(_ -> spieler.spielabsichtGesagt(SpielArt.KEINSPIEL));
+        weiterSauButtons.getFirst().addActionListener(e -> spieler.spielabsichtGesagt(SpielArt.KEINSPIEL));
     }
 
     //Wenn der Saubutton gedrückt wird, wird eine Methode in Spieler aufgerufen
     public void sauButtonActionListener(Spieler spieler){
-        weiterSauButtons.get(1).addActionListener(_ -> spieler.spielabsichtGesagt(SpielArt.SAUSPIEL));
+        weiterSauButtons.get(1).addActionListener(e -> spieler.spielabsichtGesagt(SpielArt.SAUSPIEL));
     }
 
     // Der Weiter-Button und/oder der Sau-Button werden unsichtbar gemacht
@@ -316,9 +316,9 @@ public class SpielGUI {
 
     //Action Listener werden den einzelnen Sau-Auswahlmöglichkeiten zugewiesen
     public void farbeFuerSpielabsichtButtonsActionListener(Spieler spieler){
-        schellenSauButton.addActionListener(_ -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
-        grasSauButton.addActionListener(_ -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
-        eichelSauButton.addActionListener(_ -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
+        schellenSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.SCHELLEN));
+        grasSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.GRAS));
+        eichelSauButton.addActionListener(e -> spieler.farbeFeurSpielAbsichtGesagt(Farbe.EICHEL));
     }
 
 
@@ -329,7 +329,7 @@ public class SpielGUI {
             handButtons.get(i).setIcon(gibBild(handkarten.get(i)));
             int finalI = i; //für Lambda Expression
             actionListenerLoeschen(handButtons.get(i));
-            handButtons.get(i).addActionListener(_ -> spieler.karteGelegt(handkarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
+            handButtons.get(i).addActionListener(e -> spieler.karteGelegt(handkarten.get(finalI), finalI)); //gibt Spielkarte weiter und Index für handButtons
         }
     }
 
@@ -404,23 +404,23 @@ public class SpielGUI {
 
     //Bu="Button, ActLi="ActionListener", Eigentlich Selbsterklärend
     public void okBuActLiSetzenSpielabsicht(Runde runde, int wiederholung, int vorhand) {
-        okButton.addActionListener(_ -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
+        okButton.addActionListener(e -> runde.spielAbsichtFragenRunde(wiederholung, vorhand));
     }
 
     public void okBuActLiSetzenFarbeSpielabsicht(Runde runde) {
-        okButton.addActionListener(_ -> runde.farbeFuerSpielAbsicht());
+        okButton.addActionListener(e -> runde.farbeFuerSpielAbsicht());
     }
 
     public void okBuActLiSetzenStichSpielen(Runde runde) {
-        okButton.addActionListener(_ -> runde.stichSpielen());
+        okButton.addActionListener(e -> runde.stichSpielen());
     }
 
     public void okBuActLiSetzenFrageStichVorbei(Runde runde) {
-        okButton.addActionListener(_ -> runde.frageStichVorbei());
+        okButton.addActionListener(e -> runde.frageStichVorbei());
     }
 
     public void neueRundeBuActLiSetzenNeueRundeStarten(Spieler spieler, SpielArt spielArt) {
-        neueRundeButton.addActionListener(_ -> spieler.neueRundeStarten(spielArt));
+        neueRundeButton.addActionListener(e -> spieler.neueRundeStarten(spielArt));
     }
 
     //selbsterklärend
