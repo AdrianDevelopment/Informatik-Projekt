@@ -185,7 +185,7 @@ public class Spieler extends Mitspieler {
      */
     @Override
     public void spielArtEntschieden(int spieler, Farbe farbe, SpielArt spielArt) {
-        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler); //Wert, wie ihn Spieler-Klassen, z. B. GUI, nutzen
+        WelcherSpieler welcherSpieler = wieVielterSpieler(spieler); //Wert, wie ihn Spieler-Klassen, z.B. GUI, nutzen
         model.setzeSpielArt(spielArt, farbe, spieler);
         //Ausgabe in GUI
         String text = ausgabeBeimAusrufen(spielArt, welcherSpieler, farbe);
@@ -217,7 +217,7 @@ public class Spieler extends Mitspieler {
      * Überprüfungen
      * - darf überhaupt was gerade gelegt werden?
      * - weglaufen ja/nein
-     * - gelegte Karte passt mit erster Karte zusammen ja/, nein?
+     * - gelegte Karte passt mit erster Karte zusammen ja/nein?
      * ja → Spielkarte entfernen und Runde geben
      */
     public void karteGelegt(Spielkarte spielkarte, int index) {
@@ -311,7 +311,7 @@ public class Spieler extends Mitspieler {
 
 
     /**
-     * gibt eine Karte, die gelegt mit dem Spieler der GUI wird, weiter
+     * gibt eine Karte, die gelegt wurde, mit dem Spieler der GUI weiter
      */
     @Override
     public void karteWurdeGelegt(Spielkarte karte, int spielerHatGelegt, int wiederholung) {
@@ -324,7 +324,7 @@ public class Spieler extends Mitspieler {
         if (model.gebeAnzahlSpielerSchonGelegt() == 0 && !karte.istTrumpf(model.gebeSpielArt(), null) && karte.gebeFarbe() == model.gebeFarbe()) {
             model.setzteSauFarbeVorhandGespielt(true);
         }
-        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, speichern, wer Mitspieler ist
+        //Überprüfung, ob gesuchte Sau gelegt wird → wenn ja, dann speichern, wer Mitspieler ist
         if (karte.gebeFarbe() == model.gebeFarbe() && karte.gebeWert() == Werte.SAU) {
             model.setzeMitspieler(spielerHatGelegt);
         }
@@ -419,7 +419,7 @@ public class Spieler extends Mitspieler {
         return spielerImUhrzeigersinn;
     }
 
-    /*Methode, die von der Runde aufgerufen wird, um den Mitspieler herauszubekommen*/
+    /*Methode, die von Runde aufgerufen wird, um den Mitspieler herauszubekommen*/
     public int gebeMitspieler() {
         return model.gebeMitspieler();
     }

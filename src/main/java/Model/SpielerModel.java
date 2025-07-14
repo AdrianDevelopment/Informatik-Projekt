@@ -13,12 +13,13 @@ public class SpielerModel {
     private Farbe farbe; //speichert Farbe der ausgerufenen Sau
     //Attribute für Lege-/Stichrunden
     private final ArrayList<Spielkarte> stich; //speichert Karten eines Stichs
+    private ArrayList<Spielkarte> letzterStich; //speichert Karten des vorherigen Stichs (für zukünftige Versionen)
     private int anzahlSpielerSchonGelegt; //gibt an, wie viele Spieler in der Lege-Runde dran waren
     private boolean dranLegen;
     private boolean dranSpielabsicht;
     private boolean dranFarbeSpielabsicht;
     //temporäre Attribute für GUI-Übergabe
-    private boolean sauFarbeVorhandGespielt; //Tim: Benötigt, um zu überprüfen, ob die Sau gelegt werden darf.
+    private boolean sauFarbeVorhandGespielt; //Tim: benötigt, um zu überprüfen, ob die Sau gelegt werden darf.
     //Attribute für Runde
     private int wiederholung;
     private int vorhand;
@@ -39,7 +40,7 @@ public class SpielerModel {
     }
 
     public void setzeHandkarten(ArrayList<Spielkarte> neueKarten) {
-        handkarten.clear(); //setzt Handkarten zurück (Bugfix, damit nach einer Runde nichts spielen nicht plötzlich Handkarten 16 groß ist)
+        handkarten.clear(); //setzt handkarten zurück (Bugfix, damit nach einer Runde nichts spielen nicht plötzlich handkarten 16 groß ist)
         for (int i = 0; i < neueKarten.size(); i++) {
             handkarten.add(i, neueKarten.get(i));
         }
@@ -78,11 +79,11 @@ public class SpielerModel {
     }
 
     public Spielkarte gebeVorgegebeneKarte() {
-        return stich.getFirst();
+        return stich.get(0);
     }
 
     public void stichBeendet() {
-        //speichert Karten des vorherigen Stichs (für zukünftige Versionen)
+        letzterStich = stich;
         stich.clear();
         anzahlSpielerSchonGelegt = 0;
     }
@@ -120,7 +121,7 @@ public class SpielerModel {
     }
 
 
-    //Tim: Benötigt, um zu bestimmen, ob die gesuchte Sau gespielt werden darf.
+    //Tim: benötigt, um zu bestimmen, ob die gesuchte Sau gespielt werden darf.
     public void setzteSauFarbeVorhandGespielt(boolean b) {
         sauFarbeVorhandGespielt = b;
     }
