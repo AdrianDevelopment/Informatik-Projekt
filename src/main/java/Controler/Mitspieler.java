@@ -46,107 +46,119 @@ public abstract class Mitspieler {
     //Setzte eine Referenz zum Objekt Runde
     public abstract void setzeRunde(Runde runde);
 
+    private boolean sauDarfGespieltWerden(Spielkarte vorgegebeneKarte, Spielkarte sau, boolean sauFarbeVorhandGespielt, int handSize) {
+        return (vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() || sauFarbeVorhandGespielt || handSize <= 1)
+                && !vorgegebeneKarte.istTrumpf(SpielArt.SAUSPIEL, null);
+    }
+
+
     /*
         Gibt eine Arraylist mit allen Karten zurück, welche unter Berücksichtigung der Spielart
         und deren Eigenschaften und der Karte die von der Vorhand gespielt wurde.
      */
-    public ArrayList<Spielkarte> gibErlaubteKarten(ArrayList<Spielkarte> hand, SpielArt spielArt, Spielkarte sau, Spielkarte vorgegebeneKarte, Farbe soloFarbe, boolean sauFarbeVorhandGespielt) {
-
+    public ArrayList<Spielkarte> gibErlaubteKarten(
+            ArrayList<Spielkarte> hand,
+            SpielArt spielArt,
+            Spielkarte sau,
+            Spielkarte vorgegebeneKarte,
+            Farbe soloFarbe,
+            boolean sauFarbeVorhandGespielt
+    ) {
         ArrayList<Spielkarte> gezwungeneKarten = new ArrayList<>();
-        //Wenn nur noch eine Karte auf der Hand ist, gibt es keine Wahl, welche Karte gespielt werden kann.
+
         if (hand.size() == 1) {
             gezwungeneKarten.add(hand.getFirst());
             return gezwungeneKarten;
         }
-        //Unterscheidung der Spielart.
-        switch (spielArt) {
 
+        switch (spielArt) {
             case SOLO:
-                //Unterscheiden, ob die Karte von der Vorhand ein Trumpf oder eine Farbe ist.
                 if (vorgegebeneKarte.istTrumpf(spielArt, soloFarbe)) {
                     for (Spielkarte karte : hand) {
-                        //Alle Trümpfe dürfen gespielt werden.
                         if (karte.istTrumpf(spielArt, soloFarbe)) {
                             gezwungeneKarten.add(karte);
                         }
                     }
                 } else {
                     for (Spielkarte karte : hand) {
-                        //Alle Karten der Farbe, von der Karte der Vorhand, dürfen gespielt werden.
-                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
+                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() &&
+                                !karte.istTrumpf(spielArt, soloFarbe)) {
                             gezwungeneKarten.add(karte);
                         }
                     }
-                    return gezwungeneKarten;
                 }
                 break;
+
             case WENZ:
-                //Unterscheiden, ob die Karte von der Vorhand ein Trumpf oder eine Farbe ist.
                 if (vorgegebeneKarte.istTrumpf(spielArt, soloFarbe)) {
                     for (Spielkarte karte : hand) {
-                        //Alle Trümpfe dürfen gespielt werden.
                         if (karte.gebeWert() == Werte.UNTER) {
                             gezwungeneKarten.add(karte);
                         }
                     }
-
                 } else {
                     for (Spielkarte karte : hand) {
-                        //Alle Karten der Farbe, von der Karte der Vorhand, dürfen gespielt werden.
-                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
+                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() &&
+                                karte.gebeWert() != Werte.UNTER) {
                             gezwungeneKarten.add(karte);
                         }
                     }
                 }
-
                 break;
+
             case SAUSPIEL:
+                boolean sauErlaubt = sauDarfGespieltWerden(
+                        vorgegebeneKarte,
+                        sau,
+                        sauFarbeVorhandGespielt,
+                        hand.size()
+                );
 
-                //Gesuchte Sau darf nicht gelegt werden, wenn die Vorhand nicht die Farbe der Sau hat.
-                //Sonst darf Sau nur gelegt werden, nachdem die Farbe mindestens einmal in Vorhand gespielt wurde oder es der letzte Stich ist.
-                if ((vorgegebeneKarte.gebeFarbe() != sau.gebeFarbe() && !sauFarbeVorhandGespielt && hand.size() > 1)|| vorgegebeneKarte.istTrumpf(SpielArt.SAUSPIEL,null) ) {
-                    //Entfernt Sau von der Hand, damit sie nicht mehr gespielt werden kann.
-                    hand.remove(sau); //Grund für das Clonen von Hand
-                }
-
-                //Sofern die Farbe der Karte von der Vorhand und der gesuchten Sau gleich ist, darf nur die Sau gelegt werden.
+                // Wenn exakt die gesuchte Sau gespielt werden muss
                 for (Spielkarte karte : hand) {
-                    if (karte.gebeWert() == Werte.SAU && vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() && karte.gebeFarbe() == sau.gebeFarbe() && !karte.istTrumpf(SpielArt.SAUSPIEL, soloFarbe)) {
-                        gezwungeneKarten.add(karte);
+                    if (karte.gebeWert() == Werte.SAU &&
+                            karte.gebeFarbe() == sau.gebeFarbe() &&
+                            vorgegebeneKarte.gebeFarbe() == sau.gebeFarbe() &&
+                            !karte.istTrumpf(spielArt, soloFarbe)) {
+                        if (sauErlaubt) {
+                            gezwungeneKarten.add(karte);
+                        }
                         return gezwungeneKarten;
                     }
                 }
+
                 if (vorgegebeneKarte.istTrumpf(spielArt, soloFarbe)) {
                     for (Spielkarte karte : hand) {
-                        //Alle Trümpfe dürfen gespielt werden.
                         if (karte.istTrumpf(spielArt, soloFarbe)) {
-                            gezwungeneKarten.add(karte);
+                            if (!(karte.equals(sau) && !sauErlaubt)) {
+                                gezwungeneKarten.add(karte);
+                            }
                         }
                     }
                 } else {
                     for (Spielkarte karte : hand) {
-                        //Alle Karten der Farbe, von der Karte der Vorhand, dürfen gespielt werden.
-                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() && !karte.istTrumpf(spielArt, soloFarbe)) {
+                        if (karte.gebeFarbe() == vorgegebeneKarte.gebeFarbe() &&
+                                !karte.istTrumpf(spielArt, soloFarbe)) {
+                            if (!(karte.equals(sau) && !sauErlaubt)) {
                                 gezwungeneKarten.add(karte);
+                            }
                         }
                     }
                 }
-                break; //TOM
-            default:
-                System.out.println("Unbekannte Spielart. Karten können nicht bestimmt werden für:" + spielArt);
                 break;
 
+            default:
+                System.out.println("Unbekannte Spielart. Karten können nicht bestimmt werden für: " + spielArt);
+                break;
         }
-        //Sofern keine Karte zwingend gespielt werden muss, dürfen alle Karten gespielt werden.
 
         if (!gezwungeneKarten.isEmpty()) {
             return gezwungeneKarten;
         } else {
-            //noinspection unchecked
-            return (ArrayList<Spielkarte>) hand.clone();
+            return new ArrayList<>(hand); // Kein Klonen nötig – keine Änderungen mehr
         }
-
     }
+
 
     /*
         Bestimmt, welche Karten die Vorhand beim Sauspiel spielen darf.
