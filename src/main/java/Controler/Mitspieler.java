@@ -7,6 +7,10 @@ import Model.Spielkarte;
 import Model.Werte;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Comparator;
 
 public abstract class Mitspieler {
     boolean kannDavonLaufen = false;
@@ -187,72 +191,40 @@ public abstract class Mitspieler {
      */
 
     public ArrayList<Farbe> sauZumAusrufen(ArrayList<Spielkarte> hand) {
+        EnumMap<Farbe, Integer> anzahlProFarbe = new EnumMap<>(Farbe.class);
+        EnumSet<Farbe> farbenMitSau = EnumSet.noneOf(Farbe.class);
 
-        int anzahlEichel = 0;
-        int anzahlGras = 0;
-        int anzahlSchellen = 0;
+        // Initialisiere Zähler für relevante Farben
+        for (Farbe farbe : List.of(Farbe.EICHEL, Farbe.GRAS, Farbe.SCHELLEN)) {
+            anzahlProFarbe.put(farbe, 0);
+        }
 
-        boolean hatEichelSau = false;
-        boolean hatGrasau = false;
-        boolean hatSchellenSau = false;
-
-        //Bestimmung welche, Sauen und wie viele Karten der jeweiligen Farbe auf der Hand sind.
+        // Zähle Karten und Sauen pro Farbe
         for (Spielkarte karte : hand) {
-            if(!karte.istTrumpf(SpielArt.SAUSPIEL, null)){
-                switch (karte.gebeFarbe()) {
-                    case SCHELLEN:
-                        anzahlSchellen++;
-                        if (karte.gebeWert() == Werte.SAU) {
-                            hatSchellenSau = true;
-                        }
-                        break;
-                    case GRAS:
-                        anzahlGras++;
-                        if (karte.gebeWert() == Werte.SAU) {
-                            hatGrasau = true;
-                        }
-                        break;
-                    case EICHEL:
-                        anzahlEichel++;
-                        if (karte.gebeWert() == Werte.SAU) {
-                            hatEichelSau = true;
-                        }
-                        break;
-                    case HERZ:
-
-                        break;
-                    default:
-                        System.out.println("Error: Unbekannte Farbe");
+            if (!karte.istTrumpf(SpielArt.SAUSPIEL, null)) {
+                Farbe farbe = karte.gebeFarbe();
+                if (anzahlProFarbe.containsKey(farbe)) {
+                    anzahlProFarbe.put(farbe, anzahlProFarbe.get(farbe) + 1);
+                    if (karte.gebeWert() == Werte.SAU) {
+                        farbenMitSau.add(farbe);
+                    }
                 }
             }
+        }
 
-        }
-        //Überprüft, ob eine Sau ausgerufen werden kann, und sortiert sie in die Arraylist ein.
-        ArrayList<Farbe> erlaubteFarben = new ArrayList<>();
-        if (anzahlGras != 0 && !hatGrasau) {
-            erlaubteFarben.add(Farbe.GRAS);
-        }
-        if (anzahlSchellen != 0 && !hatSchellenSau) {
-            if (anzahlSchellen < anzahlGras) {
-                erlaubteFarben.addFirst(Farbe.SCHELLEN);
-            } else {
-                erlaubteFarben.add(Farbe.SCHELLEN);
+        // Suche alle Farben ohne Sau, aber mit mindestens einer Karte
+        List<Farbe> erlaubteFarben = new ArrayList<>();
+        for (Farbe farbe : List.of(Farbe.EICHEL, Farbe.GRAS, Farbe.SCHELLEN)) {
+            if (!farbenMitSau.contains(farbe) && anzahlProFarbe.get(farbe) > 0) {
+                erlaubteFarben.add(farbe);
             }
+        }
 
-        }
-        if (anzahlEichel != 0 && !hatEichelSau) {
-            int positionInListe = 0;
-            for (Farbe farbe : erlaubteFarben) {
-                if (farbe == Farbe.GRAS && anzahlEichel > anzahlGras) {
-                    positionInListe++;
-                }
-                if (farbe == Farbe.SCHELLEN && anzahlEichel > anzahlSchellen) {
-                    positionInListe++;
-                }
-            }
-            erlaubteFarben.add(positionInListe, Farbe.EICHEL);
-        }
-        return erlaubteFarben;
+        // Sortiere die erlaubten Farben nach Kartenanzahl aufsteigend
+        erlaubteFarben.sort(Comparator.comparingInt(anzahlProFarbe::get));
+
+        return new ArrayList<>(erlaubteFarben);
     }
+
 }
 
