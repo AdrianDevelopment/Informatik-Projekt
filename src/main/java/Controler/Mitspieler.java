@@ -9,6 +9,7 @@ import Model.Werte;
 import java.util.ArrayList;
 
 public abstract class Mitspieler {
+    boolean kannDavonLaufen = false;
 
 
     //Fragt die Spielabsicht der Mitspieler ab.
@@ -166,8 +167,9 @@ public abstract class Mitspieler {
         }
         //Wenn mehr als 4 Karten der Farbe der Sau auf der Hand sind, die keine Trümpfe sind, kann davongelaufen werden.
         for (Spielkarte karte : hand) {
-            if (anzahlSauFarbeKarten >= 4) {
+            if (anzahlSauFarbeKarten >= 4 || kannDavonLaufen) {
                 //Es kann davon gelaufen werden → alle Karten dürfen gelegt werden.
+                kannDavonLaufen = true;
                 gezwungeneKarten.add(karte);
             } else if (karte.gebeFarbe() != sau.gebeFarbe() || karte.istTrumpf(SpielArt.SAUSPIEL, null) || karte.gebeWert() == Werte.SAU) {
                 //Es kann nicht davon gelaufen werden, andere Karten, die keine Trümpfe sind und die gleiche Farbe wie die gesuchte Sau haben, dürfen nicht gelegt werden.
